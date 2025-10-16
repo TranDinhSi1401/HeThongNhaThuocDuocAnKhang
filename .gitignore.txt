@@ -1,0 +1,42 @@
+# ===============================
+# Java & Ant Project .gitignore
+# ===============================
+
+# === Java build files ===
+*.class
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# === Ant build output ===
+build/
+dist/
+out/
+tmp/
+temp/
+
+# === IDE specific ===
+
+## NetBeans
+nbproject/private/
+build/
+dist/
+nbbuild/
+nbdist/
+nbactions.xml
+nb-configuration.xml
+
+# === OS files ===
+.DS_Store
+Thumbs.db
+
+# === Logs and temporary ===
+*.log
+*.bak
+*.swp
+*.tmp
+*.orig
+
