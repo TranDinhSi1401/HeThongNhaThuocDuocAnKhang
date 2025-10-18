@@ -34,7 +34,8 @@ public class GiaoDienChinhGUI extends javax.swing.JFrame {
                     showPanel(new TaoPhieuDatHangGUI());
                 } 
             }
-        });         
+        });
+        setTitle("Hệ thống nhà thuốc Dược An Khang");
         setSize(1000, 600);
         setLocationRelativeTo(null);
         setVisible(true);
