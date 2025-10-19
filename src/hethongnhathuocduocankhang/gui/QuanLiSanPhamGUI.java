@@ -40,7 +40,7 @@ public class QuanLiSanPhamGUI extends JPanel {
         btnTimKiem = new JButton();
 
         int kichThuoc = 30;
-        String url = "/img/icon_kinh_lup.png";
+        String url = "/resources/images/icon/icon_kinh_lup.png";
 
         ImageIcon iconKinhLup = new ImageIcon(getClass().getResource(url));
         Image hinhKinhLup = iconKinhLup.getImage();
