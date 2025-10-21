@@ -5,7 +5,6 @@
 package hethongnhathuocduocankhang.gui;
 
 import hethongnhathuocduocankhang.menu.MenuEvent;
-import java.awt.Component;
 import javax.swing.JPanel;
 
 /**
