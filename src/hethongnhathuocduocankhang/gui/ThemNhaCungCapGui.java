@@ -8,12 +8,12 @@ package hethongnhathuocduocankhang.gui;
  *
  * @author admin
  */
-public class ThemNhaCungCapGui extends javax.swing.JPanel {
+public class ThemNhaCungCapGUI extends javax.swing.JPanel {
 
     /**
      * Creates new form QuanLyNhaCungCapGui
      */
-    public ThemNhaCungCapGui() {
+    public ThemNhaCungCapGUI() {
         initComponents();
     }
 

@@ -23,9 +23,44 @@ public class GiaoDienChinhGUI extends javax.swing.JFrame {
         menu.setEvent(new MenuEvent() {
             @Override
             public void selected(int index, int subIndex) {
+                if(index == 0 && subIndex == 0) {
+                    showPanel(new TongQuanGUI());
+                }
                 if(index == 1 && subIndex == 0) {
                     showPanel(new BanHangGUI());
                 }
+                if(index == 2) {
+                        switch (subIndex) {
+                            case 1:
+                                showPanel(new QuanLiKhachHangGUI());
+                                break;
+                            case 2:
+                                showPanel(new QuanLiSanPhamGUI());
+                                break;
+                            case 3:
+                                showPanel(new QuanLiNhanVienGUI());
+                                break;
+                            case 4:
+                                showPanel(new QuanLiHoaDonGUI());
+                                break;
+                            case 5:
+                                showPanel(new QuanLiKhuyenMaiGUI());
+                                break;
+                            case 6:
+                                showPanel(new QuanLiNhaCungCapGUI());
+                                break;
+                            case 7:
+                                showPanel(new QuanLiPhieuDatHangGUI());
+                                break;
+                            case 8:
+                                showPanel(new QuanLiLichSuCaLamGUI());
+                                break;
+                            case 9:
+                                showPanel(new QuanLiPhieuTraHangGUI());
+                                break;
+                            default:    
+                        }
+                } 
                 if(index == 3 && subIndex == 0) {
                     showPanel(new TraHangGUI());
                 } 
