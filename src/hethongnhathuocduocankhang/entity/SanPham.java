@@ -53,6 +53,13 @@ public class SanPham {
              sp.tonToiThieu, sp.tonToiDa, sp.giaBan, sp.donViTinhCoBan, sp.loSanPham);
     }
 
+    public SanPham(String maSP, String ten) {
+        this.maSP = maSP;
+        this.ten = ten;
+    }
+    
+
+
     // --- Getter & Setter ---
     public String getMaSP() {
         return maSP;
