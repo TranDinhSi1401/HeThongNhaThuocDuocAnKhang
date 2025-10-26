@@ -1,0 +1,61 @@
+[33mcommit dff220b7866bea5149aa4d5450b260af34656279[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mkiem-tra[m[33m, [m[1;31morigin/ChucNangPhieuTraHang[m[33m)[m
+Author: Khang <khangdz013@gmail.com>
+Date:   Sun Oct 19 02:29:16 2025 +0700
+
+    test lan 1 thoi
+
+[1mdiff --git a/build/classes/hethongnhathuocduocankhang/testnetbean/DemoKhang_v1.class b/build/classes/hethongnhathuocduocankhang/testnetbean/DemoKhang_v1.class[m
+[1mnew file mode 100644[m
+[1mindex 0000000..e436b34[m
+Binary files /dev/null and b/build/classes/hethongnhathuocduocankhang/testnetbean/DemoKhang_v1.class differ
+[1mdiff --git a/d b/d[m
+[1mnew file mode 100644[m
+[1mindex 0000000..dac987c[m
+[1m--- /dev/null[m
+[1m+++ b/d[m
+[36m@@ -0,0 +1,24 @@[m
+[32m+[m[32m[1mdiff --git a/nbproject/private/private.properties b/nbproject/private/private.properties[m[m
+[32m+[m[32m[1mindex b27608b..c627224 100644[m[m
+[32m+[m[32m[1m--- a/nbproject/private/private.properties[m[m
+[32m+[m[32m[1m+++ b/nbproject/private/private.properties[m[m
+[32m+[m[32m[36m@@ -5,4 +5,4 @@[m [mdo.jlink=false[m[m
+[32m+[m[32m javac.debug=true[m[m
+[32m+[m[32m javadoc.preview=true[m[m
+[32m+[m[32m jlink.strip=false[m[m
+[32m+[m[32m[31m-user.properties.file=C:\\Users\\trand\\AppData\\Roaming\\NetBeans\\27\\build.properties[m[m
+[32m+[m[32m[32m+[m[32muser.properties.file=C:\\Users\\MINH KHANG\\AppData\\Roaming\\NetBeans\\27\\build.properties[m[m
+[32m+[m[32m[1mdiff --git a/nbproject/private/private.xml b/nbproject/private/private.xml[m[m
+[32m+[m[32m[1mindex 7fc8b9f..570025f 100644[m[m
+[32m+[m[32m[1m--- a/nbproject/private/private.xml[m[m
+[32m+[m[32m[1m+++ b/nbproject/private/private.xml[m[m
+[32m+[m[32m[36m@@ -3,7 +3,8 @@[m[m
+[32m+[m[32m     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>[m[m
+[32m+[m[32m     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">[m[m
+[32m+[m[32m         <group>[m[m
+[32m+[m[32m[31m-            <file>file:/D:/JavaWorkSpace/HeThongNhaThuocDuocAnKhang/src/hethongnhathuocduocankhang/gui/BanHangGUI.java</file>[m[m
+[32m+[m[32m[32m+[m[32m            <file>file:/D:/IUHer%20Hoc%20tap/Nam%203/Semester%201/Phat%20Trien%20Ung%20Dung/WorkspaceProject/HeThongNhaThuocDuocAnKhang/src/hethongnhathuocduocankhang/HeThongNhaThuocDuocAnKhang.java</file>[m[m
+[32m+[m[32m[32m+[m[32m            <file>file:/D:/IUHer%20Hoc%20tap/Nam%203/Semester%201/Phat%20Trien%20Ung%20Dung/WorkspaceProject/HeThongNhaThuocDuocAnKhang/src/hethongnhathuocduocankhang/testnetbean/DemoKhang_v1.java</file>[m[m
+[32m+[m[32m         </group>[m[m
+[32m+[m[32m     </open-files>[m[m
+[32m+[m[32m </project-private>[m[m
+[1mdiff --git a/src/hethongnhathuocduocankhang/testnetbean/DemoKhang_v1.java b/src/hethongnhathuocduocankhang/testnetbean/DemoKhang_v1.java[m
+[1mnew file mode 100644[m
+[1mindex 0000000..a6cdffe[m
+[1m--- /dev/null[m
+[1m+++ b/src/hethongnhathuocduocankhang/testnetbean/DemoKhang_v1.java[m
+[36m@@ -0,0 +1,15 @@[m
+[32m+[m[32m/*[m
+[32m+[m[32m * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license[m
+[32m+[m[32m * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template[m
+[32m+[m[32m */[m
+[32m+[m[32mpackage hethongnhathuocduocankhang.testnetbean;[m
+[32m+[m
+[32m+[m[32m/**[m
+[32m+[m[32m *[m
+[32m+[m[32m * @author MINH KHANG[m
+[32m+[m[32m */[m
+[32m+[m[32mpublic class DemoKhang_v1 {[m
+[32m+[m[32m    public static void main(String[] args) {[m
+[32m+[m[32m        System.out.println("hello");[m
+[32m+[m[32m    }[m
+[32m+[m[32m}[m
