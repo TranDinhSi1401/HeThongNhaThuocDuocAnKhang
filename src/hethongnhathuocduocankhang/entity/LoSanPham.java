@@ -11,7 +11,7 @@ import java.time.LocalDate;
  * @author MINH KHANG
  */
 class LoSanPham {
-     private String maLoSanPham;
+    private String maLoSanPham;
     private SanPham sanPham;
     private int soLuong;
     private LocalDate ngaySanXuat;

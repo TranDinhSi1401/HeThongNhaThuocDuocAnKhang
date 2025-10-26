@@ -32,7 +32,6 @@ public class TraHangGUI extends javax.swing.JPanel {
         jPanel11 = new javax.swing.JPanel();
         jPanel12 = new javax.swing.JPanel();
         jTextField2 = new javax.swing.JTextField();
-        jButton2 = new javax.swing.JButton();
         jPanel13 = new javax.swing.JPanel();
         jPanel10 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
@@ -41,7 +40,6 @@ public class TraHangGUI extends javax.swing.JPanel {
         jTextField4 = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         jXDatePicker1 = new org.jdesktop.swingx.JXDatePicker();
-        jButton1 = new javax.swing.JButton();
         jPanel17 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         jTable3 = new javax.swing.JTable();
@@ -95,14 +93,6 @@ public class TraHangGUI extends javax.swing.JPanel {
         });
         jPanel12.add(jTextField2);
 
-        jButton2.setText("Tìm");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
-            }
-        });
-        jPanel12.add(jButton2);
-
         jPanel9.add(jPanel12);
         jPanel9.add(jPanel13);
 
@@ -127,7 +117,7 @@ public class TraHangGUI extends javax.swing.JPanel {
         });
         jPanel16.add(jTextField4);
 
-        jLabel6.setText("Ngày");
+        jLabel6.setText("Ngày mua");
         jPanel16.add(jLabel6);
 
         jXDatePicker1.addActionListener(new java.awt.event.ActionListener() {
@@ -136,14 +126,6 @@ public class TraHangGUI extends javax.swing.JPanel {
             }
         });
         jPanel16.add(jXDatePicker1);
-
-        jButton1.setText("Tìm");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-        jPanel16.add(jButton1);
 
         jPanel14.add(jPanel16);
 
@@ -322,14 +304,6 @@ public class TraHangGUI extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField4ActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
-
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton3ActionPerformed
@@ -344,8 +318,6 @@ public class TraHangGUI extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
