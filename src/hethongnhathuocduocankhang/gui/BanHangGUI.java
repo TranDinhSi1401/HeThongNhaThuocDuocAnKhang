@@ -4,6 +4,18 @@
  */
 package hethongnhathuocduocankhang.gui;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import javax.swing.BorderFactory;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
+import javax.swing.SwingConstants;
+import javax.swing.UIManager;
+
 /**
  *
  * @author trand
@@ -15,6 +27,8 @@ public class BanHangGUI extends javax.swing.JPanel {
      */
     public BanHangGUI() {
         initComponents();
+        setBackground(Color.WHITE);
+        initTabHoaDon();
     }
 
     /**
@@ -26,18 +40,81 @@ public class BanHangGUI extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
-
-        setBackground(new java.awt.Color(255, 204, 255));
-        setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jLabel1.setForeground(new java.awt.Color(0, 0, 0));
-        jLabel1.setText("Đây là giao diện bán hàng, chỉnh sửa ở file BanHangGUI.java");
-        add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 240, -1, -1));
+        setLayout(new java.awt.BorderLayout());
     }// </editor-fold>//GEN-END:initComponents
 
+    private void initTabHoaDon() {
+        UIManager.put("TabbedPane.focus", Color.WHITE);
+        UIManager.put("TabbedPane.contentAreaColor", Color.WHITE);
 
+        JTabbedPane tabHoaDon = new JTabbedPane();
+        tabHoaDon.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
+
+            
+        tabHoaDon.addTab("Hóa đơn 1", new BanHangPane());
+        addCloseButton(tabHoaDon, 0);
+        tabHoaDon.addTab("+", null);
+        
+        tabHoaDon.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent e) {
+                int tabIndex = tabHoaDon.getSelectedIndex();
+                int lastIndex = tabHoaDon.getTabCount() - 1;
+                if (tabIndex == lastIndex) {
+                    String title = "Hóa đơn " + (lastIndex + 1);
+                    JPanel panel = new JPanel(new BorderLayout());
+                    panel.add(new BanHangPane());
+
+                    tabHoaDon.insertTab(title, null, panel, null, lastIndex);
+                    addCloseButton(tabHoaDon, lastIndex);
+                    tabHoaDon.setSelectedIndex(lastIndex);
+                }
+            }
+        });
+
+        setLayout(new java.awt.BorderLayout());
+        add(tabHoaDon, java.awt.BorderLayout.CENTER);
+    }
+
+    private void addCloseButton(JTabbedPane tabbedPane, int index) {
+        JPanel tabPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 2, 0));
+        tabPanel.setOpaque(false);
+
+        JLabel lblTitle = new JLabel(tabbedPane.getTitleAt(index));
+        lblTitle.setFont(new java.awt.Font("Segoe UI", java.awt.Font.PLAIN, 14));
+        lblTitle.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 10));
+        
+        JLabel lblClose = new JLabel("x", SwingConstants.CENTER);
+        lblClose.setFont(new java.awt.Font("Segoe UI", java.awt.Font.PLAIN, 14));
+        lblClose.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        lblClose.setPreferredSize(new Dimension(16, 16));
+
+       
+        lblClose.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent e) {
+                int tabIndex = tabbedPane.indexOfTabComponent(tabPanel);
+                if (tabIndex != -1) {
+                    tabbedPane.remove(tabIndex);
+                }
+            }
+            
+            @Override
+            public void mouseEntered(java.awt.event.MouseEvent e) {
+                lblClose.setForeground(Color.red);
+            }
+
+            @Override
+            public void mouseExited(java.awt.event.MouseEvent e) {
+                lblClose.setForeground(Color.black);
+            }
+        });
+        
+        tabPanel.add(lblTitle);
+        tabPanel.add(lblClose);
+        tabbedPane.setTabComponentAt(index, tabPanel);
+        
+    }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
 }
