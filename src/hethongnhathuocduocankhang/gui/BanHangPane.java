@@ -4,12 +4,18 @@
  */
 package hethongnhathuocduocankhang.gui;
 
+import hethongnhathuocduocankhang.connectDB.ConnectDB;
+import hethongnhathuocduocankhang.dao.SanPhamDAO;
+import hethongnhathuocduocankhang.entity.SanPham;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import javax.swing.*;
 import javax.swing.table.JTableHeader;
+import javax.swing.table.TableColumn;
 
 /**
  *
@@ -23,12 +29,25 @@ public class BanHangPane extends javax.swing.JPanel {
     public BanHangPane() {
         initComponents(); 
 
+        try {
+            ConnectDB.getInstance().connect();
+        }catch(SQLException e) {
+            e.printStackTrace();
+        }
+        
         JTableHeader header = tblCTHD.getTableHeader();
         header.setPreferredSize(new Dimension(header.getWidth(), 30));
         header.setBorder(null);
         header.setBackground(new Color(245, 245, 245));
         header.setForeground(Color.BLACK);
         header.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        
+        String[] donViTinh = { "Viên", "Vỉ", "Hộp" };
+        JComboBox<String> comboBoxDonVi = new JComboBox<>(donViTinh);
+        TableColumn columnDonVi = tblCTHD.getColumnModel().getColumn(2); // cột thứ 4
+        columnDonVi.setCellEditor(new DefaultCellEditor(comboBoxDonVi));
+
+
     }
 
     /**
@@ -42,10 +61,10 @@ public class BanHangPane extends javax.swing.JPanel {
 
         pSouth = new javax.swing.JPanel();
         pLeftSouth = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        btnXoa = new javax.swing.JButton();
+        btnXoaTrang = new javax.swing.JButton();
         pRightSouth = new javax.swing.JPanel();
-        jButton3 = new javax.swing.JButton();
+        btnThanhToan = new javax.swing.JButton();
         pRightCenter = new javax.swing.JPanel();
         pThongTinKH = new javax.swing.JPanel();
         p1 = new javax.swing.JPanel();
@@ -98,36 +117,36 @@ public class BanHangPane extends javax.swing.JPanel {
         pLeftSouth.setPreferredSize(new java.awt.Dimension(400, 100));
         pLeftSouth.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 10, 15));
 
-        jButton1.setBackground(new java.awt.Color(255, 51, 51));
-        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(255, 255, 255));
-        jButton1.setText("Xóa");
-        jButton1.setPreferredSize(new java.awt.Dimension(100, 35));
-        pLeftSouth.add(jButton1);
+        btnXoa.setBackground(new java.awt.Color(255, 51, 51));
+        btnXoa.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnXoa.setForeground(new java.awt.Color(255, 255, 255));
+        btnXoa.setText("Xóa");
+        btnXoa.setPreferredSize(new java.awt.Dimension(100, 35));
+        pLeftSouth.add(btnXoa);
 
-        jButton2.setBackground(new java.awt.Color(255, 255, 255));
-        jButton2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jButton2.setForeground(new java.awt.Color(0, 0, 0));
-        jButton2.setText("Xóa trắng");
-        jButton2.setPreferredSize(new java.awt.Dimension(100, 35));
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        btnXoaTrang.setBackground(new java.awt.Color(255, 255, 255));
+        btnXoaTrang.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnXoaTrang.setForeground(new java.awt.Color(0, 0, 0));
+        btnXoaTrang.setText("Xóa trắng");
+        btnXoaTrang.setPreferredSize(new java.awt.Dimension(100, 35));
+        btnXoaTrang.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                btnXoaTrangActionPerformed(evt);
             }
         });
-        pLeftSouth.add(jButton2);
+        pLeftSouth.add(btnXoaTrang);
 
         pSouth.add(pLeftSouth, java.awt.BorderLayout.LINE_START);
 
         pRightSouth.setBackground(new java.awt.Color(245, 245, 245));
         pRightSouth.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT, 10, 15));
 
-        jButton3.setBackground(new java.awt.Color(0, 203, 0));
-        jButton3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jButton3.setForeground(new java.awt.Color(255, 255, 255));
-        jButton3.setText("Thanh toán");
-        jButton3.setPreferredSize(new java.awt.Dimension(110, 35));
-        pRightSouth.add(jButton3);
+        btnThanhToan.setBackground(new java.awt.Color(0, 203, 0));
+        btnThanhToan.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnThanhToan.setForeground(new java.awt.Color(255, 255, 255));
+        btnThanhToan.setText("Thanh toán");
+        btnThanhToan.setPreferredSize(new java.awt.Dimension(260, 35));
+        pRightSouth.add(btnThanhToan);
 
         pSouth.add(pRightSouth, java.awt.BorderLayout.CENTER);
 
@@ -227,7 +246,7 @@ public class BanHangPane extends javax.swing.JPanel {
         pThanhToan.add(p6);
 
         p7.setBackground(new java.awt.Color(245, 245, 245));
-        p7.setPreferredSize(new java.awt.Dimension(100, 30));
+        p7.setPreferredSize(new java.awt.Dimension(100, 50));
 
         chbTienMat.setBackground(new java.awt.Color(245, 245, 245));
         chbTienMat.setForeground(new java.awt.Color(51, 51, 51));
@@ -239,9 +258,9 @@ public class BanHangPane extends javax.swing.JPanel {
         chbChuyenKhoan.setText("Chuyển khoản");
         p7.add(chbChuyenKhoan);
 
-        p7.setPreferredSize(new Dimension(Short.MAX_VALUE, 30));
-        p7.setMaximumSize(new Dimension(Integer.MAX_VALUE, 30));
-        p7.setMinimumSize(new Dimension(0, 30));
+        p7.setPreferredSize(new Dimension(Short.MAX_VALUE, 50));
+        p7.setMaximumSize(new Dimension(Integer.MAX_VALUE, 50));
+        p7.setMinimumSize(new Dimension(0, 50));
 
         pThanhToan.add(p7);
 
@@ -336,15 +355,30 @@ public class BanHangPane extends javax.swing.JPanel {
         tblCTHD.setBackground(new java.awt.Color(245, 245, 245));
         tblCTHD.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "Tên sản phẩm", "Đơn vị tính", "Số lượng", "Thành tiền"
+                "STT", "Tên sản phẩm", "Đơn vị tính", "Số lượng", "Thành tiền"
             }
-        ));
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class, java.lang.Object.class, java.lang.Integer.class, java.lang.Double.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, true, true, true, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         tblCTHD.setRowHeight(50);
         tblCTHD.setShowHorizontalLines(true);
         tblCTHD.setShowVerticalLines(false);
@@ -352,7 +386,7 @@ public class BanHangPane extends javax.swing.JPanel {
         tblCTHD.setIntercellSpacing(new Dimension(0, 0));
         jScrollPane.setViewportView(tblCTHD);
         if (tblCTHD.getColumnModel().getColumnCount() > 0) {
-            tblCTHD.getColumnModel().getColumn(0).setPreferredWidth(200);
+            tblCTHD.getColumnModel().getColumn(1).setPreferredWidth(200);
         }
 
         pLeftCenter.add(jScrollPane, java.awt.BorderLayout.CENTER);
@@ -367,6 +401,11 @@ public class BanHangPane extends javax.swing.JPanel {
         btnTimKiem.setPreferredSize(new java.awt.Dimension(38, 40));
         btnTimKiem.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
         btnTimKiem.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        btnTimKiem.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnTimKiemMouseClicked(evt);
+            }
+        });
         pTimKiem.add(btnTimKiem, java.awt.BorderLayout.LINE_END);
 
         txtTimKiem.setBackground(new java.awt.Color(255, 255, 255));
@@ -386,9 +425,17 @@ public class BanHangPane extends javax.swing.JPanel {
         add(pLeftCenter, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void btnXoaTrangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaTrangActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_btnXoaTrangActionPerformed
+
+    private void btnTimKiemMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnTimKiemMouseClicked
+        // TODO add your handling code here:
+//        ArrayList<SanPham> dsSP = SanPhamDAO.getAllTableSanPham();
+//        for(int i = 0; i < 10; i++) {
+//            System.out.println(dsSP.get(i));
+//        }
+    }//GEN-LAST:event_btnTimKiemMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -398,12 +445,12 @@ public class BanHangPane extends javax.swing.JPanel {
     private javax.swing.JButton btnGoiY4;
     private javax.swing.JButton btnGoiY5;
     private javax.swing.JButton btnGoiY6;
+    private javax.swing.JButton btnThanhToan;
     private javax.swing.JButton btnTimKiem;
+    private javax.swing.JButton btnXoa;
+    private javax.swing.JButton btnXoaTrang;
     private javax.swing.JCheckBox chbChuyenKhoan;
     private javax.swing.JCheckBox chbTienMat;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
     private javax.swing.JScrollPane jScrollPane;
     private javax.swing.JLabel lblDiemTichLuy;
     private javax.swing.JLabel lblHinhThucThanhToan;
