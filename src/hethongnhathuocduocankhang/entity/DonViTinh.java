@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
  *
  * @author MINH KHANG
  */
-class DonViTinh {
+public class DonViTinh {
     private String maDonViTinh;
     private SanPham sanPham;
     private int heSoQuyDoi;

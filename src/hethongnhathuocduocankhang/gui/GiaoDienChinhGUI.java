@@ -5,7 +5,9 @@
 package hethongnhathuocduocankhang.gui;
 
 import hethongnhathuocduocankhang.menu.MenuEvent;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 /**
  *
@@ -67,6 +69,9 @@ public class GiaoDienChinhGUI extends javax.swing.JFrame {
                 if(index == 4 && subIndex == 0) {
                     showPanel(new TaoPhieuDatHangGUI());
                 } 
+                if(index == 8 && subIndex == 0) {
+                    dangXuat();
+                }
             }
         });
         setTitle("Hệ thống nhà thuốc Dược An Khang");
@@ -74,7 +79,21 @@ public class GiaoDienChinhGUI extends javax.swing.JFrame {
         setLocationRelativeTo(null);
         setVisible(true);
     }
+    
+    private void dangXuat() {
+        int confirm = JOptionPane.showConfirmDialog(this,
+                        "Bạn có chắc chắn muốn đăng xuất không?",
+                        "Xác nhận đăng xuất",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.QUESTION_MESSAGE);
+        if (confirm == JOptionPane.YES_OPTION) {
+            this.dispose();
+            new DangNhapGUI();
+        }
+}
 
+    
+    
     private void showPanel(JPanel p) {
         pCenter.removeAll();
         p.setSize(pCenter.getSize());
