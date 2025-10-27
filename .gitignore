@@ -1,1 +1,26 @@
-/nbproject/private/
+# ===============================
+# NetBeans Java Project Ignore
+# ===============================
+
+# === Java build output ===
+build/
+dist/
+out/
+nbbuild/
+nbdist/
+
+# === IDE-specific files ===
+nbproject/private/
+nbactions.xml
+nb-configuration.xml
+
+# === Logs and temporary ===
+*.log
+*.tmp
+*.bak
+*.swp
+*.orig
+
+# === System files ===
+.DS_Store
+Thumbs.db
