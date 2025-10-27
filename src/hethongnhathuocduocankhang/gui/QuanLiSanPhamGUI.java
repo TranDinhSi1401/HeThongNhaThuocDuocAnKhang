@@ -16,7 +16,7 @@ public class QuanLiSanPhamGUI extends JPanel {
     private JTable productTable;
     private JComboBox<String> cmbTieuChiTimKiem;
     private JComboBox<String> cmbBoLoc;
-
+    private DefaultTableModel model;
 
     public QuanLiSanPhamGUI() {
         this.setLayout(new BorderLayout(10, 10));
@@ -50,13 +50,13 @@ public class QuanLiSanPhamGUI extends JPanel {
         JPanel pnlNorthRight = new JPanel();
         pnlNorthRight.setLayout(new FlowLayout(FlowLayout.RIGHT, 10, 5));
         
-        // ComboBox Tiêu chí tìm kiếm
-        cmbTieuChiTimKiem = new JComboBox<>(new String[]{"Mã sản phẩm", "Tên sản phẩm", "Loại sản phẩm", "Nhà cung cấp"});
+        //Tiêu chí tìm kiếm
+        cmbTieuChiTimKiem = new JComboBox<>(new String[]{"Mã sản phẩm", "Tên sản phẩm", "Nhà cung cấp"});
         cmbTieuChiTimKiem.setFont(new Font("Arial", Font.PLAIN, 14));
         cmbTieuChiTimKiem.setPreferredSize(new Dimension(150, 30));
         
         // ComboBox Bộ lọc
-        cmbBoLoc = new JComboBox<>(new String[]{"Tất cả", "Thuốc kê đơn", "Thuốc không kê đơn", "Thực phẩm chức năng"});
+        cmbBoLoc = new JComboBox<>(new String[]{"Tất cả", "Thuốc", "Thực phẩm chức năng"});
         cmbBoLoc.setFont(new Font("Arial", Font.PLAIN, 14));
         cmbBoLoc.setPreferredSize(new Dimension(150, 30));
         
@@ -102,7 +102,7 @@ public class QuanLiSanPhamGUI extends JPanel {
             {"", "", "", "", "", "", "", ""},
         };
 
-        DefaultTableModel model = new DefaultTableModel(data, columnNames) {
+        model = new DefaultTableModel(data, columnNames) {
             @Override
             public boolean isCellEditable(int row, int column) {
                 return false; // Ngăn chỉnh sửa trực tiếp trong bảng
