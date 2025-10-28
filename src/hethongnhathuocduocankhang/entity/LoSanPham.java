@@ -10,7 +10,7 @@ import java.time.LocalDate;
  *
  * @author MINH KHANG
  */
-class LoSanPham {
+public class LoSanPham {
      private String maLoSanPham;
     private SanPham sanPham;
     private int soLuong;
@@ -30,6 +30,10 @@ class LoSanPham {
         setNgayHetHan(ngayHetHan);
     }
 
+    public LoSanPham(String maLo) {
+        this.maLoSanPham = maLo;
+    }
+    
     public LoSanPham(LoSanPham lo) {
         this(lo.maLoSanPham, lo.sanPham, lo.soLuong, lo.ngaySanXuat, lo.ngayHetHan);
     }
