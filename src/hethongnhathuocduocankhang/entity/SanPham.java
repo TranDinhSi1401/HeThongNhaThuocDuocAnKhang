@@ -57,6 +57,11 @@ public class SanPham {
         this.maSP = maSP;
         this.ten = ten;
     }
+
+    public SanPham(String maSP) {
+        this.maSP = maSP;
+    }
+    
     
 
 

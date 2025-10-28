@@ -26,6 +26,11 @@ public class NhaCungCap {
         this.email = email;
     }
 
+    public NhaCungCap(String maNCC) {
+        this.maNCC = maNCC;
+    }
+    
+
     public String getMaNCC() {
         return maNCC;
     }

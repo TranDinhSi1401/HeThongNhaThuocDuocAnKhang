@@ -6,6 +6,8 @@ package hethongnhathuocduocankhang.bus;
 
 import java.util.ArrayList;
 import hethongnhathuocduocankhang.dao.PhieuDatHangDAO;
+import hethongnhathuocduocankhang.entity.DonViTinh;
+import hethongnhathuocduocankhang.entity.NhaCungCap;
 import hethongnhathuocduocankhang.entity.SanPham;
 import hethongnhathuocduocankhang.gui.TaoPhieuDatHangGUI;
 
@@ -24,8 +26,18 @@ public class PhieuDatHangBUS {
     public SanPham timSanPham(String ma){
         return phieuDatDAO.timSanPham(ma);
     }
+    
+    public NhaCungCap timNhaCC(String ma){
+        return phieuDatDAO.timNhaCungCap(ma);
+    }
+    public DonViTinh giaSanPham(String ma){
+        return phieuDatDAO.giaSanPham(ma);
+    }
        
-       
-       
+    public double tinh(int sl, DonViTinh x){
+        return x.getGiaBanTheoDonVi()*sl;
+    }
+    
+   
        
 }

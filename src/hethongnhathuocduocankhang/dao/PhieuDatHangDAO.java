@@ -7,7 +7,8 @@ package hethongnhathuocduocankhang.dao;
 import java.sql.PreparedStatement;
 import java.sql.Connection;
 import hethongnhathuocduocankhang.connectDB.ConnectDB;
-import hethongnhathuocduocankhang.entity.PhieuDatHang;
+import hethongnhathuocduocankhang.entity.DonViTinh;
+import hethongnhathuocduocankhang.entity.NhaCungCap;
 import hethongnhathuocduocankhang.entity.SanPham;
 import java.sql.Statement;
 import java.sql.ResultSet;
@@ -60,31 +61,45 @@ public class PhieuDatHangDAO {
         }
         return s;
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    public boolean themPhieuDat(PhieuDatHang pd){
-        int n =0;
-        ConnectDB.getInstance();
-        Connection con = ConnectDB.getConnection();
-        String sql ="";
+    public NhaCungCap timNhaCungCap(String ma){
+        NhaCungCap ncc = null;
         try {
+            ConnectDB.getInstance().connect();
+            Connection con = ConnectDB.getConnection();
+            String sql = "Select maNCC from SanPham s join SanPhamCungCap sc on s.maSP=sc.maSP where sc.maSP=?";
             PreparedStatement st = con.prepareStatement(sql);
-            st.setString(1, pd.getMaPhieuDat());
-            
-            
-            
-            
+            st.setString(1, ma);
+            try (ResultSet rs = st.executeQuery()){
+                while(rs.next()){
+                    String maNCC = rs.getString(1);
+                    ncc = new NhaCungCap(maNCC);
+                }
+            } catch (Exception e) {
+            }
         } catch (SQLException sQLException) {
         }
-        return n>0;
+        return ncc;
+    }
+    public DonViTinh giaSanPham(String ma){
+        DonViTinh dv = null;
+        try {
+            ConnectDB.getInstance().connect();
+            Connection con = ConnectDB.getConnection();
+            String sql= "Select maDonViTinh, maSP, tenDonVi, giaBanTheoDonVi from DonViTinh where maSP=?";
+            PreparedStatement st = con.prepareStatement(sql);
+            st.setString(1, ma);
+            try (ResultSet rs = st.executeQuery()){
+                while(rs.next()){
+                    String maDVT = rs.getString(1);
+                    SanPham sanPham = new SanPham(rs.getString(2));
+                    String tenDV = rs.getString(3);
+                    double gia =  Double.parseDouble(rs.getString(4));    
+                    dv = new DonViTinh(maDVT, sanPham, gia, tenDV);
+                }
+            } catch (Exception e) {
+            }
+        } catch (SQLException sQLException) {}
+        return dv;    
     }
   
 }
