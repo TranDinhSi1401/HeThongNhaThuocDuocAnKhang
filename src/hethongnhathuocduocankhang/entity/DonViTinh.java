@@ -37,6 +37,10 @@ public class DonViTinh {
              dvt.giaBanTheoDonVi, dvt.tenDonVi, dvt.donViTinhCoBan);
     }
 
+    public DonViTinh(String maDVT) {
+        this.maDonViTinh = maDVT;
+    }
+    
     // --- Getter & Setter ---
     public String getMaDonViTinh() {
         return maDonViTinh;

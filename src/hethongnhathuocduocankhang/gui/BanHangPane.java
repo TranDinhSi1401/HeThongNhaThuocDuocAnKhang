@@ -5,14 +5,20 @@
 package hethongnhathuocduocankhang.gui;
 
 import hethongnhathuocduocankhang.connectDB.ConnectDB;
+import hethongnhathuocduocankhang.dao.ChiTietHoaDonDAO;
 import hethongnhathuocduocankhang.dao.DonViTinhDAO;
+import hethongnhathuocduocankhang.dao.HoaDonDAO;
 import hethongnhathuocduocankhang.dao.KhachHangDAO;
 import hethongnhathuocduocankhang.dao.KhuyenMaiDAO;
 import hethongnhathuocduocankhang.dao.SanPhamDAO;
+import hethongnhathuocduocankhang.entity.ChiTietHoaDon;
 import hethongnhathuocduocankhang.entity.DonViTinh;
+import hethongnhathuocduocankhang.entity.HoaDon;
 import hethongnhathuocduocankhang.entity.KhachHang;
 import hethongnhathuocduocankhang.entity.KhuyenMai;
+import hethongnhathuocduocankhang.entity.NhanVien;
 import hethongnhathuocduocankhang.entity.SanPham;
+import hethongnhathuocduocankhang.entity.TaiKhoan;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
@@ -20,6 +26,8 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.sql.SQLException;
 import java.text.NumberFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Locale;
 import javax.swing.*;
@@ -53,9 +61,52 @@ public class BanHangPane extends javax.swing.JPanel {
         header.setForeground(Color.BLACK);
         header.setFont(new Font("Segoe UI", Font.BOLD, 14));
         
+        TableColumn colMaSP = tblCTHD.getColumnModel().getColumn(8);
+        tblCTHD.removeColumn(colMaSP);
+        TableColumn colMaDVT = tblCTHD.getColumnModel().getColumn(7);
+        tblCTHD.removeColumn(colMaDVT);
+        
         ButtonGroup group = new ButtonGroup();
         group.add(radTienMat);
         group.add(radChuyenKhoan);
+        
+        DefaultTableModel model = (DefaultTableModel)tblCTHD.getModel();
+        model.addTableModelListener(e -> {
+            if (e.getColumn() == 2 || e.getColumn() == 4) {
+                int row = e.getFirstRow();
+                
+                String tendvt = model.getValueAt(row, 2).toString();
+                int soluong = Integer.parseInt(model.getValueAt(row, 4).toString());
+                double giamgia = 0;
+                
+                String masp = model.getValueAt(row, 8).toString();
+                ArrayList<KhuyenMai> dskm = KhuyenMaiDAO.getKhuyenMaiTheoMaSP(masp);
+                dskm.sort((b, a) -> Double.compare(a.getPhanTram(), b.getPhanTram()));  
+                ArrayList<DonViTinh> dsdvt = DonViTinhDAO.getDonViTinhTheoMaSP(masp);
+                
+                for(KhuyenMai km : dskm) {
+                    if(soluong >= km.getSoLuongToiThieu() && soluong <= km.getSoLuongToiDa()) {
+                        giamgia = km.getPhanTram();
+                        break;
+                    } 
+                }
+                for (DonViTinh dvt : dsdvt) {
+                    if (dvt.getTenDonVi().equals(tendvt)) {
+                        double dongia = dvt.getGiaBanTheoDonVi();
+                        double thanhtien = soluong * dongia * (1 - giamgia / 100);
+                        String madvt = dvt.getMaDonViTinh();
+                        model.setValueAt(dongia, row, 3);
+                        model.setValueAt(giamgia, row, 5);
+                        model.setValueAt(thanhtien, row, 6);
+                        model.setValueAt(madvt, row, 7);
+                        break;
+                    }
+                }
+                System.out.println(dskm);
+                System.out.println(giamgia);
+                capNhatTongTien(model);
+            }
+        });
     }
 
     /**
@@ -164,6 +215,11 @@ public class BanHangPane extends javax.swing.JPanel {
         btnThanhToan.setForeground(new java.awt.Color(255, 255, 255));
         btnThanhToan.setText("Thanh toán");
         btnThanhToan.setPreferredSize(new java.awt.Dimension(260, 35));
+        btnThanhToan.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnThanhToanActionPerformed(evt);
+            }
+        });
         pRightSouth.add(btnThanhToan);
 
         pSouth.add(pRightSouth, java.awt.BorderLayout.CENTER);
@@ -408,14 +464,14 @@ public class BanHangPane extends javax.swing.JPanel {
 
             },
             new String [] {
-                "STT", "Tên sản phẩm", "Đơn vị tính", "Đơn giá", "Số lượng", "Giảm giá", "Thành tiền"
+                "STT", "Tên sản phẩm", "Đơn vị tính", "Đơn giá", "Số lượng", "Giảm giá", "Thành tiền", "Mã đơn vị", "Mã sản phẩm"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Integer.class, java.lang.Object.class, java.lang.Object.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.Object.class, java.lang.Double.class, java.lang.Integer.class, java.lang.Double.class, java.lang.Double.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, true, false, true, false, false
+                false, false, true, false, true, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -436,7 +492,7 @@ public class BanHangPane extends javax.swing.JPanel {
             tblCTHD.getColumnModel().getColumn(0).setPreferredWidth(20);
             tblCTHD.getColumnModel().getColumn(1).setPreferredWidth(200);
             tblCTHD.getColumnModel().getColumn(2).setPreferredWidth(50);
-            tblCTHD.getColumnModel().getColumn(4).setPreferredWidth(30);
+            tblCTHD.getColumnModel().getColumn(4).setPreferredWidth(40);
         }
 
         pLeftCenter.add(jScrollPane, java.awt.BorderLayout.CENTER);
@@ -466,6 +522,11 @@ public class BanHangPane extends javax.swing.JPanel {
             BorderFactory.createLineBorder(Color.BLACK, 1, true),
             BorderFactory.createEmptyBorder(0, 10, 0, 0)
         ));
+        txtTimKiem.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtTimKiemActionPerformed(evt);
+            }
+        });
         pTimKiem.add(txtTimKiem, java.awt.BorderLayout.CENTER);
 
         pLeftCenter.add(pTimKiem, java.awt.BorderLayout.PAGE_START);
@@ -515,6 +576,10 @@ public class BanHangPane extends javax.swing.JPanel {
     }//GEN-LAST:event_btnXoaTrangActionPerformed
 
     private void btnTimKiemMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnTimKiemMouseClicked
+        themSanPhamVaoTable();
+    }//GEN-LAST:event_btnTimKiemMouseClicked
+
+    private void themSanPhamVaoTable() {
         String maSP = txtTimKiem.getText();
         SanPham sp = SanPhamDAO.getSanPhamTheoMaSP(maSP);
         ArrayList<DonViTinh> dsDVT = DonViTinhDAO.getDonViTinhTheoMaSP(maSP);
@@ -547,9 +612,10 @@ public class BanHangPane extends javax.swing.JPanel {
             }
         }
         double thanhTien = soLuong * donGia * (1 - giamGia / 100);
-
-        Object[] newRow = {stt, tenSP, tenDVT, donGia, soLuong, giamGia, thanhTien};
-        model.addRow(newRow);
+        String maDVT = dvtMacDinh.getMaDonViTinh();
+        
+        Object[] newRow = {stt, tenSP, tenDVT, donGia, soLuong, giamGia, thanhTien, maDVT, maSP};
+        model.addRow(newRow);       
         
         TableColumn columnDVT = tblCTHD.getColumnModel().getColumn(2);
         JComboBox<String> cbDonViTinh = new JComboBox<>();
@@ -604,36 +670,9 @@ public class BanHangPane extends javax.swing.JPanel {
         leftAlignRenderer.setHorizontalAlignment(SwingConstants.CENTER);
         colSTT.setCellRenderer(leftAlignRenderer);
         
-        model.addTableModelListener(e -> {
-            if (e.getColumn() == 2 || e.getColumn() == 4) {
-                int row = e.getFirstRow();
-                String tendvt = model.getValueAt(row, 2).toString();
-                int soluong = Integer.parseInt(model.getValueAt(row, 4).toString());
-                double giamgia = 0;
-                dsKM.sort((b, a) -> Double.compare(a.getPhanTram(), b.getPhanTram()));
-                for(KhuyenMai km : dsKM) {
-                    if(soluong >= km.getSoLuongToiThieu() && soluong <= km.getSoLuongToiDa()) {
-                        giamgia = km.getPhanTram();
-                        break;
-                    }
-                }
-                for (DonViTinh dvt : dsDVT) {
-                    if (dvt.getTenDonVi().equals(tendvt)) {
-                        double dongia = dvt.getGiaBanTheoDonVi();
-                        double thanhtien = soluong * dongia * (1 - giamgia / 100);
-                        model.setValueAt(dongia, row, 3);
-                        model.setValueAt(giamgia, row, 5);
-                        model.setValueAt(thanhtien, row, 6);
-                        break;
-                    }
-                }
-                capNhatTongTien(model);
-            }
-        });
-        
         capNhatTongTien(model);
-    }//GEN-LAST:event_btnTimKiemMouseClicked
-
+    }
+    
     private void btnXoaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnXoaMouseClicked
         int selectedRow = tblCTHD.getSelectedRow();
         DefaultTableModel model = (DefaultTableModel) tblCTHD.getModel();
@@ -675,6 +714,96 @@ public class BanHangPane extends javax.swing.JPanel {
         lblTienThua1.setText(String.valueOf(tienThua));
         System.out.println(tongTien);
     }//GEN-LAST:event_txtTienKhachDuaActionPerformed
+
+    private void btnThanhToanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThanhToanActionPerformed
+        TaiKhoan tk = GiaoDienChinhGUI.getTk();
+        if(tk == null) {
+            JOptionPane.showMessageDialog(this, "Vui lòng nhấn vào ca làm trước khi thanh toán");
+            return;
+        }
+        if(tblCTHD.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(this, "Vui lòng thêm sản phẩm cần thanh toán");
+            return;
+        }
+        
+        HoaDon hdMoiNhat = HoaDonDAO.getHoaDonMoiNhat();
+        LocalDateTime now = LocalDateTime.now();
+        String maHDMoi = "";
+        
+        if (hdMoiNhat == null) {
+            maHDMoi = taoMaHoaDonMoi(now.toLocalDate(), 1);
+        } else if (now.toLocalDate().isAfter(hdMoiNhat.getNgayLapHoaDon().toLocalDate())) {
+            maHDMoi = taoMaHoaDonMoi(now.toLocalDate(), 1);
+        } else {
+            String maHDTruoc = hdMoiNhat.getMaHoaDon();
+            int soCuoiHD = laySoThuTu(maHDTruoc);
+            maHDMoi = taoMaHoaDonMoi(now.toLocalDate(), soCuoiHD + 1);
+        }
+        
+        
+        String maNV = GiaoDienChinhGUI.getTk().getNhanVien().getMaNV();
+        LocalDateTime ngayLapHD = LocalDateTime.now();
+        String maKH = lblMaKH1.getText().trim();
+        boolean chuyenKhoan = radChuyenKhoan.isSelected();
+        boolean trangThai = true;
+        
+        ArrayList<ChiTietHoaDon> dsCTHD = new ArrayList<>();
+        DefaultTableModel model = (DefaultTableModel)tblCTHD.getModel();
+        double tongTien = 0;
+        for(int i = 0; i < model.getRowCount(); i++) {
+           String maDVT = String.valueOf(model.getValueAt(i, 7));
+           int soLuong = (int) model.getValueAt(i, 4);
+           double donGia = (double) model.getValueAt(i, 3);
+           double giamGia = (double) model.getValueAt(i, 5);
+           double thanhTien = (double) model.getValueAt(i, 6);
+           
+           ChiTietHoaDon cthdMoiNhat = ChiTietHoaDonDAO.getChiTietHoaDonMoiNhat();
+           String maCTHDMoi = "";
+           if (cthdMoiNhat == null) {
+               maCTHDMoi = taoMaChiTietHoaDonMoi(now.toLocalDate(), 1);
+           } else if (now.toLocalDate().isAfter(HoaDonDAO.getHoaDonTheoMaHD(cthdMoiNhat.getHoaDon().getMaHoaDon()).getNgayLapHoaDon().toLocalDate())) {
+               maCTHDMoi = taoMaChiTietHoaDonMoi(now.toLocalDate(), 1);
+           } else {
+               String maCTHDTruoc = cthdMoiNhat.getMaChiTietHoaDon();
+               int soCuoi = laySoThuTu(maCTHDTruoc);
+               maCTHDMoi = taoMaChiTietHoaDonMoi(now.toLocalDate(), soCuoi + 1);
+           }
+           
+           ChiTietHoaDon cthd = new ChiTietHoaDon(maCTHDMoi, new HoaDon(maHDMoi), new DonViTinh(maDVT), soLuong, donGia, giamGia, thanhTien);
+           dsCTHD.add(cthd);
+           tongTien += thanhTien;
+        }
+        
+        HoaDon hd = new HoaDon(maHDMoi, new NhanVien(maNV), ngayLapHD, new KhachHang(maKH), chuyenKhoan, trangThai, tongTien);
+        
+        System.out.println(hd);
+        System.out.println(dsCTHD);
+    }//GEN-LAST:event_btnThanhToanActionPerformed
+
+    private void txtTimKiemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTimKiemActionPerformed
+        themSanPhamVaoTable();
+    }//GEN-LAST:event_txtTimKiemActionPerformed
+    
+    private String taoMaHoaDonMoi(LocalDate ngay, int soThuTu) {
+        return String.format("HD-%s-%03d", 
+            ngay.format(java.time.format.DateTimeFormatter.ofPattern("yyMMdd")),
+            soThuTu);
+    }
+
+    private String taoMaChiTietHoaDonMoi(LocalDate ngay, int soThuTu) {
+        return String.format("CTHD-%s-%03d", 
+            ngay.format(java.time.format.DateTimeFormatter.ofPattern("yyMMdd")),
+            soThuTu);
+    }
+    
+    private int laySoThuTu(String ma) {
+        try {
+            String[] parts = ma.split("-");
+            return Integer.parseInt(parts[2]);
+        } catch (NumberFormatException e) {
+            return 0;
+        }
+    }
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -44,7 +44,7 @@ public class KhuyenMaiDAO {
                 dsKM.add(km);
             }
         } catch (SQLException e) {
-            //e.printStackTrace();
+            e.printStackTrace();
         }
         return dsKM;
     }

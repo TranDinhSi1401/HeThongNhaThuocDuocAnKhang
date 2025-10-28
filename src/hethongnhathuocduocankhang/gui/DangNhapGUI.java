@@ -156,6 +156,10 @@ public class DangNhapGUI extends javax.swing.JFrame{
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnDangNhapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDangNhapActionPerformed
+        dangNhap();
+    }//GEN-LAST:event_btnDangNhapActionPerformed
+
+    private void dangNhap() {
         String tenDangNhap = txtTaiKhoan.getText().trim();
         String matKhau = new String(txtMatKhau.getPassword()).trim();
 
@@ -169,7 +173,7 @@ public class DangNhapGUI extends javax.swing.JFrame{
         
         TaiKhoan tk = TaiKhoanDAO.getTaiKhoanTheoTenDangNhapVaMatKhau(tenDangNhap, matKhau);
         if (tk != null) {          
-            new GiaoDienChinhGUI();
+            new GiaoDienChinhGUI(tk);
             this.dispose();
         } else {
             javax.swing.JOptionPane.showMessageDialog(this,
@@ -177,16 +181,16 @@ public class DangNhapGUI extends javax.swing.JFrame{
                     "Đăng nhập thất bại",
                     javax.swing.JOptionPane.ERROR_MESSAGE);
         }
-    }//GEN-LAST:event_btnDangNhapActionPerformed
-
+    }
+    
     private void txtMatKhauActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMatKhauActionPerformed
-        // TODO add your handling code here:
+        dangNhap();
     }//GEN-LAST:event_txtMatKhauActionPerformed
 
     private void lblQuenMatKhauMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblQuenMatKhauMouseClicked
         String email = JOptionPane.showInputDialog(this, "Nhập email đã đăng ký để đặt lại mật khẩu:");
         if (email != null && !email.trim().isEmpty()) {
-            if (1 > 2){//TaiKhoanDAO.kiemTraEmailTonTai(email)) {
+            if (TaiKhoanDAO.kiemTraEmailTonTai(email.trim())) {
                 JOptionPane.showMessageDialog(this,
                     "Một liên kết đặt lại mật khẩu đã được gửi đến " + email,
                     "Đặt lại mật khẩu",

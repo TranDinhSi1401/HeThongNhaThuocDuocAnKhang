@@ -44,4 +44,24 @@ public class DonViTinhDAO {
         }
         return dsDVT;
     }
+    
+    public static String getMaSanPhamTheoMaDVT(String maDVT) {
+        String maSP = "";
+
+        try {
+            Connection con = ConnectDB.getConnection();
+            String sql = "SELECT * FROM DonViTinh WHERE maDonViTinh = ?";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, maDVT);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                maSP = rs.getString(1);
+                return maSP;
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return maSP;
+    }
 }

@@ -43,4 +43,23 @@ public class TaiKhoanDAO {
         }
         return tk;
     } 
+    
+    public static boolean kiemTraEmailTonTai(String email) {       
+        
+        try {
+            ConnectDB.getInstance();
+            Connection con = ConnectDB.getConnection();
+            
+            String sql = "SELECT * FROM TaiKhoan WHERE email = ?";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, email);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()) {
+                return true;
+            }
+        } catch (SQLException e) {
+                e.printStackTrace();
+        }
+        return false;
+    }
 }
