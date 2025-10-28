@@ -10,13 +10,14 @@ import java.util.regex.Pattern;
  *
  * @author MINH KHANG
  */
-    public class DonViTinh {
-        private String maDonViTinh;
-        private SanPham sanPham;
-        private int heSoQuyDoi;
-        private double giaBanTheoDonVi;
-        private String tenDonVi;
-        private boolean donViTinhCoBan;
+
+public class DonViTinh {
+    private String maDonViTinh;
+    private SanPham sanPham;
+    private int heSoQuyDoi;
+    private double giaBanTheoDonVi;
+    private String tenDonVi;
+    private boolean donViTinhCoBan;
 
     // --- Constructors ---
     public DonViTinh() {
@@ -37,6 +38,10 @@ import java.util.regex.Pattern;
              dvt.giaBanTheoDonVi, dvt.tenDonVi, dvt.donViTinhCoBan);
     }
 
+    public DonViTinh(String maDVT) {
+        this.maDonViTinh = maDVT;
+    }
+    
     // --- Getter & Setter ---
     public String getMaDonViTinh() {
         return maDonViTinh;

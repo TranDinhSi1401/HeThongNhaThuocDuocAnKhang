@@ -18,23 +18,17 @@ public class SanPham {
     private LoaiSanPhamEnum loaiSanPhamEnum;
     private int tonToiThieu;
     private int tonToiDa;
-    private double giaBan;
-    private DonViTinh donViTinhCoBan;
-    private LoSanPham loSanPham;
-
-    // Enum loại sản phẩm
-    public enum LoaiSanPhamEnum {
-        THUOC,
-        THUC_PHAM_CHUC_NANG
-    }
 
     // --- Constructor ---
     public SanPham() {
     }
 
+    public SanPham(String maSP) {
+        setMaSP(maSP);
+    }
+    
     public SanPham(String maSP, String ten, String moTa, String thanhPhan,
-                   LoaiSanPhamEnum loaiSanPhamEnum, int tonToiThieu, int tonToiDa,
-                   double giaBan, DonViTinh donViTinhCoBan, LoSanPham loSanPham) {
+                   LoaiSanPhamEnum loaiSanPhamEnum, int tonToiThieu, int tonToiDa) {
         setMaSP(maSP);
         setTen(ten);
         setMoTa(moTa);
@@ -42,15 +36,12 @@ public class SanPham {
         setLoaiSanPham(loaiSanPhamEnum);
         setTonToiThieu(tonToiThieu);
         setTonToiDa(tonToiDa);
-        setGiaBan(giaBan);
-        this.donViTinhCoBan = donViTinhCoBan;
-        this.loSanPham = loSanPham;
     }
 
     // Copy constructor
     public SanPham(SanPham sp) {
         this(sp.maSP, sp.ten, sp.moTa, sp.thanhPhan, sp.loaiSanPhamEnum,
-             sp.tonToiThieu, sp.tonToiDa, sp.giaBan, sp.donViTinhCoBan, sp.loSanPham);
+             sp.tonToiThieu, sp.tonToiDa);
     }
 
     public SanPham(String maSP, String ten) {
@@ -58,10 +49,6 @@ public class SanPham {
         this.ten = ten;
     }
 
-    public SanPham(String maSP) {
-        this.maSP = maSP;
-    }
-    
     
 
 
@@ -142,34 +129,7 @@ public class SanPham {
         }
         this.tonToiDa = tonToiDa;
     }
-
-    public double getGiaBan() {
-        return giaBan;
-    }
-
-    public void setGiaBan(double giaBan) {
-        if (giaBan < 0) {
-            throw new IllegalArgumentException("Giá bán phải là số dương.");
-        }
-        this.giaBan = giaBan;
-    }
-
-    public DonViTinh getDonViTinhCoBan() {
-        return donViTinhCoBan;
-    }
-
-    public void setDonViTinhCoBan(DonViTinh donViTinhCoBan) {
-        this.donViTinhCoBan = donViTinhCoBan;
-    }
-
-    public LoSanPham getLoSanPham() {
-        return loSanPham;
-    }
-
-    public void setLoSanPham(LoSanPham loSanPham) {
-        this.loSanPham = loSanPham;
-    }
-
+    
     @Override
     public String toString() {
         return "SanPham{" +
@@ -180,9 +140,6 @@ public class SanPham {
                 ", loaiSanPhamEnum=" + loaiSanPhamEnum +
                 ", tonToiThieu=" + tonToiThieu +
                 ", tonToiDa=" + tonToiDa +
-                ", giaBan=" + giaBan +
-                ", donViTinhCoBan=" + donViTinhCoBan +
-                ", loSanPham=" + loSanPham +
                 '}';
     }
 }

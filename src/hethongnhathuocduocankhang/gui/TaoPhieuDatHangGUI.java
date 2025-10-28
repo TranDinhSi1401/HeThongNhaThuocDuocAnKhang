@@ -9,10 +9,10 @@ import hethongnhathuocduocankhang.bus.PhieuDatHangBUS;
 import hethongnhathuocduocankhang.entity.DonViTinh;
 import hethongnhathuocduocankhang.entity.NhaCungCap;
 import hethongnhathuocduocankhang.entity.SanPham;
+import hethongnhathuocduocankhang.entity.TaiKhoan;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.event.FocusEvent;
-import java.awt.event.KeyEvent;
 import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -29,6 +29,12 @@ import javax.swing.text.BadLocationException;
 import javax.swing.text.DocumentFilter;
 import javax.swing.text.PlainDocument;
 import java.text.DecimalFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
 
@@ -38,6 +44,7 @@ import javax.swing.JTextField;
  */
 public class TaoPhieuDatHangGUI extends javax.swing.JPanel {
     private PhieuDatHangBUS phieuDatBUS;
+    private String txtKhuyenMai = "Hello";
     /**
      * Creates new form TaoPhieuDatHangGUI
      */
@@ -49,14 +56,14 @@ public class TaoPhieuDatHangGUI extends javax.swing.JPanel {
         
         tblSanPham.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
         tblSanPham.getColumnModel().getColumn(0).setPreferredWidth(80);  
-        tblSanPham.getColumnModel().getColumn(1).setPreferredWidth(1100); 
+        tblSanPham.getColumnModel().getColumn(1).setPreferredWidth(1080); 
         tblSanPham.getColumnModel().getColumn(2).setPreferredWidth(110); 
         tblSanPham.getColumn("Chọn").setCellRenderer(new btnThemSanPham());
         tblSanPham.getColumn("Chọn").setCellEditor(new btnThemChinh(new JCheckBox()));
         
         tblPhieuDat.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
         tblPhieuDat.getColumnModel().getColumn(0).setPreferredWidth(80);
-        tblPhieuDat.getColumnModel().getColumn(1).setPreferredWidth(388);
+        tblPhieuDat.getColumnModel().getColumn(1).setPreferredWidth(368);
         tblPhieuDat.getColumnModel().getColumn(2).setPreferredWidth(100);
         tblPhieuDat.getColumnModel().getColumn(3).setPreferredWidth(120);
         tblPhieuDat.getColumnModel().getColumn(4).setPreferredWidth(100);
@@ -65,8 +72,8 @@ public class TaoPhieuDatHangGUI extends javax.swing.JPanel {
         tblPhieuDat.getColumn("Xóa").setCellEditor(new btnXoaChinh(new JCheckBox()));
         tblPhieuDat.getColumnModel().getColumn(3).setCellRenderer(new btnTangGiam());
         tblPhieuDat.getColumnModel().getColumn(3).setCellEditor(new btnSoLuong());
-
         
+        thongTinPhieuDat();
         txtTimSanPham.addFocusListener(new java.awt.event.FocusAdapter(){
             @Override
             public void focusGained(java.awt.event.FocusEvent evt) {
@@ -97,8 +104,8 @@ public class TaoPhieuDatHangGUI extends javax.swing.JPanel {
         jScrollPane2 = new javax.swing.JScrollPane();
         jTextArea1 = new javax.swing.JTextArea();
         jTextField5 = new javax.swing.JTextField();
-        jTextField6 = new javax.swing.JTextField();
-        jDateChooser1 = new com.toedter.calendar.JDateChooser();
+        txtTenNhanVien = new javax.swing.JTextField();
+        ngayLap = new com.toedter.calendar.JDateChooser();
         jPanel2 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         jPanel6 = new javax.swing.JPanel();
@@ -150,14 +157,12 @@ public class TaoPhieuDatHangGUI extends javax.swing.JPanel {
             }
         });
 
-        jTextField6.setEnabled(false);
-        jTextField6.addActionListener(new java.awt.event.ActionListener() {
+        txtTenNhanVien.setEnabled(false);
+        txtTenNhanVien.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField6ActionPerformed(evt);
+                txtTenNhanVienActionPerformed(evt);
             }
         });
-
-        jDateChooser1.setEnabled(false);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -176,7 +181,7 @@ public class TaoPhieuDatHangGUI extends javax.swing.JPanel {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel3)
                         .addGap(24, 24, 24)
-                        .addComponent(jTextField6))
+                        .addComponent(txtTenNhanVien))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel2)
@@ -184,7 +189,7 @@ public class TaoPhieuDatHangGUI extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jTextField5)
-                            .addComponent(jDateChooser1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addComponent(ngayLap, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -199,11 +204,11 @@ public class TaoPhieuDatHangGUI extends javax.swing.JPanel {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel4)
-                    .addComponent(jDateChooser1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(ngayLap, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtTenNhanVien, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(32, 32, 32)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel5)
@@ -483,9 +488,9 @@ public class TaoPhieuDatHangGUI extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField4ActionPerformed
 
-    private void jTextField6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField6ActionPerformed
+    private void txtTenNhanVienActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTenNhanVienActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField6ActionPerformed
+    }//GEN-LAST:event_txtTenNhanVienActionPerformed
 
     private void jButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton6ActionPerformed
         // TODO add your handling code here:
@@ -500,7 +505,8 @@ public class TaoPhieuDatHangGUI extends javax.swing.JPanel {
     }//GEN-LAST:event_jButton5ActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        // TODO add your handling code here:
+        xemTruocPhieuTheoNCC();
+            // TODO add your handling code here:
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
@@ -529,7 +535,6 @@ public class TaoPhieuDatHangGUI extends javax.swing.JPanel {
     private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JButton jButton7;
-    private com.toedter.calendar.JDateChooser jDateChooser1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
@@ -553,11 +558,14 @@ public class TaoPhieuDatHangGUI extends javax.swing.JPanel {
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField6;
+    private com.toedter.calendar.JDateChooser ngayLap;
     private javax.swing.JTable tblPhieuDat;
     private javax.swing.JTable tblSanPham;
+    private javax.swing.JTextField txtTenNhanVien;
     private javax.swing.JTextField txtTimSanPham;
     // End of variables declaration//GEN-END:variables
+    
+    TaiKhoan tk = GiaoDienChinhGUI.getTk();
 
     private void getSanPham() {
         ArrayList<SanPham> dsSP = phieuDatBUS.danhsachSanPham();
@@ -566,6 +574,11 @@ public class TaoPhieuDatHangGUI extends javax.swing.JPanel {
         for(SanPham sp : dsSP){
             m.addRow(new Object[]{sp.getMaSP(), sp.getTen()});
         }
+    }
+
+    private void thongTinPhieuDat() {
+        txtTenNhanVien.setText(tk.getNhanVien().getHoTenDem() + " " + tk.getNhanVien().getTen());
+        ngayLap.setDate(new Date());
     }
 
     class btnSoLuong extends DefaultCellEditor{
@@ -642,7 +655,6 @@ public class TaoPhieuDatHangGUI extends javax.swing.JPanel {
                 
             });
         }
-        
         
         
         public void updateGiaTri(int x){
@@ -839,5 +851,68 @@ public class TaoPhieuDatHangGUI extends javax.swing.JPanel {
         tblPhieuDat.revalidate();
         tblPhieuDat.repaint();
     }
+    
+    
+        private void xemTruocPhieuTheoNCC() {
+            DefaultTableModel model = (DefaultTableModel) tblPhieuDat.getModel();
+            if(model.getRowCount() == 0){
+                JOptionPane.showMessageDialog(this, "Bảng phiếu đang trống!", "Thông báo", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
+            Map<String, List<Integer>> nccMap = new HashMap<>();
+            for (int i=0;i<model.getRowCount();i++){
+                String ncc = model.getValueAt(i,2).toString();
+                nccMap.computeIfAbsent(ncc, k -> new ArrayList<>()).add(i);
+            }
+            for(String ncc : nccMap.keySet()){
+                StringBuilder sb = new StringBuilder();
+                sb.append("PHIẾU ĐẶT HÀNG - NCC:   ").append(ncc).append("\n");
+                sb.append("Mã phiếu: ").append(jTextField5.getText())
+                  .append("\tNgày lập: ").append(ngayLap.getDate()).append("\n");
+                sb.append("Nhân viên: ").append(txtTenNhanVien.getText()).append("\n");
+                sb.append("Ghi chú: ").append(jTextArea1.getText()).append("\n");
+                sb.append("-----------------------------------------------------------------------------------------------------------\n");
+
+                sb.append(String.format("%-5s%-10s%-25s%-10s%20s%18s%18s\n",
+                        "STT","Mã SP","Tên SP","NCC","SL","Đơn giá","Thành tiền"));
+                List<Integer> rows = nccMap.get(ncc);
+                for(int i=0;i<rows.size();i++){
+                    int row = rows.get(i);
+                    sb.append(String.format("%-5s%-10s%-25s%-10s%20s%18s%18s\n",
+                            (i+1),
+                            model.getValueAt(row,0),
+                            formatText(model.getValueAt(row,1).toString(),25),
+                            model.getValueAt(row,2),
+                            model.getValueAt(row,3),
+                            model.getValueAt(row,4),
+                            model.getValueAt(row,5)
+                    ));
+                }
+
+                sb.append("-----------------------------------------------------------------------------------------------------------\n");
+                double tong = 0;
+                for(int row : rows){
+                    try{
+                        String giaText = model.getValueAt(row,5).toString().replace("VND","").replace(",","");
+                        tong += Double.parseDouble(giaText);
+                    }catch(Exception e){}
+                }
+                sb.append("Tổng cộng NCC ").append(ncc).append(": ").append(String.format("%,.0f", tong*1000)).append(" VND\n");
+
+                JTextArea textArea = new JTextArea(sb.toString());
+                textArea.setEditable(false);
+                textArea.setFont(new java.awt.Font("Monospaced", java.awt.Font.PLAIN, 12));
+                JScrollPane scrollPane = new JScrollPane(textArea);
+                JOptionPane.showMessageDialog(this, scrollPane, "Phiếu đặt - NCC: " + ncc, JOptionPane.INFORMATION_MESSAGE);
+            }
+        }
+
+        private String formatText(String text, int length){
+            if(text.length() > length){
+                return text.substring(0,length-3) + "...";
+            } else {
+                return String.format("%-" + length + "s", text);
+            }
+        }
 
 }

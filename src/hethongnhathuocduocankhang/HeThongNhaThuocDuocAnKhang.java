@@ -17,7 +17,7 @@ public class HeThongNhaThuocDuocAnKhang {
      */
     public static void main(String[] args) {
         java.awt.EventQueue.invokeLater(() -> {
-            new GiaoDienChinhGUI().setVisible(true);
+            new GiaoDienChinhGUI(null).setVisible(true);
         });
     }
     

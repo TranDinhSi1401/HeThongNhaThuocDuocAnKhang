@@ -38,6 +38,7 @@ public class PhieuDatHangBUS {
         return x.getGiaBanTheoDonVi()*sl;
     }
     
-   
+    
+
        
 }

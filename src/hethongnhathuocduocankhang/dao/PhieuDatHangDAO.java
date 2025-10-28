@@ -102,4 +102,29 @@ public class PhieuDatHangDAO {
         return dv;    
     }
   
+    public boolean kiemTraPhieuHomNay() {
+    boolean tonTai = false;
+    String sql = "SELECT COUNT(*) FROM PhieuDatHang WHERE CAST(ngayLap AS DATE) = CAST(GETDATE() AS DATE)";
+        try {
+            ConnectDB.getInstance().connect();
+            Connection con = ConnectDB.getConnection();
+            PreparedStatement st = con.prepareStatement(sql);
+            try(ResultSet rs = st.executeQuery()){
+                if(rs.next()) tonTai = rs.getInt(1)>0;
+            }
+            
+        } catch (SQLException sQLException) {
+        }
+    return tonTai;
+}
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
 }
