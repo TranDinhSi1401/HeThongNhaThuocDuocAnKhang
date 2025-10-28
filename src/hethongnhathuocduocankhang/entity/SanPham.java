@@ -19,6 +19,7 @@ public class SanPham {
     private int tonToiThieu;
     private int tonToiDa;
 
+    
     // --- Constructor ---
     public SanPham() {
     }
@@ -36,6 +37,7 @@ public class SanPham {
         setLoaiSanPham(loaiSanPhamEnum);
         setTonToiThieu(tonToiThieu);
         setTonToiDa(tonToiDa);
+
     }
 
     // Copy constructor
@@ -47,6 +49,7 @@ public class SanPham {
     public SanPham(String maSP, String ten) {
         this.maSP = maSP;
         this.ten = ten;
+        this(sp.maSP, sp.ten, sp.moTa, sp.thanhPhan, sp.loaiSanPhamEnum, sp.tonToiThieu, sp.tonToiDa);
     }
 
     
@@ -130,6 +133,7 @@ public class SanPham {
         this.tonToiDa = tonToiDa;
     }
     
+
     @Override
     public String toString() {
         return "SanPham{" +
