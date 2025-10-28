@@ -4,7 +4,9 @@
  */
 package hethongnhathuocduocankhang.gui;
 
+import hethongnhathuocduocankhang.entity.TaiKhoan;
 import hethongnhathuocduocankhang.menu.MenuEvent;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
@@ -14,11 +16,12 @@ import javax.swing.JPanel;
 public class GiaoDienChinhGUI extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(GiaoDienChinhGUI.class.getName());
-
+    private static TaiKhoan tk = null;
     /**
      * Creates new form GiaoDienChinhGUI
+     * @param tk
      */
-    public GiaoDienChinhGUI() {
+    public GiaoDienChinhGUI(TaiKhoan tk) {
         initComponents();
         menu.setEvent(new MenuEvent() {
             @Override
@@ -31,34 +34,17 @@ public class GiaoDienChinhGUI extends javax.swing.JFrame {
                 }
                 if(index == 2) {
                         switch (subIndex) {
-                            case 1:
-                                showPanel(new QuanLiKhachHangGUI());
-                                break;
-                            case 2:
-                                showPanel(new QuanLiSanPhamGUI());
-                                break;
-                            case 3:
-                                showPanel(new QuanLiNhanVienGUI());
-                                break;
-                            case 4:
-                                showPanel(new QuanLiHoaDonGUI());
-                                break;
-                            case 5:
-                                showPanel(new QuanLiKhuyenMaiGUI());
-                                break;
-                            case 6:
-                                showPanel(new QuanLiNhaCungCapGUI());
-                                break;
-                            case 7:
-                                showPanel(new QuanLiPhieuDatHangGUI());
-                                break;
-                            case 8:
-                                showPanel(new QuanLiLichSuCaLamGUI());
-                                break;
-                            case 9:
-                                showPanel(new QuanLiPhieuTraHangGUI());
-                                break;
-                            default:    
+                            case 1 -> showPanel(new QuanLiKhachHangGUI());
+                            case 2 -> showPanel(new QuanLiSanPhamGUI());
+                            case 3 -> showPanel(new QuanLiNhanVienGUI());
+                            case 4 -> showPanel(new QuanLiHoaDonGUI());
+                            case 5 -> showPanel(new QuanLiKhuyenMaiGUI());
+                            case 6 -> showPanel(new QuanLiNhaCungCapGUI());
+                            case 7 -> showPanel(new QuanLiPhieuDatHangGUI());
+                            case 8 -> showPanel(new QuanLiLichSuCaLamGUI());
+                            case 9 -> showPanel(new QuanLiPhieuTraHangGUI());
+                            default -> {
+                        }    
                         }
                 } 
                 if(index == 3 && subIndex == 0) {
@@ -68,17 +54,51 @@ public class GiaoDienChinhGUI extends javax.swing.JFrame {
                 if(index == 4 && subIndex == 0) {
                     showPanel(new TaoPhieuDatHangGUI());
                 } 
+                if(index == 8 && subIndex == 0) {
+                    dangXuat();
+                }
                 if(index == 5 && subIndex == 0) {
                     showPanel(new TraCuuChungGUI());
                 } 
             }
         });
+        if(tk != null) {
+            lblTenNV.setText(tk.getNhanVien().getHoTenDem() + " " + tk.getNhanVien().getTen());
+            if(tk.isQuanLy()) {
+                lblChucVu.setText("Quản lý");
+            }else {
+                lblChucVu.setText("Nhân viên");
+            }
+            GiaoDienChinhGUI.tk = tk;
+        }
         setTitle("Hệ thống nhà thuốc Dược An Khang");
         setSize(1000, 600);
         setLocationRelativeTo(null);
         setVisible(true);
     }
+    
+    private void dangXuat() {
+        int confirm = JOptionPane.showConfirmDialog(this,
+                        "Bạn có chắc chắn muốn đăng xuất không?",
+                        "Xác nhận đăng xuất",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.QUESTION_MESSAGE);
+        if (confirm == JOptionPane.YES_OPTION) {
+            this.dispose();
+            new DangNhapGUI();
+        }
+}
 
+    public static TaiKhoan getTk() {
+        return tk;
+    }
+
+    public static void setTk(TaiKhoan tk) {
+        GiaoDienChinhGUI.tk = tk;
+    }
+
+    
+    
     private void showPanel(JPanel p) {
         pCenter.removeAll();
         p.setSize(pCenter.getSize());
@@ -100,6 +120,9 @@ public class GiaoDienChinhGUI extends javax.swing.JFrame {
 
         pLeft = new javax.swing.JPanel();
         pLogo = new javax.swing.JPanel();
+        lblLogo = new javax.swing.JLabel();
+        lblTenNV = new javax.swing.JLabel();
+        lblChucVu = new javax.swing.JLabel();
         scrollPaneWin11 = new hethongnhathuocduocankhang.scroll.win11.ScrollPaneWin11();
         menu = new hethongnhathuocduocankhang.menu.Menu();
         pCenter = new javax.swing.JPanel();
@@ -108,21 +131,49 @@ public class GiaoDienChinhGUI extends javax.swing.JFrame {
         setSize(new java.awt.Dimension(1000, 600));
 
         pLeft.setBackground(new java.awt.Color(25, 118, 210));
-        pLeft.setPreferredSize(new java.awt.Dimension(200, 558));
+        pLeft.setPreferredSize(new java.awt.Dimension(220, 558));
         pLeft.setLayout(new java.awt.BorderLayout());
 
         pLogo.setBackground(new java.awt.Color(25, 118, 210));
         pLogo.setPreferredSize(new java.awt.Dimension(200, 120));
 
+        lblLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/profile.png"))); // NOI18N
+
+        lblTenNV.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        lblTenNV.setForeground(new java.awt.Color(255, 255, 255));
+        lblTenNV.setText("Tên nv");
+
+        lblChucVu.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblChucVu.setForeground(new java.awt.Color(255, 255, 255));
+        lblChucVu.setText("Chức vụ");
+
         javax.swing.GroupLayout pLogoLayout = new javax.swing.GroupLayout(pLogo);
         pLogo.setLayout(pLogoLayout);
         pLogoLayout.setHorizontalGroup(
             pLogoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 200, Short.MAX_VALUE)
+            .addGroup(pLogoLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblLogo)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(pLogoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pLogoLayout.createSequentialGroup()
+                        .addComponent(lblChucVu)
+                        .addGap(0, 79, Short.MAX_VALUE))
+                    .addComponent(lblTenNV, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         pLogoLayout.setVerticalGroup(
             pLogoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 120, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pLogoLayout.createSequentialGroup()
+                .addContainerGap(32, Short.MAX_VALUE)
+                .addGroup(pLogoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(pLogoLayout.createSequentialGroup()
+                        .addComponent(lblTenNV)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblChucVu)
+                        .addGap(6, 6, 6))
+                    .addComponent(lblLogo))
+                .addGap(24, 24, 24))
         );
 
         pLeft.add(pLogo, java.awt.BorderLayout.PAGE_START);
@@ -141,7 +192,7 @@ public class GiaoDienChinhGUI extends javax.swing.JFrame {
         pCenter.setLayout(pCenterLayout);
         pCenterLayout.setHorizontalGroup(
             pCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 529, Short.MAX_VALUE)
+            .addGap(0, 509, Short.MAX_VALUE)
         );
         pCenterLayout.setVerticalGroup(
             pCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -179,6 +230,9 @@ public class GiaoDienChinhGUI extends javax.swing.JFrame {
 //    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel lblChucVu;
+    private javax.swing.JLabel lblLogo;
+    private javax.swing.JLabel lblTenNV;
     private hethongnhathuocduocankhang.menu.Menu menu;
     private javax.swing.JPanel pCenter;
     private javax.swing.JPanel pLeft;

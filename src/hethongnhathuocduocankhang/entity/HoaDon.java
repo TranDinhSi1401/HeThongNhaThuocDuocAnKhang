@@ -47,6 +47,10 @@ public class HoaDon {
 
     }
 
+    public HoaDon(String maHD) {
+        this.maHoaDon = maHD;
+    }
+    
     public String getMaHoaDon() {
         return maHoaDon;
     }

@@ -24,7 +24,11 @@ public class KhachHang {
         this.sdt = sdt;
         this.diemTichLuy = diemTichLuy;
     }
-
+    
+    public KhachHang(String maKH) {
+        this.maKH = maKH;
+    }
+    
     public String getMaKH() {
         return maKH;
     }

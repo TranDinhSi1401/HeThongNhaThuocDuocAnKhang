@@ -10,7 +10,8 @@ import java.util.regex.Pattern;
  *
  * @author MINH KHANG
  */
-class DonViTinh {
+
+public class DonViTinh {
     private String maDonViTinh;
     private SanPham sanPham;
     private int heSoQuyDoi;
@@ -37,10 +38,22 @@ class DonViTinh {
              dvt.giaBanTheoDonVi, dvt.tenDonVi, dvt.donViTinhCoBan);
     }
 
+    public DonViTinh(String maDVT) {
+        this.maDonViTinh = maDVT;
+    }
+    
     // --- Getter & Setter ---
     public String getMaDonViTinh() {
         return maDonViTinh;
     }
+
+    public DonViTinh(String maDonViTinh, SanPham sanPham, double giaBanTheoDonVi, String tenDonVi) {
+        this.maDonViTinh = maDonViTinh;
+        this.sanPham = sanPham;
+        this.giaBanTheoDonVi = giaBanTheoDonVi;
+        this.tenDonVi = tenDonVi;
+    }
+    
 
     public void setMaDonViTinh(String maDonViTinh) {
         if (maDonViTinh == null || !Pattern.matches("^DVT-\\d{4}-[A-Z]+$", maDonViTinh)) {

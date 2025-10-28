@@ -28,6 +28,13 @@ public class KhuyenMai {
     public KhuyenMai() {
     }
     
+    public KhuyenMai(String maKhuyenMai, double phanTram, int soLuongToiThieu, int soLuongToiDa) {
+        this.maKhuyenMai = maKhuyenMai;
+        this.phanTram = phanTram;
+        this.soLuongToiThieu = soLuongToiThieu;
+        this.soLuongToiDa = soLuongToiDa;
+    }
+    
     public KhuyenMai(String maKhuyenMai, String moTa, double phanTram, LoaiKhuyenMaiEnum loaiKhuyenMai, LocalDateTime ngayBatDau, LocalDateTime ngayKetThuc, int soLuongToiThieu, int soLuongToiDa, LocalDate ngayChinhSua) {
         this.maKhuyenMai = maKhuyenMai;
         this.moTa = moTa;
