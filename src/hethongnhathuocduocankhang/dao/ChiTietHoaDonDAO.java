@@ -13,7 +13,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.sql.Timestamp;
+
 
 
 /**
@@ -53,7 +53,7 @@ public class ChiTietHoaDonDAO {
             ConnectDB.getInstance();
             Connection con = ConnectDB.getConnection();
             PreparedStatement ps = con.prepareStatement(
-                "INSERT INTO ChiTietHoaDon VALUES (?, ?, ?, ?, ?, ?, ?)"
+                "INSERT INTO ChiTietHoaDon VALUES (?, ?, ?, ?, ?, ?)"
             );
 
             ps.setString(1, cthd.getMaChiTietHoaDon());
@@ -61,8 +61,7 @@ public class ChiTietHoaDonDAO {
             ps.setString(3, cthd.getDonViTinh().getMaDonViTinh());
             ps.setInt(4, cthd.getSoLuong());
             ps.setDouble(5, cthd.getDonGia());
-            ps.setDouble(6, cthd.getGiamGia());
-            ps.setDouble(7, cthd.getThanhTien());
+            ps.setDouble(6, cthd.getGiamGia() / 100);
             
             n = ps.executeUpdate();
         } catch (SQLException e) {
