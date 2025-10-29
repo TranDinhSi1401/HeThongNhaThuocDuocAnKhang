@@ -10,7 +10,7 @@ import java.util.regex.Pattern;
  *
  * @author MINH KHANG
  */
-class DonViTinh {
+public class DonViTinh {
     private String maDonViTinh;
     private SanPham sanPham;
     private int heSoQuyDoi;
@@ -37,6 +37,10 @@ class DonViTinh {
              dvt.giaBanTheoDonVi, dvt.tenDonVi, dvt.donViTinhCoBan);
     }
 
+    public DonViTinh(String maDVT) {
+        this.maDonViTinh = maDVT;
+    }
+    
     // --- Getter & Setter ---
     public String getMaDonViTinh() {
         return maDonViTinh;
