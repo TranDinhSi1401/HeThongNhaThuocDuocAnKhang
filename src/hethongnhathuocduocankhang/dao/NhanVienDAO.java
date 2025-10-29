@@ -24,28 +24,31 @@ import java.util.ArrayList;
  * @author trand
  */
 public class NhanVienDAO {
-     public static NhanVien getNhanVienTheoMaNV(String maNV) {
+    public static NhanVien getNhanVienTheoMaNV(String maNV) throws SQLException {
         NhanVien nv = null;
-
         try {
             Connection con = ConnectDB.getConnection();
-            String sql = "SELECT * FROM NhanVien WHERE MaNV = ?";
+            String sql = "SELECT * FROM NhanVien WHERE maNV = ?";
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, maNV);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                String hoDem = rs.getString(2);
-                String ten = rs.getString(3);
-                String sdt = rs.getString(4);
-                String cccd = rs.getString(5);
-                boolean gioiTinh = rs.getInt(6) == 1;
-                LocalDate ngaySinh = rs.getDate(7).toLocalDate();
-                String diaChi = rs.getString(8);
-                boolean nghiViec = rs.getInt(9) == 1;
+                String hoDem = rs.getString("hoTenDem");
+                String ten = rs.getString("ten");
+                String sdt = rs.getString("sdt");
+                String cccd = rs.getString("cccd");
+                boolean gioiTinh = rs.getBoolean("gioiTinh");
+                LocalDate ngaySinh = rs.getDate("ngaySinh").toLocalDate();
+                String diaChi = rs.getString("diaChi");
+                boolean nghiViec = rs.getBoolean("nghiViec");
 
                 nv = new NhanVien(maNV, hoDem, ten, sdt, cccd, gioiTinh, ngaySinh, diaChi, nghiViec);
             }
-
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return nv;
+    }
 
     public static ArrayList<NhanVien> getAllNhanVien() {
         ArrayList<NhanVien> dsNV = new ArrayList<>();
@@ -65,7 +68,7 @@ public class NhanVienDAO {
                 LocalDate ngaySinh = rs.getDate("ngaySinh").toLocalDate();
                 String diaChi = rs.getString("diaChi");
                 boolean nghiViec = rs.getBoolean("nghiViec");
-                
+
                 NhanVien nv = new NhanVien(maNV, hoTenDem, ten, sdt, cccd, gioiTinh, ngaySinh, diaChi, nghiViec);
                 dsNV.add(nv);
             }
@@ -80,7 +83,7 @@ public class NhanVienDAO {
         try {
             ConnectDB.getInstance().connect();
             Connection con = ConnectDB.getConnection();
-            String sql = "INSERT NhanVien (maNV, hoTenDem, ten, sdt, cccd, gioiTinh, ngaySinh, diaChi, nghiViec) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO NhanVien (maNV, hoTenDem, ten, sdt, cccd, gioiTinh, ngaySinh, diaChi, nghiViec) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement stmt = con.prepareStatement(sql);
             stmt.setString(1, nv.getMaNV());
             stmt.setString(2, nv.getHoTenDem());
@@ -91,7 +94,6 @@ public class NhanVienDAO {
             stmt.setDate(7, Date.valueOf(nv.getNgaySinh()));
             stmt.setString(8, nv.getDiaChi());
             stmt.setBoolean(9, nv.isNghiViec());
-            
             n = stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -104,8 +106,8 @@ public class NhanVienDAO {
         try {
             ConnectDB.getInstance().connect();
             Connection con = ConnectDB.getConnection();
-            String querry = "DELETE FROM NhanVien WHERE maNV = ?";
-            PreparedStatement stmt = con.prepareStatement(querry);
+            String query = "DELETE FROM NhanVien WHERE maNV = ?";
+            PreparedStatement stmt = con.prepareStatement(query);
             stmt.setString(1, maNV);
             n = stmt.executeUpdate();
         } catch (SQLException e) {
@@ -119,8 +121,8 @@ public class NhanVienDAO {
         try {
             ConnectDB.getInstance().connect();
             Connection con = ConnectDB.getConnection();
-            String querry = "UPDATE NhanVien SET hoTenDem = ?, ten= ?, sdt = ?, cccd = ?, gioiTinh = ?, ngaySinh = ?, diaChi = ?, nghiViec = ? WHERE maNV = ?";
-            PreparedStatement stmt = con.prepareStatement(querry);
+            String query = "UPDATE NhanVien SET hoTenDem = ?, ten = ?, sdt = ?, cccd = ?, gioiTinh = ?, ngaySinh = ?, diaChi = ?, nghiViec = ? WHERE maNV = ?";
+            PreparedStatement stmt = con.prepareStatement(query);
             stmt.setString(1, nvNew.getHoTenDem());
             stmt.setString(2, nvNew.getTen());
             stmt.setString(3, nvNew.getSdt());
@@ -129,8 +131,7 @@ public class NhanVienDAO {
             stmt.setDate(6, Date.valueOf(nvNew.getNgaySinh()));
             stmt.setString(7, nvNew.getDiaChi());
             stmt.setBoolean(8, nvNew.isNghiViec());
-            stmt.setString(9, maNV); // Điều kiện WHERE
-            
+            stmt.setString(9, maNV);
             n = stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -143,9 +144,37 @@ public class NhanVienDAO {
         try {
             ConnectDB.getInstance().connect();
             Connection con = ConnectDB.getConnection();
-            String querry = "SELECT * FROM NhanVien WHERE maNV = ?";
-            PreparedStatement stmt = con.prepareStatement(querry);
+            String query = "SELECT * FROM NhanVien WHERE maNV = ?";
+            PreparedStatement stmt = con.prepareStatement(query);
             stmt.setString(1, ma);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                String maNV = rs.getString("maNV");
+                String hoTenDem = rs.getString("hoTenDem");
+                String ten = rs.getString("ten");
+                String sdt = rs.getString("sdt");
+                String cccd = rs.getString("cccd");
+                boolean gioiTinh = rs.getBoolean("gioiTinh");
+                LocalDate ngaySinh = rs.getDate("ngaySinh").toLocalDate();
+                String diaChi = rs.getString("diaChi");
+                boolean nghiViec = rs.getBoolean("nghiViec");
+
+                nv = new NhanVien(maNV, hoTenDem, ten, sdt, cccd, gioiTinh, ngaySinh, diaChi, nghiViec);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return nv;
+    }
+
+    public static ArrayList<NhanVien> timNVTheoTen(String tenNV) {
+        ArrayList<NhanVien> dsNV = new ArrayList<>();
+        try {
+            ConnectDB.getInstance().connect();
+            Connection con = ConnectDB.getConnection();
+            String query = "SELECT * FROM NhanVien WHERE hoTenDem + ' ' + ten LIKE ?";
+            PreparedStatement stmt = con.prepareStatement(query);
+            stmt.setString(1, "%" + tenNV + "%");
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
                 String maNV = rs.getString("maNV");
@@ -157,37 +186,7 @@ public class NhanVienDAO {
                 LocalDate ngaySinh = rs.getDate("ngaySinh").toLocalDate();
                 String diaChi = rs.getString("diaChi");
                 boolean nghiViec = rs.getBoolean("nghiViec");
-                
-                nv = new NhanVien(maNV, hoTenDem, ten, sdt, cccd, gioiTinh, ngaySinh, diaChi, nghiViec);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return nv;
-    }
-}
 
-    public static ArrayList<NhanVien> timNVTheoTen(String tenNV) {
-        ArrayList<NhanVien> dsNV = new ArrayList<>();
-        try {
-            ConnectDB.getInstance().connect();
-            Connection con = ConnectDB.getConnection();
-            // Tìm kiếm tương đối theo cả họ và tên
-            String querry = "SELECT * FROM NhanVien WHERE hoTenDem + ' ' + ten LIKE ?"; 
-            PreparedStatement stmt = con.prepareStatement(querry);
-            stmt.setString(1, "%" + tenNV + "%");
-            ResultSet rs = stmt.executeQuery();
-            while (rs.next()) {
-                 String maNV = rs.getString("maNV");
-                String hoTenDem = rs.getString("hoTenDem");
-                String ten = rs.getString("ten");
-                String sdt = rs.getString("sdt");
-                String cccd = rs.getString("cccd");
-                boolean gioiTinh = rs.getBoolean("gioiTinh");
-                LocalDate ngaySinh = rs.getDate("ngaySinh").toLocalDate();
-                String diaChi = rs.getString("diaChi");
-                boolean nghiViec = rs.getBoolean("nghiViec");
-                
                 NhanVien nv = new NhanVien(maNV, hoTenDem, ten, sdt, cccd, gioiTinh, ngaySinh, diaChi, nghiViec);
                 dsNV.add(nv);
             }
@@ -198,12 +197,12 @@ public class NhanVienDAO {
     }
 
     public static ArrayList<NhanVien> timNVTheoSDT(String sdtNV) {
-         ArrayList<NhanVien> dsNV = new ArrayList<>();
+        ArrayList<NhanVien> dsNV = new ArrayList<>();
         try {
             ConnectDB.getInstance().connect();
             Connection con = ConnectDB.getConnection();
-            String querry = "SELECT * FROM NhanVien WHERE sdt = ?";
-            PreparedStatement stmt = con.prepareStatement(querry);
+            String query = "SELECT * FROM NhanVien WHERE sdt = ?";
+            PreparedStatement stmt = con.prepareStatement(query);
             stmt.setString(1, sdtNV);
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
@@ -216,7 +215,7 @@ public class NhanVienDAO {
                 LocalDate ngaySinh = rs.getDate("ngaySinh").toLocalDate();
                 String diaChi = rs.getString("diaChi");
                 boolean nghiViec = rs.getBoolean("nghiViec");
-                
+
                 NhanVien nv = new NhanVien(maNV, hoTenDem, ten, sdt, cccd, gioiTinh, ngaySinh, diaChi, nghiViec);
                 dsNV.add(nv);
             }
@@ -225,14 +224,14 @@ public class NhanVienDAO {
         }
         return dsNV;
     }
-    
+
     public static ArrayList<NhanVien> timNVTheoCCCD(String cccdNV) {
-         ArrayList<NhanVien> dsNV = new ArrayList<>();
+        ArrayList<NhanVien> dsNV = new ArrayList<>();
         try {
             ConnectDB.getInstance().connect();
             Connection con = ConnectDB.getConnection();
-            String querry = "SELECT * FROM NhanVien WHERE cccd = ?";
-            PreparedStatement stmt = con.prepareStatement(querry);
+            String query = "SELECT * FROM NhanVien WHERE cccd = ?";
+            PreparedStatement stmt = con.prepareStatement(query);
             stmt.setString(1, cccdNV);
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
@@ -245,7 +244,7 @@ public class NhanVienDAO {
                 LocalDate ngaySinh = rs.getDate("ngaySinh").toLocalDate();
                 String diaChi = rs.getString("diaChi");
                 boolean nghiViec = rs.getBoolean("nghiViec");
-                
+
                 NhanVien nv = new NhanVien(maNV, hoTenDem, ten, sdt, cccd, gioiTinh, ngaySinh, diaChi, nghiViec);
                 dsNV.add(nv);
             }
@@ -255,14 +254,13 @@ public class NhanVienDAO {
         return dsNV;
     }
 
-
     public static ArrayList<NhanVien> timNVTheoTrangThai(boolean daNghiViec) {
         ArrayList<NhanVien> dsNV = new ArrayList<>();
         try {
             ConnectDB.getInstance().connect();
             Connection con = ConnectDB.getConnection();
-            String querry = "SELECT * FROM NhanVien WHERE nghiViec = ?";
-            PreparedStatement stmt = con.prepareStatement(querry);
+            String query = "SELECT * FROM NhanVien WHERE nghiViec = ?";
+            PreparedStatement stmt = con.prepareStatement(query);
             stmt.setBoolean(1, daNghiViec);
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
@@ -275,7 +273,7 @@ public class NhanVienDAO {
                 LocalDate ngaySinh = rs.getDate("ngaySinh").toLocalDate();
                 String diaChi = rs.getString("diaChi");
                 boolean nghiViec = rs.getBoolean("nghiViec");
-                
+
                 NhanVien nv = new NhanVien(maNV, hoTenDem, ten, sdt, cccd, gioiTinh, ngaySinh, diaChi, nghiViec);
                 dsNV.add(nv);
             }

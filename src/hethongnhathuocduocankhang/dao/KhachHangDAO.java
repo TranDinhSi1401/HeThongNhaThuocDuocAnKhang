@@ -21,21 +21,26 @@ import java.util.ArrayList;
  * @author trand
  */
 public class KhachHangDAO {
-    public static KhachHang getKhachHangTheoSdt(String sdt) {
-        KhachHang kh = null;
-        try {
-            Connection con = ConnectDB.getConnection();
-            String sql = "SELECT * FROM KhachHang WHERE sdt = ?";
-            PreparedStatement ps = con.prepareStatement(sql);
-            ps.setString(1, sdt);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                String maKH = rs.getString(1);
-                String hoDem = rs.getString(2);
-                String ten = rs.getString(3);
-                int diemTichLuy = rs.getInt(5);
-
-                kh = new KhachHang(maKH, hoDem, ten, sdt, diemTichLuy);
+    public static KhachHang getKhachHangTheoSdt(String sdt) throws SQLException {
+    KhachHang kh = null;
+    try {
+        Connection con = ConnectDB.getConnection();
+        String sql = "SELECT * FROM KhachHang WHERE sdt = ?";
+        PreparedStatement ps = con.prepareStatement(sql);
+        ps.setString(1, sdt);
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            String maKH = rs.getString(1);
+            String hoDem = rs.getString(2);
+            String ten = rs.getString(3);
+            int diemTichLuy = rs.getInt(5);
+            kh = new KhachHang(maKH, hoDem, ten, sdt, diemTichLuy);
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return kh;
+}
 
     public static ArrayList<KhachHang> getAllKhachHang() {
         ArrayList<KhachHang> dsKH = new ArrayList<>();
@@ -153,34 +158,7 @@ public class KhachHangDAO {
         }
         return rows > 0;
     }
-}
 
-    public static ArrayList<KhachHang> timKHTheoTen(String tenKH) {
-        ArrayList<KhachHang> dsKH = new ArrayList<>();
-        try {
-            ConnectDB.getInstance().connect();
-            Connection con = ConnectDB.getConnection();
-            // Tìm kiếm tương đối theo cả họ và tên
-            String querry = "SELECT * FROM KhachHang WHERE hoTenDem + ' ' + ten LIKE ?";
-            PreparedStatement stmt = con.prepareStatement(querry);
-            stmt.setString(1, "%" + tenKH + "%");
-            ResultSet rs = stmt.executeQuery();
-            while (rs.next()) {
-                String maKH = rs.getString("maKH");
-                String hoTenDem = rs.getString("hoTenDem");
-                String ten = rs.getString("ten");
-                String sdt = rs.getString("sdt");
-                int diemTichLuy = rs.getInt("diemTichLuy");
-                
-                KhachHang kh = new KhachHang(maKH, hoTenDem, ten, sdt, diemTichLuy);
-                dsKH.add(kh);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return dsKH;
-    }
-    
     public static ArrayList<KhachHang> timKHTheoSDT(String sdtKH) {
         ArrayList<KhachHang> dsKH = new ArrayList<>();
         try {
@@ -206,12 +184,6 @@ public class KhachHangDAO {
         return dsKH;
     }
 
-
-    /**
-     * Lấy mã số cuối cùng của khách hàng (phần số) để tạo mã mới.
-     * Sửa lại logic: Lấy MAX(maKH) thay vì COUNT(*) để tránh trùng lặp khi xóa.
-     * @return int mã số cuối cùng (ví dụ: 5 nếu maKH lớn nhất là 'KH-00005')
-     */
     public static int getMaKHCUoiCung() {
         int maCuoiCung = 0;
         try {
@@ -237,4 +209,42 @@ public class KhachHangDAO {
         }
         return maCuoiCung;
     }
+    public static ArrayList<KhachHang> timKHTheoTen(String tenKH) {
+        ArrayList<KhachHang> dsKH = new ArrayList<>();
+        try {
+            ConnectDB.getInstance().connect();
+            Connection con = ConnectDB.getConnection();
+            // Tìm kiếm tương đối theo cả họ và tên
+            String querry = "SELECT * FROM KhachHang WHERE hoTenDem + ' ' + ten LIKE ?";
+            PreparedStatement stmt = con.prepareStatement(querry);
+            stmt.setString(1, "%" + tenKH + "%");
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                String maKH = rs.getString("maKH");
+                String hoTenDem = rs.getString("hoTenDem");
+                String ten = rs.getString("ten");
+                String sdt = rs.getString("sdt");
+                int diemTichLuy = rs.getInt("diemTichLuy");
+                
+                KhachHang kh = new KhachHang(maKH, hoTenDem, ten, sdt, diemTichLuy);
+                dsKH.add(kh);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return dsKH;
+    }
+
 }
+
+    
+    
+    
+
+
+    /**
+     * Lấy mã số cuối cùng của khách hàng (phần số) để tạo mã mới.
+     * Sửa lại logic: Lấy MAX(maKH) thay vì COUNT(*) để tránh trùng lặp khi xóa.
+     * @return int mã số cuối cùng (ví dụ: 5 nếu maKH lớn nhất là 'KH-00005')
+     */
+    

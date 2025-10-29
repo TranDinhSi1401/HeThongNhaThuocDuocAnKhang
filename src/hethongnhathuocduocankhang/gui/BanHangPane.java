@@ -697,7 +697,11 @@ public class BanHangPane extends javax.swing.JPanel {
 
     private void txtSdtKHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSdtKHActionPerformed
         String sdt = txtSdtKH.getText().trim();
-        KhachHang kh = KhachHangDAO.getKhachHangTheoSdt(sdt);
+        KhachHang kh = null;
+        try {
+            kh = KhachHangDAO.getKhachHangTheoSdt(sdt);
+        } catch (SQLException sQLException) {
+        }
         String maKH = kh.getMaKH();
         String hoTen = kh.getHoTenDem() + " " + kh.getTen();
         int diemTichLuy = kh.getDiemTichLuy();

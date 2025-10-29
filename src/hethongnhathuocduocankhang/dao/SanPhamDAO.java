@@ -18,24 +18,29 @@ public class SanPhamDAO {
     public static ArrayList<SanPham> getAllTableSanPham() {
         ArrayList<SanPham> dsSP = new ArrayList<>();
         try {
-            ConnectDB.getInstance();
+            ConnectDB.getInstance().connect();
             Connection con = ConnectDB.getConnection();
-            
             String sql = "SELECT * FROM SanPham";
             Statement statement = con.createStatement();
             ResultSet rs = statement.executeQuery(sql);
-            while(rs.next()) {
-                String maSP = rs.getString(1);
-                String tenSP = rs.getString(2);
-                String moTa = rs.getString(3);
-                String thanhPhan = rs.getString(4);
-                LoaiSanPhamEnum loaiSanPham = LoaiSanPhamEnum.valueOf(rs.getString(5));
-                int tonToiThieu = rs.getInt(6);
-                int tonToiDa = rs.getInt(7);
+
+            while (rs.next()) {
+                String maSP = rs.getString("maSP");
+                String tenSP = rs.getString("ten");
+                String moTa = rs.getString("moTa");
+                String thanhPhan = rs.getString("thanhPhan");
+                LoaiSanPhamEnum loaiSanPham = LoaiSanPhamEnum.valueOf(rs.getString("loaiSanPham"));
+                int tonToiThieu = rs.getInt("tonToiThieu");
+                int tonToiDa = rs.getInt("tonToiDa");
                 SanPham sp = new SanPham(maSP, tenSP, moTa, thanhPhan, loaiSanPham, tonToiThieu, tonToiDa);
                 dsSP.add(sp);
             }
-        }catch(SQLException e) {
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return dsSP;
+    }
 
     public static ArrayList<SanPham> getAllSanPham() {
         ArrayList<SanPham> dsSP = new ArrayList<>();
@@ -61,39 +66,38 @@ public class SanPhamDAO {
         }
         return dsSP;
     }
-    
+
     public static SanPham getSanPhamTheoMaSP(String maSp) {
         SanPham sp = null;
-
         try {
             Connection con = ConnectDB.getConnection();
-            String sql = "SELECT * FROM SanPham WHERE MaSP = ?";
+            String sql = "SELECT * FROM SanPham WHERE maSP = ?";
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, maSp);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                String maSP = rs.getString(1);
-                String tenSP = rs.getString(2);
-                String moTa = rs.getString(3);
-                String thanhPhan = rs.getString(4);
-                LoaiSanPhamEnum loaiSanPham = LoaiSanPhamEnum.valueOf(rs.getString(5));
-                int tonToiThieu = rs.getInt(6);
-                int tonToiDa = rs.getInt(7);
+                String maSP = rs.getString("maSP");
+                String tenSP = rs.getString("ten");
+                String moTa = rs.getString("moTa");
+                String thanhPhan = rs.getString("thanhPhan");
+                LoaiSanPhamEnum loaiSanPham = LoaiSanPhamEnum.valueOf(rs.getString("loaiSanPham"));
+                int tonToiThieu = rs.getInt("tonToiThieu");
+                int tonToiDa = rs.getInt("tonToiDa");
 
                 sp = new SanPham(maSP, tenSP, moTa, thanhPhan, loaiSanPham, tonToiThieu, tonToiDa);
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return sp;
+    }
 
     public static boolean themSanPham(SanPham sp) {
         int n = 0;
         try {
             ConnectDB.getInstance().connect();
             Connection con = ConnectDB.getConnection();
-            String sql = "INSERT SanPham VALUES (?, ?, ?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO SanPham VALUES (?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement stmt = con.prepareStatement(sql);
             stmt.setString(1, sp.getMaSP());
             stmt.setString(2, sp.getTen());
@@ -114,8 +118,8 @@ public class SanPhamDAO {
         try {
             ConnectDB.getInstance().connect();
             Connection con = ConnectDB.getConnection();
-            String querry = "DELETE FROM SanPham WHERE maSP = ?";
-            PreparedStatement stmt = con.prepareStatement(querry);
+            String query = "DELETE FROM SanPham WHERE maSP = ?";
+            PreparedStatement stmt = con.prepareStatement(query);
             stmt.setString(1, maSP);
             n = stmt.executeUpdate();
         } catch (SQLException e) {
@@ -129,8 +133,8 @@ public class SanPhamDAO {
         try {
             ConnectDB.getInstance().connect();
             Connection con = ConnectDB.getConnection();
-            String querry = "UPDATE SanPham SET ten = ?, moTa= ?, thanhPhan = ?, loaiSanPham = ?, tonToiThieu = ?, tonToiDa = ? WHERE maSP = ?";
-            PreparedStatement stmt = con.prepareStatement(querry);
+            String query = "UPDATE SanPham SET ten = ?, moTa = ?, thanhPhan = ?, loaiSanPham = ?, tonToiThieu = ?, tonToiDa = ? WHERE maSP = ?";
+            PreparedStatement stmt = con.prepareStatement(query);
             stmt.setString(1, spNew.getTen());
             stmt.setString(2, spNew.getMoTa());
             stmt.setString(3, spNew.getThanhPhan());
@@ -150,11 +154,11 @@ public class SanPhamDAO {
         try {
             ConnectDB.getInstance().connect();
             Connection con = ConnectDB.getConnection();
-            String querry = "SELECT * FROM SanPham WHERE maSP = ?";
-            PreparedStatement stmt = con.prepareStatement(querry);
+            String query = "SELECT * FROM SanPham WHERE maSP = ?";
+            PreparedStatement stmt = con.prepareStatement(query);
             stmt.setString(1, ma);
             ResultSet rs = stmt.executeQuery();
-            while (rs.next()) {
+            if (rs.next()) {
                 String maSP = rs.getString("maSP");
                 String ten = rs.getString("ten");
                 String moTa = rs.getString("moTa");
@@ -175,9 +179,9 @@ public class SanPhamDAO {
         try {
             ConnectDB.getInstance().connect();
             Connection con = ConnectDB.getConnection();
-            String querry = "SELECT * FROM SanPham WHERE ten = ?";
-            PreparedStatement stmt = con.prepareStatement(querry);
-            stmt.setString(1, tenSP);
+            String query = "SELECT * FROM SanPham WHERE ten LIKE ?";
+            PreparedStatement stmt = con.prepareStatement(query);
+            stmt.setString(1, "%" + tenSP + "%");
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
                 String maSP = rs.getString("maSP");
@@ -201,11 +205,10 @@ public class SanPhamDAO {
         try {
             ConnectDB.getInstance().connect();
             Connection con = ConnectDB.getConnection();
-            String querry = "SELECT * FROM SanPham SP JOIN SanPhamCungCap SPCC "
+            String query = "SELECT SP.* FROM SanPham SP JOIN SanPhamCungCap SPCC "
                     + "ON SP.maSP = SPCC.maSP JOIN NhaCungCap NCC "
-                    + "ON SPCC.maNCC = NCC.maNCC "
-                    + "WHERE NCC.maNCC = ?";
-            PreparedStatement stmt = con.prepareStatement(querry);
+                    + "ON SPCC.maNCC = NCC.maNCC WHERE NCC.maNCC = ?";
+            PreparedStatement stmt = con.prepareStatement(query);
             stmt.setString(1, maNhaCC);
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
@@ -230,8 +233,8 @@ public class SanPhamDAO {
         try {
             ConnectDB.getInstance().connect();
             Connection con = ConnectDB.getConnection();
-            String querry = "SELECT * FROM SanPham WHERE loaiSanPham = ?";
-            PreparedStatement stmt = con.prepareStatement(querry);
+            String query = "SELECT * FROM SanPham WHERE loaiSanPham = ?";
+            PreparedStatement stmt = con.prepareStatement(query);
             stmt.setString(1, loaiSP);
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {

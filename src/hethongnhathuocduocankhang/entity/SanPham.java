@@ -49,7 +49,6 @@ public class SanPham {
     public SanPham(String maSP, String ten) {
         this.maSP = maSP;
         this.ten = ten;
-        this(sp.maSP, sp.ten, sp.moTa, sp.thanhPhan, sp.loaiSanPhamEnum, sp.tonToiThieu, sp.tonToiDa);
     }
 
     
