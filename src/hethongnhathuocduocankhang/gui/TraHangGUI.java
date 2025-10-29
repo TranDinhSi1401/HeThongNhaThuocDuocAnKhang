@@ -4,19 +4,31 @@
  */
 package hethongnhathuocduocankhang.gui;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+
+import hethongnhathuocduocankhang.bus.TraHangBUS;
+import hethongnhathuocduocankhang.entity.ChiTietHoaDon;
+import hethongnhathuocduocankhang.entity.HoaDon;
+import java.util.List;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author trand
  */
 public class TraHangGUI extends javax.swing.JPanel {
-
+    private TraHangBUS traHangBUS;
     /**
      * Creates new form TraHangGUI
      */
     public TraHangGUI() {
+        traHangBUS = new TraHangBUS(this);
         initComponents();
     }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -32,17 +44,17 @@ public class TraHangGUI extends javax.swing.JPanel {
         jPanel11 = new javax.swing.JPanel();
         jPanel12 = new javax.swing.JPanel();
         jTextField2 = new javax.swing.JTextField();
-        jPanel13 = new javax.swing.JPanel();
+        jButton1 = new javax.swing.JButton();
         jPanel10 = new javax.swing.JPanel();
-        jPanel2 = new javax.swing.JPanel();
         jPanel14 = new javax.swing.JPanel();
         jPanel16 = new javax.swing.JPanel();
         jTextField4 = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
+        jXDatePicker1 = new org.jdesktop.swingx.JXDatePicker();
+        jButton2 = new javax.swing.JButton();
         jPanel17 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         jTable3 = new javax.swing.JTable();
-        jPanel1 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable2 = new javax.swing.JTable();
         jPanel3 = new javax.swing.JPanel();
@@ -90,21 +102,23 @@ public class TraHangGUI extends javax.swing.JPanel {
                 jTextField2ActionPerformed(evt);
             }
         });
+        jTextField2.addMouseListener(traHangBUS);
         jPanel12.add(jTextField2);
 
+        jButton1.setText("Tìm theo mã");
+        jPanel12.add(jButton1);
+        jButton1.addActionListener(traHangBUS);
+
         jPanel9.add(jPanel12);
-        jPanel9.add(jPanel13);
 
         jPanel8.add(jPanel9, java.awt.BorderLayout.PAGE_START);
 
         jPanel10.setLayout(new javax.swing.BoxLayout(jPanel10, javax.swing.BoxLayout.Y_AXIS));
 
-        jPanel2.setMaximumSize(new java.awt.Dimension(32767, 80));
-        jPanel10.add(jPanel2);
-
         jPanel14.setBorder(javax.swing.BorderFactory.createTitledBorder("Có tài khoản thành viên"));
         jPanel14.setLayout(new javax.swing.BoxLayout(jPanel14, javax.swing.BoxLayout.Y_AXIS));
 
+        jPanel16.setPreferredSize(new java.awt.Dimension(627, 26));
         jPanel16.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
         jTextField4.setText("Nhập số điện thoại");
@@ -114,10 +128,22 @@ public class TraHangGUI extends javax.swing.JPanel {
                 jTextField4ActionPerformed(evt);
             }
         });
+        jTextField4.addMouseListener(traHangBUS);
         jPanel16.add(jTextField4);
 
         jLabel6.setText("Ngày mua");
         jPanel16.add(jLabel6);
+        jPanel16.add(jXDatePicker1);
+
+        jButton2.setText("Tìm theo SDT");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+        jButton2.addActionListener(traHangBUS);
+        jPanel16.add(jButton2);
+        jButton2.addActionListener(traHangBUS);
 
         jPanel14.add(jPanel16);
 
@@ -127,27 +153,33 @@ public class TraHangGUI extends javax.swing.JPanel {
 
         jTable3.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4", "Title 5", "Title 6"
+                "Mã hóa đơn", "Ngày mua", "Tổng tiền", "Chọn"
             }
-        ));
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.Object.class, java.lang.Object.class, java.lang.Boolean.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        jTable3.addMouseListener(traHangBUS);
+        jTable3.setColumnSelectionAllowed(true);
         jTable3.setPreferredSize(new java.awt.Dimension(300, 60));
         jTable3.setShowVerticalLines(true);
         jScrollPane3.setViewportView(jTable3);
+        jTable3.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        if (jTable3.getColumnModel().getColumnCount() > 0) {
+            jTable3.getColumnModel().getColumn(3).setMinWidth(10);
+        }
 
         jPanel17.add(jScrollPane3);
 
         jPanel14.add(jPanel17);
-        jPanel14.add(jPanel1);
 
         jPanel10.add(jPanel14);
 
@@ -155,20 +187,21 @@ public class TraHangGUI extends javax.swing.JPanel {
 
         jTable2.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null}
+
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4", "Title 5", "Title 6", "Title 7", "Title 8", "Title 9", "Title 10", "Title 11"
+                "Mã CTHD", "Tên sản phẩm", "Thành tiền", "Số lượng", "Chọn"
             }
-        ));
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Boolean.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
         jTable2.setShowGrid(false);
-        jTable2.setShowVerticalLines(true);
         jScrollPane2.setViewportView(jTable2);
 
         jPanel10.add(jScrollPane2);
@@ -235,13 +268,13 @@ public class TraHangGUI extends javax.swing.JPanel {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Tên sản phẩm", "Số lượng", "Tình trạng", "Lý do", "Thành tiền", "Phần trăm đổi trả"
             }
         ));
         jScrollPane1.setViewportView(jTable1);
@@ -288,6 +321,9 @@ public class TraHangGUI extends javax.swing.JPanel {
         add(jTabbedPane1);
     }// </editor-fold>//GEN-END:initComponents
 
+    
+  
+    
     private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField2ActionPerformed
@@ -308,8 +344,16 @@ public class TraHangGUI extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_jXDatePicker1ActionPerformed
 
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton2ActionPerformed
 
+   
+
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
@@ -319,18 +363,15 @@ public class TraHangGUI extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel12;
-    private javax.swing.JPanel jPanel13;
     private javax.swing.JPanel jPanel14;
     private javax.swing.JPanel jPanel15;
     private javax.swing.JPanel jPanel16;
     private javax.swing.JPanel jPanel17;
     private javax.swing.JPanel jPanel18;
     private javax.swing.JPanel jPanel19;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel20;
     private javax.swing.JPanel jPanel21;
     private javax.swing.JPanel jPanel22;
@@ -357,5 +398,68 @@ public class TraHangGUI extends javax.swing.JPanel {
     private javax.swing.JTextField jTextField5;
     private javax.swing.JTextField jTextField6;
     private javax.swing.JTextField jTextField7;
+    private org.jdesktop.swingx.JXDatePicker jXDatePicker1;
     // End of variables declaration//GEN-END:variables
+
+    public String getMaHoaDon() {
+        return jTextField2.getText();
+    }
+
+    public void initBan(List<ChiTietHoaDon> listCTHD) {
+        DefaultTableModel model = (DefaultTableModel) jTable2.getModel();
+        for(ChiTietHoaDon chiTietHoaDon: listCTHD){
+            Object [] data = {
+                chiTietHoaDon.getMaChiTietHoaDon(),
+                chiTietHoaDon.getDonViTinh().getSanPham().getTen(),
+                chiTietHoaDon.getThanhTien()
+            };
+            model.addRow(data);
+        }
+    }
+
+    public String getSoDienThoai() {
+        return jTextField4.getText();
+    }
+
+    public void initBangHoaDon(List<HoaDon> listHD) {
+        DefaultTableModel model = (DefaultTableModel) jTable3.getModel();
+        model.setRowCount(0);
+        for(HoaDon hoaDon: listHD){
+            Object [] data = {
+                hoaDon.getMaHoaDon(),
+                hoaDon.getNgayLapHoaDon(),
+                hoaDon.getTongTien()
+            };
+            model.addRow(data);
+        }
+    }
+
+    public void clearCTHD() {
+        DefaultTableModel m2 = (DefaultTableModel) jTable2.getModel();
+        m2.setRowCount(0);
+    }
+
+    public JTable getBangCTHD() {
+        return jTable2;
+    }
+    
+    public JTable getBangHD() {
+        return jTable3;
+    }
+
+    public void initBangPhieuTraHang(List<ChiTietHoaDon> listCTHD) {
+        DefaultTableModel model = (DefaultTableModel) jTable3.getModel();
+        model.setRowCount(0);
+        for(ChiTietHoaDon cthd : listCTHD){
+//            Object [] data = {
+//                cthd.get,
+//                cthd,
+//                cthd,
+//                cthd
+//            };
+//            model.addRow(data);
+        }    
+    }
+
+
 }

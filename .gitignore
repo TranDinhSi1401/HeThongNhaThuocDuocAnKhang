@@ -24,3 +24,4 @@ nb-configuration.xml
 # === System files ===
 .DS_Store
 Thumbs.db
+/bin/
