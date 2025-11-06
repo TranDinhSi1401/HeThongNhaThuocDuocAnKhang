@@ -58,6 +58,9 @@ public class GiaoDienChinhGUI extends javax.swing.JFrame {
                 if(index == 8 && subIndex == 0) {
                     dangXuat();
                 }
+                if(index == 5 && subIndex == 0) {
+                    showPanel(new TraCuuChungGUI());
+                } 
             }
         });
         if(tk != null) {
