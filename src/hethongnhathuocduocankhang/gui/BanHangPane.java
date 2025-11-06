@@ -861,23 +861,13 @@ public class BanHangPane extends javax.swing.JPanel {
     }//GEN-LAST:event_txtTimKiemActionPerformed
     
     private String taoMaHoaDonMoi(LocalDate ngay, int soThuTu) {
-        if(soThuTu < 10) {
-            return String.format("HD-%s-%04d", 
-            ngay.format(java.time.format.DateTimeFormatter.ofPattern("yyMMdd")),
-            soThuTu);
-        }
-        return String.format("HD-%s-%03d", 
+        return String.format("HD-%s-%04d", 
             ngay.format(java.time.format.DateTimeFormatter.ofPattern("yyMMdd")),
             soThuTu);
     }
 
     private String taoMaChiTietHoaDonMoi(LocalDate ngay, int soThuTu) {
-         if(soThuTu < 10) {
-            return String.format("CTHD-%s-%04d", 
-            ngay.format(java.time.format.DateTimeFormatter.ofPattern("yyMMdd")),
-            soThuTu);
-        }
-        return String.format("CTHD-%s-%03d", 
+        return String.format("CTHD-%s-%04d", 
             ngay.format(java.time.format.DateTimeFormatter.ofPattern("yyMMdd")),
             soThuTu);
     }
