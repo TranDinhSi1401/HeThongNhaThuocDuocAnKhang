@@ -211,9 +211,7 @@ public class BanHangPane extends javax.swing.JPanel {
         });
         pLeftSouth.add(btnXoa);
 
-        btnXoaTrang.setBackground(new java.awt.Color(255, 255, 255));
         btnXoaTrang.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btnXoaTrang.setForeground(new java.awt.Color(0, 0, 0));
         btnXoaTrang.setText("Xóa trắng");
         btnXoaTrang.setPreferredSize(new java.awt.Dimension(100, 35));
         btnXoaTrang.addActionListener(new java.awt.event.ActionListener() {
@@ -256,13 +254,11 @@ public class BanHangPane extends javax.swing.JPanel {
         p1.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 5, 0));
 
         lblSdtKH.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
-        lblSdtKH.setForeground(new java.awt.Color(0, 0, 0));
         lblSdtKH.setText("SĐT khách hàng:");
         p1.add(lblSdtKH);
 
         pThongTinKH.add(p1);
 
-        txtSdtKH.setBackground(new java.awt.Color(255, 255, 255));
         txtSdtKH.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         txtSdtKH.setForeground(new java.awt.Color(51, 51, 51));
         txtSdtKH.setText("0XXXXXXXXX");
@@ -283,7 +279,6 @@ public class BanHangPane extends javax.swing.JPanel {
         p2.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
         lblThongTinKH.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
-        lblThongTinKH.setForeground(new java.awt.Color(0, 0, 0));
         lblThongTinKH.setText("Thông tin khách hàng:");
         p2.add(lblThongTinKH);
 
@@ -347,7 +342,6 @@ public class BanHangPane extends javax.swing.JPanel {
         p6.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
         lblHinhThucThanhToan.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
-        lblHinhThucThanhToan.setForeground(new java.awt.Color(0, 0, 0));
         lblHinhThucThanhToan.setText("Hình thức thanh toán:");
         p6.add(lblHinhThucThanhToan);
 
@@ -380,7 +374,6 @@ public class BanHangPane extends javax.swing.JPanel {
         p8.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
         lblTongTien.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
-        lblTongTien.setForeground(new java.awt.Color(0, 0, 0));
         lblTongTien.setText("Tổng tiền:");
         p8.add(lblTongTien);
 
@@ -399,7 +392,6 @@ public class BanHangPane extends javax.swing.JPanel {
         p9.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
         lblTienKhachDua.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
-        lblTienKhachDua.setForeground(new java.awt.Color(0, 0, 0));
         lblTienKhachDua.setText("Tiền khách đưa:");
         p9.add(lblTienKhachDua);
 
@@ -409,7 +401,6 @@ public class BanHangPane extends javax.swing.JPanel {
 
         pThanhToan.add(p9);
 
-        txtTienKhachDua.setBackground(new java.awt.Color(255, 255, 255));
         txtTienKhachDua.setPreferredSize(new java.awt.Dimension(64, 30));
         txtTienKhachDua.setPreferredSize(new Dimension(Short.MAX_VALUE, 30));
         txtTienKhachDua.setMaximumSize(new Dimension(Integer.MAX_VALUE, 30));
@@ -454,7 +445,6 @@ public class BanHangPane extends javax.swing.JPanel {
         p11.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
         lblTienThua.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
-        lblTienThua.setForeground(new java.awt.Color(0, 0, 0));
         lblTienThua.setText("Tiền thừa:");
         p11.add(lblTienThua);
 
@@ -520,7 +510,6 @@ public class BanHangPane extends javax.swing.JPanel {
         pTimKiem.setLayout(new java.awt.BorderLayout(0, 10));
         pTimKiem.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
 
-        btnTimKiem.setBackground(new java.awt.Color(255, 255, 255));
         btnTimKiem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/search.png"))); // NOI18N
         btnTimKiem.setPreferredSize(new java.awt.Dimension(38, 40));
         btnTimKiem.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
@@ -532,7 +521,6 @@ public class BanHangPane extends javax.swing.JPanel {
         });
         pTimKiem.add(btnTimKiem, java.awt.BorderLayout.LINE_END);
 
-        txtTimKiem.setBackground(new java.awt.Color(255, 255, 255));
         txtTimKiem.setForeground(new java.awt.Color(117, 117, 117));
         txtTimKiem.setText("Nhập mã sản phẩm");
         txtTimKiem.setPreferredSize(new java.awt.Dimension(119, 40));
@@ -540,6 +528,14 @@ public class BanHangPane extends javax.swing.JPanel {
             BorderFactory.createLineBorder(Color.BLACK, 1, true),
             BorderFactory.createEmptyBorder(0, 10, 0, 0)
         ));
+        txtTimKiem.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txtTimKiemFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                txtTimKiemFocusLost(evt);
+            }
+        });
         txtTimKiem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtTimKiemActionPerformed(evt);
@@ -863,6 +859,18 @@ public class BanHangPane extends javax.swing.JPanel {
     private void txtTimKiemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTimKiemActionPerformed
         themSanPhamVaoTable();
     }//GEN-LAST:event_txtTimKiemActionPerformed
+
+    private void txtTimKiemFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtTimKiemFocusGained
+        if(txtTimKiem.getText().equals("Nhập mã sản phẩm")) {
+            txtTimKiem.setText("");
+        }
+    }//GEN-LAST:event_txtTimKiemFocusGained
+
+    private void txtTimKiemFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtTimKiemFocusLost
+        if(txtTimKiem.getText().equals("")) {
+            txtTimKiem.setText("Nhập mã sản phẩm");
+        }
+    }//GEN-LAST:event_txtTimKiemFocusLost
     
     private String taoMaHoaDonMoi(LocalDate ngay, int soThuTu) {
         if(soThuTu < 10) {

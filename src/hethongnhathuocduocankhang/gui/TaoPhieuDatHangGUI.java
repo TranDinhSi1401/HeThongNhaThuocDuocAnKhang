@@ -376,6 +376,7 @@ public class TaoPhieuDatHangGUI extends javax.swing.JPanel {
         });
 
         jButton5.setText("In phiếu");
+        jButton5.setEnabled(false);
         jButton5.setPreferredSize(new java.awt.Dimension(85, 23));
         jButton5.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -384,6 +385,7 @@ public class TaoPhieuDatHangGUI extends javax.swing.JPanel {
         });
 
         jButton6.setText("Làm mới");
+        jButton6.setEnabled(false);
         jButton6.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton6ActionPerformed(evt);
@@ -391,6 +393,7 @@ public class TaoPhieuDatHangGUI extends javax.swing.JPanel {
         });
 
         jButton7.setText("Lưu");
+        jButton7.setEnabled(false);
         jButton7.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton7ActionPerformed(evt);
@@ -577,6 +580,10 @@ public class TaoPhieuDatHangGUI extends javax.swing.JPanel {
     }
 
     private void thongTinPhieuDat() {
+        if(tk==null){
+            JOptionPane.showMessageDialog(this, "Nhân viên chưa đăng nhập!");
+            return;
+        }
         txtTenNhanVien.setText(tk.getNhanVien().getHoTenDem() + " " + tk.getNhanVien().getTen());
         ngayLap.setDate(new Date());
     }
