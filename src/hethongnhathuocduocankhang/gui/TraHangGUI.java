@@ -26,16 +26,336 @@ public class TraHangGUI extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jTabbedPane1 = new javax.swing.JTabbedPane();
+        jPanel8 = new javax.swing.JPanel();
+        jPanel9 = new javax.swing.JPanel();
+        jPanel11 = new javax.swing.JPanel();
+        jPanel12 = new javax.swing.JPanel();
+        jTextField2 = new javax.swing.JTextField();
+        jPanel13 = new javax.swing.JPanel();
+        jPanel10 = new javax.swing.JPanel();
+        jPanel2 = new javax.swing.JPanel();
+        jPanel14 = new javax.swing.JPanel();
+        jPanel16 = new javax.swing.JPanel();
+        jTextField4 = new javax.swing.JTextField();
+        jLabel6 = new javax.swing.JLabel();
+        jPanel17 = new javax.swing.JPanel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jTable3 = new javax.swing.JTable();
+        jPanel1 = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTable2 = new javax.swing.JTable();
+        jPanel3 = new javax.swing.JPanel();
+        jPanel4 = new javax.swing.JPanel();
+        jPanel6 = new javax.swing.JPanel();
+        jPanel7 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
+        jTextField1 = new javax.swing.JTextField();
+        jPanel15 = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        jTextField3 = new javax.swing.JTextField();
+        jPanel18 = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
+        jTextField5 = new javax.swing.JTextField();
+        jPanel19 = new javax.swing.JPanel();
+        jLabel4 = new javax.swing.JLabel();
+        jTextField6 = new javax.swing.JTextField();
+        jPanel5 = new javax.swing.JPanel();
+        jPanel21 = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
+        jPanel22 = new javax.swing.JPanel();
+        jLabel5 = new javax.swing.JLabel();
+        jTextField7 = new javax.swing.JTextField();
+        jPanel23 = new javax.swing.JPanel();
+        jPanel20 = new javax.swing.JPanel();
+        jButton3 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
+        jButton5 = new javax.swing.JButton();
+        jPanel24 = new javax.swing.JPanel();
 
-        setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        setLayout(new javax.swing.BoxLayout(this, javax.swing.BoxLayout.LINE_AXIS));
 
-        jLabel1.setText("Đây là giao diện trả hàng, chỉnh sửa ở file TraHangGUI.java");
-        add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 210, -1, -1));
+        jPanel8.setLayout(new java.awt.BorderLayout());
+
+        jPanel9.setLayout(new javax.swing.BoxLayout(jPanel9, javax.swing.BoxLayout.Y_AXIS));
+        jPanel9.add(jPanel11);
+
+        jPanel12.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+
+        jTextField2.setText("Nhập mã hóa đơn");
+        jTextField2.setPreferredSize(new java.awt.Dimension(500, 22));
+        jTextField2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField2ActionPerformed(evt);
+            }
+        });
+        jPanel12.add(jTextField2);
+
+        jPanel9.add(jPanel12);
+        jPanel9.add(jPanel13);
+
+        jPanel8.add(jPanel9, java.awt.BorderLayout.PAGE_START);
+
+        jPanel10.setLayout(new javax.swing.BoxLayout(jPanel10, javax.swing.BoxLayout.Y_AXIS));
+
+        jPanel2.setMaximumSize(new java.awt.Dimension(32767, 80));
+        jPanel10.add(jPanel2);
+
+        jPanel14.setBorder(javax.swing.BorderFactory.createTitledBorder("Có tài khoản thành viên"));
+        jPanel14.setLayout(new javax.swing.BoxLayout(jPanel14, javax.swing.BoxLayout.Y_AXIS));
+
+        jPanel16.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+
+        jTextField4.setText("Nhập số điện thoại");
+        jTextField4.setPreferredSize(new java.awt.Dimension(272, 22));
+        jTextField4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField4ActionPerformed(evt);
+            }
+        });
+        jPanel16.add(jTextField4);
+
+        jLabel6.setText("Ngày mua");
+        jPanel16.add(jLabel6);
+
+        jPanel14.add(jPanel16);
+
+        jPanel17.setBorder(javax.swing.BorderFactory.createTitledBorder("Hóa đơn đã mua"));
+        jPanel17.setPreferredSize(new java.awt.Dimension(452, 100));
+        jPanel17.setLayout(new javax.swing.BoxLayout(jPanel17, javax.swing.BoxLayout.LINE_AXIS));
+
+        jTable3.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4", "Title 5", "Title 6"
+            }
+        ));
+        jTable3.setPreferredSize(new java.awt.Dimension(300, 60));
+        jTable3.setShowVerticalLines(true);
+        jScrollPane3.setViewportView(jTable3);
+
+        jPanel17.add(jScrollPane3);
+
+        jPanel14.add(jPanel17);
+        jPanel14.add(jPanel1);
+
+        jPanel10.add(jPanel14);
+
+        jScrollPane2.setBorder(javax.swing.BorderFactory.createTitledBorder("Chi tiết hóa đơn"));
+
+        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4", "Title 5", "Title 6", "Title 7", "Title 8", "Title 9", "Title 10", "Title 11"
+            }
+        ));
+        jTable2.setShowGrid(false);
+        jTable2.setShowVerticalLines(true);
+        jScrollPane2.setViewportView(jTable2);
+
+        jPanel10.add(jScrollPane2);
+
+        jPanel8.add(jPanel10, java.awt.BorderLayout.CENTER);
+
+        jTabbedPane1.addTab("Tìm hóa đơn", jPanel8);
+
+        jPanel3.setLayout(new java.awt.BorderLayout());
+
+        jPanel4.setLayout(new javax.swing.BoxLayout(jPanel4, javax.swing.BoxLayout.Y_AXIS));
+
+        jPanel6.setLayout(new java.awt.GridLayout(2, 2));
+
+        jLabel1.setText("Mã phiếu trả hàng");
+        jLabel1.setPreferredSize(new java.awt.Dimension(110, 16));
+        jPanel7.add(jLabel1);
+
+        jTextField1.setPreferredSize(new java.awt.Dimension(250, 22));
+        jPanel7.add(jTextField1);
+
+        jPanel6.add(jPanel7);
+
+        jLabel2.setText("Nhân viên");
+        jLabel2.setPreferredSize(new java.awt.Dimension(80, 16));
+        jPanel15.add(jLabel2);
+
+        jTextField3.setPreferredSize(new java.awt.Dimension(250, 22));
+        jPanel15.add(jTextField3);
+
+        jPanel6.add(jPanel15);
+
+        jLabel3.setText("Ngày lập phiếu");
+        jLabel3.setPreferredSize(new java.awt.Dimension(110, 16));
+        jPanel18.add(jLabel3);
+
+        jTextField5.setPreferredSize(new java.awt.Dimension(250, 22));
+        jPanel18.add(jTextField5);
+
+        jPanel6.add(jPanel18);
+
+        jLabel4.setText("Mã hóa đơn");
+        jLabel4.setPreferredSize(new java.awt.Dimension(80, 16));
+        jPanel19.add(jLabel4);
+
+        jTextField6.setPreferredSize(new java.awt.Dimension(250, 22));
+        jTextField6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField6ActionPerformed(evt);
+            }
+        });
+        jPanel19.add(jTextField6);
+
+        jPanel6.add(jPanel19);
+
+        jPanel4.add(jPanel6);
+
+        jPanel3.add(jPanel4, java.awt.BorderLayout.PAGE_START);
+
+        jPanel5.setLayout(new javax.swing.BoxLayout(jPanel5, javax.swing.BoxLayout.Y_AXIS));
+
+        jPanel21.setBorder(javax.swing.BorderFactory.createTitledBorder("Chi tiết phiếu trả hàng"));
+        jPanel21.setLayout(new javax.swing.BoxLayout(jPanel21, javax.swing.BoxLayout.Y_AXIS));
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane1.setViewportView(jTable1);
+
+        jPanel21.add(jScrollPane1);
+
+        jPanel22.setMaximumSize(new java.awt.Dimension(32767, 30));
+        jPanel22.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
+
+        jLabel5.setText("Thành tiền");
+        jPanel22.add(jLabel5);
+
+        jTextField7.setPreferredSize(new java.awt.Dimension(160, 22));
+        jPanel22.add(jTextField7);
+        jPanel22.add(jPanel23);
+
+        jPanel21.add(jPanel22);
+
+        jPanel5.add(jPanel21);
+
+        jPanel3.add(jPanel5, java.awt.BorderLayout.CENTER);
+
+        jPanel20.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
+
+        jButton3.setText("Xóa rỗng");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+        jPanel20.add(jButton3);
+
+        jButton4.setText("Xóa");
+        jPanel20.add(jButton4);
+
+        jButton5.setText("Tạo phiếu");
+        jPanel20.add(jButton5);
+        jPanel20.add(jPanel24);
+
+        jPanel3.add(jPanel20, java.awt.BorderLayout.PAGE_END);
+
+        jTabbedPane1.addTab("Phiếu trả hàng", jPanel3);
+
+        add(jTabbedPane1);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField2ActionPerformed
+
+    private void jTextField4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField4ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField4ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton3ActionPerformed
+
+    private void jTextField6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField6ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField6ActionPerformed
+
+    private void jXDatePicker1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jXDatePicker1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jXDatePicker1ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel10;
+    private javax.swing.JPanel jPanel11;
+    private javax.swing.JPanel jPanel12;
+    private javax.swing.JPanel jPanel13;
+    private javax.swing.JPanel jPanel14;
+    private javax.swing.JPanel jPanel15;
+    private javax.swing.JPanel jPanel16;
+    private javax.swing.JPanel jPanel17;
+    private javax.swing.JPanel jPanel18;
+    private javax.swing.JPanel jPanel19;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel20;
+    private javax.swing.JPanel jPanel21;
+    private javax.swing.JPanel jPanel22;
+    private javax.swing.JPanel jPanel23;
+    private javax.swing.JPanel jPanel24;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
+    private javax.swing.JPanel jPanel8;
+    private javax.swing.JPanel jPanel9;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JTabbedPane jTabbedPane1;
+    private javax.swing.JTable jTable1;
+    private javax.swing.JTable jTable2;
+    private javax.swing.JTable jTable3;
+    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextField2;
+    private javax.swing.JTextField jTextField3;
+    private javax.swing.JTextField jTextField4;
+    private javax.swing.JTextField jTextField5;
+    private javax.swing.JTextField jTextField6;
+    private javax.swing.JTextField jTextField7;
     // End of variables declaration//GEN-END:variables
 }

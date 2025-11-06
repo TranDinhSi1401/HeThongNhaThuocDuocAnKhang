@@ -6,6 +6,7 @@ package hethongnhathuocduocankhang.gui;
 
 import hethongnhathuocduocankhang.entity.TaiKhoan;
 import hethongnhathuocduocankhang.menu.MenuEvent;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -50,12 +51,17 @@ public class GiaoDienChinhGUI extends javax.swing.JFrame {
                 if(index == 3 && subIndex == 0) {
                     showPanel(new TraHangGUI());
                 } 
+                
                 if(index == 4 && subIndex == 0) {
                     showPanel(new TaoPhieuDatHangGUI());
                 } 
+
                 if(index == 8 && subIndex == 0) {
                     dangXuat();
                 }
+                if(index == 5 && subIndex == 0) {
+                    showPanel(new TraCuuChungGUI());
+                } 
             }
         });
         if(tk != null) {
@@ -68,8 +74,10 @@ public class GiaoDienChinhGUI extends javax.swing.JFrame {
             GiaoDienChinhGUI.tk = tk;
         }
         setTitle("Hệ thống nhà thuốc Dược An Khang");
-        setSize(1000, 600);
-        setLocationRelativeTo(null);
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
+        setResizable(false);
+        //setSize(1000, 600);
+        //setLocationRelativeTo(null);
         setVisible(true);
     }
     
