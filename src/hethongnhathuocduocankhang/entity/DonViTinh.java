@@ -10,6 +10,7 @@ import java.util.regex.Pattern;
  *
  * @author MINH KHANG
  */
+
 public class DonViTinh {
     private String maDonViTinh;
     private SanPham sanPham;
@@ -23,7 +24,7 @@ public class DonViTinh {
     }
 
     public DonViTinh(String maDonViTinh, SanPham sanPham, int heSoQuyDoi,
-                     double giaBanTheoDonVi, String tenDonVi, boolean donViTinhCoBan) {
+            double giaBanTheoDonVi, String tenDonVi, boolean donViTinhCoBan) {
         setMaDonViTinh(maDonViTinh);
         setSanPham(sanPham);
         setHeSoQuyDoi(heSoQuyDoi);
@@ -34,7 +35,11 @@ public class DonViTinh {
 
     public DonViTinh(DonViTinh dvt) {
         this(dvt.maDonViTinh, dvt.sanPham, dvt.heSoQuyDoi,
-             dvt.giaBanTheoDonVi, dvt.tenDonVi, dvt.donViTinhCoBan);
+                dvt.giaBanTheoDonVi, dvt.tenDonVi, dvt.donViTinhCoBan);
+    }
+
+    public DonViTinh(String maDVT) {
+        this.maDonViTinh = maDVT;
     }
 
     // --- Getter & Setter ---
@@ -42,9 +47,17 @@ public class DonViTinh {
         return maDonViTinh;
     }
 
+    public DonViTinh(String maDonViTinh, SanPham sanPham, double giaBanTheoDonVi, String tenDonVi) {
+        this.maDonViTinh = maDonViTinh;
+        this.sanPham = sanPham;
+        this.giaBanTheoDonVi = giaBanTheoDonVi;
+        this.tenDonVi = tenDonVi;
+    }
+
     public void setMaDonViTinh(String maDonViTinh) {
         if (maDonViTinh == null || !Pattern.matches("^DVT-\\d{4}-[A-Z]+$", maDonViTinh)) {
-            throw new IllegalArgumentException("Mã đơn vị tính phải theo định dạng DVT-[xxxx]-[ĐƠN_VỊ]. Ví dụ: DVT-0001-HOP");
+            throw new IllegalArgumentException(
+                    "Mã đơn vị tính phải theo định dạng DVT-[xxxx]-[ĐƠN_VỊ]. Ví dụ: DVT-0001-HOP");
         }
         this.maDonViTinh = maDonViTinh;
     }

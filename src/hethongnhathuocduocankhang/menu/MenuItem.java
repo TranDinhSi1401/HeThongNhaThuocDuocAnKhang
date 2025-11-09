@@ -7,6 +7,7 @@ package hethongnhathuocduocankhang.menu;
 import hethongnhathuocduocankhang.effect.RippleEffect;
 import hethongnhathuocduocankhang.swing.shadow.ShadowRenderer;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -40,7 +41,8 @@ public class MenuItem extends JButton{
         setContentAreaFilled(false);
         setForeground(Color.WHITE);
         setHorizontalAlignment(SwingConstants.LEFT);
-        setBorder(new EmptyBorder(9, 10, 9, 10));
+        setFont(new Font("Segoe UI", Font.BOLD, 15));
+        setBorder(new EmptyBorder(14, 10, 14, 10));
         setIconTextGap(10);
         rippleEffect = new RippleEffect(this);
         rippleEffect.setRippleColor(new Color(220, 220, 220));

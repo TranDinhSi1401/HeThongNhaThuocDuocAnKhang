@@ -18,17 +18,20 @@ public class SanPham {
     private LoaiSanPhamEnum loaiSanPhamEnum;
     private int tonToiThieu;
     private int tonToiDa;
-
     // Enum loại sản phẩm
 
 
-    // --- Constructor ---
-    public SanPham() {
+        // -- Con
+
+    
+    public SanPham(String maSP) {
+        setMaSP(maSP);
     }
 
     public SanPham(String maSP, String ten, String moTa, String thanhPhan,
-                   LoaiSanPhamEnum loaiSanPhamEnum, int tonToiThieu, int tonToiDa
-                   ) {
+
+
+    
         setMaSP(maSP);
         setTen(ten);
         setMoTa(moTa);
@@ -36,33 +39,38 @@ public class SanPham {
         setLoaiSanPham(loaiSanPhamEnum);
         setTonToiThieu(tonToiThieu);
         setTonToiDa(tonToiDa);
+
     }
 
     // Copy constructor
     public SanPham(SanPham sp) {
         this(sp.maSP, sp.ten, sp.moTa, sp.thanhPhan, sp.loaiSanPhamEnum,
-             sp.tonToiThieu, sp.tonToiDa);
+                sp.tonToiThieu, sp.tonToiDa);
+    }
+
+    public SanPham(String maSP, String ten) {
+        this.maSP = maSP;
+        this.ten = ten;
     }
 
     // --- Getter & Setter ---
-    public String getMaSP() {
+                ring getMaSP() {
         return maSP;
     }
 
     public void setMaSP(String maSP) {
         if (maSP == null || !Pattern.matches("^SP-\\d{4}$", maSP)) {
-            throw new IllegalArgumentException("Không được rỗng, không trùng, phải theo định dạng SP-[XXXX]. Với X là số nguyên từ 0–9.");
-        }
-        this.maSP = maSP;
-    }
+     
 
+    
     public String getTen() {
         return ten;
     }
 
     public void setTen(String ten) {
         if (ten == null || ten.trim().isEmpty()) {
-            throw new IllegalArgumentException("Tên thuốc không được rỗng.");
+            throw new IllegalArgumentException(
+                    "Tên thuốc không được rỗng.");
         }
         this.ten = ten.trim();
     }
@@ -95,7 +103,8 @@ public class SanPham {
 
     public void setLoaiSanPham(LoaiSanPhamEnum loaiSanPhamEnum) {
         if (loaiSanPhamEnum == null) {
-            throw new IllegalArgumentException("Loại sản phẩm không được rỗng và phải thuộc THUOC hoặc THUC_PHAM_CHUC_NANG.");
+            throw new IllegalArgumentException(
+                    "Loại sản phẩm không được rỗng và phải thuộc THUOC hoặc THUC_PHAM_CHUC_NANG.");
         }
         this.loaiSanPhamEnum = loaiSanPhamEnum;
     }
@@ -105,7 +114,8 @@ public class SanPham {
     }
 
     public void setTonToiThieu(int tonToiThieu) {
-        if (tonToiThieu < 0 || (this.tonToiDa > 0 && tonToiThieu >= this.tonToiDa)) {
+        if (tonToiThieu < 0 || (this.tonToiDa >
+                     0 && tonToiThieu >= this.tonToiDa)) {
             throw new IllegalArgumentException("Số lượng tối thiểu là số nguyên dương và nhỏ hơn số lượng tối đa.");
         }
         this.tonToiThieu = tonToiThieu;
@@ -120,19 +130,20 @@ public class SanPham {
             throw new IllegalArgumentException("Số lượng tối đa là số nguyên dương và lớn hơn số lượng tối thiểu.");
         }
         this.tonToiDa = tonToiDa;
-    }
+    }<<<<<<<HEAD
 
-    
+    =======
+
+    >>>>>>>master
+
     @Override
     public String toString() {
         return "SanPham{" +
                 "maSP='" + maSP + '\'' +
-                ", ten='" + ten + '\'' +
-                ", moTa='" + moTa + '\'' +
-                ", thanhPhan='" + thanhPhan + '\'' +
-                ", loaiSanPhamEnum=" + loaiSanPhamEnum +
-                ", tonToiThieu=" + tonToiThieu +
-                ", tonToiDa=" + tonToiDa +
-                '}';
-    }
-}
+                
+
+           
+
+        }
+
+    

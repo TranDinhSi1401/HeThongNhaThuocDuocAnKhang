@@ -490,10 +490,10 @@ GO
 -- 7. Bảng TaiKhoan
 -- ===================================================================
 INSERT INTO TaiKhoan (tenDangNhap, matKhau, quanLy, biKhoa, email, ngayTao) VALUES
-('NV-0001', N'hashed_password_placeholder_1', 0, 0, N'vtkhoa_staff@gmail.com', '2025-01-01 08:00:00'),
-('NV-0002', N'hashed_password_placeholder_2', 1, 0, N'h.m.khang_manager@gmail.com', '2025-01-01 08:01:00'),
-('NV-0003', N'hashed_password_placeholder_3', 0, 0, N'n.k.quan_staff@gmail.com', '2025-01-01 08:02:00'),
-('NV-0004', N'hashed_password_placeholder_4', 0, 0, N't.d.si_locked@gmail.com', '2025-01-01 08:03:00');
+('NV-0001', N'Votienkhoa123@', 0, 0, N'vtkhoa_staff@gmail.com', '2025-01-01 08:00:00'),
+('NV-0002', N'Hominhkhang123@', 1, 0, N'h.m.khang_manager@gmail.com', '2025-01-01 08:01:00'),
+('NV-0003', N'Nguyenkhanhquan123@', 0, 0, N'n.k.quan_staff@gmail.com', '2025-01-01 08:02:00'),
+('NV-0004', N'Trandinhsi123@', 0, 0, N't.d.si_locked@gmail.com', '2025-01-01 08:03:00');
 GO
 
 
@@ -754,3 +754,9 @@ INSERT INTO ChiTietPhieuTraHang (maPhieuTraHang, maChiTietHoaDon, soLuong, truon
     17000.00 -- Hoàn đúng giá gốc của sản phẩm
 );
 GO
+
+SELECT *
+FROM SanPham SP JOIN SanPhamCungCap SPCC 
+ON SP.maSP = SPCC.maSP JOIN NhaCungCap NCC
+ON SPCC.maNCC = NCC.maNCC
+WHERE NCC.tenNCC = N'Zuellig Pharma Việt Nam'

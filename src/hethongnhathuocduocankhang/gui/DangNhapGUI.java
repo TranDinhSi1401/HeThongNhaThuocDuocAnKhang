@@ -4,10 +4,14 @@
  */
 package hethongnhathuocduocankhang.gui;
 
+import hethongnhathuocduocankhang.connectDB.ConnectDB;
+import hethongnhathuocduocankhang.dao.TaiKhoanDAO;
+import hethongnhathuocduocankhang.entity.TaiKhoan;
 import java.awt.Cursor;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import javax.swing.JLayeredPane;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
 import javax.swing.border.EmptyBorder;
 
 /**
@@ -23,14 +27,19 @@ public class DangNhapGUI extends javax.swing.JFrame{
      */
     public DangNhapGUI() {
         initComponents();
+
+        try {
+            ConnectDB.getInstance().connect();
+        }catch(SQLException e) {
+            e.printStackTrace();
+        }
         
         lblQuenMatKhau.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        lblCheMatKhau.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        jLayeredPane.setLayer(lblCheMatKhau, JLayeredPane.POPUP_LAYER);
+        btnCheMatKhau.setCursor(new Cursor(Cursor.HAND_CURSOR));
         txtTaiKhoan.setBorder(new EmptyBorder(5, 10, 5, 10));
         txtMatKhau.setBorder(new EmptyBorder(5, 10, 5, 10));
         txtMatKhau.setEchoChar('•');
-        lblCheMatKhau.addMouseListener(new MouseAdapter() {
+        btnCheMatKhau.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 cheMatKhau();
@@ -62,9 +71,8 @@ public class DangNhapGUI extends javax.swing.JFrame{
         lblMatKhau = new javax.swing.JLabel();
         btnDangNhap = new javax.swing.JButton();
         lblQuenMatKhau = new javax.swing.JLabel();
-        jLayeredPane = new javax.swing.JLayeredPane();
         txtMatKhau = new javax.swing.JPasswordField();
-        lblCheMatKhau = new javax.swing.JLabel();
+        btnCheMatKhau = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -117,20 +125,28 @@ public class DangNhapGUI extends javax.swing.JFrame{
         lblQuenMatKhau.setBackground(new java.awt.Color(51, 51, 51));
         lblQuenMatKhau.setFont(new java.awt.Font("Segoe UI", 2, 12)); // NOI18N
         lblQuenMatKhau.setText("<html><u>Quên mật khẩu?</u></html>");
+        lblQuenMatKhau.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblQuenMatKhauMouseClicked(evt);
+            }
+        });
         pDangNhap.add(lblQuenMatKhau, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 240, 90, 30));
-
-        jLayeredPane.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         txtMatKhau.setBackground(new java.awt.Color(245, 245, 245));
         txtMatKhau.setForeground(new java.awt.Color(0, 0, 0));
         txtMatKhau.setBorder(null);
-        jLayeredPane.add(txtMatKhau, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 0, 330, 40));
+        txtMatKhau.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtMatKhauActionPerformed(evt);
+            }
+        });
+        pDangNhap.add(txtMatKhau, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 200, 290, 40));
 
-        lblCheMatKhau.setForeground(new java.awt.Color(0, 0, 0));
-        lblCheMatKhau.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/hidePasswordEye.png"))); // NOI18N
-        jLayeredPane.add(lblCheMatKhau, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 10, -1, -1));
-
-        pDangNhap.add(jLayeredPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 200, 450, 50));
+        btnCheMatKhau.setBackground(new java.awt.Color(245, 245, 245));
+        btnCheMatKhau.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/hidePasswordEye.png"))); // NOI18N
+        btnCheMatKhau.setToolTipText("");
+        btnCheMatKhau.setBorder(null);
+        pDangNhap.add(btnCheMatKhau, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 200, 40, 40));
 
         pCenter.add(pDangNhap, new java.awt.GridBagConstraints());
 
@@ -140,8 +156,54 @@ public class DangNhapGUI extends javax.swing.JFrame{
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnDangNhapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDangNhapActionPerformed
-        // TODO add your handling code here:
+        dangNhap();
     }//GEN-LAST:event_btnDangNhapActionPerformed
+
+    private void dangNhap() {
+        String tenDangNhap = txtTaiKhoan.getText().trim();
+        String matKhau = new String(txtMatKhau.getPassword()).trim();
+
+        if (tenDangNhap.isEmpty() || matKhau.isEmpty()) {
+            javax.swing.JOptionPane.showMessageDialog(this,
+                    "Vui lòng nhập đầy đủ tài khoản và mật khẩu!",
+                    "Thiếu thông tin",
+                    javax.swing.JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
+        TaiKhoan tk = TaiKhoanDAO.getTaiKhoanTheoTenDangNhapVaMatKhau(tenDangNhap, matKhau);
+        if (tk != null) {          
+            new GiaoDienChinhGUI(tk);
+            this.dispose();
+        } else {
+            javax.swing.JOptionPane.showMessageDialog(this,
+                    "Sai tài khoản hoặc mật khẩu!",
+                    "Đăng nhập thất bại",
+                    javax.swing.JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
+    private void txtMatKhauActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMatKhauActionPerformed
+        dangNhap();
+    }//GEN-LAST:event_txtMatKhauActionPerformed
+
+    private void lblQuenMatKhauMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblQuenMatKhauMouseClicked
+        String email = JOptionPane.showInputDialog(this, "Nhập email đã đăng ký để đặt lại mật khẩu:");
+        if (email != null && !email.trim().isEmpty()) {
+            if (TaiKhoanDAO.kiemTraEmailTonTai(email.trim())) {
+                JOptionPane.showMessageDialog(this,
+                    "Một liên kết đặt lại mật khẩu đã được gửi đến " + email,
+                    "Đặt lại mật khẩu",
+                    JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(this,
+                    "Email không tồn tại trong hệ thống!",
+                    "Lỗi",
+                    JOptionPane.ERROR_MESSAGE);
+            }
+        }
+
+    }//GEN-LAST:event_lblQuenMatKhauMouseClicked
 
     private void cheMatKhau() {
         isVisible = !isVisible;
@@ -177,9 +239,8 @@ public class DangNhapGUI extends javax.swing.JFrame{
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnCheMatKhau;
     private javax.swing.JButton btnDangNhap;
-    private javax.swing.JLayeredPane jLayeredPane;
-    private javax.swing.JLabel lblCheMatKhau;
     private javax.swing.JLabel lblLogo;
     private javax.swing.JLabel lblMatKhau;
     private javax.swing.JLabel lblQuenMatKhau;
