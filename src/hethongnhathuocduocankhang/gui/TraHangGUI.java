@@ -12,7 +12,9 @@ import java.awt.event.MouseListener;
 import hethongnhathuocduocankhang.bus.TraHangBUS;
 import hethongnhathuocduocankhang.entity.ChiTietHoaDon;
 import hethongnhathuocduocankhang.entity.HoaDon;
+import hethongnhathuocduocankhang.entity.SanPham;
 import java.util.List;
+import javax.swing.JComboBox;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
@@ -41,7 +43,6 @@ public class TraHangGUI extends javax.swing.JPanel {
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel8 = new javax.swing.JPanel();
         jPanel9 = new javax.swing.JPanel();
-        jPanel11 = new javax.swing.JPanel();
         jPanel12 = new javax.swing.JPanel();
         jTextField2 = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
@@ -91,7 +92,6 @@ public class TraHangGUI extends javax.swing.JPanel {
         jPanel8.setLayout(new java.awt.BorderLayout());
 
         jPanel9.setLayout(new javax.swing.BoxLayout(jPanel9, javax.swing.BoxLayout.Y_AXIS));
-        jPanel9.add(jPanel11);
 
         jPanel12.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
@@ -194,7 +194,7 @@ public class TraHangGUI extends javax.swing.JPanel {
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Boolean.class
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Integer.class, java.lang.Boolean.class
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -268,15 +268,23 @@ public class TraHangGUI extends javax.swing.JPanel {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
             },
             new String [] {
-                "Tên sản phẩm", "Số lượng", "Tình trạng", "Lý do", "Thành tiền", "Phần trăm đổi trả"
+                "Tên sản phẩm", "Số lượng", "Tình trạng", "Lý do", "Thành tiền", "Giá trị hoàn trả", "Thành tiền cuối cùng"
             }
-        ));
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.Integer.class, java.lang.Boolean.class, java.lang.Object.class, java.lang.Double.class, java.lang.String.class, java.lang.Double.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
         jScrollPane1.setViewportView(jTable1);
 
         jPanel21.add(jScrollPane1);
@@ -364,7 +372,6 @@ public class TraHangGUI extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel10;
-    private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel12;
     private javax.swing.JPanel jPanel14;
     private javax.swing.JPanel jPanel15;
@@ -404,62 +411,5 @@ public class TraHangGUI extends javax.swing.JPanel {
     public String getMaHoaDon() {
         return jTextField2.getText();
     }
-
-    public void initBan(List<ChiTietHoaDon> listCTHD) {
-        DefaultTableModel model = (DefaultTableModel) jTable2.getModel();
-        for(ChiTietHoaDon chiTietHoaDon: listCTHD){
-            Object [] data = {
-                chiTietHoaDon.getMaChiTietHoaDon(),
-                chiTietHoaDon.getDonViTinh().getSanPham().getTen(),
-                chiTietHoaDon.getThanhTien()
-            };
-            model.addRow(data);
-        }
-    }
-
-    public String getSoDienThoai() {
-        return jTextField4.getText();
-    }
-
-    public void initBangHoaDon(List<HoaDon> listHD) {
-        DefaultTableModel model = (DefaultTableModel) jTable3.getModel();
-        model.setRowCount(0);
-        for(HoaDon hoaDon: listHD){
-            Object [] data = {
-                hoaDon.getMaHoaDon(),
-                hoaDon.getNgayLapHoaDon(),
-                hoaDon.getTongTien()
-            };
-            model.addRow(data);
-        }
-    }
-
-    public void clearCTHD() {
-        DefaultTableModel m2 = (DefaultTableModel) jTable2.getModel();
-        m2.setRowCount(0);
-    }
-
-    public JTable getBangCTHD() {
-        return jTable2;
-    }
-    
-    public JTable getBangHD() {
-        return jTable3;
-    }
-
-    public void initBangPhieuTraHang(List<ChiTietHoaDon> listCTHD) {
-        DefaultTableModel model = (DefaultTableModel) jTable3.getModel();
-        model.setRowCount(0);
-        for(ChiTietHoaDon cthd : listCTHD){
-//            Object [] data = {
-//                cthd.get,
-//                cthd,
-//                cthd,
-//                cthd
-//            };
-//            model.addRow(data);
-        }    
-    }
-
 
 }

@@ -30,6 +30,10 @@ public class ChiTietHoaDon {
         this.thanhTien = thanhTien;
     }
 
+    public ChiTietHoaDon() {
+
+    }
+
     public String getMaChiTietHoaDon() {
         return maChiTietHoaDon;
     }
