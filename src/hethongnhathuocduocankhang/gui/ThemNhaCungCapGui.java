@@ -4,18 +4,118 @@
  */
 package hethongnhathuocduocankhang.gui;
 
+import hethongnhathuocduocankhang.entity.NhaCungCap; // THAY ĐỔI
+import java.awt.Window;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.JComponent;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
+
 /**
  *
- * @author admin
+ * @author GIGABYTE
  */
-public class ThemNhaCungCapGUI extends javax.swing.JPanel {
+public class ThemNhaCungCapGUI extends javax.swing.JPanel { // THAY ĐỔI
 
-    /**
-     * Creates new form QuanLyNhaCungCapGui
-     */
+    private NhaCungCap nhaCungCapMoi = null; // THAY ĐỔI
+    private javax.swing.JTextField jTextField5; // Thêm cho Email
+    private javax.swing.JLabel jLabel6;      // Thêm cho Email
+
     public ThemNhaCungCapGUI() {
         initComponents();
+
+        jButton2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                xuLyXacNhan();
+            }
+        });
+
+        // Tên NCC
+        jTextField2.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                validateTenNCC();
+            }
+        });
+
+        // Địa chỉ
+        jTextField3.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                validateDiaChi();
+            }
+        });
+
+        // SĐT
+        jTextField4.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                validateSDT();
+            }
+        });
+
+        // Email
+        jTextField5.addActionListener(new ActionListener() {
+             @Override
+             public void actionPerformed(ActionEvent e) {
+                 validateEmail();
+             }
+         });
     }
+
+    @SuppressWarnings("unchecked")
+    public javax.swing.JButton getBtnHuy() {
+        return jButton1;
+    }
+
+    public javax.swing.JButton getBtnXacNhan() {
+        return jButton2;
+    }
+
+    // Getters for TextFields
+    public javax.swing.JTextField getTxtMaNCC() {
+        return jTextField1;
+    }
+
+    public javax.swing.JTextField getTxtTenNCC() {
+        return jTextField2;
+    }
+
+    public javax.swing.JTextField getTxtDiaChi() {
+        return jTextField3;
+    }
+
+    public javax.swing.JTextField getTxtSDT() {
+        return jTextField4;
+    }
+
+    public javax.swing.JTextField getTxtEmail() {
+        return jTextField5;
+    }
+
+    // Setters for TextFields
+    public void setTxtMaNCC(String maNCC) {
+        jTextField1.setText(maNCC);
+    }
+
+    public void setTxtTenNCC(String tenNCC) {
+        jTextField2.setText(tenNCC);
+    }
+
+    public void setTxtDiaChi(String diaChi) {
+        jTextField3.setText(diaChi);
+    }
+
+    public void setTxtSDT(String sdt) {
+        jTextField4.setText(sdt);
+    }
+
+    public void setTxtEmail(String email) {
+        jTextField5.setText(email);
+    }
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -28,130 +128,237 @@ public class ThemNhaCungCapGUI extends javax.swing.JPanel {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
+        jPanel2 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel(); // THÊM LABEL CHO EMAIL
         jTextField1 = new javax.swing.JTextField();
         jTextField2 = new javax.swing.JTextField();
         jTextField3 = new javax.swing.JTextField();
         jTextField4 = new javax.swing.JTextField();
-        jTextField6 = new javax.swing.JTextField();
+        jTextField5 = new javax.swing.JTextField(); // THÊM TEXTFIELD CHO EMAIL
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
 
         setLayout(new java.awt.BorderLayout());
 
+        jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel1.setText("Nhập thông tin nhà cung cấp");
-
-        jLabel2.setText("Mã nhà cung cấp:");
-
-        jLabel3.setText("Số điện thoại:");
-
-        jLabel4.setText("Sản phẩm cung cấp:");
-
-        jLabel5.setText("Email:");
-
-        jLabel6.setText("Tên nhà cung cấp:");
-
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
-            }
-        });
-
-        jButton1.setText("Xác nhận");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-
-        jButton2.setText("Hủy");
+        jLabel1.setText("Thông tin Nhà Cung Cấp"); // THAY ĐỔI
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+            .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButton2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton1)
-                        .addGap(23, 23, 23))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel6)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel5)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel2))
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextField6))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                .addGap(7, 7, 7)
-                                .addComponent(jTextField4, javax.swing.GroupLayout.DEFAULT_SIZE, 236, Short.MAX_VALUE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jTextField1)
-                                    .addComponent(jTextField3)
-                                    .addComponent(jTextField2)))))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                .addComponent(jLabel1)
+                .addContainerGap(195, Short.MAX_VALUE)) // Điều chỉnh
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        add(jPanel1, java.awt.BorderLayout.PAGE_START);
+
+        jPanel2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+
+        jLabel2.setText("Mã NCC:"); // THAY ĐỔI
+
+        jLabel3.setText("Tên NCC:"); // THAY ĐỔI
+
+        jLabel4.setText("Địa chỉ:"); // THAY ĐỔI
+
+        jLabel5.setText("Số điện thoại:"); // THAY ĐỔI
+
+        jLabel6.setText("Email:"); // THAY ĐỔI
+
+        jTextField1.setEnabled(false);
+
+        jButton1.setText("Hủy");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        jButton2.setText("Xác nhận");
+
+        // TÁI CẤU TRÚC LAYOUT
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addGap(0, 227, Short.MAX_VALUE) // Điều chỉnh
+                        .addComponent(jButton1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jButton2))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel5)
+                            .addComponent(jLabel6)) // THÊM
+                        .addGap(24, 24, 24)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jTextField1)
+                            .addComponent(jTextField2)
+                            .addComponent(jTextField3)
+                            .addComponent(jTextField4)
+                            .addComponent(jTextField5)))) // THÊM
+                .addContainerGap())
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(20, 20, 20)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
                     .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5))
-                .addGap(17, 17, 17)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 52, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel5)
+                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18) // THÊM
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE) // THÊM
+                    .addComponent(jLabel6) // THÊM
+                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)) // THÊM
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE) // Điều chỉnh
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(jButton2))
                 .addContainerGap())
         );
 
-        add(jPanel1, java.awt.BorderLayout.CENTER);
+
+        add(jPanel2, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
-
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+        xuLyHuy();
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private void showError(String message, JComponent component) {
+        JOptionPane.showMessageDialog(this, message, "Lỗi nhập liệu", JOptionPane.ERROR_MESSAGE);
+        if (component != null) {
+            component.requestFocusInWindow();
+        }
+    }
+
+    private void xuLyHuy() {
+        this.nhaCungCapMoi = null; // THAY ĐỔI
+        closeDialog();
+    }
+
+    private void closeDialog() {
+        Window window = SwingUtilities.getWindowAncestor(this);
+        if (window != null) {
+            window.dispose();
+        }
+    }
+
+    public NhaCungCap getNhaCungCapMoi() { // THAY ĐỔI
+        return this.nhaCungCapMoi;
+    }
+
+    // VALIDATION METHODS (THAY ĐỔI)
+    private boolean validateTenNCC() {
+        String ten = jTextField2.getText().trim();
+        if (ten.isEmpty()) {
+            showError("Tên nhà cung cấp không được rỗng.", jTextField2);
+            return false;
+        }
+         if (ten.length() > 100) {
+            showError("Tên nhà cung cấp không quá 100 ký tự.", jTextField2);
+            return false;
+        }
+        return true;
+    }
+
+    private boolean validateDiaChi() {
+        String diaChi = jTextField3.getText().trim();
+         if (diaChi.length() > 255) { // Dựa theo DB schema (NVARCHAR 255)
+            showError("Địa chỉ không quá 255 ký tự.", jTextField3);
+            return false;
+        }
+        // Địa chỉ có thể rỗng hoặc null nên không cần check isEmpty
+        return true;
+    }
+
+    private boolean validateSDT() {
+        String sdt = jTextField4.getText().trim();
+        if (!sdt.matches("0\\d{9}")) {
+            showError("Số điện thoại phải đủ 10 số và bắt đầu bằng 0.", jTextField4);
+            return false;
+        }
+        return true;
+    }
+
+    private boolean validateEmail() {
+        String email = jTextField5.getText().trim();
+        if (email.isEmpty()) {
+             showError("Email không được rỗng.", jTextField5);
+            return false;
+        }
+        // Regex kiểm tra định dạng email tổng quát hơn thay vì chỉ @gmail.com
+        if (!email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$")) {
+             showError("Email không đúng định dạng.", jTextField5);
+            return false;
+        }
+         if (email.length() > 255) { // Dựa theo DB schema (NVARCHAR 255)
+            showError("Email không quá 255 ký tự.", jTextField5);
+            return false;
+        }
+        return true;
+    }
+
+
+    private void xuLyXacNhan() {
+        // 1. Validate inputs
+        if (!validateTenNCC() || !validateDiaChi() || !validateSDT() || !validateEmail()) {
+            return;
+        }
+
+        try {
+            // 2. Get data
+            String maNCC = jTextField1.getText().trim();
+            String tenNCC = jTextField2.getText().trim();
+            String diaChi = jTextField3.getText().trim();
+            String sdt = jTextField4.getText().trim();
+            String email = jTextField5.getText().trim();
+
+            // 3. Tạo đối tượng NhaCungCap (sử dụng constructor)
+            this.nhaCungCapMoi = new NhaCungCap(maNCC, tenNCC, diaChi, sdt, email);
+
+            // 4. Đóng dialog
+            closeDialog();
+
+        } catch (Exception ex) {
+            // Bắt lỗi khác nếu có
+            this.nhaCungCapMoi = null;
+            showError("Lỗi hệ thống: " + ex.getMessage(), null);
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
@@ -161,12 +368,13 @@ public class ThemNhaCungCapGUI extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
+    //private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField6;
-    // End of variables declaration//GEN-END:variables
+    //private javax.swing.JTextField jTextField5;
+   // End of variables declaration//GEN-END:variables
 }
