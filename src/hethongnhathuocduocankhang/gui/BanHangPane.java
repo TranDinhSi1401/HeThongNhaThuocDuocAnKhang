@@ -52,9 +52,14 @@ public class BanHangPane extends javax.swing.JPanel {
     /**
      * Creates new form BanHangGUI
      */
-    public BanHangPane() {
-        initComponents(); 
+    
+    public JTextField getTxtTimKiem() {
+        return txtTimKiem; 
+    }
 
+    public BanHangPane() {
+        initComponents();
+        
         try {
             ConnectDB.getInstance().connect();
         }catch(SQLException e) {
@@ -76,7 +81,7 @@ public class BanHangPane extends javax.swing.JPanel {
         ButtonGroup group = new ButtonGroup();
         group.add(radTienMat);
         group.add(radChuyenKhoan);
-        
+
         DefaultTableModel model = (DefaultTableModel)tblCTHD.getModel();
         model.addTableModelListener(e -> {
             if (e.getColumn() == 2 || e.getColumn() == 4) {
@@ -124,6 +129,10 @@ public class BanHangPane extends javax.swing.JPanel {
                 }
                 capNhatTongTien(model);
             }
+        });
+        
+        SwingUtilities.invokeLater(() -> {
+            txtTimKiem.requestFocusInWindow();
         });
     }
 
@@ -584,7 +593,7 @@ public class BanHangPane extends javax.swing.JPanel {
 
     private void themSanPhamVaoTable() {
         String maSP = txtTimKiem.getText();
-        SanPham sp = SanPhamDAO.getSanPhamTheoMaSP(maSP);
+        SanPham sp = SanPhamDAO.timSPTheoMa(maSP);
         ArrayList<DonViTinh> dsDVT = DonViTinhDAO.getDonViTinhTheoMaSP(maSP);
         ArrayList<KhuyenMai> dsKM = KhuyenMaiDAO.getKhuyenMaiTheoMaSP(maSP);
         ArrayList<LoSanPham> dsLSP = LoSanPhamDAO.getLoSanPhamTheoMaSP(maSP);
@@ -858,6 +867,11 @@ public class BanHangPane extends javax.swing.JPanel {
 
     private void txtTimKiemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTimKiemActionPerformed
         themSanPhamVaoTable();
+        // 4.1: Xóa nội dung trong ô text để chuẩn bị cho lần quét tiếp theo
+        txtTimKiem.setText(""); 
+        
+        // 4.2: Tự động đặt con trỏ chuột trở lại ô này
+        txtTimKiem.requestFocusInWindow();
     }//GEN-LAST:event_txtTimKiemActionPerformed
 
     private void txtTimKiemFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtTimKiemFocusGained
@@ -873,23 +887,13 @@ public class BanHangPane extends javax.swing.JPanel {
     }//GEN-LAST:event_txtTimKiemFocusLost
     
     private String taoMaHoaDonMoi(LocalDate ngay, int soThuTu) {
-        if(soThuTu < 10) {
-            return String.format("HD-%s-%04d", 
-            ngay.format(java.time.format.DateTimeFormatter.ofPattern("yyMMdd")),
-            soThuTu);
-        }
-        return String.format("HD-%s-%03d", 
+        return String.format("HD-%s-%04d", 
             ngay.format(java.time.format.DateTimeFormatter.ofPattern("yyMMdd")),
             soThuTu);
     }
 
     private String taoMaChiTietHoaDonMoi(LocalDate ngay, int soThuTu) {
-         if(soThuTu < 10) {
-            return String.format("CTHD-%s-%04d", 
-            ngay.format(java.time.format.DateTimeFormatter.ofPattern("yyMMdd")),
-            soThuTu);
-        }
-        return String.format("CTHD-%s-%03d", 
+        return String.format("CTHD-%s-%04d", 
             ngay.format(java.time.format.DateTimeFormatter.ofPattern("yyMMdd")),
             soThuTu);
     }
@@ -939,7 +943,7 @@ public class BanHangPane extends javax.swing.JPanel {
         double tongTien = 0;
         for (ChiTietHoaDon cthd : dsCTHD) {
             String maSP = DonViTinhDAO.getMaSanPhamTheoMaDVT(cthd.getDonViTinh().getMaDonViTinh());
-            String tenSP = SanPhamDAO.getSanPhamTheoMaSP(maSP).getTen();
+            String tenSP = SanPhamDAO.timSPTheoMa(maSP).getTen();
             String tenDVT = DonViTinhDAO.getDonViTinhTheoMaDVT(cthd.getDonViTinh().getMaDonViTinh()).getTenDonVi();
 
             double thanhTien = cthd.getThanhTien();

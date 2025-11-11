@@ -4,65 +4,38 @@
  */
 package hethongnhathuocduocankhang.gui;
 
-import hethongnhathuocduocankhang.entity.KhachHang;
 import java.awt.Window;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import javax.swing.JComponent;
-import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
 /**
  *
  * @author GIGABYTE
+ * LƯU Ý: Class này được tái cấu trúc từ ThemSanPhamGUI để CHỈ HIỂN THỊ
+ * thông tin chi tiết Lịch Sử Ca Làm.
  */
-public class ThemKhachHangGUI extends javax.swing.JPanel {
+public class ChiTietLichSuCaLamGUI extends javax.swing.JPanel {
 
-    private KhachHang khachHangMoi = null;
-
-    public ThemKhachHangGUI() {
+    // Component mới cho Ghi Chú (thay thế jComboBox1)
+    private javax.swing.JTextField jTextField5; 
+    
+    public ChiTietLichSuCaLamGUI() {
         initComponents();
-        jButton2.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                xuLyXacNhan();
-            }
-        });
-
-        // Họ tên đệm
-        jTextField2.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                validateHoTenDem();
-            }
-        });
-
-        // Tên
-        jTextField3.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                validateTen();
-            }
-        });
-
-        // SĐT
-        jTextField4.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                validateSDT();
-            }
-        });
-
-        // Điểm tích lũy
-        jTextField6.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                validateDiemTichLuy();
-            }
-        });
+        
+        // Đặt tất cả các trường ở chế độ chỉ đọc
+        jTextField1.setEditable(false); // MaNV
+        jTextField2.setEditable(false); // TenNV
+        jTextField3.setEditable(false); // NgayLam
+        jTextField4.setEditable(false); // MaCa
+        jTextField5.setEditable(false); // GioVao
+        jTextField6.setEditable(false); // GioRa
+        jTextField7.setEditable(false); // GhiChu
+        
+        // Ẩn các nút, chúng sẽ được điều khiển bởi JDialog
+        jButton1.setVisible(false);
+        jButton2.setVisible(false);
     }
 
-    @SuppressWarnings("unchecked")
+    // Getters cho các nút
     public javax.swing.JButton getBtnHuy() {
         return jButton1;
     }
@@ -71,45 +44,35 @@ public class ThemKhachHangGUI extends javax.swing.JPanel {
         return jButton2;
     }
 
-    public javax.swing.JTextField getTxtMaKhachHang() {
-        return jTextField1;
+    // Setters để điền dữ liệu
+    public void setTxtMaNhanVien(String maNV) {
+        jTextField1.setText(maNV);
     }
 
-    public javax.swing.JTextField getTxtHoTenDem() {
-        return jTextField2;
+    public void setTxtTenNhanVien(String tenNV) {
+        jTextField2.setText(tenNV);
     }
 
-    public javax.swing.JTextField getTxtTen() {
-        return jTextField3;
+    public void setTxtNgayLam(String ngayLam) {
+        jTextField3.setText(ngayLam);
     }
 
-    public javax.swing.JTextField getTxtSDT() {
-        return jTextField4;
+    public void setTxtMaCa(String maCa) {
+        jTextField4.setText(maCa);
     }
 
-    public javax.swing.JTextField getTxtDiemTichLuy() {
-        return jTextField6;
+    public void setTxtGioVao(String gioVao) {
+        jTextField5.setText(gioVao);
     }
-
-    public void setTxtMaKhachHang(String maKH) {
-        jTextField1.setText(maKH);
+    
+    public void setTxtGioRa(String gioRa) {
+        jTextField6.setText(gioRa);
     }
-
-    public void setTxtHoTenDem(String hoTenDem) {
-        jTextField2.setText(hoTenDem);
+    
+    public void setTxtGhiChu(String ghiChu) {
+        jTextField7.setText(ghiChu);
     }
-
-    public void setTxtTen(String ten) {
-        jTextField3.setText(ten);
-    }
-
-    public void setTxtSDT(String sdt) {
-        jTextField4.setText(sdt);
-    }
-
-    public void setTxtDiemTichLuy(int diem) {
-        jTextField6.setText(String.valueOf(diem));
-    }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -127,21 +90,26 @@ public class ThemKhachHangGUI extends javax.swing.JPanel {
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel(); // Giữ lại jLabel7 cho Điểm
+        jLabel6 = new javax.swing.JLabel(); // Đổi thành Giờ Vào
+        jLabel7 = new javax.swing.JLabel(); // Đổi thành Giờ Ra
+        jLabel8 = new javax.swing.JLabel(); // Đổi thành Ghi Chú
         jTextField1 = new javax.swing.JTextField();
         jTextField2 = new javax.swing.JTextField();
         jTextField3 = new javax.swing.JTextField();
         jTextField4 = new javax.swing.JTextField();
-        jTextField6 = new javax.swing.JTextField(); // Giữ lại jTextField6 cho Điểm
+        jTextField5 = new javax.swing.JTextField(); // THÊM MỚI (thay jComboBox)
+        jTextField6 = new javax.swing.JTextField();
+        jTextField7 = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        // jComboBox1 đã bị xóa
 
         setLayout(new java.awt.BorderLayout());
 
         jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel1.setText("Thông tin khách hàng"); // THAY ĐỔI
+        jLabel1.setText("Chi tiết Lịch sử Ca làm"); // THAY ĐỔI
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -150,7 +118,7 @@ public class ThemKhachHangGUI extends javax.swing.JPanel {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1)
-                .addContainerGap(216, Short.MAX_VALUE)) // Điều chỉnh
+                .addContainerGap(207, Short.MAX_VALUE)) // Điều chỉnh
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -164,17 +132,13 @@ public class ThemKhachHangGUI extends javax.swing.JPanel {
 
         jPanel2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        jLabel2.setText("Mã khách hàng:"); // THAY ĐỔI
-
-        jLabel3.setText("Họ tên đệm:"); // THAY ĐỔI
-
-        jLabel4.setText("Tên:"); // THAY ĐỔI
-
-        jLabel5.setText("Số điện thoại:"); // THAY ĐỔI
-
-        jLabel7.setText("Điểm tích lũy:"); // THAY ĐỔI
-
-        jTextField1.setEnabled(false);
+        jLabel2.setText("Mã Nhân viên:"); // THAY ĐỔI
+        jLabel3.setText("Tên Nhân viên:"); // THAY ĐỔI
+        jLabel4.setText("Ngày làm việc:"); // THAY ĐỔI
+        jLabel5.setText("Mã Ca:"); // THAY ĐỔI
+        jLabel6.setText("Giờ vào ca:"); // THAY ĐỔI
+        jLabel7.setText("Giờ ra ca:"); // THAY ĐỔI
+        jLabel8.setText("Ghi chú:"); // THAY ĐỔI
 
         jButton1.setText("Hủy");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -194,7 +158,7 @@ public class ThemKhachHangGUI extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addGap(0, 227, Short.MAX_VALUE) // Điều chỉnh
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jButton1)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButton2))
@@ -204,14 +168,18 @@ public class ThemKhachHangGUI extends javax.swing.JPanel {
                             .addComponent(jLabel2)
                             .addComponent(jLabel4)
                             .addComponent(jLabel5)
-                            .addComponent(jLabel7))
+                            .addComponent(jLabel6)
+                            .addComponent(jLabel7)
+                            .addComponent(jLabel8))
                         .addGap(24, 24, 24)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jTextField1)
                             .addComponent(jTextField2)
                             .addComponent(jTextField3)
                             .addComponent(jTextField4)
-                            .addComponent(jTextField6))))
+                            .addComponent(jTextField5) // Thay jComboBox1
+                            .addComponent(jTextField6, javax.swing.GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE)
+                            .addComponent(jTextField7))))
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -235,9 +203,17 @@ public class ThemKhachHangGUI extends javax.swing.JPanel {
                     .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel6)
+                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)) // Thay jComboBox1
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
                     .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE) // Điều chỉnh
+                .addGap(18, 18, 18)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel8)
+                    .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
                     .addComponent(jButton2))
@@ -248,109 +224,11 @@ public class ThemKhachHangGUI extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        xuLyHuy();
-    }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void showError(String message, JComponent component) {
-        JOptionPane.showMessageDialog(this, message, "Lỗi nhập liệu", JOptionPane.ERROR_MESSAGE);
-        if (component != null) {
-            component.requestFocusInWindow(); // Đặt con trỏ vào ô bị sai
-        }
-    }
-
-    private void xuLyHuy() {
-        this.khachHangMoi = null;
-        closeDialog();
-    }
-
-    private void closeDialog() {
         Window window = SwingUtilities.getWindowAncestor(this);
         if (window != null) {
             window.dispose();
         }
-    }
-
-    public KhachHang getKhachHangMoi() {
-        return this.khachHangMoi;
-    }
-
-    private boolean validateHoTenDem() {
-        String hoTenDem = jTextField2.getText().trim();
-        if (hoTenDem.isEmpty()) {
-            showError("Họ tên đệm không được rỗng.", jTextField2);
-            return false;
-        }
-        return true;
-    }
-
-    private boolean validateTen() {
-        String ten = jTextField3.getText().trim();
-        if (ten.isEmpty()) {
-            showError("Tên không được rỗng.", jTextField3);
-            return false;
-        }
-        return true;
-    }
-
-    private boolean validateSDT() {
-        String sdt = jTextField4.getText().trim();
-        if (!sdt.matches("0\\d{9}")) {
-            showError("Số điện thoại phải đủ 10 số và bắt đầu bằng 0.", jTextField4);
-            return false;
-        }
-        return true;
-    }
-
-
-    private boolean validateDiemTichLuy() {
-        String diemStr = jTextField6.getText().trim();
-        if (diemStr.isEmpty()) {
-            showError("Điểm tích lũy không được rỗng.", jTextField6);
-            return false;
-        }
-        try {
-            int diem = Integer.parseInt(diemStr);
-            if (diem < 0) {
-                showError("Điểm tích lũy phải lớn hơn hoặc bằng 0.", jTextField6);
-                return false;
-            }
-        } catch (NumberFormatException e) {
-            showError("Điểm tích lũy phải là một số nguyên.", jTextField6);
-            return false;
-        }
-        return true;
-    }
-
-    private void xuLyXacNhan() {
-        // 1. Validate inputs
-        if (!validateHoTenDem() || !validateTen() || !validateSDT() || !validateDiemTichLuy()) {
-            return;
-        }
-
-        try {
-            // 2. Get data
-            String maKH = jTextField1.getText().trim();
-            String hoTenDem = jTextField2.getText().trim();
-            String ten = jTextField3.getText().trim();
-            String sdt = jTextField4.getText().trim();
-            int diemTichLuy = Integer.parseInt(jTextField6.getText().trim());
-
-            // 3. Tạo đối tượng (dùng constructor để tránh setter bị lỗi)
-            // Lưu ý: Entity KhachHang.java của bạn có lỗi logic validation
-            // ở setMaKH và setTen (bị ngược).
-            // Chúng ta sử dụng constructor để bỏ qua chúng,
-            // vì đã validate ở bước 1.
-            this.khachHangMoi = new KhachHang(maKH, hoTenDem, ten, sdt, diemTichLuy);
-
-            // 4. Đóng dialog
-            closeDialog();
-
-        } catch (Exception ex) {
-            // Bắt lỗi NumberFormatException hoặc lỗi khác
-            this.khachHangMoi = null;
-            showError("Lỗi hệ thống: " + ex.getMessage(), null);
-        }
-    }
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
@@ -360,13 +238,17 @@ public class ThemKhachHangGUI extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;
+    //private javax.swing.JTextField jTextField5;
     private javax.swing.JTextField jTextField6;
+    private javax.swing.JTextField jTextField7;
     // End of variables declaration//GEN-END:variables
 }

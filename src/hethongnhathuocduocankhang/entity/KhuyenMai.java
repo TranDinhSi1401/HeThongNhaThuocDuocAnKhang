@@ -23,7 +23,7 @@ public class KhuyenMai {
     private LocalDateTime ngayKetThuc;
     private int soLuongToiThieu;
     private int soLuongToiDa;
-    private LocalDate ngayChinhSua;
+    private LocalDateTime ngayChinhSua;
 
     public KhuyenMai() {
     }
@@ -35,7 +35,7 @@ public class KhuyenMai {
         this.soLuongToiDa = soLuongToiDa;
     }
     
-    public KhuyenMai(String maKhuyenMai, String moTa, double phanTram, LoaiKhuyenMaiEnum loaiKhuyenMai, LocalDateTime ngayBatDau, LocalDateTime ngayKetThuc, int soLuongToiThieu, int soLuongToiDa, LocalDate ngayChinhSua) {
+    public KhuyenMai(String maKhuyenMai, String moTa, double phanTram, LoaiKhuyenMaiEnum loaiKhuyenMai, LocalDateTime ngayBatDau, LocalDateTime ngayKetThuc, int soLuongToiThieu, int soLuongToiDa, LocalDateTime ngayChinhSua) {
         this.maKhuyenMai = maKhuyenMai;
         this.moTa = moTa;
         this.phanTram = phanTram;
@@ -124,11 +124,11 @@ public class KhuyenMai {
         this.soLuongToiDa = soLuongToiDa;
     }
 
-    public LocalDate getNgayChinhSua() {
+    public LocalDateTime getNgayChinhSua() {
         return ngayChinhSua;
     }
 
-    public void setNgayChinhSua(LocalDate ngayChinhSua) {
+    public void setNgayChinhSua(LocalDateTime ngayChinhSua) {
         this.ngayChinhSua = ngayChinhSua;
     }
 

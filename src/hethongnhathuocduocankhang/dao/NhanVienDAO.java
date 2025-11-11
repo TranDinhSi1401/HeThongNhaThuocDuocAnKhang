@@ -24,6 +24,7 @@ import java.util.ArrayList;
  * @author trand
  */
 public class NhanVienDAO {
+
     public static NhanVien getNhanVienTheoMaNV(String maNV) throws SQLException {
         NhanVien nv = null;
         try {
@@ -288,11 +289,23 @@ public class NhanVienDAO {
         try {
             ConnectDB.getInstance().connect();
             Connection con = ConnectDB.getConnection();
-            String sql = "SELECT COUNT(*) FROM NhanVien";
+
+            String sql = "SELECT MAX(maNV) FROM NhanVien";
+
             Statement statement = con.createStatement();
             ResultSet rs = statement.executeQuery(sql);
+
             if (rs.next()) {
-                maCuoiCung = rs.getInt(1);
+                String maNVMax = rs.getString(1);
+
+                if (maNVMax != null && maNVMax.matches("^NV-\\d{4}$")) {
+                    try {
+                        String maSo = maNVMax.substring(3);
+                        maCuoiCung = Integer.parseInt(maSo);
+                    } catch (NumberFormatException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
         } catch (SQLException e) {
             e.printStackTrace();

@@ -8,6 +8,7 @@ import hethongnhathuocduocankhang.connectDB.ConnectDB;
 import hethongnhathuocduocankhang.dao.KhachHangDAO;
 import hethongnhathuocduocankhang.dao.NhanVienDAO;
 import hethongnhathuocduocankhang.dao.SanPhamDAO;
+import hethongnhathuocduocankhang.gui.DangNhapGUI;
 import hethongnhathuocduocankhang.gui.GiaoDienChinhGUI;
 import hethongnhathuocduocankhang.gui.SplashScreen;
 import javax.swing.JOptionPane;
@@ -41,7 +42,7 @@ public class HeThongNhaThuocDuocAnKhang {
 
                     try {
                         firePropertyChange("message", null, "Tải dữ liệu sản phẩm...");
-                        SanPhamDAO.getAllSanPham();
+                        SanPhamDAO.getAllTableSanPham();
                         setProgress(50);
                         firePropertyChange("message", null, "Sản phẩm đã sẵn sàng");
                     } catch (Exception ex) {
@@ -71,7 +72,7 @@ public class HeThongNhaThuocDuocAnKhang {
                         get();
                         ss.setVisible(false);
                         ss.dispose();
-                        new GiaoDienChinhGUI(null).setVisible(true);
+                        new DangNhapGUI().setVisible(true);
                     } catch (Exception ex) {
                         JOptionPane.showMessageDialog(null, "Lỗi khi khởi tạo dữ liệu: " + ex.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
                         System.exit(1);
