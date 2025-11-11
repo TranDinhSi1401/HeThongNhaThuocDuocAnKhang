@@ -159,7 +159,7 @@ public class QuanLiSanPhamGUI extends JPanel {
     }
 
     private void updateTable() {
-        ArrayList<SanPham> dsSP = SanPhamDAO.getAllSanPham();
+        ArrayList<SanPham> dsSP = SanPhamDAO.getAllTableSanPham();
         updateTable(dsSP);
     }
 
@@ -230,7 +230,7 @@ public class QuanLiSanPhamGUI extends JPanel {
         ArrayList<SanPham> dsKetQua = new ArrayList<>();
 
         if (tuKhoa.isEmpty()) {
-            dsKetQua = SanPhamDAO.getAllSanPham();
+            dsKetQua = SanPhamDAO.getAllTableSanPham();
         } else {
             switch (tieuChi) {
                 case "Mã sản phẩm":

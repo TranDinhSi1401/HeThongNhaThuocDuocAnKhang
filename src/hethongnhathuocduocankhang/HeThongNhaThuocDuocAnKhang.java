@@ -42,7 +42,7 @@ public class HeThongNhaThuocDuocAnKhang {
 
                     try {
                         firePropertyChange("message", null, "Tải dữ liệu sản phẩm...");
-                        SanPhamDAO.getAllSanPham();
+                        SanPhamDAO.getAllTableSanPham();
                         setProgress(50);
                         firePropertyChange("message", null, "Sản phẩm đã sẵn sàng");
                     } catch (Exception ex) {
