@@ -52,9 +52,14 @@ public class BanHangPane extends javax.swing.JPanel {
     /**
      * Creates new form BanHangGUI
      */
-    public BanHangPane() {
-        initComponents(); 
+    
+    public JTextField getTxtTimKiem() {
+        return txtTimKiem; 
+    }
 
+    public BanHangPane() {
+        initComponents();
+        
         try {
             ConnectDB.getInstance().connect();
         }catch(SQLException e) {
@@ -76,7 +81,7 @@ public class BanHangPane extends javax.swing.JPanel {
         ButtonGroup group = new ButtonGroup();
         group.add(radTienMat);
         group.add(radChuyenKhoan);
-        
+
         DefaultTableModel model = (DefaultTableModel)tblCTHD.getModel();
         model.addTableModelListener(e -> {
             if (e.getColumn() == 2 || e.getColumn() == 4) {
@@ -124,6 +129,10 @@ public class BanHangPane extends javax.swing.JPanel {
                 }
                 capNhatTongTien(model);
             }
+        });
+        
+        SwingUtilities.invokeLater(() -> {
+            txtTimKiem.requestFocusInWindow();
         });
     }
 
