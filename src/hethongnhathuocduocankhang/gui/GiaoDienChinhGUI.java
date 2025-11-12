@@ -28,7 +28,7 @@ public class GiaoDienChinhGUI extends javax.swing.JFrame {
             @Override
             public void selected(int index, int subIndex) {
                 if(index == 0 && subIndex == 0) {
-                    showPanel(new TongQuanGUI());
+                    showPanel(new TongQuanNhanVienGUI());
                 }
                 if(index == 1 && subIndex == 0) {
                     showPanel(new BanHangGUI());
@@ -65,19 +65,18 @@ public class GiaoDienChinhGUI extends javax.swing.JFrame {
             }
         });
         if(tk != null) {
-            lblTenNV.setText(tk.getNhanVien().getHoTenDem() + " " + tk.getNhanVien().getTen());
-            if(tk.isQuanLy()) {
-                lblChucVu.setText("Quản lý");
-            }else {
-                lblChucVu.setText("Nhân viên");
-            }
+//            lblTenNV.setText(tk.getNhanVien().getHoTenDem() + " " + tk.getNhanVien().getTen());
+//            if(tk.isQuanLy()) {
+//                lblChucVu.setText("Quản lý");
+//            }else {
+//                lblChucVu.setText("Nhân viên");
+//            }
             GiaoDienChinhGUI.tk = tk;
         }
+        showPanel(new TongQuanNhanVienGUI());
         setTitle("Hệ thống nhà thuốc Dược An Khang");
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setResizable(false);
-        //setSize(1000, 600);
-        //setLocationRelativeTo(null);
         setVisible(true);
     }
     
@@ -135,21 +134,21 @@ public class GiaoDienChinhGUI extends javax.swing.JFrame {
         setSize(new java.awt.Dimension(1000, 600));
 
         pLeft.setBackground(new java.awt.Color(25, 118, 210));
-        pLeft.setPreferredSize(new java.awt.Dimension(220, 558));
+        pLeft.setPreferredSize(new java.awt.Dimension(240, 558));
         pLeft.setLayout(new java.awt.BorderLayout());
 
         pLogo.setBackground(new java.awt.Color(25, 118, 210));
         pLogo.setPreferredSize(new java.awt.Dimension(200, 120));
 
-        lblLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/profile.png"))); // NOI18N
+        lblLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/pharmacy.png"))); // NOI18N
 
         lblTenNV.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         lblTenNV.setForeground(new java.awt.Color(255, 255, 255));
-        lblTenNV.setText("Tên nv");
+        lblTenNV.setText("NHÀ THUỐC");
 
-        lblChucVu.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        lblChucVu.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         lblChucVu.setForeground(new java.awt.Color(255, 255, 255));
-        lblChucVu.setText("Chức vụ");
+        lblChucVu.setText("DƯỢC AN KHANG");
 
         javax.swing.GroupLayout pLogoLayout = new javax.swing.GroupLayout(pLogo);
         pLogo.setLayout(pLogoLayout);
@@ -158,26 +157,28 @@ public class GiaoDienChinhGUI extends javax.swing.JFrame {
             .addGroup(pLogoLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblLogo)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(pLogoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pLogoLayout.createSequentialGroup()
-                        .addComponent(lblChucVu)
-                        .addGap(0, 79, Short.MAX_VALUE))
-                    .addComponent(lblTenNV, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblChucVu, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(87, 87, 87))
+                    .addGroup(pLogoLayout.createSequentialGroup()
+                        .addGap(26, 26, 26)
+                        .addComponent(lblTenNV)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         pLogoLayout.setVerticalGroup(
             pLogoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pLogoLayout.createSequentialGroup()
-                .addContainerGap(32, Short.MAX_VALUE)
+                .addContainerGap(26, Short.MAX_VALUE)
                 .addGroup(pLogoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(lblLogo)
                     .addGroup(pLogoLayout.createSequentialGroup()
                         .addComponent(lblTenNV)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lblChucVu)
-                        .addGap(6, 6, 6))
-                    .addComponent(lblLogo))
-                .addGap(24, 24, 24))
+                        .addGap(6, 6, 6)))
+                .addGap(30, 30, 30))
         );
 
         pLeft.add(pLogo, java.awt.BorderLayout.PAGE_START);
@@ -196,7 +197,7 @@ public class GiaoDienChinhGUI extends javax.swing.JFrame {
         pCenter.setLayout(pCenterLayout);
         pCenterLayout.setHorizontalGroup(
             pCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 509, Short.MAX_VALUE)
+            .addGap(0, 489, Short.MAX_VALUE)
         );
         pCenterLayout.setVerticalGroup(
             pCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
