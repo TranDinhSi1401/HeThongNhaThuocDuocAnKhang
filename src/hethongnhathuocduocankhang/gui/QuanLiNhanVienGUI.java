@@ -58,12 +58,12 @@ public class QuanLiNhanVienGUI extends JPanel {
         pnlNorthRight.setLayout(new FlowLayout(FlowLayout.RIGHT, 10, 5));
 
         //Tiêu chí tìm kiếm
-        cmbTieuChiTimKiem = new JComboBox<>(new String[]{"Mã nhân viên", "Tên nhân viên", "SĐT", "CCCD"}); // THAY ĐỔI
+        cmbTieuChiTimKiem = new JComboBox<>(new String[]{"Mã nhân viên", "Tên nhân viên", "SĐT", "CCCD"});
         cmbTieuChiTimKiem.setFont(new Font("Arial", Font.PLAIN, 14));
         cmbTieuChiTimKiem.setPreferredSize(new Dimension(150, 30));
 
         // ComboBox Bộ lọc
-        cmbBoLoc = new JComboBox<>(new String[]{"Tất cả", "Đang làm", "Đã nghỉ"}); // THAY ĐỔI
+        cmbBoLoc = new JComboBox<>(new String[]{"Tất cả", "Đang làm", "Đã nghỉ"});
         cmbBoLoc.setFont(new Font("Arial", Font.PLAIN, 14));
         cmbBoLoc.setPreferredSize(new Dimension(150, 30));
 
@@ -95,7 +95,7 @@ public class QuanLiNhanVienGUI extends JPanel {
         JPanel centerPanel = new JPanel(new BorderLayout(0, 10));
 
         // 3.1. Bảng dữ liệu
-        String[] columnNames = {"Mã NV", "Họ tên đệm", "Tên", "SĐT", "CCCD", "Giới tính", "Ngày sinh", "Địa chỉ", "Trạng thái"}; // THAY ĐỔI
+        String[] columnNames = {"Mã NV", "Họ tên đệm", "Tên", "SĐT", "CCCD", "Giới tính", "Ngày sinh", "Địa chỉ", "Trạng thái"};
         Object[][] data = {};
 
         model = new DefaultTableModel(data, columnNames) {
@@ -150,10 +150,10 @@ public class QuanLiNhanVienGUI extends JPanel {
                 nv.getTen(),
                 nv.getSdt(),
                 nv.getCccd(),
-                nv.isGioiTinh() ? "Nam" : "Nữ", // Chuyển boolean -> String
+                nv.isGioiTinh() ? "Nam" : "Nữ", 
                 nv.getNgaySinh().toString(),
                 nv.getDiaChi(),
-                nv.isNghiViec() ? "Đã nghỉ" : "Đang làm" // Chuyển boolean -> String
+                nv.isNghiViec() ? "Đã nghỉ" : "Đang làm"
             };
             model.addRow(row);
         }

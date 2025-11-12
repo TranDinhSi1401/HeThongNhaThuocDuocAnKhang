@@ -22,7 +22,6 @@ import java.util.ArrayList;
 
 public class HoaDonDAO {
     
-    
     private static HoaDon taoDoiTuongHoaDon(ResultSet rs) throws SQLException {
         String maHoaDon = rs.getString("maHoaDon");
         String maNV = rs.getString("maNV");

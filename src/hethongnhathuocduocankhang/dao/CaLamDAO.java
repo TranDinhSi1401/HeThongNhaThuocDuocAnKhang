@@ -56,7 +56,6 @@ public class CaLamDAO {
             
             n = stmt.executeUpdate();
         } catch (SQLException e) {
-            // Lỗi trùng mã khóa chính
             if (e.getMessage().contains("PRIMARY KEY constraint")) {
                 JOptionPane.showMessageDialog(null, "Lỗi: Mã ca '" + caLam.getMaCa() + "' đã tồn tại.");
             } else {
@@ -76,7 +75,6 @@ public class CaLamDAO {
             stmt.setString(1, maCa);
             n = stmt.executeUpdate();
         } catch (SQLException e) {
-            // Lỗi khóa ngoại (không thể xóa ca làm đã được tham chiếu)
              if (e.getMessage().contains("REFERENCE constraint")) {
                 JOptionPane.showMessageDialog(null, "Lỗi: Không thể xóa ca làm này vì đã có nhân viên làm việc trong ca.");
             } else {

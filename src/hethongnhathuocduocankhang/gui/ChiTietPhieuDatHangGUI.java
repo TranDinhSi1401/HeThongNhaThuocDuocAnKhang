@@ -14,12 +14,6 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.ArrayList;
 
-/**
- *
- * @author GIGABYTE
- * GUI này hiển thị danh sách Chi Tiết Phiếu Đặt Hàng (các sản phẩm)
- * thuộc về một Phiếu Đặt Hàng.
- */
 public class ChiTietPhieuDatHangGUI extends JPanel {
     private JTable table;
     private DefaultTableModel model;
@@ -38,7 +32,7 @@ public class ChiTietPhieuDatHangGUI extends JPanel {
         lblTongTien.setFont(new Font("Arial", Font.BOLD, 14));
         
         pnlNorth.add(lblMaPhieuDat);
-        pnlNorth.add(new JLabel("")); // Ô trống
+        pnlNorth.add(new JLabel(""));
         pnlNorth.add(lblTongTien);
         this.add(pnlNorth, BorderLayout.NORTH);
 
@@ -69,10 +63,6 @@ public class ChiTietPhieuDatHangGUI extends JPanel {
         this.add(scrollPane, BorderLayout.CENTER);
     }
 
-    /**
-     * Phương thức chính để tải dữ liệu vào GUI này.
-     * @param phieuDatHang Phiếu đặt hàng cha cần hiển thị chi tiết.
-     */
     public void loadData(PhieuDatHang phieuDatHang) {
         if (phieuDatHang == null) return;
 

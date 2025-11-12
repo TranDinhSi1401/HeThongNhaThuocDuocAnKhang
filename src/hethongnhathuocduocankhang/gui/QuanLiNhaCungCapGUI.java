@@ -4,8 +4,8 @@
  */
 package hethongnhathuocduocankhang.gui;
 
-import hethongnhathuocduocankhang.dao.NhaCungCapDAO; // THAY ĐỔI
-import hethongnhathuocduocankhang.entity.NhaCungCap; // THAY ĐỔI
+import hethongnhathuocduocankhang.dao.NhaCungCapDAO;
+import hethongnhathuocduocankhang.entity.NhaCungCap;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
@@ -16,13 +16,12 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
-public class QuanLiNhaCungCapGUI extends JPanel { // THAY ĐỔI
+public class QuanLiNhaCungCapGUI extends JPanel {
 
     private JButton btnThem, btnXoa, btnSua;
     private JTextField txtTimKiem;
     private JTable table;
     private JComboBox<String> cmbTieuChiTimKiem;
-    // private JComboBox<String> cmbBoLoc; // BỎ
     private DefaultTableModel model;
 
     public QuanLiNhaCungCapGUI() {
@@ -76,10 +75,6 @@ public class QuanLiNhaCungCapGUI extends JPanel { // THAY ĐỔI
         pnlNorthRight.add(cmbTieuChiTimKiem);
         pnlNorthRight.add(pnlTimKiem);
 
-        // BỎ PHẦN LỌC
-        // pnlNorthRight.add(new JLabel("Lọc theo"));
-        // pnlNorthRight.add(cmbBoLoc);
-
         pnlNorth.add(pnlNorthRight, BorderLayout.EAST);
 
         this.add(pnlNorth, BorderLayout.NORTH);
@@ -87,7 +82,7 @@ public class QuanLiNhaCungCapGUI extends JPanel { // THAY ĐỔI
         // 3. TẠO PANEL CENTER (Bảng dữ liệu)
         JPanel centerPanel = new JPanel(new BorderLayout(0, 10));
 
-        String[] columnNames = {"Mã NCC", "Tên NCC", "Địa chỉ", "Số điện thoại", "Email"}; // THAY ĐỔI
+        String[] columnNames = {"Mã NCC", "Tên NCC", "Địa chỉ", "Số điện thoại", "Email"};
         Object[][] data = {};
 
         model = new DefaultTableModel(data, columnNames) {
@@ -125,25 +120,25 @@ public class QuanLiNhaCungCapGUI extends JPanel { // THAY ĐỔI
         button.setPreferredSize(new Dimension(100, 30));
     }
 
-    private void updateTable(ArrayList<NhaCungCap> dsNCC) { // THAY ĐỔI
+    private void updateTable(ArrayList<NhaCungCap> dsNCC) {
         model.setRowCount(0);
         if (dsNCC == null) {
             return;
         }
-        for (NhaCungCap ncc : dsNCC) { // THAY ĐỔI
+        for (NhaCungCap ncc : dsNCC) {
             Object[] row = {
-                ncc.getMaNCC(), // THAY ĐỔI
-                ncc.getTenNCC(), // THAY ĐỔI
-                ncc.getDiaChi(), // THAY ĐỔI
-                ncc.getSdt(),    // THAY ĐỔI
-                ncc.getEmail()   // THAY ĐỔI
+                ncc.getMaNCC(),
+                ncc.getTenNCC(),
+                ncc.getDiaChi(),
+                ncc.getSdt(),
+                ncc.getEmail()
             };
             model.addRow(row);
         }
     }
 
     private void updateTable() {
-        ArrayList<NhaCungCap> dsNCC = NhaCungCapDAO.getAllNhaCungCap(); // THAY ĐỔI
+        ArrayList<NhaCungCap> dsNCC = NhaCungCapDAO.getAllNhaCungCap();
         updateTable(dsNCC);
     }
 
@@ -152,7 +147,6 @@ public class QuanLiNhaCungCapGUI extends JPanel { // THAY ĐỔI
         btnXoa.addActionListener(e -> xuLyXoa());
         btnSua.addActionListener(e -> xuLySua());
         txtTimKiem.addActionListener(e -> xuLyTimKiem());
-        // cmbBoLoc.addActionListener(e -> xuLyLoc()); // BỎ
         cmbTieuChiTimKiem.addActionListener(e -> {
             txtTimKiem.setText("");
             txtTimKiem.requestFocus();
@@ -160,7 +154,7 @@ public class QuanLiNhaCungCapGUI extends JPanel { // THAY ĐỔI
         table.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                hienThiChiTietNhaCungCap(e); // THAY ĐỔI
+                hienThiChiTietNhaCungCap(e);
             }
         });
     }
@@ -168,38 +162,36 @@ public class QuanLiNhaCungCapGUI extends JPanel { // THAY ĐỔI
     private void xuLyTimKiem() {
         String tuKhoa = txtTimKiem.getText().trim();
         String tieuChi = cmbTieuChiTimKiem.getSelectedItem().toString();
-        ArrayList<NhaCungCap> dsKetQua = new ArrayList<>(); // THAY ĐỔI
+        ArrayList<NhaCungCap> dsKetQua = new ArrayList<>();
 
         if (tuKhoa.isEmpty()) {
-            dsKetQua = NhaCungCapDAO.getAllNhaCungCap(); // THAY ĐỔI
+            dsKetQua = NhaCungCapDAO.getAllNhaCungCap();
         } else {
             switch (tieuChi) {
-                case "Mã NCC": // THAY ĐỔI
-                    NhaCungCap ncc = NhaCungCapDAO.timNCCTheoMa(tuKhoa); // THAY ĐỔI
+                case "Mã NCC":
+                    NhaCungCap ncc = NhaCungCapDAO.timNCCTheoMa(tuKhoa);
                     if (ncc != null) {
                         dsKetQua.add(ncc);
                     }
                     break;
-                case "Tên NCC": // THAY ĐỔI
-                    dsKetQua = NhaCungCapDAO.timNCCTheoTen(tuKhoa); // THAY ĐỔI
+                case "Tên NCC":
+                    dsKetQua = NhaCungCapDAO.timNCCTheoTen(tuKhoa);
                     break;
-                case "Số điện thoại": // THAY ĐỔI
-                    dsKetQua = NhaCungCapDAO.timNCCTheoSDT(tuKhoa); // THAY ĐỔI
+                case "Số điện thoại":
+                    dsKetQua = NhaCungCapDAO.timNCCTheoSDT(tuKhoa);
                     break;
-                case "Email": // THAY ĐỔI
-                     dsKetQua = NhaCungCapDAO.timNCCTheoEmail(tuKhoa); // THAY ĐỔI
-                     break;
+                case "Email":
+                    dsKetQua = NhaCungCapDAO.timNCCTheoEmail(tuKhoa);
+                    break;
             }
         }
         updateTable(dsKetQua);
     }
 
-    // private void xuLyLoc() { // BỎ HÀM NÀY }
-
     private void xuLyThem() {
-        ThemNhaCungCapGUI pnlThemNCC = new ThemNhaCungCapGUI(); // THAY ĐỔI
+        ThemNhaCungCapGUI pnlThemNCC = new ThemNhaCungCapGUI();
         JDialog dialog = new JDialog();
-        dialog.setTitle("Thêm Nhà Cung Cấp Mới"); // THAY ĐỔI
+        dialog.setTitle("Thêm Nhà Cung Cấp Mới");
         dialog.setModal(true);
         dialog.setResizable(false);
         dialog.setContentPane(pnlThemNCC);
@@ -207,21 +199,21 @@ public class QuanLiNhaCungCapGUI extends JPanel { // THAY ĐỔI
         dialog.setLocationRelativeTo(null);
 
         // Tạo mã NCC mới sử dụng hàm đã sửa
-        int maNCCCUoiCung = NhaCungCapDAO.getMaNCCCUoiCung(); // THAY ĐỔI
+        int maNCCCUoiCung = NhaCungCapDAO.getMaNCCCUoiCung();
         maNCCCUoiCung++;
         String maNCCNew = String.format("NCC-%04d", maNCCCUoiCung); // THAY ĐỔI format
-        pnlThemNCC.setTxtMaNCC(maNCCNew); // THAY ĐỔI
+        pnlThemNCC.setTxtMaNCC(maNCCNew);
 
         dialog.setVisible(true);
 
-        NhaCungCap nccNew = pnlThemNCC.getNhaCungCapMoi(); // THAY ĐỔI
+        NhaCungCap nccNew = pnlThemNCC.getNhaCungCapMoi();
 
         if (nccNew != null) {
-            if (NhaCungCapDAO.themNhaCungCap(nccNew)) { // THAY ĐỔI
-                JOptionPane.showMessageDialog(this, "Thêm nhà cung cấp thành công!"); // THAY ĐỔI
+            if (NhaCungCapDAO.themNhaCungCap(nccNew)) {
+                JOptionPane.showMessageDialog(this, "Thêm nhà cung cấp thành công!");
                 updateTable();
             } else {
-                JOptionPane.showMessageDialog(this, "Thêm nhà cung cấp thất bại (SĐT hoặc Email có thể đã tồn tại)."); // THAY ĐỔI
+                JOptionPane.showMessageDialog(this, "Thêm nhà cung cấp thất bại (SĐT hoặc Email có thể đã tồn tại).");
             }
         }
     }
@@ -229,16 +221,16 @@ public class QuanLiNhaCungCapGUI extends JPanel { // THAY ĐỔI
     private void xuLyXoa() {
         int selectedRows[] = table.getSelectedRows();
         if (selectedRows.length == 0) {
-            JOptionPane.showMessageDialog(this, "Vui lòng chọn nhà cung cấp cần xóa."); // THAY ĐỔI
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn nhà cung cấp cần xóa.");
             return;
         }
 
         String message;
         if (selectedRows.length == 1) {
             String tenNCC = model.getValueAt(selectedRows[0], 1).toString(); // THAY ĐỔI cột tên
-            message = "Bạn có chắc muốn xóa nhà cung cấp '" + tenNCC + "' không?"; // THAY ĐỔI
+            message = "Bạn có chắc muốn xóa nhà cung cấp '" + tenNCC + "' không?";
         } else {
-            message = "Bạn có chắc muốn xóa " + selectedRows.length + " nhà cung cấp đã chọn không?"; // THAY ĐỔI
+            message = "Bạn có chắc muốn xóa " + selectedRows.length + " nhà cung cấp đã chọn không?";
         }
 
         int confirm = JOptionPane.showConfirmDialog(this, message, "Xác nhận xóa", JOptionPane.YES_NO_OPTION);
@@ -248,16 +240,16 @@ public class QuanLiNhaCungCapGUI extends JPanel { // THAY ĐỔI
             for (int i = selectedRows.length - 1; i >= 0; i--) {
                 int row = selectedRows[i];
                 String maNCC = model.getValueAt(row, 0).toString(); // THAY ĐỔI cột mã
-                if (NhaCungCapDAO.xoaNhaCungCap(maNCC)) { // THAY ĐỔI
+                if (NhaCungCapDAO.xoaNhaCungCap(maNCC)) {
                     soLuongXoaThanhCong++;
                 }
             }
 
             if (soLuongXoaThanhCong > 0) {
-                JOptionPane.showMessageDialog(this, "Đã xóa thành công " + soLuongXoaThanhCong + " nhà cung cấp."); // THAY ĐỔI
+                JOptionPane.showMessageDialog(this, "Đã xóa thành công " + soLuongXoaThanhCong + " nhà cung cấp."); 
                 updateTable();
             } else {
-                JOptionPane.showMessageDialog(this, "Xóa nhà cung cấp thất bại (có thể do nhà cung cấp đang cung cấp sản phẩm).", "Lỗi xóa", JOptionPane.ERROR_MESSAGE); // THAY ĐỔI
+                JOptionPane.showMessageDialog(this, "Xóa nhà cung cấp thất bại (có thể do nhà cung cấp đang cung cấp sản phẩm).", "Lỗi xóa", JOptionPane.ERROR_MESSAGE);
             }
         }
         table.clearSelection();
@@ -266,21 +258,21 @@ public class QuanLiNhaCungCapGUI extends JPanel { // THAY ĐỔI
     private void xuLySua() {
         int selectedRow = table.getSelectedRow();
         if (selectedRow == -1) {
-            JOptionPane.showMessageDialog(this, "Vui lòng chọn nhà cung cấp cần sửa."); // THAY ĐỔI
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn nhà cung cấp cần sửa."); 
             return;
         }
 
-        String maNCC = model.getValueAt(selectedRow, 0).toString(); // THAY ĐỔI
-        NhaCungCap nccCanSua = NhaCungCapDAO.timNCCTheoMa(maNCC); // THAY ĐỔI
+        String maNCC = model.getValueAt(selectedRow, 0).toString(); 
+        NhaCungCap nccCanSua = NhaCungCapDAO.timNCCTheoMa(maNCC); 
 
         if (nccCanSua == null) {
-            JOptionPane.showMessageDialog(this, "Không tìm thấy nhà cung cấp để sửa."); // THAY ĐỔI
+            JOptionPane.showMessageDialog(this, "Không tìm thấy nhà cung cấp để sửa."); 
             return;
         }
 
-        ThemNhaCungCapGUI pnlThemNCC = new ThemNhaCungCapGUI(); // THAY ĐỔI
+        ThemNhaCungCapGUI pnlThemNCC = new ThemNhaCungCapGUI(); 
         JDialog dialog = new JDialog();
-        dialog.setTitle("Sửa thông tin Nhà Cung Cấp"); // THAY ĐỔI
+        dialog.setTitle("Sửa thông tin Nhà Cung Cấp"); 
         dialog.setModal(true);
         dialog.setResizable(false);
         dialog.setContentPane(pnlThemNCC);
@@ -288,36 +280,36 @@ public class QuanLiNhaCungCapGUI extends JPanel { // THAY ĐỔI
         dialog.setLocationRelativeTo(null);
 
         // Đổ dữ liệu cũ
-        pnlThemNCC.setTxtMaNCC(nccCanSua.getMaNCC());     // THAY ĐỔI
-        pnlThemNCC.setTxtTenNCC(nccCanSua.getTenNCC());    // THAY ĐỔI
-        pnlThemNCC.setTxtDiaChi(nccCanSua.getDiaChi());    // THAY ĐỔI
-        pnlThemNCC.setTxtSDT(nccCanSua.getSdt());       // THAY ĐỔI
-        pnlThemNCC.setTxtEmail(nccCanSua.getEmail());     // THAY ĐỔI
+        pnlThemNCC.setTxtMaNCC(nccCanSua.getMaNCC());   
+        pnlThemNCC.setTxtTenNCC(nccCanSua.getTenNCC());  
+        pnlThemNCC.setTxtDiaChi(nccCanSua.getDiaChi());   
+        pnlThemNCC.setTxtSDT(nccCanSua.getSdt());      
+        pnlThemNCC.setTxtEmail(nccCanSua.getEmail());   
 
         dialog.setVisible(true);
 
-        NhaCungCap nccNew = pnlThemNCC.getNhaCungCapMoi(); // THAY ĐỔI
+        NhaCungCap nccNew = pnlThemNCC.getNhaCungCapMoi(); 
 
         if (nccNew != null) {
-            if (NhaCungCapDAO.suaNhaCungCap(maNCC, nccNew)) { // THAY ĐỔI
-                JOptionPane.showMessageDialog(this, "Sửa thông tin nhà cung cấp thành công!"); // THAY ĐỔI
+            if (NhaCungCapDAO.suaNhaCungCap(maNCC, nccNew)) { 
+                JOptionPane.showMessageDialog(this, "Sửa thông tin nhà cung cấp thành công!");
                 updateTable();
             } else {
-                JOptionPane.showMessageDialog(this, "Sửa thông tin nhà cung cấp thất bại (SĐT hoặc Email có thể đã tồn tại)."); // THAY ĐỔI
+                JOptionPane.showMessageDialog(this, "Sửa thông tin nhà cung cấp thất bại (SĐT hoặc Email có thể đã tồn tại)."); 
             }
         }
     }
 
-    private void hienThiChiTietNhaCungCap(MouseEvent e) { // THAY ĐỔI
+    private void hienThiChiTietNhaCungCap(MouseEvent e) { 
         int selectRow = table.getSelectedRow();
         if (selectRow != -1) {
-            String maNCC = model.getValueAt(selectRow, 0).toString(); // THAY ĐỔI
-            NhaCungCap nccDaChon = NhaCungCapDAO.timNCCTheoMa(maNCC); // THAY ĐỔI
+            String maNCC = model.getValueAt(selectRow, 0).toString(); 
+            NhaCungCap nccDaChon = NhaCungCapDAO.timNCCTheoMa(maNCC); 
 
             if (nccDaChon != null && e.getClickCount() == 2) {
-                ThemNhaCungCapGUI pnlThemNCC = new ThemNhaCungCapGUI(); // THAY ĐỔI
+                ThemNhaCungCapGUI pnlThemNCC = new ThemNhaCungCapGUI(); 
                 JDialog dialog = new JDialog();
-                dialog.setTitle("Thông tin chi tiết Nhà Cung Cấp"); // THAY ĐỔI
+                dialog.setTitle("Thông tin chi tiết Nhà Cung Cấp"); 
                 dialog.setModal(true);
                 dialog.setResizable(false);
                 dialog.setContentPane(pnlThemNCC);
@@ -329,17 +321,17 @@ public class QuanLiNhaCungCapGUI extends JPanel { // THAY ĐỔI
                 pnlThemNCC.getBtnXacNhan().setText("Đóng");
                 pnlThemNCC.getBtnXacNhan().addActionListener(l -> dialog.dispose());
 
-                pnlThemNCC.getTxtTenNCC().setEditable(false); // THAY ĐỔI
-                pnlThemNCC.getTxtDiaChi().setEditable(false); // THAY ĐỔI
-                pnlThemNCC.getTxtSDT().setEditable(false);    // THAY ĐỔI
-                pnlThemNCC.getTxtEmail().setEditable(false);  // THAY ĐỔI
+                pnlThemNCC.getTxtTenNCC().setEditable(false); 
+                pnlThemNCC.getTxtDiaChi().setEditable(false); 
+                pnlThemNCC.getTxtSDT().setEditable(false);    
+                pnlThemNCC.getTxtEmail().setEditable(false);  
 
                 // Đổ dữ liệu
-                pnlThemNCC.setTxtMaNCC(nccDaChon.getMaNCC());     // THAY ĐỔI
-                pnlThemNCC.setTxtTenNCC(nccDaChon.getTenNCC());    // THAY ĐỔI
-                pnlThemNCC.setTxtDiaChi(nccDaChon.getDiaChi());    // THAY ĐỔI
-                pnlThemNCC.setTxtSDT(nccDaChon.getSdt());       // THAY ĐỔI
-                pnlThemNCC.setTxtEmail(nccDaChon.getEmail());     // THAY ĐỔI
+                pnlThemNCC.setTxtMaNCC(nccDaChon.getMaNCC());    
+                pnlThemNCC.setTxtTenNCC(nccDaChon.getTenNCC());   
+                pnlThemNCC.setTxtDiaChi(nccDaChon.getDiaChi());   
+                pnlThemNCC.setTxtSDT(nccDaChon.getSdt());     
+                pnlThemNCC.setTxtEmail(nccDaChon.getEmail());   
 
                 dialog.setVisible(true);
             }

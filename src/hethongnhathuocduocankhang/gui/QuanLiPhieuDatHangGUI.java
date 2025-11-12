@@ -4,8 +4,8 @@
  */
 package hethongnhathuocduocankhang.gui;
 
-import hethongnhathuocduocankhang.dao.PhieuDatHangDAO; // Dùng DAO bạn cung cấp
-import hethongnhathuocduocankhang.entity.PhieuDatHang; 
+import hethongnhathuocduocankhang.dao.PhieuDatHangDAO;
+import hethongnhathuocduocankhang.entity.PhieuDatHang;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
@@ -19,19 +19,11 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 
-/**
- *
- * @author GIGABYTE
- * GUI này quản lý danh sách Phiếu Đặt Hàng (Master).
- * Không có chức năng Thêm/Xóa/Sửa.
- */
-public class QuanLiPhieuDatHangGUI extends JPanel { 
+public class QuanLiPhieuDatHangGUI extends JPanel {
 
-    // private JButton btnThem, btnXoa, btnSua; // BỎ
     private JTextField txtTimKiem;
     private JTable table;
     private JComboBox<String> cmbTieuChiTimKiem;
-    // private JComboBox<String> cmbBoLoc; // BỎ
     private DefaultTableModel model;
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
@@ -46,14 +38,14 @@ public class QuanLiPhieuDatHangGUI extends JPanel {
         pnlNorthLeft.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 0));
         pnlNorthLeft.setBorder(new EmptyBorder(0, 0, 10, 0));
         pnlNorth.add(pnlNorthLeft, BorderLayout.WEST);
-        
+
         JPanel pnlNorthRight = new JPanel();
         pnlNorthRight.setLayout(new FlowLayout(FlowLayout.RIGHT, 10, 5));
 
         cmbTieuChiTimKiem = new JComboBox<>(new String[]{
-            "Mã Phiếu Đặt", 
-            "Mã Nhà Cung Cấp", 
-            "Mã Nhân Viên", 
+            "Mã Phiếu Đặt",
+            "Mã Nhà Cung Cấp",
+            "Mã Nhân Viên",
             "Ngày Lập (yyyy-MM-dd)"
         });
         cmbTieuChiTimKiem.setFont(new Font("Arial", Font.PLAIN, 14));
@@ -86,7 +78,7 @@ public class QuanLiPhieuDatHangGUI extends JPanel {
         model = new DefaultTableModel(data, columnNames) {
             @Override
             public boolean isCellEditable(int row, int column) {
-                return false; 
+                return false;
             }
         };
 
@@ -109,35 +101,33 @@ public class QuanLiPhieuDatHangGUI extends JPanel {
         addEvents();
     }
 
-    private void updateTable(ArrayList<PhieuDatHang> dsPDH) { 
+    private void updateTable(ArrayList<PhieuDatHang> dsPDH) {
         model.setRowCount(0);
         if (dsPDH == null) {
             return;
         }
-        for (PhieuDatHang pdh : dsPDH) { 
-            // Dùng DAO gộp (đã có NhanVienDAO, NhaCungCapDAO)
+        for (PhieuDatHang pdh : dsPDH) {
             String tenNCC = (pdh.getNhaCungCap() != null && pdh.getNhaCungCap().getTenNCC() != null)
-                           ? pdh.getNhaCungCap().getTenNCC()
-                           : pdh.getNhaCungCap().getMaNCC(); 
-                           
+                    ? pdh.getNhaCungCap().getTenNCC()
+                    : pdh.getNhaCungCap().getMaNCC();
+
             String tenNV = (pdh.getNhanVien() != null && pdh.getNhanVien().getTen() != null)
-                           ? pdh.getNhanVien().getHoTenDem() + " " + pdh.getNhanVien().getTen() 
-                           : pdh.getNhanVien().getMaNV(); 
+                    ? pdh.getNhanVien().getHoTenDem() + " " + pdh.getNhanVien().getTen()
+                    : pdh.getNhanVien().getMaNV();
 
             Object[] row = {
                 pdh.getMaPhieuDat(),
                 tenNCC,
                 tenNV,
-                pdh.getNgayLap().format(formatter), 
-                String.format("%,.0f VND", pdh.getTongTien()) 
+                pdh.getNgayLap().format(formatter),
+                String.format("%,.0f VND", pdh.getTongTien())
             };
             model.addRow(row);
         }
     }
 
     private void updateTable() {
-        // Sử dụng hàm DAO bạn cung cấp
-        ArrayList<PhieuDatHang> dsPDH = PhieuDatHangDAO.getAllPhieuDatHang(); 
+        ArrayList<PhieuDatHang> dsPDH = PhieuDatHangDAO.getAllPhieuDatHang();
         updateTable(dsPDH);
     }
 
@@ -148,7 +138,7 @@ public class QuanLiPhieuDatHangGUI extends JPanel {
                 xuLyTimKiem();
             }
         });
-        
+
         cmbTieuChiTimKiem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -160,7 +150,7 @@ public class QuanLiPhieuDatHangGUI extends JPanel {
         table.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                hienThiChiTietPhieuDatHang(e); 
+                hienThiChiTietPhieuDatHang(e);
             }
         });
     }
@@ -169,59 +159,54 @@ public class QuanLiPhieuDatHangGUI extends JPanel {
         String tuKhoa = txtTimKiem.getText().trim();
         String tieuChi = cmbTieuChiTimKiem.getSelectedItem().toString();
 
-        ArrayList<PhieuDatHang> dsKetQua = new ArrayList<>(); 
+        ArrayList<PhieuDatHang> dsKetQua = new ArrayList<>();
 
         if (tuKhoa.isEmpty()) {
-            dsKetQua = PhieuDatHangDAO.getAllPhieuDatHang(); 
+            dsKetQua = PhieuDatHangDAO.getAllPhieuDatHang();
         } else {
             try {
                 switch (tieuChi) {
                     case "Mã Phiếu Đặt":
-                        PhieuDatHang pdh = PhieuDatHangDAO.timPDHTheoMa(tuKhoa); 
+                        PhieuDatHang pdh = PhieuDatHangDAO.timPDHTheoMa(tuKhoa);
                         if (pdh != null) {
                             dsKetQua.add(pdh);
                         }
                         break;
                     case "Mã Nhà Cung Cấp":
-                        dsKetQua = PhieuDatHangDAO.timPDHTheoMaNCC(tuKhoa); 
+                        dsKetQua = PhieuDatHangDAO.timPDHTheoMaNCC(tuKhoa);
                         break;
                     case "Mã Nhân Viên":
-                        dsKetQua = PhieuDatHangDAO.timPDHTheoMaNV(tuKhoa); 
+                        dsKetQua = PhieuDatHangDAO.timPDHTheoMaNV(tuKhoa);
                         break;
                     case "Ngày Lập (yyyy-MM-dd)":
-                        LocalDate date = LocalDate.parse(tuKhoa); 
-                        dsKetQua = PhieuDatHangDAO.timPDHTheoNgayLap(date); 
+                        LocalDate date = LocalDate.parse(tuKhoa);
+                        dsKetQua = PhieuDatHangDAO.timPDHTheoNgayLap(date);
                         break;
                 }
             } catch (DateTimeParseException e) {
-                 JOptionPane.showMessageDialog(this, "Ngày nhập phải đúng định dạng YYYY-MM-DD.", "Lỗi định dạng", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Ngày nhập phải đúng định dạng YYYY-MM-DD.", "Lỗi định dạng", JOptionPane.ERROR_MESSAGE);
             }
         }
-        updateTable(dsKetQua); 
+        updateTable(dsKetQua);
     }
 
-    /**
-     * SỬA LẠI HÀM NÀY
-     * Mở JDialog chứa JTable hiển thị danh sách ChiTietPhieuDatHang
-     */
-    private void hienThiChiTietPhieuDatHang(MouseEvent e) { 
+    private void hienThiChiTietPhieuDatHang(MouseEvent e) {
         int selectRow = table.getSelectedRow();
         if (selectRow != -1) {
-            String maPDH = model.getValueAt(selectRow, 0).toString(); 
-            // Dùng DAO của bạn để lấy PDH đầy đủ
-            PhieuDatHang pdhDaChon = PhieuDatHangDAO.timPDHTheoMa(maPDH); 
+            String maPDH = model.getValueAt(selectRow, 0).toString();
+            PhieuDatHang pdhDaChon = PhieuDatHangDAO.timPDHTheoMa(maPDH);
 
-            if (pdhDaChon != null && e.getClickCount() == 2) { 
-                
+            if (pdhDaChon != null && e.getClickCount() == 2) {
+
                 // 1. Tạo GUI mới (chứa JTable chi tiết)
-                ChiTietPhieuDatHangGUI pnlChiTiet = new ChiTietPhieuDatHangGUI(); 
-                
+                ChiTietPhieuDatHangGUI pnlChiTiet = new ChiTietPhieuDatHangGUI();
+
                 // 2. Tải dữ liệu vào GUI
-                pnlChiTiet.loadData(pdhDaChon); // Truyền đối tượng PDH đầy đủ
+                pnlChiTiet.loadData(pdhDaChon);
 
                 // 3. Tạo JDialog để chứa GUI
                 JDialog dialog = new JDialog();
-                dialog.setTitle("Danh sách chi tiết Phiếu Đặt: " + pdhDaChon.getMaPhieuDat()); 
+                dialog.setTitle("Danh sách chi tiết Phiếu Đặt: " + pdhDaChon.getMaPhieuDat());
                 dialog.setModal(true);
                 dialog.setResizable(true); // Cho phép thay đổi kích thước
                 dialog.setContentPane(pnlChiTiet);

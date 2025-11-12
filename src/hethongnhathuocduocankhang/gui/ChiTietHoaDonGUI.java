@@ -14,12 +14,6 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.ArrayList;
 
-/**
- *
- * @author GIGABYTE
- * GUI này hiển thị danh sách Chi Tiết Hóa Đơn (các sản phẩm)
- * thuộc về một Hóa Đơn.
- */
 public class ChiTietHoaDonGUI extends JPanel {
     private JTable table;
     private DefaultTableModel model;
@@ -38,7 +32,7 @@ public class ChiTietHoaDonGUI extends JPanel {
         lblTongTien.setFont(new Font("Arial", Font.BOLD, 14));
         
         pnlNorth.add(lblMaHoaDon);
-        pnlNorth.add(new JLabel("")); // Ô trống
+        pnlNorth.add(new JLabel(""));
         pnlNorth.add(lblTongTien);
         this.add(pnlNorth, BorderLayout.NORTH);
 
@@ -71,10 +65,6 @@ public class ChiTietHoaDonGUI extends JPanel {
         this.add(scrollPane, BorderLayout.CENTER);
     }
 
-    /**
-     * Phương thức chính để tải dữ liệu vào GUI này.
-     * @param hoaDon Hóa đơn cha cần hiển thị chi tiết.
-     */
     public void loadData(HoaDon hoaDon) {
         if (hoaDon == null) return;
 
@@ -90,11 +80,11 @@ public class ChiTietHoaDonGUI extends JPanel {
         for (ChiTietHoaDon cthd : dsCTHD) {
             Object[] row = {
                 cthd.getMaChiTietHoaDon(),
-                cthd.getDonViTinh().getSanPham().getTen(), // Tên sản phẩm
-                cthd.getDonViTinh().getTenDonVi(),         // Tên ĐVT
+                cthd.getDonViTinh().getSanPham().getTen(), 
+                cthd.getDonViTinh().getTenDonVi(),       
                 cthd.getSoLuong(),
                 String.format("%,.0f", cthd.getDonGia()),
-                String.format("%.0f%%", cthd.getGiamGia() * 100), // Hiển thị dạng %
+                String.format("%.0f%%", cthd.getGiamGia() * 100), 
                 String.format("%,.0f", cthd.getThanhTien())
             };
             model.addRow(row);
