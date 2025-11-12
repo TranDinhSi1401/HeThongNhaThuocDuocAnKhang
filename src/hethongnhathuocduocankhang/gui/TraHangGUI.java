@@ -4,6 +4,20 @@
  */
 package hethongnhathuocduocankhang.gui;
 
+import hethongnhathuocduocankhang.dao.ChiTietHoaDonDAO;
+import hethongnhathuocduocankhang.dao.HoaDonDAO;
+import hethongnhathuocduocankhang.dao.PhieuDatHangDAO;
+import hethongnhathuocduocankhang.entity.ChiTietHoaDon;
+import hethongnhathuocduocankhang.entity.HoaDon;
+import java.awt.event.KeyEvent;
+import java.time.LocalDate;
+import java.util.List;
+import javax.swing.DefaultCellEditor;
+import javax.swing.JComboBox;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellEditor;
+import javax.swing.table.TableColumn;
+
 /**
  *
  * @author trand
@@ -31,20 +45,17 @@ public class TraHangGUI extends javax.swing.JPanel {
         jPanel9 = new javax.swing.JPanel();
         jPanel11 = new javax.swing.JPanel();
         jPanel12 = new javax.swing.JPanel();
-        jTextField2 = new javax.swing.JTextField();
+        txtMaHoaDon = new javax.swing.JTextField();
         jPanel13 = new javax.swing.JPanel();
-        jPanel10 = new javax.swing.JPanel();
-        jPanel2 = new javax.swing.JPanel();
         jPanel14 = new javax.swing.JPanel();
-        jPanel16 = new javax.swing.JPanel();
-        jTextField4 = new javax.swing.JTextField();
-        jLabel6 = new javax.swing.JLabel();
-        jPanel17 = new javax.swing.JPanel();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        jTable3 = new javax.swing.JTable();
-        jPanel1 = new javax.swing.JPanel();
+        jPanel10 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        tblCTHD = new javax.swing.JTable();
+        jToolBar1 = new javax.swing.JToolBar();
+        jPanel1 = new javax.swing.JPanel();
+        jButton2 = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
+        jLabel6 = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         jPanel6 = new javax.swing.JPanel();
@@ -59,11 +70,11 @@ public class TraHangGUI extends javax.swing.JPanel {
         jTextField5 = new javax.swing.JTextField();
         jPanel19 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
-        jTextField6 = new javax.swing.JTextField();
+        txtMaHoaDonTrongPhieuTraHang = new javax.swing.JTextField();
         jPanel5 = new javax.swing.JPanel();
         jPanel21 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tblTraHang = new javax.swing.JTable();
         jPanel22 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         jTextField7 = new javax.swing.JTextField();
@@ -81,99 +92,100 @@ public class TraHangGUI extends javax.swing.JPanel {
         jPanel9.setLayout(new javax.swing.BoxLayout(jPanel9, javax.swing.BoxLayout.Y_AXIS));
         jPanel9.add(jPanel11);
 
-        jPanel12.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
-
-        jTextField2.setText("Nhập mã hóa đơn");
-        jTextField2.setPreferredSize(new java.awt.Dimension(500, 22));
-        jTextField2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField2ActionPerformed(evt);
+        txtMaHoaDon.setText("Nhập mã hóa đơn");
+        txtMaHoaDon.setPreferredSize(new java.awt.Dimension(500, 22));
+        txtMaHoaDon.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txtMaHoaDonFocusGained(evt);
             }
         });
-        jPanel12.add(jTextField2);
+        txtMaHoaDon.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtMaHoaDonActionPerformed(evt);
+            }
+        });
+        txtMaHoaDon.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtMaHoaDonKeyPressed(evt);
+            }
+        });
+        jPanel12.add(txtMaHoaDon);
 
         jPanel9.add(jPanel12);
         jPanel9.add(jPanel13);
+        jPanel9.add(jPanel14);
 
         jPanel8.add(jPanel9, java.awt.BorderLayout.PAGE_START);
 
+        jPanel10.setBorder(javax.swing.BorderFactory.createTitledBorder("Chi tiết hóa đơn"));
         jPanel10.setLayout(new javax.swing.BoxLayout(jPanel10, javax.swing.BoxLayout.Y_AXIS));
 
-        jPanel2.setMaximumSize(new java.awt.Dimension(32767, 80));
-        jPanel10.add(jPanel2);
+        jScrollPane2.setBorder(null);
 
-        jPanel14.setBorder(javax.swing.BorderFactory.createTitledBorder("Có tài khoản thành viên"));
-        jPanel14.setLayout(new javax.swing.BoxLayout(jPanel14, javax.swing.BoxLayout.Y_AXIS));
+        tblCTHD.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
 
-        jPanel16.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+            },
+            new String [] {
+                "STT", "Mã CTHD", "Tên sản phẩm", "Số lượng", "Đơn vị tính", "Đơn giá", "Giảm giá", "Thành tiền", "Chọn"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Boolean.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false, true
+            };
 
-        jTextField4.setText("Nhập số điện thoại");
-        jTextField4.setPreferredSize(new java.awt.Dimension(272, 22));
-        jTextField4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField4ActionPerformed(evt);
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
             }
         });
-        jPanel16.add(jTextField4);
-
-        jLabel6.setText("Ngày mua");
-        jPanel16.add(jLabel6);
-
-        jPanel14.add(jPanel16);
-
-        jPanel17.setBorder(javax.swing.BorderFactory.createTitledBorder("Hóa đơn đã mua"));
-        jPanel17.setPreferredSize(new java.awt.Dimension(452, 100));
-        jPanel17.setLayout(new javax.swing.BoxLayout(jPanel17, javax.swing.BoxLayout.LINE_AXIS));
-
-        jTable3.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4", "Title 5", "Title 6"
-            }
-        ));
-        jTable3.setPreferredSize(new java.awt.Dimension(300, 60));
-        jTable3.setShowVerticalLines(true);
-        jScrollPane3.setViewportView(jTable3);
-
-        jPanel17.add(jScrollPane3);
-
-        jPanel14.add(jPanel17);
-        jPanel14.add(jPanel1);
-
-        jPanel10.add(jPanel14);
-
-        jScrollPane2.setBorder(javax.swing.BorderFactory.createTitledBorder("Chi tiết hóa đơn"));
-
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4", "Title 5", "Title 6", "Title 7", "Title 8", "Title 9", "Title 10", "Title 11"
-            }
-        ));
-        jTable2.setShowGrid(false);
-        jTable2.setShowVerticalLines(true);
-        jScrollPane2.setViewportView(jTable2);
+        tblCTHD.setShowGrid(false);
+        tblCTHD.setShowVerticalLines(true);
+        jScrollPane2.setViewportView(tblCTHD);
+        if (tblCTHD.getColumnModel().getColumnCount() > 0) {
+            tblCTHD.getColumnModel().getColumn(1).setMinWidth(0);
+            tblCTHD.getColumnModel().getColumn(1).setMaxWidth(0);
+            tblCTHD.getColumnModel().getColumn(2).setMinWidth(300);
+            tblCTHD.getColumnModel().getColumn(2).setMaxWidth(300);
+            tblCTHD.getColumnModel().getColumn(8).setResizable(false);
+        }
 
         jPanel10.add(jScrollPane2);
+        jScrollPane2.getAccessibleContext().setAccessibleName("");
 
         jPanel8.add(jPanel10, java.awt.BorderLayout.CENTER);
+
+        jToolBar1.setRollover(true);
+        jPanel8.add(jToolBar1, java.awt.BorderLayout.PAGE_END);
+
+        jPanel1.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
+
+        jButton2.setText("Bỏ chọn tất cả");
+        jButton2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton2MouseClicked(evt);
+            }
+        });
+        jPanel1.add(jButton2);
+
+        jButton1.setText("Xác nhận chọn");
+        jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton1MouseClicked(evt);
+            }
+        });
+        jPanel1.add(jButton1);
+
+        jLabel6.setText("Số lượng đã chọn: 0");
+        jPanel1.add(jLabel6);
+
+        jPanel8.add(jPanel1, java.awt.BorderLayout.PAGE_END);
 
         jTabbedPane1.addTab("Tìm hóa đơn", jPanel8);
 
@@ -214,13 +226,13 @@ public class TraHangGUI extends javax.swing.JPanel {
         jLabel4.setPreferredSize(new java.awt.Dimension(80, 16));
         jPanel19.add(jLabel4);
 
-        jTextField6.setPreferredSize(new java.awt.Dimension(250, 22));
-        jTextField6.addActionListener(new java.awt.event.ActionListener() {
+        txtMaHoaDonTrongPhieuTraHang.setPreferredSize(new java.awt.Dimension(250, 22));
+        txtMaHoaDonTrongPhieuTraHang.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField6ActionPerformed(evt);
+                txtMaHoaDonTrongPhieuTraHangActionPerformed(evt);
             }
         });
-        jPanel19.add(jTextField6);
+        jPanel19.add(txtMaHoaDonTrongPhieuTraHang);
 
         jPanel6.add(jPanel19);
 
@@ -233,18 +245,37 @@ public class TraHangGUI extends javax.swing.JPanel {
         jPanel21.setBorder(javax.swing.BorderFactory.createTitledBorder("Chi tiết phiếu trả hàng"));
         jPanel21.setLayout(new javax.swing.BoxLayout(jPanel21, javax.swing.BoxLayout.Y_AXIS));
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tblTraHang.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "STT", "Tên sản phẩm", "Số lượng", "Đơn giá", "Giảm giá", "Thành tiền", "Lý do trả", "Sản phẩm nguyên vẹn", "Giá trị hoàn trả", "Thành tiền hoàn trả", "Mã CTHD"
             }
-        ));
-        jScrollPane1.setViewportView(jTable1);
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
+            };
+            boolean[] canEdit = new boolean [] {
+                true, true, true, true, true, true, true, true, true, true, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(tblTraHang);
+        if (tblTraHang.getColumnModel().getColumnCount() > 0) {
+            tblTraHang.getColumnModel().getColumn(1).setMinWidth(200);
+            tblTraHang.getColumnModel().getColumn(1).setMaxWidth(200);
+            tblTraHang.getColumnModel().getColumn(6).setMinWidth(200);
+            tblTraHang.getColumnModel().getColumn(10).setMinWidth(0);
+            tblTraHang.getColumnModel().getColumn(10).setMaxWidth(0);
+        }
 
         jPanel21.add(jScrollPane1);
 
@@ -288,28 +319,68 @@ public class TraHangGUI extends javax.swing.JPanel {
         add(jTabbedPane1);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
+    private void txtMaHoaDonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMaHoaDonActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField2ActionPerformed
-
-    private void jTextField4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField4ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField4ActionPerformed
+    }//GEN-LAST:event_txtMaHoaDonActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton3ActionPerformed
 
-    private void jTextField6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField6ActionPerformed
+    private void txtMaHoaDonTrongPhieuTraHangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMaHoaDonTrongPhieuTraHangActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField6ActionPerformed
+    }//GEN-LAST:event_txtMaHoaDonTrongPhieuTraHangActionPerformed
 
     private void jXDatePicker1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jXDatePicker1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jXDatePicker1ActionPerformed
 
+    private void txtMaHoaDonFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtMaHoaDonFocusGained
+        // TODO add your handling code here:
+        txtMaHoaDon.setText("HD-251025-0001");
+    }//GEN-LAST:event_txtMaHoaDonFocusGained
+
+    private void txtMaHoaDonKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtMaHoaDonKeyPressed
+        // TODO add your handling code here:
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER){
+            String maHoaDon = txtMaHoaDon.getText();
+            addHoaDon(maHoaDon);
+        }
+    }//GEN-LAST:event_txtMaHoaDonKeyPressed
+
+    private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
+        // TODO add your handling code here:
+        DefaultTableModel dtmTraHang = (DefaultTableModel) tblTraHang.getModel();
+        dtmTraHang.setRowCount(0);
+        
+        DefaultTableModel dtmCTHD = (DefaultTableModel) tblCTHD.getModel();
+        for(int i=0; i<dtmCTHD.getRowCount(); i++){
+            if(dtmCTHD.getValueAt(i, 8) == Boolean.TRUE){
+                themDongBangPhieuTraHang(dtmCTHD.getValueAt(i, 1).toString());
+            }
+        }
+        
+    }//GEN-LAST:event_jButton1MouseClicked
+
+    private void jButton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton2MouseClicked
+        // TODO add your handling code here:
+        DefaultTableModel dtmTraHang = (DefaultTableModel) tblTraHang.getModel();
+        dtmTraHang.setRowCount(0);
+        
+        DefaultTableModel dtmCTHD = (DefaultTableModel) tblCTHD.getModel();
+        for(int i=0; i<dtmCTHD.getRowCount(); i++){
+            if(dtmCTHD.getValueAt(i, 8)== Boolean.TRUE){
+                dtmCTHD.setValueAt(Boolean.FALSE, i, 8);
+            }
+        }
+    }//GEN-LAST:event_jButton2MouseClicked
+
+    
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton5;
@@ -326,11 +397,8 @@ public class TraHangGUI extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel13;
     private javax.swing.JPanel jPanel14;
     private javax.swing.JPanel jPanel15;
-    private javax.swing.JPanel jPanel16;
-    private javax.swing.JPanel jPanel17;
     private javax.swing.JPanel jPanel18;
     private javax.swing.JPanel jPanel19;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel20;
     private javax.swing.JPanel jPanel21;
     private javax.swing.JPanel jPanel22;
@@ -345,17 +413,107 @@ public class TraHangGUI extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
-    private javax.swing.JTable jTable3;
     private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField6;
     private javax.swing.JTextField jTextField7;
+    private javax.swing.JToolBar jToolBar1;
+    private javax.swing.JTable tblCTHD;
+    private javax.swing.JTable tblTraHang;
+    private javax.swing.JTextField txtMaHoaDon;
+    private javax.swing.JTextField txtMaHoaDonTrongPhieuTraHang;
     // End of variables declaration//GEN-END:variables
+
+    private void addHoaDon(String maHoaDon) {
+        List<ChiTietHoaDon> listCTHD;
+        HoaDon hoaDon = HoaDonDAO.getHoaDonTheoMaHD(maHoaDon);
+        listCTHD = ChiTietHoaDonDAO.getChiTietHoaDonTheoMaHD(hoaDon);
+        
+        //Them du lieu vao bang cthd
+        themDuLieuCTHDVaoBang(listCTHD);
+        taoThongTinPhieu(maHoaDon);
+        
+    }
+    
+    private void themDuLieuCTHDVaoBang(List<ChiTietHoaDon> listCTHD) {
+        int stt = 0;
+        DefaultTableModel bangCTHD = (DefaultTableModel) tblCTHD.getModel();
+        bangCTHD.setRowCount(0);
+        Object[] row = new Object[9];
+        for(ChiTietHoaDon cthd : listCTHD){
+            stt++;
+            String maCTHD = cthd.getMaChiTietHoaDon();
+            String tenSanPham = cthd.getDonViTinh().getSanPham().getTen();
+            int soLuong = cthd.getSoLuong();
+            String donViTinh = cthd.getDonViTinh().getTenDonVi();
+            double donGia = cthd.getDonGia();
+            double giamGia = cthd.getGiamGia();
+            double thanhTien = cthd.getThanhTien();
+            boolean chon = Boolean.FALSE;
+            row[0] = stt;
+            row[1] = maCTHD;
+            row[2] = tenSanPham;
+            row[3] = soLuong;
+            row[4] = donViTinh;
+            row[5] = donGia;
+            row[6] = giamGia;
+            row[7] = thanhTien;
+            row[8] = chon;
+            bangCTHD.addRow(row);
+        } 
+    }
+
+    private void themDongBangPhieuTraHang(String maCTHD) {
+        ChiTietHoaDon cthd = ChiTietHoaDonDAO.getChiTietHoaDonTheoMaCTHD(maCTHD);
+        DefaultTableModel dtm = (DefaultTableModel) tblTraHang.getModel();
+        Object[] rowData = new Object[11];
+        
+        int stt = dtm.getRowCount() + 1;
+        String tenSanPham = cthd.getDonViTinh().getSanPham().getTen();
+        int soLuong = cthd.getSoLuong();
+        double donGia = cthd.getDonGia();
+        double giamGia = cthd.getGiamGia();
+        double thanhTien = cthd.getThanhTien();
+        String lyDoTra = null;
+        boolean sanPhamNguyenVen = Boolean.TRUE;
+        String giaTriHoanTra = null;
+        double thanhTienHoanTra = 0;
+        
+        rowData[0] = stt;
+        rowData[1] = tenSanPham;
+        rowData[2] = soLuong;
+        rowData[3] = donGia;
+        rowData[4] = giamGia;
+        rowData[5] = thanhTien;
+        rowData[6] = lyDoTra;
+        rowData[7] = sanPhamNguyenVen;
+        rowData[8] = giaTriHoanTra;
+        rowData[9] = thanhTienHoanTra;
+        rowData[10] = maCTHD;
+        
+        dtm.addRow(rowData);
+        taoLyDo();
+    }
+
+    private void taoThongTinPhieu(String maHoaDon) {
+        txtMaHoaDonTrongPhieuTraHang.setText(maHoaDon);
+        int ngay = LocalDate.now().getDayOfMonth();
+        int thang = LocalDate.now().getMonthValue();
+        int nam = LocalDate.now().getYear();
+        jTextField5.setText(ngay+ "/" + thang + "/" + nam);
+        
+        
+    }
+    
+    
+    private void taoLyDo(){
+        JComboBox<String> cbbLyDo = new JComboBox<>();
+        cbbLyDo.addItem("Sản phẩm lỗi do nhà sản xuất");
+        cbbLyDo.addItem("Sản phẩm gây dị ứng, mẫn cảm nói chung");
+        cbbLyDo.addItem("Khác");
+
+        TableColumn colLyDo = tblTraHang.getColumnModel().getColumn(6);
+        colLyDo.setCellEditor(new DefaultCellEditor(cbbLyDo));
+    }
 }
