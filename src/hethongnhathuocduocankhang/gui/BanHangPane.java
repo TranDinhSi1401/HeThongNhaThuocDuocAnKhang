@@ -34,9 +34,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Locale;
-import java.util.Map;
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -48,22 +46,17 @@ import javax.swing.table.TableColumn;
  * @author trand
  */
 public class BanHangPane extends javax.swing.JPanel {
-    private Map<Integer, JComboBox<String>> comboBoxMap = new HashMap<>();
     /**
      * Creates new form BanHangGUI
      */
     
-    public JTextField getTxtTimKiem() {
-        return txtTimKiem; 
-    }
-
     public BanHangPane() {
         initComponents();
         
         try {
             ConnectDB.getInstance().connect();
         }catch(SQLException e) {
-            e.printStackTrace();
+            System.out.println("Không thể kết nối vs CSDL");
         }
         
         JTableHeader header = tblCTHD.getTableHeader();
@@ -592,16 +585,15 @@ public class BanHangPane extends javax.swing.JPanel {
     }//GEN-LAST:event_btnTimKiemMouseClicked
 
     private void themSanPhamVaoTable() {
+        // Lấy các thông tin liên quan đến mã sp
         String maSP = txtTimKiem.getText();
         SanPham sp = SanPhamDAO.timSPTheoMa(maSP);
         ArrayList<DonViTinh> dsDVT = DonViTinhDAO.getDonViTinhTheoMaSP(maSP);
         ArrayList<KhuyenMai> dsKM = KhuyenMaiDAO.getKhuyenMaiTheoMaSP(maSP);
         ArrayList<LoSanPham> dsLSP = LoSanPhamDAO.getLoSanPhamTheoMaSP(maSP);
-        int tongSoLuong = 0;
-        for(LoSanPham lsp : dsLSP) {
-            tongSoLuong += lsp.getSoLuong();
-        }
+        int tongSoLuong = dsLSP.stream().mapToInt(LoSanPham :: getSoLuong).sum();
         
+        // Bắt lỗi các trường hợp có thể xảy ra
         if (sp == null) {
             JOptionPane.showMessageDialog(this, "Không tìm thấy sản phẩm!");
             return;
@@ -612,20 +604,25 @@ public class BanHangPane extends javax.swing.JPanel {
             return;
         }
         
+        if(tongSoLuong <= 0) {
+            JOptionPane.showMessageDialog(this, "Sản phẩm này không đủ số lượng!");
+            return;
+        }
+        
+        // render chi tiết hóa đơn
         DefaultTableModel model = (DefaultTableModel)tblCTHD.getModel();
+        
         int stt = model.getRowCount() + 1;
+        
         String tenSP = sp.getTen();
+        
         dsDVT.sort((a, b) -> Double.compare(a.getHeSoQuyDoi(), b.getHeSoQuyDoi()));
         DonViTinh dvtMacDinh = dsDVT.get(0);
         String tenDVT = dvtMacDinh.getTenDonVi();
-        double donGia = dvtMacDinh.getGiaBanTheoDonVi();
-        int soLuong = 1;
         
-        int heSoQuyDoi = dvtMacDinh.getHeSoQuyDoi();
-        if(soLuong * heSoQuyDoi > tongSoLuong) {
-            JOptionPane.showMessageDialog(this, "Không đủ số lượng");
-            return;
-        }
+        double donGia = dvtMacDinh.getGiaBanTheoDonVi();
+        
+        int soLuong = 1;   
         
         double giamGia = 0;
         dsKM.sort((b, a) -> Double.compare(a.getPhanTram(), b.getPhanTram()));
@@ -640,13 +637,16 @@ public class BanHangPane extends javax.swing.JPanel {
         
         Object[] newRow = {stt, tenSP, tenDVT, donGia, soLuong, giamGia, thanhTien, maDVT, maSP};
         model.addRow(newRow);
-
+        
+        // tạo combobox cho cột đơn vị tính
         TableColumn columnDVT = tblCTHD.getColumnModel().getColumn(2);
         JComboBox<String> cbDonViTinh = new JComboBox<>();
         for (DonViTinh dvt : dsDVT) {
             cbDonViTinh.addItem(dvt.getTenDonVi());
         }
         columnDVT.setCellEditor(new DefaultCellEditor(cbDonViTinh));
+
+
 
 
         TableColumn colDonGia = tblCTHD.getColumnModel().getColumn(3);
