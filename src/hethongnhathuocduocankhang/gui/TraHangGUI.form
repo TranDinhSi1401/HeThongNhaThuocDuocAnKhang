@@ -80,7 +80,7 @@
                               <Properties>
                                 <Property name="text" type="java.lang.String" value="Nh&#x1ead;p m&#xe3; h&#xf3;a &#x111;&#x1a1;n"/>
                                 <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                                  <Dimension value="[500, 22]"/>
+                                  <Dimension value="[400, 22]"/>
                                 </Property>
                               </Properties>
                               <Events>

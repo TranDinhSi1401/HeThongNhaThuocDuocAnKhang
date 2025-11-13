@@ -113,7 +113,7 @@ public class TraHangGUI extends javax.swing.JPanel {
         jPanel25.add(jPanel27);
 
         txtMaHoaDon.setText("Nhập mã hóa đơn");
-        txtMaHoaDon.setPreferredSize(new java.awt.Dimension(500, 22));
+        txtMaHoaDon.setPreferredSize(new java.awt.Dimension(400, 22));
         txtMaHoaDon.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 txtMaHoaDonFocusGained(evt);
