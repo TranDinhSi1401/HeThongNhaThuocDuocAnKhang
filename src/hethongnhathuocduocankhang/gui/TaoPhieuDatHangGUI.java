@@ -105,7 +105,6 @@ public class TaoPhieuDatHangGUI extends javax.swing.JPanel {
         jTextArea1 = new javax.swing.JTextArea();
         jTextField5 = new javax.swing.JTextField();
         txtTenNhanVien = new javax.swing.JTextField();
-        ngayLap = new com.toedter.calendar.JDateChooser();
         jPanel2 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         jPanel6 = new javax.swing.JPanel();
@@ -187,9 +186,7 @@ public class TaoPhieuDatHangGUI extends javax.swing.JPanel {
                             .addComponent(jLabel2)
                             .addComponent(jLabel4))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField5)
-                            .addComponent(ngayLap, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addComponent(jTextField5)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -201,10 +198,8 @@ public class TaoPhieuDatHangGUI extends javax.swing.JPanel {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel4)
-                    .addComponent(ngayLap, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(20, 20, 20)
+                .addComponent(jLabel4)
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
@@ -213,7 +208,7 @@ public class TaoPhieuDatHangGUI extends javax.swing.JPanel {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel5)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(42, Short.MAX_VALUE))
+                .addContainerGap(46, Short.MAX_VALUE))
         );
 
         add(jPanel1, java.awt.BorderLayout.LINE_START);
@@ -561,7 +556,6 @@ public class TaoPhieuDatHangGUI extends javax.swing.JPanel {
     private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField5;
-    private com.toedter.calendar.JDateChooser ngayLap;
     private javax.swing.JTable tblPhieuDat;
     private javax.swing.JTable tblSanPham;
     private javax.swing.JTextField txtTenNhanVien;
@@ -585,7 +579,7 @@ public class TaoPhieuDatHangGUI extends javax.swing.JPanel {
             return;
         }
         txtTenNhanVien.setText(tk.getNhanVien().getHoTenDem() + " " + tk.getNhanVien().getTen());
-        ngayLap.setDate(new Date());
+        //ngayLap.setDate(new Date());
     }
 
     class btnSoLuong extends DefaultCellEditor{
@@ -874,8 +868,8 @@ public class TaoPhieuDatHangGUI extends javax.swing.JPanel {
             for(String ncc : nccMap.keySet()){
                 StringBuilder sb = new StringBuilder();
                 sb.append("PHIẾU ĐẶT HÀNG - NCC:   ").append(ncc).append("\n");
-                sb.append("Mã phiếu: ").append(jTextField5.getText())
-                  .append("\tNgày lập: ").append(ngayLap.getDate()).append("\n");
+                //sb.append("Mã phiếu: ").append(jTextField5.getText())
+                  //.append("\tNgày lập: ").append(ngayLap.getDate()).append("\n");
                 sb.append("Nhân viên: ").append(txtTenNhanVien.getText()).append("\n");
                 sb.append("Ghi chú: ").append(jTextArea1.getText()).append("\n");
                 sb.append("-----------------------------------------------------------------------------------------------------------\n");
