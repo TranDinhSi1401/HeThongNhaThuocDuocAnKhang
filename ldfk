@@ -1,0 +1,29 @@
+[33mcommit e77e938d5d53157acbfc21fb51f7a399878c09e4[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmaster[m[33m)[m
+Author: Quan <23655101.quan@student.iuh.edu.vn>
+Date:   Thu Nov 6 21:37:22 2025 +0700
+
+    check
+
+[33mcommit 46e99d22b37c0b318906f9b28dff345686413e13[m
+Author: Tran Dinh Si <trandinhsi1401@gmail.com>
+Date:   Thu Oct 16 19:44:28 2025 +0700
+
+    fix jdk 24
+
+[33mcommit a265870abfed3d907fb4ae5d844c2e694a32348d[m
+Author: Tran Dinh Si <trandinhsi1401@gmail.com>
+Date:   Thu Oct 16 18:02:26 2025 +0700
+
+    Thêm file .gitignore
+
+[33mcommit c524ab43c87998bde3ce5ce58895e750b1a76675[m
+Author: Tran Dinh Si <trandinhsi1401@gmail.com>
+Date:   Thu Oct 16 17:58:05 2025 +0700
+
+    Thêm entity
+
+[33mcommit 855af6192974a3f90425ec1300e2c8718ce12772[m
+Author: Tran Dinh Si <trandinhsi1401@gmail.com>
+Date:   Thu Oct 16 17:50:37 2025 +0700
+
+    Hoàn thành 70% giao diện chính
