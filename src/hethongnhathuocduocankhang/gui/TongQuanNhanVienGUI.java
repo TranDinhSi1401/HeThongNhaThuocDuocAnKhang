@@ -6,12 +6,15 @@ package hethongnhathuocduocankhang.gui;
 
 import hethongnhathuocduocankhang.dao.NhanVienDAO;
 import hethongnhathuocduocankhang.entity.NhanVien;
+import java.awt.FlowLayout;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
+import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 /**
@@ -26,32 +29,36 @@ public class TongQuanNhanVienGUI extends javax.swing.JPanel {
     public TongQuanNhanVienGUI() {
         initComponents();
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        
+
         try {
             NhanVien nv = NhanVienDAO.getNhanVienTheoMaNV(GiaoDienChinhGUI.getTk().getTenDangNhap().trim());
             renderThongTinNhanVien(nv);
-        } catch(SQLException e) {
+        } catch (SQLException e) {
             JOptionPane.showMessageDialog(this, "Không có thông tin nhân viên");
         }
 
+        jPanel6.setLayout(new FlowLayout());
+        jPanel6.add(new JLabel("Mới thêm"));
+
         //renderThongTinCaLam();
     }
-    
+
     public void renderThongTinNhanVien(NhanVien nv) {
         lblMaNV.setText(nv.getMaNV());
         lblHoTen.setText(nv.getHoTenDem() + " " + nv.getTen());
-        if(nv.isGioiTinh()) 
+        if (nv.isGioiTinh()) {
             lblGioiTinh.setText("Nam");
-        else
+        } else {
             lblGioiTinh.setText("Nữ");
+        }
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         String formattedDate = nv.getNgaySinh().format(formatter);
         lblNgaySinh.setText(formattedDate);
-        lblChucVu.setText(GiaoDienChinhGUI.getTk().isQuanLy() ? "Quản lý" : "Nhân viên"); 
+        lblChucVu.setText(GiaoDienChinhGUI.getTk().isQuanLy() ? "Quản lý" : "Nhân viên");
         lblTrangThai.setText(nv.isNghiViec() ? "Nghỉ việc" : "Đang làm việc");
         lblSdt.setText(nv.getSdt());
     }
-    
+
 //    public void renderThongTinCaLam() {
 //        LocalDate today = LocalDate.now();
 //        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -59,7 +66,6 @@ public class TongQuanNhanVienGUI extends javax.swing.JPanel {
 //
 //        lblThongTinCaLam.setText("Ca Làm" + " Ngày " + formattedDate);
 //    }
-    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

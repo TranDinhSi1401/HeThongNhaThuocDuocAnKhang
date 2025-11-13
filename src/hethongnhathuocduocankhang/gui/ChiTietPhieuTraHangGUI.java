@@ -40,6 +40,7 @@ public class ChiTietPhieuTraHangGUI extends JPanel {
         String[] columnNames = {
             "Mã CTHD",
             "Sản Phẩm",
+            "Đơn vị tính",
             "Số Lượng Trả",
             "Lý Do Trả",
             "Tình Trạng SP",
@@ -81,6 +82,7 @@ public class ChiTietPhieuTraHangGUI extends JPanel {
             Object[] row = {
                 ct.getChiTietHoaDon().getMaChiTietHoaDon(),
                 ct.getChiTietHoaDon().getDonViTinh().getSanPham().getTen(), // Tên SP
+                ct.getChiTietHoaDon().getDonViTinh().getTenDonVi(),
                 ct.getSoLuong(),
                 ct.getTruongHopDoiTra().toString(),
                 ct.getTinhTrangSanPham().toString(),
