@@ -119,4 +119,38 @@ public class ChiTietHoaDonDAO {
         }
         return dsCTHD;
     }
+    
+    public static ChiTietHoaDon getChiTietHoaDonTheoMaCTHD(String maCTHD) {
+        HoaDon hd = null;
+
+        try {
+            ConnectDB.getInstance().connect();
+            Connection con = ConnectDB.getConnection();
+
+            String sql = "SELECT maHoaDon FROM ChiTietHoaDon WHERE maChiTietHoaDon = ?";
+
+            PreparedStatement stmt = con.prepareStatement(sql);
+            stmt.setString(1, maCTHD);
+
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                hd = HoaDonDAO.getHoaDonTheoMaHD(rs.getString("maHoaDon"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        ArrayList<ChiTietHoaDon> dsCTHD = getChiTietHoaDonTheoMaHD(hd);
+
+        ChiTietHoaDon cthd = null;
+
+        for (ChiTietHoaDon chiTietHoaDon : dsCTHD) {
+            if (chiTietHoaDon.getMaChiTietHoaDon().equals(maCTHD)) {
+                cthd = chiTietHoaDon;
+                break;
+            }
+        }
+
+        return cthd;
+    }
 }
