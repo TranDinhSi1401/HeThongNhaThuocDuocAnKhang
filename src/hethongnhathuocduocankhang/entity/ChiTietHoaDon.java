@@ -29,6 +29,10 @@ public class ChiTietHoaDon {
         this.giamGia = giamGia;
         this.thanhTien = thanhTien;
     }
+
+    public ChiTietHoaDon(double donGia) {
+        this.donGia = donGia;
+    }
     
     public ChiTietHoaDon(String maCTHD) {
         this.maChiTietHoaDon = maCTHD;

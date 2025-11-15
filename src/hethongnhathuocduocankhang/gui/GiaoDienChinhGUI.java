@@ -53,7 +53,7 @@ public class GiaoDienChinhGUI extends javax.swing.JFrame {
                 } 
                 
                 if(index == 4 && subIndex == 0) {
-                    showPanel(new TaoPhieuDatHangGUI());
+                    showPanel(new LoSanPhamGUI());
                 } 
 
                 if(index == 8 && subIndex == 0) {
