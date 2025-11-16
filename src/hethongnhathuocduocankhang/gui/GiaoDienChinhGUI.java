@@ -27,6 +27,7 @@ public class GiaoDienChinhGUI extends javax.swing.JFrame {
         menu.setEvent(new MenuEvent() {
             @Override
             public void selected(int index, int subIndex) {
+
                 if(index == 0 && subIndex == 0) {
                     showPanel(new DashBoardQuanLi());
                 }
@@ -50,12 +51,13 @@ public class GiaoDienChinhGUI extends javax.swing.JFrame {
                 } 
                 if(index == 3 && subIndex == 0) {
                     showPanel(new TraHangGUI());
-                } 
-                
+                }                
                 if(index == 4 && subIndex == 0) {
                     showPanel(new TaoPhieuDatHangGUI());
-                } 
-
+                }
+                if(index == 7 && subIndex == 0) {
+                    showPanel(new DoiQuaGUI());
+                }
                 if(index == 8 && subIndex == 0) {
                     dangXuat();
                 }
