@@ -34,7 +34,7 @@ public class Menu extends JComponent{
         {"Tạo phiếu đặt hàng"},
         {"Tra cứu"},
         {"Thống kê"},
-        {"Ra vào ca"},
+        {"Đổi quà"},
         {"Đăng xuất"}
     };
     
