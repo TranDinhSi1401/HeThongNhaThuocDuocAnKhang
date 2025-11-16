@@ -64,7 +64,7 @@ public class LoSanPhamDAO {
     }
     public static ArrayList<LoSanPham> dsLoSanPham(){
         ArrayList<LoSanPham> ds = new ArrayList<>();
-        String sql = "Select s.maSP, s.ten, l.maLoSanPham, maNCC, cd.maDonViTinh, ngaySanXuat, ngayHetHan, cd.soLuong, donGia \n" +
+        String sql = "Select s.maSP, s.ten, l.maLoSanPham, maNCC, cd.maDonViTinh, ngaySanXuat, ngayHetHan, l.soLuong, donGia \n" +
                     "from LoSanPham l join SanPham s on l.maSP=s.maSP \n" +
                     "join ChiTietXuatLo cl on cl.maLoSanPham=l.maLoSanPham\n" +
                     "join ChiTietHoaDon cd on cd.maChiTietHoaDon=cl.maChiTietHoaDon\n" +
@@ -96,7 +96,7 @@ public class LoSanPhamDAO {
     }
     public static LoSanPham timLoSanPham(String maLo){
         LoSanPham lo = new LoSanPham();
-        String sql = "Select s.maSP, s.ten, l.maLoSanPham, maNCC, cd.maDonViTinh, ngaySanXuat, ngayHetHan, cd.soLuong, donGia \n" +
+        String sql = "Select DISTINCT s.maSP, s.ten, l.maLoSanPham, maNCC, cd.maDonViTinh, ngaySanXuat, ngayHetHan, l.soLuong, donGia \n" +
                     "from LoSanPham l join SanPham s on l.maSP=s.maSP \n" +
                     "join ChiTietXuatLo cl on cl.maLoSanPham=l.maLoSanPham\n" +
                     "join ChiTietHoaDon cd on cd.maChiTietHoaDon=cl.maChiTietHoaDon\n" +
@@ -127,6 +127,7 @@ public class LoSanPhamDAO {
             }
         } catch (SQLException sQLException) {
         }
+        
         return lo;
     }
     

@@ -16,6 +16,8 @@ public class LoSanPham {
     private int soLuong;
     private LocalDate ngaySanXuat;
     private LocalDate ngayHetHan;
+    //tinhTrang
+
     private NhaCungCap ncc;
     private ChiTietHoaDon ctthd;
     private DonViTinh dvTinh;

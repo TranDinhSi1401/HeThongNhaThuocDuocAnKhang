@@ -171,6 +171,9 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
             }
         });
         jScrollPane3.setViewportView(tblThemSanPham);
+        if (tblThemSanPham.getColumnModel().getColumnCount() > 0) {
+            tblThemSanPham.getColumnModel().getColumn(4).setHeaderValue("Đơn vị tính");
+        }
 
         btnThemSanPhamTuExcel.setText("Thêm sản phẩm");
         btnThemSanPhamTuExcel.addActionListener(new java.awt.event.ActionListener() {
@@ -398,6 +401,9 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
             }
         ));
         jScrollPane1.setViewportView(tblLoSanPham);
+        if (tblLoSanPham.getColumnModel().getColumnCount() > 0) {
+            tblLoSanPham.getColumnModel().getColumn(4).setHeaderValue("Đơn vị tính");
+        }
 
         btnLuu.setText("Lưu");
 
