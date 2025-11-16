@@ -97,6 +97,7 @@ public class ChiTietHoaDonDAO {
     
     public static ArrayList<ChiTietHoaDon> getChiTietHoaDonTheoMaHD(HoaDon hoaDon) {
         ArrayList<ChiTietHoaDon> dsCTHD = new ArrayList<>();
+        
         try {
             ConnectDB.getInstance().connect();
             Connection con = ConnectDB.getConnection();

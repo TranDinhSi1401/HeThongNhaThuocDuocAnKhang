@@ -266,18 +266,16 @@ public class PhieuDatHangDAO {
         try {
             ConnectDB.getInstance().connect();
             Connection con = ConnectDB.getConnection();
-            String sql = "SELECT MAX(maPhieuDatHang) FROM PhieuDatHang WHERE maPhieuDatHang LIKE ?";
-            PreparedStatement stmt = con.prepareStatement(sql);
-            stmt.setString(1, maPDHFormat + "%");
-            ResultSet rs = stmt.executeQuery();
-
-            if (rs.next()) {
-                String maPDHMax = rs.getString(1);
-                if (maPDHMax != null) {
-                    String maSo = maPDHMax.substring(maPDHFormat.length());
-                    maCuoiCung = Integer.parseInt(maSo);
-                }
+            String sql = "SELECT top 1 * FROM PhieuTraHang pth WHERE CAST(pth.ngayLapPhieuTraHang AS DATE) = CAST(GETDATE() AS DATE) order by pth.ngayLapPhieuTraHang desc";
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+            
+            String ma = null;
+            if (rs.next()){
+                ma = rs.getString(1);
             }
+            
+            
         } catch (SQLException | NumberFormatException e) {
             e.printStackTrace();
         }
