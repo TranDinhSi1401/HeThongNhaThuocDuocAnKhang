@@ -304,7 +304,7 @@ public class BanHangPane extends javax.swing.JPanel {
 
         lblMaKH1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblMaKH1.setForeground(new java.awt.Color(51, 51, 51));
-        lblMaKH1.setText("KH-99999");
+        lblMaKH1.setText("KH-00000");
         p3.add(lblMaKH1);
 
         pThongTinKH.add(p3);
