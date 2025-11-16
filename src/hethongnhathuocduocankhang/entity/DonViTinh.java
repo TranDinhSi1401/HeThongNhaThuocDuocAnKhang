@@ -22,7 +22,7 @@ public class DonViTinh {
     // --- Constructors ---
     public DonViTinh() {
     }
-
+    
     public DonViTinh(String maDonViTinh, SanPham sanPham, int heSoQuyDoi,
                      double giaBanTheoDonVi, String tenDonVi, boolean donViTinhCoBan) {
         setMaDonViTinh(maDonViTinh);
@@ -37,7 +37,7 @@ public class DonViTinh {
         this(dvt.maDonViTinh, dvt.sanPham, dvt.heSoQuyDoi,
              dvt.giaBanTheoDonVi, dvt.tenDonVi, dvt.donViTinhCoBan);
     }
-
+    
     public DonViTinh(String maDVT) {
         this.maDonViTinh = maDVT;
     }
@@ -54,7 +54,7 @@ public class DonViTinh {
         this.tenDonVi = tenDonVi;
     }
     
-
+    
     public void setMaDonViTinh(String maDonViTinh) {
         if (maDonViTinh == null || !Pattern.matches("^DVT-\\d{4}-[A-Z]+$", maDonViTinh)) {
             throw new IllegalArgumentException("Mã đơn vị tính phải theo định dạng DVT-[xxxx]-[ĐƠN_VỊ]. Ví dụ: DVT-0001-HOP");

@@ -302,7 +302,6 @@ public class BanHangPane extends javax.swing.JPanel {
         lblMaKH.setText("Mã khách hàng:");
         p3.add(lblMaKH);
 
-        lblMaKH1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblMaKH1.setForeground(new java.awt.Color(51, 51, 51));
         lblMaKH1.setText("KH-00000");
         p3.add(lblMaKH1);
@@ -318,7 +317,6 @@ public class BanHangPane extends javax.swing.JPanel {
         lblHoTen.setText("Họ tên:");
         p4.add(lblHoTen);
 
-        lblHoTen1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblHoTen1.setForeground(new java.awt.Color(51, 51, 51));
         lblHoTen1.setText("Khách Vãng Lai");
         p4.add(lblHoTen1);
@@ -334,7 +332,6 @@ public class BanHangPane extends javax.swing.JPanel {
         lblDiemTichLuy.setText("Điểm tích lũy:");
         p5.add(lblDiemTichLuy);
 
-        lblDiemTichLuy1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblDiemTichLuy1.setForeground(new java.awt.Color(51, 51, 51));
         lblDiemTichLuy1.setText("0");
         p5.add(lblDiemTichLuy1);
@@ -1101,7 +1098,7 @@ public class BanHangPane extends javax.swing.JPanel {
         lblTienThua1.setText("");
         radTienMat.setSelected(true);
         txtSdtKH.setText("Nhập sđt khách hàng");
-        lblMaKH1.setText("KH-99999");
+        lblMaKH1.setText("KH-00000");
         lblHoTen1.setText("Khách vãng lai");
         lblDiemTichLuy1.setText("0");
         txtTimKiem.setText("Nhập mã sản phẩm");
