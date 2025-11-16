@@ -28,7 +28,7 @@ public class GiaoDienChinhGUI extends javax.swing.JFrame {
             @Override
             public void selected(int index, int subIndex) {
                 if(index == 0 && subIndex == 0) {
-                    showPanel(new TongQuanNhanVienGUI());
+                    showPanel(new DashBoardQuanLi());
                 }
                 if(index == 1 && subIndex == 0) {
                     showPanel(new BanHangGUI());
@@ -73,7 +73,7 @@ public class GiaoDienChinhGUI extends javax.swing.JFrame {
 //            }
             GiaoDienChinhGUI.tk = tk;
         }
-        showPanel(new TongQuanNhanVienGUI());
+        showPanel(new DashBoardQuanLi());
         setTitle("Hệ thống nhà thuốc Dược An Khang");
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setResizable(false);

@@ -14,14 +14,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
-import java.sql.Date; 
-import java.time.LocalDate; 
+import java.sql.Date;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList; 
-
+import java.time.Month;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class HoaDonDAO {
-    
+
     private static HoaDon taoDoiTuongHoaDon(ResultSet rs) throws SQLException {
         String maHoaDon = rs.getString("maHoaDon");
         String maNV = rs.getString("maNV");
@@ -31,14 +33,14 @@ public class HoaDonDAO {
         boolean trangThai = rs.getBoolean("trangThai");
         double tongTien = rs.getDouble("tongTien");
 
-        NhanVien nv = NhanVienDAO.getNhanVienTheoMaNV(maNV); 
+        NhanVien nv = NhanVienDAO.getNhanVienTheoMaNV(maNV);
         KhachHang kh = KhachHangDAO.timKHTheoMa(maKH);
 
         if (nv == null) {
-            nv = new NhanVien(maNV); 
+            nv = new NhanVien(maNV);
         }
         if (kh == null) {
-            kh = new KhachHang(maKH); 
+            kh = new KhachHang(maKH);
         }
 
         return new HoaDon(maHoaDon, nv, ngayLapHD, kh, chuyenKhoan, trangThai, tongTien);
@@ -64,7 +66,7 @@ public class HoaDonDAO {
     public static HoaDon getHoaDonTheoMaHD(String maHD) {
         HoaDon hd = null;
         try {
-            ConnectDB.getInstance(); 
+            ConnectDB.getInstance();
             Connection con = ConnectDB.getConnection();
             String sql = "SELECT * FROM HoaDon WHERE MaHoaDon = ?";
             PreparedStatement ps = con.prepareStatement(sql);
@@ -85,15 +87,15 @@ public class HoaDonDAO {
             ConnectDB.getInstance();
             Connection con = ConnectDB.getConnection();
             PreparedStatement ps = con.prepareStatement(
-                "INSERT INTO HoaDon (maHoaDon, maNV, ngayLapHoaDon, maKH, chuyenKhoan, trangThai, tongTien) VALUES (?, ?, ?, ?, ?, ?, ?)"
+                    "INSERT INTO HoaDon (maHoaDon, maNV, ngayLapHoaDon, maKH, chuyenKhoan, trangThai, tongTien) VALUES (?, ?, ?, ?, ?, ?, ?)"
             );
 
             ps.setString(1, hd.getMaHoaDon());
             ps.setString(2, hd.getNhanVien().getMaNV());
             ps.setTimestamp(3, Timestamp.valueOf(hd.getNgayLapHoaDon()));
             ps.setString(4, hd.getKhachHang().getMaKH());
-            ps.setBoolean(5, hd.isChuyenKhoan()); 
-            ps.setBoolean(6, hd.isTrangThai()); 
+            ps.setBoolean(5, hd.isChuyenKhoan());
+            ps.setBoolean(6, hd.isTrangThai());
             ps.setDouble(7, hd.getTongTien());
 
             n = ps.executeUpdate();
@@ -102,8 +104,7 @@ public class HoaDonDAO {
         }
         return n > 0;
     }
-    
-    
+
     public static ArrayList<HoaDon> getAllHoaDon() {
         ArrayList<HoaDon> dsHD = new ArrayList<>();
         try {
@@ -138,7 +139,7 @@ public class HoaDonDAO {
         }
         return dsHD;
     }
-    
+
     public static ArrayList<HoaDon> timHDTheoMaKH(String maKH) {
         ArrayList<HoaDon> dsHD = new ArrayList<>();
         try {
@@ -156,7 +157,7 @@ public class HoaDonDAO {
         }
         return dsHD;
     }
-    
+
     public static ArrayList<HoaDon> timHDTheoNgayLap(LocalDate date) {
         ArrayList<HoaDon> dsHD = new ArrayList<>();
         try {
@@ -174,15 +175,70 @@ public class HoaDonDAO {
         }
         return dsHD;
     }
-    
+
+    public static double getDoanhThuTheoNgay(LocalDate date) {
+        double doanhThu = 0.0;
+        ArrayList<HoaDon> dsHD = timHDTheoNgayLap(date);
+
+        for (HoaDon hoaDon : dsHD) {
+            doanhThu += hoaDon.getTongTien();
+        }
+
+        return doanhThu;
+    }
+
+    public static Map<Integer, Double> getDoanhThuTungNgayTrongThang(LocalDate date) {
+        Map<Integer, Double> doanhthuTungNgay = new HashMap<>();
+
+        int soNgayTrongThang = date.lengthOfMonth();
+        int nam = date.getYear();
+        int thang = date.getMonthValue();
+
+        for (int i = 1; i <= soNgayTrongThang; i++) {
+            LocalDate ngayHienTai = LocalDate.of(nam, thang, i);
+            doanhthuTungNgay.put(i, getDoanhThuTheoNgay(ngayHienTai));
+        }
+
+        return doanhthuTungNgay;
+    }
+
+    public static double getDoanhThuTheoThang(LocalDate date) {
+        double doanhThu = 0.0;
+
+        int soNgayTrongThang = date.lengthOfMonth();
+        int nam = date.getYear();
+        int thang = date.getMonthValue();
+
+        for (int i = 1; i <= soNgayTrongThang; i++) {
+            LocalDate ngayHienTai = LocalDate.of(nam, thang, i);
+            doanhThu += getDoanhThuTheoNgay(ngayHienTai);
+        }
+
+        return doanhThu;
+    }
+
+    public static Map<Integer, Double> getDoanhThuTungThangTrongNam(LocalDate date) {
+        Map<Integer, Double> doanhthuTungThang = new HashMap<>();
+
+        int nam = date.getYear();
+        int thang = date.getMonthValue();
+
+        for (int i = 1; i <= 12; i++) {
+            LocalDate thangHienTai = LocalDate.of(nam, i, 1);
+            doanhthuTungThang.put(i, getDoanhThuTheoThang(thangHienTai));
+        }
+
+        return doanhthuTungThang;
+    }
+
     public static ArrayList<HoaDon> timHDTheoSDTKH(String sdt) {
         ArrayList<HoaDon> dsHD = new ArrayList<>();
         try {
             ConnectDB.getInstance().connect();
             Connection con = ConnectDB.getConnection();
-            String querry = "SELECT hd.* FROM HoaDon hd " +
-                            "JOIN KhachHang kh ON hd.maKH = kh.maKH " +
-                            "WHERE kh.sdt = ?";
+            String querry = "SELECT hd.* FROM HoaDon hd "
+                    + "JOIN KhachHang kh ON hd.maKH = kh.maKH "
+                    + "WHERE kh.sdt = ?";
             PreparedStatement stmt = con.prepareStatement(querry);
             stmt.setString(1, sdt);
             ResultSet rs = stmt.executeQuery();
@@ -194,7 +250,7 @@ public class HoaDonDAO {
         }
         return dsHD;
     }
-    
+
     public static ArrayList<HoaDon> timHDTheoTrangThai(boolean trangThai) {
         ArrayList<HoaDon> dsHD = new ArrayList<>();
         try {
@@ -212,7 +268,7 @@ public class HoaDonDAO {
         }
         return dsHD;
     }
-    
+
     public static ArrayList<HoaDon> timHDTheoHinhThuc(boolean chuyenKhoan) {
         ArrayList<HoaDon> dsHD = new ArrayList<>();
         try {
@@ -230,18 +286,18 @@ public class HoaDonDAO {
         }
         return dsHD;
     }
-    
-    public static int getSoHDCuoiCungTrongNgay(String ngay) { 
+
+    public static int getSoHDCuoiCungTrongNgay(String ngay) {
         int maCuoiCung = 0;
         String maHDFormat = "HD-" + ngay + "-";
-         try {
+        try {
             ConnectDB.getInstance().connect();
             Connection con = ConnectDB.getConnection();
             String sql = "SELECT MAX(maHoaDon) FROM HoaDon WHERE maHoaDon LIKE ?";
             PreparedStatement stmt = con.prepareStatement(sql);
             stmt.setString(1, maHDFormat + "%");
             ResultSet rs = stmt.executeQuery();
-            
+
             if (rs.next()) {
                 String maHDMax = rs.getString(1);
                 if (maHDMax != null) {
