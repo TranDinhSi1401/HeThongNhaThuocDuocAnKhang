@@ -43,6 +43,29 @@ public class PhieuTraHangDAO {
 
         return new PhieuTraHang(maPTH, ngayLap, tongTienHoanTra, nv, hd);
     }
+    
+    public static boolean themPhieuTra(PhieuTraHang pth){
+        int n = 0;
+        System.out.println(pth.getMaPhieuTraHang());
+        try {
+            ConnectDB.getInstance().connect();
+            Connection con = ConnectDB.getConnection();
+            String sql = "INSERT INTO PhieuTraHang VALUES (?, ?, ?, ?, ?)";
+            
+            PreparedStatement statement = con.prepareStatement(sql);
+            
+            statement.setString(1, pth.getMaPhieuTraHang());
+            statement.setTimestamp(2, Timestamp.valueOf(pth.getNgayLapPhieuTraHang()) );
+            statement.setString(3, pth.getNhanVien().getMaNV());
+            statement.setString(4, pth.getHoaDon().getMaHoaDon());
+            statement.setDouble(5, pth.getTongTienHoanTra());
+            
+            n = statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return n>0;
+    }
 
     public static ArrayList<PhieuTraHang> getAllPhieuTraHang() {
         ArrayList<PhieuTraHang> dsPTH = new ArrayList<>();
@@ -187,5 +210,25 @@ public class PhieuTraHangDAO {
             e.printStackTrace();
         }
         return dsChiTiet;
+    }
+    public static int phieuTraHangMoiNhatHomNay(){
+        String ma = null;
+        try {
+            ConnectDB.getInstance().connect();
+            Connection con = ConnectDB.getConnection();
+            String sql = "SELECT top 1 * FROM PhieuTraHang pth WHERE CAST(pth.ngayLapPhieuTraHang AS DATE) = CAST(GETDATE() AS DATE) order by pth.ngayLapPhieuTraHang desc";
+            Statement stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery(sql);
+            
+            if (rs.next()){
+                ma = rs.getString(1);
+                ma = ma.substring(ma.length() - 4);
+            }
+            
+            
+        } catch (SQLException | NumberFormatException e) {
+            e.printStackTrace();
+        }
+        return Integer.parseInt(ma);
     }
 }

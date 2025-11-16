@@ -4,7 +4,9 @@
  */
 package hethongnhathuocduocankhang.gui;
 
+import com.microsoft.sqlserver.jdbc.SQLServerException;
 import hethongnhathuocduocankhang.dao.ChiTietHoaDonDAO;
+import hethongnhathuocduocankhang.dao.ChiTietPhieuTraDAO;
 import hethongnhathuocduocankhang.dao.HoaDonDAO;
 import hethongnhathuocduocankhang.dao.NhanVienDAO;
 import hethongnhathuocduocankhang.dao.PhieuDatHangDAO;
@@ -98,7 +100,7 @@ public class TraHangGUI extends javax.swing.JPanel {
         jPanel6 = new javax.swing.JPanel();
         jPanel7 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        txtMaPhieuTraHang = new javax.swing.JTextField();
         jPanel15 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jTextField3 = new javax.swing.JTextField();
@@ -113,7 +115,7 @@ public class TraHangGUI extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         tblTraHang = new javax.swing.JTable();
 
-        setLayout(new java.awt.GridLayout());
+        setLayout(new java.awt.GridLayout(1, 0));
 
         jPanel8.setLayout(new java.awt.BorderLayout());
 
@@ -317,9 +319,9 @@ public class TraHangGUI extends javax.swing.JPanel {
         jLabel1.setPreferredSize(new java.awt.Dimension(110, 16));
         jPanel7.add(jLabel1);
 
-        jTextField1.setEditable(false);
-        jTextField1.setPreferredSize(new java.awt.Dimension(250, 22));
-        jPanel7.add(jTextField1);
+        txtMaPhieuTraHang.setEditable(false);
+        txtMaPhieuTraHang.setPreferredSize(new java.awt.Dimension(250, 22));
+        jPanel7.add(txtMaPhieuTraHang);
 
         jPanel6.add(jPanel7);
 
@@ -329,6 +331,11 @@ public class TraHangGUI extends javax.swing.JPanel {
 
         jTextField3.setEditable(false);
         jTextField3.setPreferredSize(new java.awt.Dimension(250, 22));
+        jTextField3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField3ActionPerformed(evt);
+            }
+        });
         jPanel15.add(jTextField3);
 
         jPanel6.add(jPanel15);
@@ -464,6 +471,11 @@ public class TraHangGUI extends javax.swing.JPanel {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
+        try {
+        jTextField3.setText(NhanVienDAO.getNhanVienTheoMaNV(GiaoDienChinhGUI.getTk().getTenDangNhap()).getHoTenDem() +" "+ NhanVienDAO.getNhanVienTheoMaNV(GiaoDienChinhGUI.getTk().getTenDangNhap()).getTen());
+        }catch(Exception e) {
+            
+        }
         DefaultTableModel dtmCTHD = (DefaultTableModel) tblCTHD.getModel();
         
         int soLuongChonHienTai = 0;
@@ -512,22 +524,16 @@ public class TraHangGUI extends javax.swing.JPanel {
         // TODO add your handling code here:
         int chon = JOptionPane.showConfirmDialog(null, "Xác nhận tạo phiếu trả?", "Xác nhận", JOptionPane.YES_NO_OPTION);
         if(chon == JOptionPane.YES_OPTION){
-            List<ChiTietPhieuTraHang> list = getListCTPTH();
-            PhieuTraHang pth = getPhieuTraHang(); 
-            String phieuTraHangReal = taoPhieuTraHang(pth, list);
-
-            JTextArea textArea = new JTextArea(phieuTraHangReal);
-            textArea.setEditable(false);
-            textArea.setFont(new Font("Monospaced", Font.PLAIN, 13));
-            JScrollPane scroll = new JScrollPane(textArea);
-            scroll.setPreferredSize(new Dimension(600, 500));
-
-            JOptionPane.showMessageDialog(null, scroll, "Phiếu trả hàng" + pth.getMaPhieuTraHang(), JOptionPane.INFORMATION_MESSAGE);
             
+            PhieuTraHang pth = getPhieuTraHang(); 
+            
+            List<ChiTietPhieuTraHang> list = getListCTPTH(pth);
+            //
+            luuPhieuVaoCSDL(pth, list);
+            taoPhieuTraHang(pth, list);
+            //
             jTabbedPane1.setSelectedIndex(0);
             xoaRongTatCa();
-            
-            luuPhieuVaoCSDL(pth, list);
         }
         else{
             
@@ -596,6 +602,10 @@ public class TraHangGUI extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_tblTraHangPropertyChange
 
+    private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextField3ActionPerformed
+
     
     
 
@@ -645,7 +655,6 @@ public class TraHangGUI extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField5;
     private javax.swing.JToolBar jToolBar1;
@@ -653,6 +662,7 @@ public class TraHangGUI extends javax.swing.JPanel {
     private javax.swing.JTable tblTraHang;
     private javax.swing.JTextField txtMaHoaDon;
     private javax.swing.JTextField txtMaHoaDonTrongPhieuTraHang;
+    private javax.swing.JTextField txtMaPhieuTraHang;
     private javax.swing.JTextField txtTongThanhTien;
     // End of variables declaration//GEN-END:variables
 
@@ -756,7 +766,7 @@ public class TraHangGUI extends javax.swing.JPanel {
         jTextField5.setText(ngay+ "/" + thang + "/" + nam);
         
         String maPhieuTraHang = phatSinhMaPhieuTraHang();
-        jTextField1.setText(maPhieuTraHang);
+        txtMaPhieuTraHang.setText(maPhieuTraHang);
         
         
         
@@ -790,8 +800,8 @@ public class TraHangGUI extends javax.swing.JPanel {
         int nam = LocalDate.now().getYear();
         nam = nam%1000;
         String ngayThangNam = String.format("%02d%02d%02d", ngay,thang,nam);
-        int soPhieuHomNay = PhieuDatHangDAO.getMaPDHCuoiCungTrongNgay(ngayThangNam);
-        String maPhieuTraHang = String.format("PTH-%s-%04d",ngayThangNam,soPhieuHomNay) + 1;
+        int soPhieuHomNay = PhieuTraHangDAO.phieuTraHangMoiNhatHomNay();
+        String maPhieuTraHang = String.format("PTH-%s-%04d",ngayThangNam,soPhieuHomNay+1);
         
         return maPhieuTraHang;
     }
@@ -837,7 +847,7 @@ public class TraHangGUI extends javax.swing.JPanel {
 //        return sb.toString();
 //    }
 
-    private List<ChiTietPhieuTraHang> getListCTPTH() {
+    private List<ChiTietPhieuTraHang> getListCTPTH(PhieuTraHang pth) {
         
         DefaultTableModel dtm = (DefaultTableModel) tblTraHang.getModel();
         List<ChiTietPhieuTraHang> listPTH = new ArrayList<>();
@@ -847,10 +857,9 @@ public class TraHangGUI extends javax.swing.JPanel {
         }
         else{
             for(int i=0; i<dtm.getRowCount(); i++){
-                String maPhieuTraHang = jTextField1.getText();
+                
                 String maCTHD = dtm.getValueAt(i, 10).toString();
                 
-                PhieuTraHang pth = PhieuTraHangDAO.timPTHTheoMa(maPhieuTraHang);
                 ChiTietHoaDon cthd = ChiTietHoaDonDAO.getChiTietHoaDonTheoMaCTHD(maCTHD);
                 TruongHopDoiTraEnum truongHopDoiTra = TruongHopDoiTraEnum.HANG_LOI_DO_NHA_SAN_XUAT;
                 if(dtm.getValueAt(i, 6).toString().equals(TruongHopDoiTraEnum.HANG_LOI_DO_NHA_SAN_XUAT.getTruongHopDoiTra())){
@@ -889,8 +898,14 @@ public class TraHangGUI extends javax.swing.JPanel {
 
     private PhieuTraHang getPhieuTraHang() {
         PhieuTraHang pth = new PhieuTraHang();
-        String maPTH = jTextField1.getText();
-        String maNV = "NV-0002";
+        String maPTH = txtMaPhieuTraHang.getText();
+        String maNV = null;
+        try{
+            maNV = NhanVienDAO.getNhanVienTheoMaNV(GiaoDienChinhGUI.getTk().getTenDangNhap()).getMaNV();
+        }catch(Exception e){
+            
+        }
+        
         String maHD = txtMaHoaDonTrongPhieuTraHang.getText();
         LocalDateTime ngayLap = LocalDateTime.now();
         double tongTienHoanTra = boDinhDangTien(txtTongThanhTien.getText());
@@ -908,7 +923,7 @@ public class TraHangGUI extends javax.swing.JPanel {
         
     }
 
-    private String taoPhieuTraHang(PhieuTraHang pth, List<ChiTietPhieuTraHang> list) {
+    private void taoPhieuTraHang(PhieuTraHang pth, List<ChiTietPhieuTraHang> list) {
         StringBuilder sb = new StringBuilder();
         //init header
         sb.append("====================================================================\n");
@@ -949,8 +964,12 @@ public class TraHangGUI extends javax.swing.JPanel {
         sb.append("         CẢM ƠN QUÝ KHÁCH, HẸN GẶP LẠI!\n");
         sb.append("====================================================================\n");
         
-        
-        return sb.toString();
+        JTextArea textArea = new JTextArea(sb.toString());
+        textArea.setEditable(false);
+        textArea.setFont(new Font("Monospaced", Font.PLAIN, 13));
+        JScrollPane scroll = new JScrollPane(textArea);
+        scroll.setPreferredSize(new Dimension(600, 500));
+        JOptionPane.showMessageDialog(null, scroll, "Phiếu trả hàng" + pth.getMaPhieuTraHang(), JOptionPane.INFORMATION_MESSAGE);
     }
 
     private String dinhDangTien(double thanhTien) {
@@ -966,7 +985,7 @@ public class TraHangGUI extends javax.swing.JPanel {
         
         DefaultTableModel dtmTraHang = (DefaultTableModel) tblTraHang.getModel();
         dtmTraHang.setRowCount(0);
-        jTextField1.setText("");
+        txtMaPhieuTraHang.setText("");
         jTextField3.setText("");
         jTextField5.setText("");
         txtMaHoaDonTrongPhieuTraHang.setText("");
@@ -975,7 +994,10 @@ public class TraHangGUI extends javax.swing.JPanel {
     }
 
     private void luuPhieuVaoCSDL(PhieuTraHang pth, List<ChiTietPhieuTraHang> list) {
-        
+        PhieuTraHangDAO.themPhieuTra(pth);
+        for(ChiTietPhieuTraHang ctpth : list){
+            ChiTietPhieuTraDAO.insertChiTietPhieuTra(ctpth);
+        }
     }
 
     private void capNhatTongTienTra() {
@@ -998,23 +1020,23 @@ public class TraHangGUI extends javax.swing.JPanel {
         
         for(int i=0; i<dtm.getRowCount(); i++){
             if(dtm.getValueAt(i, 7) == Boolean.TRUE){
-                    dtm.setValueAt("100% giá trị", i, 8);
+                    dtm.setValueAt("100%", i, 8);
                     Object thanhTien = dtm.getValueAt(i, 5);
                     dtm.setValueAt(thanhTien, i, 9);
             }
             else if(dtm.getValueAt(i, 7) == Boolean.FALSE){
                 if(dtm.getValueAt(i, 6).equals(TruongHopDoiTraEnum.HANG_LOI_DO_NHA_SAN_XUAT.getTruongHopDoiTra())){
-                    dtm.setValueAt("100% giá trị", i, 8);
+                    dtm.setValueAt("100%", i, 8);
                     Object thanhTien = dtm.getValueAt(i, 5);
                     dtm.setValueAt(thanhTien, i, 9);
                 }
                 else if(dtm.getValueAt(i, 6).equals(TruongHopDoiTraEnum.DI_UNG_MAN_CAM.getTruongHopDoiTra())){
-                    dtm.setValueAt("70% giá trị", i, 8);
+                    dtm.setValueAt("70%", i, 8);
                     String thanhTien = dinhDangTien(boDinhDangTien(dtm.getValueAt(i, 5).toString())*0.7);
                     dtm.setValueAt(thanhTien, i, 9);
                 }
                 else if(dtm.getValueAt(i, 6).equals(TruongHopDoiTraEnum.NHU_CAU_KHACH_HANG.getTruongHopDoiTra()) ){
-                    dtm.setValueAt("Miễn hoàn trả", i, 8);
+                    dtm.setValueAt("Miễn trả hàng", i, 8);
                     dtm.setValueAt(0, i, 9);
                 }
             }
