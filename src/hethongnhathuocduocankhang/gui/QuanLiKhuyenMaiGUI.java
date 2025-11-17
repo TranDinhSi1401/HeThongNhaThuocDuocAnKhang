@@ -18,7 +18,7 @@ import java.awt.event.MouseEvent;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
-public class QuanLiKhuyenMaiGUI extends JPanel { // THAY ĐỔI
+public class QuanLiKhuyenMaiGUI extends JPanel { 
 
     private JButton btnThem, btnXoa, btnSua;
     private JTextField txtTimKiem;
@@ -149,7 +149,7 @@ public class QuanLiKhuyenMaiGUI extends JPanel { // THAY ĐỔI
     }
 
     private void updateTable() {
-        ArrayList<KhuyenMai> dsKM = KhuyenMaiDAO.getAllKhuyenMai(); // THAY ĐỔI
+        ArrayList<KhuyenMai> dsKM = KhuyenMaiDAO.getAllKhuyenMai(); 
         updateTable(dsKM);
     }
 
@@ -171,7 +171,7 @@ public class QuanLiKhuyenMaiGUI extends JPanel { // THAY ĐỔI
         table.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                hienThiChiTietKhuyenMai(e); // THAY ĐỔI
+                hienThiChiTietKhuyenMai(e);
             }
         });
     }
@@ -180,7 +180,7 @@ public class QuanLiKhuyenMaiGUI extends JPanel { // THAY ĐỔI
         String tuKhoa = txtTimKiem.getText().trim();
         String tieuChi = cmbTieuChiTimKiem.getSelectedItem().toString();
 
-        ArrayList<KhuyenMai> dsKetQua = new ArrayList<>(); // THAY ĐỔI
+        ArrayList<KhuyenMai> dsKetQua = new ArrayList<>();
 
         if (tuKhoa.isEmpty()) {
             dsKetQua = KhuyenMaiDAO.getAllKhuyenMai(); // THAY ĐỔI
@@ -234,10 +234,10 @@ public class QuanLiKhuyenMaiGUI extends JPanel { // THAY ĐỔI
 
         if (kmNew != null) {
             if (KhuyenMaiDAO.themKhuyenMai(kmNew)) { // THAY ĐỔI
-                JOptionPane.showMessageDialog(this, "Thêm khuyến mãi thành công!"); // THAY ĐỔI
+                JOptionPane.showMessageDialog(this, "Thêm khuyến mãi thành công!"); 
                 updateTable();
             } else {
-                JOptionPane.showMessageDialog(this, "Thêm khuyến mãi thất bại."); // THAY ĐỔI
+                JOptionPane.showMessageDialog(this, "Thêm khuyến mãi thất bại.");
             }
         }
     }
@@ -245,7 +245,7 @@ public class QuanLiKhuyenMaiGUI extends JPanel { // THAY ĐỔI
     private void xuLyXoa() {
         int selectedRows[] = table.getSelectedRows();
         if (selectedRows.length == 0) {
-            JOptionPane.showMessageDialog(this, "Vui lòng chọn khuyến mãi cần xóa."); // THAY ĐỔI
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn khuyến mãi cần xóa.");
             return;
         }
 
@@ -264,16 +264,16 @@ public class QuanLiKhuyenMaiGUI extends JPanel { // THAY ĐỔI
             for (int i = selectedRows.length - 1; i >= 0; i--) {
                 int row = selectedRows[i];
                 String maKM = model.getValueAt(row, 0).toString(); // Cột 0 là Mã
-                if (KhuyenMaiDAO.xoaKhuyenMai(maKM)) { // THAY ĐỔI
+                if (KhuyenMaiDAO.xoaKhuyenMai(maKM)) {
                     soLuongXoaThanhCong++;
                 }
             }
 
             if (soLuongXoaThanhCong > 0) {
-                JOptionPane.showMessageDialog(this, "Đã xóa thành công " + soLuongXoaThanhCong + " khuyến mãi."); // THAY ĐỔI
+                JOptionPane.showMessageDialog(this, "Đã xóa thành công " + soLuongXoaThanhCong + " khuyến mãi."); 
                 updateTable();
             } else {
-                JOptionPane.showMessageDialog(this, "Xóa khuyến mãi thất bại (có thể do KM đã được áp dụng).", "Lỗi xóa", JOptionPane.ERROR_MESSAGE); // THAY ĐỔI
+                JOptionPane.showMessageDialog(this, "Xóa khuyến mãi thất bại (có thể do KM đã được áp dụng).", "Lỗi xóa", JOptionPane.ERROR_MESSAGE);
             }
         }
         table.clearSelection();
@@ -282,21 +282,21 @@ public class QuanLiKhuyenMaiGUI extends JPanel { // THAY ĐỔI
     private void xuLySua() {
         int selectedRow = table.getSelectedRow();
         if (selectedRow == -1) {
-            JOptionPane.showMessageDialog(this, "Vui lòng chọn khuyến mãi cần sửa."); // THAY ĐỔI
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn khuyến mãi cần sửa.");
             return;
         }
 
-        String maKM = model.getValueAt(selectedRow, 0).toString(); // THAY ĐỔI
-        KhuyenMai kmCanSua = KhuyenMaiDAO.timKMTheoMa(maKM); // THAY ĐỔI
+        String maKM = model.getValueAt(selectedRow, 0).toString();
+        KhuyenMai kmCanSua = KhuyenMaiDAO.timKMTheoMa(maKM);
 
         if (kmCanSua == null) {
-            JOptionPane.showMessageDialog(this, "Không tìm thấy khuyến mãi để sửa."); // THAY ĐỔI
+            JOptionPane.showMessageDialog(this, "Không tìm thấy khuyến mãi để sửa.");
             return;
         }
 
-        ThemKhuyenMaiGUI pnlThemKM = new ThemKhuyenMaiGUI(); // THAY ĐỔI
+        ThemKhuyenMaiGUI pnlThemKM = new ThemKhuyenMaiGUI();
         JDialog dialog = new JDialog();
-        dialog.setTitle("Sửa khuyến mãi"); // THAY ĐỔI
+        dialog.setTitle("Sửa khuyến mãi");
         dialog.setModal(true);
         dialog.setResizable(false);
         dialog.setContentPane(pnlThemKM);
@@ -315,28 +315,28 @@ public class QuanLiKhuyenMaiGUI extends JPanel { // THAY ĐỔI
 
         dialog.setVisible(true);
 
-        KhuyenMai kmNew = pnlThemKM.getKhuyenMaiMoi(); // THAY ĐỔI
+        KhuyenMai kmNew = pnlThemKM.getKhuyenMaiMoi();
 
         if (kmNew != null) {
-            if (KhuyenMaiDAO.suaKhuyenMai(maKM, kmNew)) { // THAY ĐỔI
-                JOptionPane.showMessageDialog(this, "Sửa khuyến mãi thành công!"); // THAY ĐỔI
+            if (KhuyenMaiDAO.suaKhuyenMai(maKM, kmNew)) { 
+                JOptionPane.showMessageDialog(this, "Sửa khuyến mãi thành công!");
                 updateTable();
             } else {
-                JOptionPane.showMessageDialog(this, "Sửa khuyến mãi thất bại."); // THAY ĐỔI
+                JOptionPane.showMessageDialog(this, "Sửa khuyến mãi thất bại.");
             }
         }
     }
 
-    private void hienThiChiTietKhuyenMai(MouseEvent e) { // THAY ĐỔI
+    private void hienThiChiTietKhuyenMai(MouseEvent e) {
         int selectRow = table.getSelectedRow();
         if (selectRow != -1) {
-            String maKM = model.getValueAt(selectRow, 0).toString(); // THAY ĐỔI
-            KhuyenMai kmDaChon = KhuyenMaiDAO.timKMTheoMa(maKM); // THAY ĐỔI
+            String maKM = model.getValueAt(selectRow, 0).toString(); 
+            KhuyenMai kmDaChon = KhuyenMaiDAO.timKMTheoMa(maKM); 
 
             if (kmDaChon != null && e.getClickCount() == 2) {
-                ThemKhuyenMaiGUI pnlThemKM = new ThemKhuyenMaiGUI(); // THAY ĐỔI
+                ThemKhuyenMaiGUI pnlThemKM = new ThemKhuyenMaiGUI(); 
                 JDialog dialog = new JDialog();
-                dialog.setTitle("Thông tin chi tiết khuyến mãi"); // THAY ĐỔI
+                dialog.setTitle("Thông tin chi tiết khuyến mãi");
                 dialog.setModal(true);
                 dialog.setResizable(false);
                 dialog.setContentPane(pnlThemKM);
@@ -353,7 +353,6 @@ public class QuanLiKhuyenMaiGUI extends JPanel { // THAY ĐỔI
                 pnlThemKM.getTxtNgayBatDau().setEditable(false);
                 pnlThemKM.getTxtNgayKetThuc().setEditable(false);
                 pnlThemKM.getTxtSoLuongToiThieu().setEditable(false);
-                // pnlThemKM.getTxtSoLuongToiDa().setEditable(false); // Cần getter cho field mới
                 
                 // Đổ dữ liệu
                 pnlThemKM.setTxtMaKhuyenMai(kmDaChon.getMaKhuyenMai());

@@ -23,45 +23,45 @@ import java.util.ArrayList;
 public class ChiTietHoaDonDAO {
 
     public static ChiTietHoaDon getChiTietHoaDonMoiNhat() {
-    ChiTietHoaDon cthd = null;
-    try {
-        ConnectDB.getInstance().connect();
-        Connection con = ConnectDB.getConnection();
-        String sql = "SELECT * FROM ChiTietHoaDon " +
-                     "WHERE maChiTietHoaDon = (SELECT MAX(maChiTietHoaDon) FROM ChiTietHoaDon)";
-        
-        Statement statement = con.createStatement();
-        ResultSet rs = statement.executeQuery(sql);
-        
-        if(rs.next()) {
-            String maCTHD = rs.getString("maChiTietHoaDon");
-            String maHD = rs.getString("maHoaDon");
-            String maDVT = rs.getString("maDonViTinh");
-            int soLuong = rs.getInt("soLuong");
-            double donGia = rs.getDouble("donGia");
-            double giamGia = rs.getDouble("giamGia");
-            double thanhTien = rs.getDouble("thanhTien");
-            
-            HoaDon hd = HoaDonDAO.getHoaDonTheoMaHD(maHD);
-            DonViTinh dvt = DonViTinhDAO.getDonViTinhTheoMaDVT(maDVT); 
-            
-            cthd = new ChiTietHoaDon(maCTHD, hd, dvt, soLuong, donGia, giamGia, thanhTien);
-        }
-    } catch (SQLException e) {
+        ChiTietHoaDon cthd = null;
+        try {
+            ConnectDB.getInstance().connect();
+            Connection con = ConnectDB.getConnection();
+            String sql = "SELECT * FROM ChiTietHoaDon "
+                    + "WHERE maChiTietHoaDon = (SELECT MAX(maChiTietHoaDon) FROM ChiTietHoaDon)";
+
+            Statement statement = con.createStatement();
+            ResultSet rs = statement.executeQuery(sql);
+
+            if (rs.next()) {
+                String maCTHD = rs.getString("maChiTietHoaDon");
+                String maHD = rs.getString("maHoaDon");
+                String maDVT = rs.getString("maDonViTinh");
+                int soLuong = rs.getInt("soLuong");
+                double donGia = rs.getDouble("donGia");
+                double giamGia = rs.getDouble("giamGia");
+                double thanhTien = rs.getDouble("thanhTien");
+
+                HoaDon hd = HoaDonDAO.getHoaDonTheoMaHD(maHD);
+                DonViTinh dvt = DonViTinhDAO.getDonViTinhTheoMaDVT(maDVT);
+
+                cthd = new ChiTietHoaDon(maCTHD, hd, dvt, soLuong, donGia, giamGia, thanhTien);
+            }
+        } catch (SQLException e) {
             e.printStackTrace();
+        }
+        return cthd;
     }
-    return cthd;
-}
-    
+
     public static boolean insertChiTietHoaDon(ChiTietHoaDon cthd) {
         int n = 0;
         try {
-            ConnectDB.getInstance().connect(); 
+            ConnectDB.getInstance().connect();
             Connection con = ConnectDB.getConnection();
-            
+
             String sql = "INSERT INTO ChiTietHoaDon (maChiTietHoaDon, maHoaDon, maDonViTinh, soLuong, donGia, giamGia) "
-                       + "VALUES (?, ?, ?, ?, ?, ?)";
-            
+                    + "VALUES (?, ?, ?, ?, ?, ?)";
+
             PreparedStatement ps = con.prepareStatement(sql);
 
             ps.setString(1, cthd.getMaChiTietHoaDon());
@@ -69,9 +69,9 @@ public class ChiTietHoaDonDAO {
             ps.setString(3, cthd.getDonViTinh().getMaDonViTinh());
             ps.setInt(4, cthd.getSoLuong());
             ps.setDouble(5, cthd.getDonGia());
-            
-            ps.setDouble(6, cthd.getGiamGia() / 100); 
-            
+
+            ps.setDouble(6, cthd.getGiamGia() / 100);
+
             n = ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -85,32 +85,32 @@ public class ChiTietHoaDonDAO {
         double donGia = rs.getDouble("donGia");
         double giamGia = rs.getDouble("giamGia");
         double thanhTien = rs.getDouble("thanhTien");
-        
+
         SanPham sp = SanPhamDAO.timSPTheoMa(rs.getString("maSP"));
 
         DonViTinh dvt = DonViTinhDAO.getDonViTinhTheoMaDVT(rs.getString("maDonViTinh"));
 
         dvt.setSanPham(sp);
-        
+
         return new ChiTietHoaDon(maCTHD, hoaDon, dvt, soLuong, donGia, giamGia, thanhTien);
     }
-    
+
     public static ArrayList<ChiTietHoaDon> getChiTietHoaDonTheoMaHD(HoaDon hoaDon) {
         ArrayList<ChiTietHoaDon> dsCTHD = new ArrayList<>();
         
         try {
             ConnectDB.getInstance().connect();
             Connection con = ConnectDB.getConnection();
-            
+
             String sql = "SELECT cthd.*, dvt.maSP, dvt.tenDonVi, sp.ten "
-                       + "FROM ChiTietHoaDon cthd "
-                       + "JOIN DonViTinh dvt ON cthd.maDonViTinh = dvt.maDonViTinh "
-                       + "JOIN SanPham sp ON dvt.maSP = sp.maSP "
-                       + "WHERE cthd.maHoaDon = ?";
-                       
+                    + "FROM ChiTietHoaDon cthd "
+                    + "JOIN DonViTinh dvt ON cthd.maDonViTinh = dvt.maDonViTinh "
+                    + "JOIN SanPham sp ON dvt.maSP = sp.maSP "
+                    + "WHERE cthd.maHoaDon = ?";
+
             PreparedStatement stmt = con.prepareStatement(sql);
             stmt.setString(1, hoaDon.getMaHoaDon());
-            
+
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
                 dsCTHD.add(taoDoiTuongChiTietHoaDon(rs, hoaDon));
@@ -120,6 +120,7 @@ public class ChiTietHoaDonDAO {
         }
         return dsCTHD;
     }
+
     
     public static ChiTietHoaDon getChiTietHoaDonTheoMaCTHD(String maCTHD) {
         HoaDon hd = null;
@@ -137,7 +138,7 @@ public class ChiTietHoaDonDAO {
             while (rs.next()) {
                 hd = HoaDonDAO.getHoaDonTheoMaHD(rs.getString("maHoaDon"));
             }
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 

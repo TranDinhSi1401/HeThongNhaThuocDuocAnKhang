@@ -119,7 +119,7 @@ public class LichSuCaLamDAO {
             Connection con = ConnectDB.getConnection();
             String querry = "SELECT * FROM LichSuCaLam WHERE ngayLamViec = ?";
             PreparedStatement stmt = con.prepareStatement(querry);
-            stmt.setDate(1, Date.valueOf(date)); // CSDL dùng DATE
+            stmt.setDate(1, Date.valueOf(date)); 
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
                 ds.add(taoDoiTuongLichSuCaLam(rs));

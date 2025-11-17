@@ -4,8 +4,8 @@
  */
 package hethongnhathuocduocankhang.gui;
 
-import hethongnhathuocduocankhang.dao.LichSuCaLamDAO; // THAY ĐỔI
-import hethongnhathuocduocankhang.entity.LichSuCaLam; // THAY ĐỔI
+import hethongnhathuocduocankhang.dao.LichSuCaLamDAO;
+import hethongnhathuocduocankhang.entity.LichSuCaLam;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
@@ -19,13 +19,11 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 
-public class QuanLiLichSuCaLamGUI extends JPanel { // THAY ĐỔI
+public class QuanLiLichSuCaLamGUI extends JPanel {
 
-    // private JButton btnThem, btnXoa, btnSua; // BỎ
     private JTextField txtTimKiem;
     private JTable table;
     private JComboBox<String> cmbTieuChiTimKiem;
-    // private JComboBox<String> cmbBoLoc; // BỎ
     private DefaultTableModel model;
     private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     private final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
@@ -43,25 +41,23 @@ public class QuanLiLichSuCaLamGUI extends JPanel { // THAY ĐỔI
         pnlNorthLeft.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 0));
         pnlNorthLeft.setBorder(new EmptyBorder(0, 0, 10, 0));
         pnlNorth.add(pnlNorthLeft, BorderLayout.WEST);
-        
-        // (Đã xóa các nút Thêm, Xóa, Sửa)
 
+        // (Đã xóa các nút Thêm, Xóa, Sửa)
         // 1.2. Panel Tìm kiếm (RIGHT)
         JPanel pnlNorthRight = new JPanel();
         pnlNorthRight.setLayout(new FlowLayout(FlowLayout.RIGHT, 10, 5));
 
         // THAY ĐỔI TIÊU CHÍ TÌM KIẾM
         cmbTieuChiTimKiem = new JComboBox<>(new String[]{
-            "Mã NV", 
-            "Tên Nhân Viên", 
-            "Mã Ca", 
+            "Mã NV",
+            "Tên Nhân Viên",
+            "Mã Ca",
             "Ngày Làm (yyyy-MM-dd)"
         });
         cmbTieuChiTimKiem.setFont(new Font("Arial", Font.PLAIN, 14));
         cmbTieuChiTimKiem.setPreferredSize(new Dimension(180, 30));
 
         // (Đã xóa cmbBoLoc)
-
         txtTimKiem = new JTextField(20);
         txtTimKiem.setFont(new Font("Arial", Font.PLAIN, 14));
         txtTimKiem.setPreferredSize(new Dimension(200, 30));
@@ -93,7 +89,7 @@ public class QuanLiLichSuCaLamGUI extends JPanel { // THAY ĐỔI
         model = new DefaultTableModel(data, columnNames) {
             @Override
             public boolean isCellEditable(int row, int column) {
-                return false; 
+                return false;
             }
         };
 
@@ -116,24 +112,22 @@ public class QuanLiLichSuCaLamGUI extends JPanel { // THAY ĐỔI
         addEvents();
     }
 
-    // (Đã xóa setupTopButton)
-
-    private void updateTable(ArrayList<LichSuCaLam> dsLS) { // THAY ĐỔI
+    private void updateTable(ArrayList<LichSuCaLam> dsLS) {
         model.setRowCount(0);
         if (dsLS == null) {
             return;
         }
-        for (LichSuCaLam ls : dsLS) { // THAY ĐỔI
+        for (LichSuCaLam ls : dsLS) {
             // Lấy tên từ đối tượng (DAO đã tải đầy đủ)
             String tenNV = (ls.getNhanVien() != null && ls.getNhanVien().getTen() != null)
-                           ? ls.getNhanVien().getHoTenDem() + " " + ls.getNhanVien().getTen() 
-                           : ls.getNhanVien().getMaNV(); 
-            
+                    ? ls.getNhanVien().getHoTenDem() + " " + ls.getNhanVien().getTen()
+                    : ls.getNhanVien().getMaNV();
+
             String maCa = (ls.getCaLam() != null) ? ls.getCaLam().getMaCa() : "N/A";
-            
-            String gioRa = (ls.getThoiGianRaCa() != null) 
-                           ? ls.getThoiGianRaCa().format(timeFormatter) 
-                           : "Chưa ra ca";
+
+            String gioRa = (ls.getThoiGianRaCa() != null)
+                    ? ls.getThoiGianRaCa().format(timeFormatter)
+                    : "Chưa ra ca";
 
             Object[] row = {
                 ls.getNhanVien().getMaNV(),
@@ -149,21 +143,18 @@ public class QuanLiLichSuCaLamGUI extends JPanel { // THAY ĐỔI
     }
 
     private void updateTable() {
-        ArrayList<LichSuCaLam> dsLS = LichSuCaLamDAO.getAllLichSuCaLam(); // THAY ĐỔI
+        ArrayList<LichSuCaLam> dsLS = LichSuCaLamDAO.getAllLichSuCaLam();
         updateTable(dsLS);
     }
 
     private void addEvents() {
-        // (Đã xóa sự kiện cho 3 nút Thêm Xóa Sửa)
-        
+
         txtTimKiem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 xuLyTimKiem();
             }
         });
-        
-        // (Đã xóa sự kiện cho cmbBoLoc)
 
         cmbTieuChiTimKiem.addActionListener(new ActionListener() {
             @Override
@@ -176,7 +167,7 @@ public class QuanLiLichSuCaLamGUI extends JPanel { // THAY ĐỔI
         table.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                hienThiChiTietLichSuCaLam(e); // THAY ĐỔI
+                hienThiChiTietLichSuCaLam(e);
             }
         });
     }
@@ -185,51 +176,48 @@ public class QuanLiLichSuCaLamGUI extends JPanel { // THAY ĐỔI
         String tuKhoa = txtTimKiem.getText().trim();
         String tieuChi = cmbTieuChiTimKiem.getSelectedItem().toString();
 
-        ArrayList<LichSuCaLam> dsKetQua = new ArrayList<>(); // THAY ĐỔI
+        ArrayList<LichSuCaLam> dsKetQua = new ArrayList<>();
 
         if (tuKhoa.isEmpty()) {
-            dsKetQua = LichSuCaLamDAO.getAllLichSuCaLam(); // THAY ĐỔI
+            dsKetQua = LichSuCaLamDAO.getAllLichSuCaLam();
         } else {
             try {
                 switch (tieuChi) {
                     case "Mã NV":
-                        dsKetQua = LichSuCaLamDAO.timTheoMaNV(tuKhoa); // THAY ĐỔI
+                        dsKetQua = LichSuCaLamDAO.timTheoMaNV(tuKhoa);
                         break;
                     case "Tên Nhân Viên":
-                        dsKetQua = LichSuCaLamDAO.timTheoTenNV(tuKhoa); // THAY ĐỔI
+                        dsKetQua = LichSuCaLamDAO.timTheoTenNV(tuKhoa);
                         break;
                     case "Mã Ca":
-                        dsKetQua = LichSuCaLamDAO.timTheoMaCa(tuKhoa); // THAY ĐỔI
+                        dsKetQua = LichSuCaLamDAO.timTheoMaCa(tuKhoa);
                         break;
                     case "Ngày Làm (yyyy-MM-dd)":
-                        LocalDate date = LocalDate.parse(tuKhoa); // Chuyển String sang LocalDate
-                        dsKetQua = LichSuCaLamDAO.timTheoNgayLam(date); // THAY ĐỔI
+                        LocalDate date = LocalDate.parse(tuKhoa);
+                        dsKetQua = LichSuCaLamDAO.timTheoNgayLam(date);
                         break;
                 }
             } catch (DateTimeParseException e) {
-                 JOptionPane.showMessageDialog(this, "Ngày nhập phải đúng định dạng YYYY-MM-DD.", "Lỗi định dạng", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(this, "Ngày nhập phải đúng định dạng YYYY-MM-DD.", "Lỗi định dạng", JOptionPane.ERROR_MESSAGE);
             }
         }
-        updateTable(dsKetQua); 
+        updateTable(dsKetQua);
     }
 
-    // (Đã xóa xuLyLoc, xuLyThem, xuLyXoa, xuLySua)
-
-    private void hienThiChiTietLichSuCaLam(MouseEvent e) { // THAY ĐỔI
+    private void hienThiChiTietLichSuCaLam(MouseEvent e) {
         int selectRow = table.getSelectedRow();
         if (selectRow != -1) {
-            
-            // Không cần gọi DAO, chỉ lấy dữ liệu đã hiển thị trên bảng
+
             if (e.getClickCount() == 2) { // Double click
-                ChiTietLichSuCaLamGUI pnlChiTiet = new ChiTietLichSuCaLamGUI(); // THAY ĐỔI
+                ChiTietLichSuCaLamGUI pnlChiTiet = new ChiTietLichSuCaLamGUI();
                 JDialog dialog = new JDialog();
-                dialog.setTitle("Thông tin chi tiết Ca Làm"); // THAY ĐỔI
+                dialog.setTitle("Thông tin chi tiết Ca Làm");
                 dialog.setModal(true);
                 dialog.setResizable(false);
                 dialog.setContentPane(pnlChiTiet);
                 dialog.pack();
                 dialog.setLocationRelativeTo(null);
-                
+
                 // Lấy dữ liệu String từ bảng
                 String maNV = model.getValueAt(selectRow, 0).toString();
                 String tenNV = model.getValueAt(selectRow, 1).toString();
@@ -248,13 +236,12 @@ public class QuanLiLichSuCaLamGUI extends JPanel { // THAY ĐỔI
                 pnlChiTiet.setTxtGioVao(gioVao);
                 pnlChiTiet.setTxtGioRa(gioRa);
                 pnlChiTiet.setTxtGhiChu(ghiChu);
-                
+
                 // Cấu hình nút Đóng
                 pnlChiTiet.getBtnHuy().setVisible(false);
                 pnlChiTiet.getBtnXacNhan().setVisible(true);
                 pnlChiTiet.getBtnXacNhan().setText("Đóng");
-                
-                // Xóa listener cũ (nếu có) và thêm listener mới
+
                 for (ActionListener al : pnlChiTiet.getBtnXacNhan().getActionListeners()) {
                     pnlChiTiet.getBtnXacNhan().removeActionListener(al);
                 }
