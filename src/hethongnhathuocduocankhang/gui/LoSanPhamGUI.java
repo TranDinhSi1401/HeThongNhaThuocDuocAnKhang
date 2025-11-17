@@ -66,11 +66,11 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
         
         tblLoSanPham.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
         tblLoSanPham.getColumnModel().getColumn(0).setPreferredWidth(90);
-        tblLoSanPham.getColumnModel().getColumn(1).setPreferredWidth(303);
-        tblLoSanPham.getColumnModel().getColumn(2).setPreferredWidth(150);
-        tblLoSanPham.getColumnModel().getColumn(3).setPreferredWidth(80);
-        tblLoSanPham.getColumnModel().getColumn(4).setPreferredWidth(80);
-        tblLoSanPham.getColumnModel().getColumn(5).setPreferredWidth(100);
+        tblLoSanPham.getColumnModel().getColumn(1).setPreferredWidth(300);
+        tblLoSanPham.getColumnModel().getColumn(2).setPreferredWidth(200);
+        tblLoSanPham.getColumnModel().getColumn(3).setPreferredWidth(90);
+        tblLoSanPham.getColumnModel().getColumn(4).setPreferredWidth(90);
+        tblLoSanPham.getColumnModel().getColumn(5).setPreferredWidth(120);
         
         
         tblLoSanPham.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
@@ -244,7 +244,7 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
             }
         });
 
-        btnXoaTrang.setText("Xóa trắng");
+        btnXoaTrang.setText("Xóa tất cả");
         btnXoaTrang.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnXoaTrangActionPerformed(evt);
@@ -923,10 +923,13 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
     }//GEN-LAST:event_txtLamMoiActionPerformed
 
     private void btnXoaTrangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaTrangActionPerformed
-        
+        DefaultTableModel tbl = (DefaultTableModel) tblThemSanPham.getModel();
+        if (tbl.getRowCount()==0){
+            JOptionPane.showMessageDialog(this, "Chưa có sản phẩm để chọn, Vui lòng thêm rồi thử lại");
+            return;
+        }
         int x = JOptionPane.showConfirmDialog(this, "Xác nhận xóa hết sản phẩm ?", "Xác nhận?", JOptionPane.YES_NO_OPTION);
         if(x == JOptionPane.YES_OPTION){    
-            DefaultTableModel tbl = (DefaultTableModel) tblThemSanPham.getModel();
             tbl.setRowCount(0);
         }
             // TODO add your handling code here:
@@ -1001,6 +1004,11 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
     }//GEN-LAST:event_btnThemSanPhamTuExcelActionPerformed
 
     private void btnXacNhanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXacNhanActionPerformed
+        DefaultTableModel tbl = (DefaultTableModel) tblThemSanPham.getModel();
+        if (tbl.getRowCount()==0){
+            JOptionPane.showMessageDialog(this, "Chưa có sản phẩm để chọn, Vui lòng thêm sản phẩm rồi thử lại");
+            return;
+        }
         // TODO add your handling code here:
     }//GEN-LAST:event_btnXacNhanActionPerformed
 
@@ -1034,12 +1042,19 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
     private void btnXoaSanPhamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaSanPhamActionPerformed
         DefaultTableModel tbl = (DefaultTableModel) tblThemSanPham.getModel();
         int x = tblThemSanPham.getSelectedRow();
+        if (tbl.getRowCount()==0){
+            JOptionPane.showMessageDialog(this, "Chưa có sản phẩm để chọn, Vui lòng thêm sản phẩm rồi thử lại");
+            return;
+        }
         if (x == -1){
-            int a=JOptionPane.showConfirmDialog(this, "Chưa chọn sản phẩm để xóa!", "Xác nhận?", JOptionPane.YES_NO_OPTION);
-            if(a==JOptionPane.YES_OPTION){
-                tbl.removeRow(x);
-                JOptionPane.showMessageDialog(this, "Xóa thành công !"); return;
-            }
+            JOptionPane.showMessageDialog(this, "Bạn chưa chọn sản phẩm để xóa");
+            return;
+        }
+        int a=JOptionPane.showConfirmDialog(this, "Chưa chọn sản phẩm để xóa!", "Xác nhận?", JOptionPane.YES_NO_OPTION);
+        if(a==JOptionPane.YES_OPTION){
+            tbl.removeRow(x);
+            JOptionPane.showMessageDialog(this, "Xóa thành công !"); return;
+
         }
         // TODO add your handling code here:
     }//GEN-LAST:event_btnXoaSanPhamActionPerformed
@@ -1067,8 +1082,8 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         DefaultTableModel tbl = (DefaultTableModel) tblThemSanPham.getModel();
-        if(tbl==null){
-            JOptionPane.showMessageDialog(this, "Chưa có sản phẩm để chọn, Vui lòng thêm rồi thử lại");
+        if(tbl.getRowCount()==0){
+            JOptionPane.showMessageDialog(this, "Chưa có sản phẩm để chọn, Vui lòng thêm sản phẩm rồi thử lại");
             return;
         }
         chonTatCa();

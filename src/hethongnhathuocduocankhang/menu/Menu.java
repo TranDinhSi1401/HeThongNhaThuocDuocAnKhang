@@ -31,7 +31,7 @@ public class Menu extends JComponent{
         {"Bán hàng"},
         {"Quản lý", "Quản lý khách hàng", "Quản lý sản phẩm", "Quản lý nhân viên", "Quản lý hóa đơn", "Quản lý khuyến mãi", "Quản lý nhà cung cấp", "Quản lý phiếu đặt hàng", "Quản lý lịch sử ca làm", "Quản lý phiếu trả hàng"},
         {"Trả hàng"},
-        {"Tạo phiếu đặt hàng"},
+        {"Quản lý lô"},
         {"Tra cứu"},
         {"Thống kê"},
         {"Đổi quà"},
