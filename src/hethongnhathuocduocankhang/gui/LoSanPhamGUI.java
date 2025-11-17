@@ -925,7 +925,8 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
         
         String ncc = NhaCungCapDAO.timNCCTheoMa(lo.getNcc().getMaNCC()).getTenNCC();
         String donVi = DonViTinhDAO.getDonViTinhTheoMaDVT(lo.getDvTinh().getMaDonViTinh()).getTenDonVi();
-        tbl.addRow(new Object[] {lo.getSanPham().getMaSP(), lo.getSanPham().getTen(), lo.getMaLoSanPham(), ncc, donVi,  lo.getNgaySanXuat(), lo.getNgayHetHan(), lo.getSoLuong(), lo.getCtthd().getDonGia()});
+        String trangThai = tinhTrangThaiLoSanPham(lo);
+        tbl.addRow(new Object[] {lo.getSanPham().getMaSP(), lo.getSanPham().getTen(), lo.getMaLoSanPham(), ncc, donVi,  lo.getNgaySanXuat(), lo.getNgayHetHan(), lo.getSoLuong(), lo.getCtthd().getDonGia(), trangThai});
         
         // TODO add your handling code here:
     }//GEN-LAST:event_txtTimKiemActionPerformed
@@ -1034,10 +1035,11 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
                 for (LoSanPham i: loSP.dsLoSanPham()){
                     String dvt = DonViTinhDAO.getDonViTinhTheoMaDVT(i.getDvTinh().getMaDonViTinh()).getTenDonVi();
                     String ncc = NhaCungCapDAO.timNCCTheoMa(i.getNcc().getMaNCC()).getTenNCC();
+                    String trangThai = tinhTrangThaiLoSanPham(i);
                     Object[] row = new Object[] {i.getSanPham().getMaSP(), 
                         i.getSanPham().getTen(), i.getMaLoSanPham(), 
                         ncc, dvt, i.getNgaySanXuat(), i.getNgayHetHan(), 
-                        i.getSoLuong(), i.getCtthd().getDonGia()};
+                        i.getSoLuong(), i.getCtthd().getDonGia(), trangThai};
                         publish(row);
                 }
                 return null;
@@ -1051,6 +1053,26 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
                 }
             }
         }; worker.execute();
+    }
+    
+    private String tinhTrangThaiLoSanPham(LoSanPham lo) {
+        if (lo.getSoLuong() == 0) {
+            return "Đã hủy";
+        }
+        
+        java.time.LocalDate ngayHetHan = lo.getNgayHetHan();
+        java.time.LocalDate ngayHienTai = java.time.LocalDate.now();
+        
+        if (ngayHetHan.isBefore(ngayHienTai)) {
+            return "Hết hạn";
+        }
+        
+        long soNgayConLai = java.time.temporal.ChronoUnit.DAYS.between(ngayHienTai, ngayHetHan);
+        if (soNgayConLai <= 30) {
+            return "Sắp hết hạn";
+        }
+        
+        return "Còn hạn";
     }
     //Khong dung
 //    private void LoadTongThe(){
