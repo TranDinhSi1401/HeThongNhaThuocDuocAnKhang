@@ -267,7 +267,7 @@ CREATE TABLE ChiTietPhieuTraHang (
     CONSTRAINT FK_CTPTH_ChiTietHoaDon FOREIGN KEY (maChiTietHoaDon) REFERENCES ChiTietHoaDon(maChiTietHoaDon),
     CONSTRAINT CK_CTPTH_SoLuong CHECK (soLuong >= 0 AND soLuong <= 999),
     CONSTRAINT CK_CTPTH_TruongHopDoiTra_Enum CHECK (truongHopDoiTra IN (N'HANG_LOI_DO_NHA_SAN_XUAT', N'DI_UNG_MAN_CAM', N'NHU_CAU_KHACH_HANG')),
-    CONSTRAINT CK_CTPTH_TinhTrangSanPham_Enum CHECK (tinhTrangSanPham IN (N'HANG_NGUYEN_VEN', N'HANG_KHONG_NGUYEN', N'HANG_DA_SU_DUNG')),
+    CONSTRAINT CK_CTPTH_TinhTrangSanPham_Enum CHECK (tinhTrangSanPham IN (N'HANG_NGUYEN_VEN', N'HANG_KHONG_NGUYEN_VEN', N'HANG_DA_SU_DUNG')),
     CONSTRAINT CK_CTPTH_GiaTriHoanTra_Enum CHECK (giaTriHoanTra IN (N'100%', N'70%', N'Miễn trả hàng')),
     CONSTRAINT CK_CTPTH_ThanhTienHoanTra CHECK (thanhTienHoanTra >= 0)
 );
@@ -311,6 +311,7 @@ GO
 -- 4. Bảng KhachHang (50 khách hàng)
 -- ===================================================================
 INSERT INTO KhachHang (maKH, hoTenDem, ten, sdt, diemTichLuy) VALUES
+('KH-00000', N'Khách', N'Vãng Lai', '0000000000', 0),
 ('KH-00001', N'Nguyễn Thị', N'Lan', '0909000001', 50),
 ('KH-00002', N'Trần Văn', N'Hùng', '0909000002', 120),
 ('KH-00003', N'Lê Thị', N'Mai', '0909000003', 0),
@@ -360,8 +361,7 @@ INSERT INTO KhachHang (maKH, hoTenDem, ten, sdt, diemTichLuy) VALUES
 ('KH-00047', N'Sơn Thị', N'Kim', '0909000047', 240),
 ('KH-00048', N'Thạch Văn', N'Phi', '0909000048', 0),
 ('KH-00049', N'Tiêu Thị', N'Ngân', '0909000049', 14),
-('KH-00050', N'Uông Văn', N'Đạt', '0909000050', 38),
-('KH-99999', N'Khách', N'Vãng Lai', '0000000000', 0);
+('KH-00050', N'Uông Văn', N'Đạt', '0909000050', 38);
 GO
 
 -- ===================================================================
@@ -381,7 +381,7 @@ INSERT INTO KhuyenMai (maKhuyenMai, moTa, phanTram, loaiKhuyenMai, ngayBatDau, n
 GO
 
 -- ===================================================================
--- 6. Bảng SanPham (100 sản phẩm)
+-- 6. Bảng SanPham (50 sản phẩm)
 -- ===================================================================
 INSERT INTO SanPham (maSP, ten, moTa, thanhPhan, loaiSanPham, tonToiThieu, tonToiDa) VALUES
 ('SP-0001', N'Paracetamol 500mg (Hộp 10 vỉ x 10 viên)', N'Thuốc giảm đau, hạ sốt không kê đơn.', N'Paracetamol 500mg', N'THUOC', 50, 300),
@@ -433,57 +433,7 @@ INSERT INTO SanPham (maSP, ten, moTa, thanhPhan, loaiSanPham, tonToiThieu, tonTo
 ('SP-0047', N'Crest 3D White (Tuýp 116g)', N'Kem đánh răng làm trắng răng.', N'Sodium Fluoride, Hydrated Silica', N'THUC_PHAM_CHUC_NANG', 50, 150),
 ('SP-0048', N'Strepsils (Hộp 24 viên ngậm)', N'Viên ngậm sát khuẩn, giảm đau họng.', N'Amylmetacresol, Dichlorobenzyl Alcohol', N'THUOC', 150, 600),
 ('SP-0049', N'Viên uống mọc tóc Biotin 10000mcg (Lọ 100 viên)', N'Hỗ trợ mọc tóc, móng chắc khỏe.', N'Biotin 10000mcg', N'THUC_PHAM_CHUC_NANG', 20, 80),
-('SP-0050', N'Phosphalugel (Hộp 26 gói)', N'Thuốc chữ P, trị đau dạ dày.', N'Aluminium Phosphate 20%', N'THUOC', 80, 250),
-('SP-0051', N'Doxycyclin 100mg (Hộp 10 vỉ x 10 viên)', N'Kháng sinh (kê đơn).', N'Doxycycline 100mg', N'THUOC', 30, 100),
-('SP-0052', N'Bảo Xuân Gold (Hộp 3 vỉ x 10 viên)', N'Cân bằng nội tiết tố nữ.', N'Tinh chất mầm đậu nành, Collagen', N'THUC_PHAM_CHUC_NANG', 40, 120),
-('SP-0053', N'Nifedipin 20mg (Hộp 3 vỉ x 10 viên)', N'Thuốc hạ huyết áp (kê đơn).', N'Nifedipine 20mg', N'THUOC', 15, 70),
-('SP-0054', N'Kem chống nắng La Roche-Posay Anthelios (Tuýp 50ml)', N'Kem chống nắng vật lý lai hóa học.', N'Mexoryl XL, Titanium Dioxide', N'THUC_PHAM_CHUC_NANG', 30, 100),
-('SP-0055', N'Ibuprofen 400mg (Hộp 10 vỉ x 10 viên)', N'Thuốc kháng viêm non-steroid (NSAID), giảm đau.', N'Ibuprofen 400mg', N'THUOC', 50, 200),
-('SP-0056', N'Sữa ong chúa 1600mg (Lọ 365 viên)', N'Bồi bổ sức khỏe, đẹp da.', N'Sữa ong chúa tươi', N'THUC_PHAM_CHUC_NANG', 10, 40),
-('SP-0057', N'Levothyroxin 100mcg (Hộp 4 vỉ x 25 viên)', N'Thuốc hormone tuyến giáp (kê đơn).', N'Levothyroxine Sodium 100mcg', N'THUOC', 10, 50),
-('SP-0058', N'Oxy già 3% (Chai 500ml)', N'Dung dịch sát khuẩn, rửa vết thương.', N'Hydrogen Peroxide 3%', N'THUOC', 100, 400),
-('SP-0059', N'C sủi Plusssz (Tuýp 20 viên)', N'Bổ sung Vitamin C và Kẽm.', N'Vitamin C, Kẽm', N'THUC_PHAM_CHUC_NANG', 80, 300),
-('SP-0060', N'Warfarin 5mg (Lọ 100 viên)', N'Thuốc chống đông máu (kê đơn).', N'Warfarin Sodium 5mg', N'THUOC', 5, 20),
-('SP-0061', N'Băng gạc y tế (Gói 10 miếng)', N'Băng gạc vô trùng.', N'Vải không dệt, bông', N'THUC_PHAM_CHUC_NANG', 300, 1000),
-('SP-0062', N'Tinh dầu tràm (Chai 50ml)', N'Giữ ấm, chống cảm, xua đuổi côn trùng.', N'Cineol (từ tinh dầu tràm)', N'THUC_PHAM_CHUC_NANG', 50, 150),
-('SP-0063', N'Furosemid 40mg (Hộp 5 vỉ x 10 viên)', N'Thuốc lợi tiểu (kê đơn).', N'Furosemide 40mg', N'THUOC', 30, 100),
-('SP-0064', N'Panadol Cảm Cúm (Hộp 10 vỉ x 12 viên)', N'Giảm triệu chứng cảm cúm.', N'Paracetamol, Phenylephrin, Vitamin C', N'THUOC', 100, 400),
-('SP-0065', N'Yến sào Sanest (Hộp 6 lọ)', N'Bồi bổ sức khỏe.', N'Yến sào, đường phèn', N'THUC_PHAM_CHUC_NANG', 20, 60),
-('SP-0066', N'Amlodipin 5mg (Hộp 10 vỉ x 10 viên)', N'Thuốc hạ huyết áp (kê đơn).', N'Amlodipine 5mg', N'THUOC', 60, 200),
-('SP-0067', N'Kim tiền thảo (Hộp 100 viên)', N'Hỗ trợ điều trị sỏi thận.', N'Cao Kim tiền thảo', N'THUC_PHAM_CHUC_NANG', 30, 90),
-('SP-0068', N'Smecta (Hộp 30 gói)', N'Điều trị tiêu chảy cấp.', N'Diosmectite 3g', N'THUOC', 50, 150),
-('SP-0069', N'Tinh chất hàu Úc (Lọ 60 viên)', N'Tăng cường sinh lý nam.', N'Chiết xuất hàu, Kẽm', N'THUC_PHAM_CHUC_NANG', 10, 40),
-('SP-0070', N'Voltaren Emulgel 1% (Tuýp 20g)', N'Kem bôi giảm đau, kháng viêm tại chỗ.', N'Diclofenac Diethylammonium 1%', N'THUOC', 70, 200),
-('SP-0071', N'Azithromycin 500mg (Hộp 1 vỉ x 3 viên)', N'Kháng sinh (kê đơn).', N'Azithromycin 500mg', N'THUOC', 40, 100),
-('SP-0072', N'Bột nghệ Curcumin (Lọ 250g)', N'Hỗ trợ dạ dày, làm đẹp da.', N'Tinh bột nghệ (Curcumin)', N'THUC_PHAM_CHUC_NANG', 20, 50),
-('SP-0073', N'Cồn 90 độ (Chai 500ml)', N'Sát khuẩn dụng cụ, bề mặt.', N'Ethanol 90%', N'THUOC', 200, 600),
-('SP-0074', N'Viên uống chống nắng (Lọ 60 viên)', N'Bảo vệ da khỏi tia UV từ bên trong.', N'Chiết xuất lựu, dương xỉ', N'THUC_PHAM_CHUC_NANG', 10, 30),
-('SP-0075', N'Loratadin 10mg (Hộp 1 vỉ x 10 viên)', N'Thuốc chống dị ứng.', N'Loratadine 10mg', N'THUOC', 100, 400),
-('SP-0076', N'Trà gừng (Hộp 20 gói)', N'Làm ấm cơ thể, hỗ trợ tiêu hóa.', N'Gừng, đường', N'THUC_PHAM_CHUC_NANG', 50, 150),
-('SP-0077', N'Insulin (Bút tiêm)', N'Thuốc điều trị tiểu đường (kê đơn, bảo quản lạnh).', N'Insulin Human', N'THUOC', 5, 20),
-('SP-0078', N'Erythromycin 500mg (Hộp 10 vỉ x 10 viên)', N'Kháng sinh (kê đơn).', N'Erythromycin 500mg', N'THUOC', 20, 80),
-('SP-0079', N'Dầu gội Nizoral (Chai 100ml)', N'Trị gàu, nấm da đầu.', N'Ketoconazole 2%', N'THUOC', 30, 90),
-('SP-0080', N'Sâm Alipas (Lọ 60 viên)', N'Tăng cường sinh lực phái mạnh.', N'Eurycoma Longifolia, Tinh chất hàu', N'THUC_PHAM_CHUC_NANG', 15, 50),
-('SP-0081', N'Cetirizin 10mg (Hộp 10 vỉ x 10 viên)', N'Thuốc chống dị ứng.', N'Cetirizine 10mg', N'THUOC', 80, 300),
-('SP-0082', N'Bình sữa Comotomo (250ml)', N'Bình sữa cho trẻ sơ sinh.', N'Silicon y tế', N'THUC_PHAM_CHUC_NANG', 20, 60),
-('SP-0083', N'Gabapentin 300mg (Hộp 3 vỉ x 10 viên)', N'Thuốc điều trị đau thần kinh (kê đơn).', N'Gabapentin 300mg', N'THUOC', 10, 40),
-('SP-0084', N'Dầu cám gạo (Chai 1 lít)', N'Dầu ăn tốt cho tim mạch.', N'Dầu cám gạo nguyên chất', N'THUC_PHAM_CHUC_NANG', 10, 30),
-('SP-0085', N'Movicol (Hộp 20 gói)', N'Thuốc nhuận tràng, trị táo bón.', N'Macrogol 3350', N'THUOC', 25, 75),
-('SP-0086', N'Viên uống Lutein (Lọ 60 viên)', N'Bổ mắt, tăng cường thị lực.', N'Lutein, Zeaxanthin', N'THUC_PHAM_CHUC_NANG', 15, 45),
-('SP-0087', N'Montelukast 10mg (Hộp 3 vỉ x 10 viên)', N'Thuốc dự phòng hen suyễn (kê đơn).', N'Montelukast 10mg', N'THUOC', 10, 30),
-('SP-0088', N'Khẩu trang y tế (Hộp 50 cái)', N'Khẩu trang 4 lớp kháng khuẩn.', N'Vải không dệt, giấy lọc kháng khuẩn', N'THUC_PHAM_CHUC_NANG', 500, 2000),
-('SP-0089', N'Thực phẩm bảo vệ gan (Hộp 60 viên)', N'Hỗ trợ giải độc gan.', N'Silymarin, L-Arginine', N'THUC_PHAM_CHUC_NANG', 30, 100),
-('SP-0090', N'Augmentin 625mg (Hộp 2 vỉ x 7 viên)', N'Kháng sinh (Amoxicillin + Acid Clavulanic) (kê đơn).', N'Amoxicillin 500mg, Acid Clavulanic 125mg', N'THUOC', 20, 80),
-('SP-0091', N'Eugica (Hộp 10 vỉ x 10 viên)', N'Viên ngậm ho thảo dược.', N'Eucalyptol, Tinh dầu gừng, Menthol', N'THUOC', 100, 400),
-('SP-0092', N'Viên uống DHC Vitamin C (Gói 60 ngày)', N'Bổ sung Vitamin C liều cao.', N'Vitamin C 1000mg', N'THUC_PHAM_CHUC_NANG', 80, 250),
-('SP-0093', N'Spirulina (Lọ 2200 viên)', N'Tảo xoắn Nhật Bản.', N'Bột tảo xoắn Spirulina', N'THUC_PHAM_CHUC_NANG', 10, 30),
-('SP-0094', N'Clotrimazol 1% (Tuýp 10g)', N'Kem bôi trị nấm da.', N'Clotrimazole 1%', N'THUOC', 50, 150),
-('SP-0095', N'Enfagrow A+ 4 (Lon 1.7kg)', N'Sữa bột cho trẻ trên 2 tuổi.', N'Sữa bột, DHA, ARA, Vitamin', N'THUC_PHAM_CHUC_NANG', 30, 80),
-('SP-0096', N'Nexium 40mg (Lọ 14 viên)', N'Thuốc ức chế bơm proton, trị loét dạ dày (kê đơn).', N'Esomeprazole 40mg', N'THUOC', 20, 60),
-('SP-0097', N'Que thử thai Quickstick (Hộp 1 que)', N'Phát hiện thai sớm.', N'Giấy thử HCG', N'THUC_PHAM_CHUC_NANG', 200, 700),
-('SP-0098', N'Acemuc (Hộp 30 gói)', N'Thuốc long đờm.', N'Acetylcysteine 200mg', N'THUOC', 40, 120),
-('SP-0099', N'Viên uống CoQ10 100mg (Lọ 60 viên)', N'Hỗ trợ sức khỏe tim mạch.', N'Coenzyme Q10 100mg', N'THUC_PHAM_CHUC_NANG', 15, 40),
-('SP-0100', N'Morphin 10mg/ml (Ống 1ml)', N'Thuốc giảm đau Opioid (kê đơn, KSTT).', N'Morphine HCl 10mg', N'THUOC', 5, 15);
+('SP-0050', N'Phosphalugel (Hộp 26 gói)', N'Thuốc chữ P, trị đau dạ dày.', N'Aluminium Phosphate 20%', N'THUOC', 80, 250);
 GO
 
 -- ===================================================================
@@ -496,7 +446,6 @@ INSERT INTO TaiKhoan (tenDangNhap, matKhau, quanLy, biKhoa, email, ngayTao) VALU
 ('NV-0004', N'Trandinhsi123@', 0, 0, N't.d.si_locked@gmail.com', '2025-01-01 08:03:00');
 GO
 
-
 -- ===================================================================
 -- 8. Bảng DonViTinh
 -- ===================================================================
@@ -504,259 +453,1389 @@ INSERT INTO DonViTinh (maDonViTinh, maSP, tenDonVi, heSoQuyDoi, giaBanTheoDonVi,
 -- SP-0001: Paracetamol 500mg (Hộp 10 vỉ x 10 viên)
 ('DVT-0001-VIEN', 'SP-0001', N'Viên', 1, 1000.00, 1),
 ('DVT-0001-VI', 'SP-0001', N'Vỉ', 10, 10000.00, 0),
-('DVT-0001-HOP', 'SP-0001', N'Hộp', 100, 95000.00, 0),
+('DVT-0001-HOP', 'SP-0001', N'Hộp', 100, 100000.00, 0),
+
+-- SP-0002: Amoxicillin 500mg (Hộp 10 vỉ x 10 viên)
+('DVT-0002-VIEN', 'SP-0002', N'Viên', 1, 1500.00, 1),
+('DVT-0002-VI', 'SP-0002', N'Vỉ', 10, 15000.00, 0),
+('DVT-0002-HOP', 'SP-0002', N'Hộp', 100, 150000.00, 0),
 
 -- SP-0003: Vitamin C 500mg (Tuýp 20 viên sủi)
-('DVT-0003-VIEN', 'SP-0003', N'Viên', 1, 2000.00, 1),
-('DVT-0003-TUYP', 'SP-0003', N'Tuýp', 20, 38000.00, 0),
+('DVT-0003-VIENSUI', 'SP-0003', N'Viên sủi', 1, 3000.00, 1),
+('DVT-0003-TUYP', 'SP-0003', N'Tuýp', 20, 60000.00, 0),
+
+-- SP-0004: Omega 3 Fish Oil 1000mg (Lọ 100 viên)
+('DVT-0004-VIEN', 'SP-0004', N'Viên', 1, 2500.00, 1),
+('DVT-0004-LO', 'SP-0004', N'Lọ', 100, 250000.00, 0),
+
+-- SP-0005: Berberin 100mg (Lọ 100 viên)
+('DVT-0005-VIEN', 'SP-0005', N'Viên', 1, 500.00, 1),
+('DVT-0005-LO', 'SP-0005', N'Lọ', 100, 50000.00, 0),
+
+-- SP-0006: Atorvastatin 20mg (Hộp 3 vỉ x 10 viên)
+('DVT-0006-VIEN', 'SP-0006', N'Viên', 1, 4000.00, 1),
+('DVT-0006-VI', 'SP-0006', N'Vỉ', 10, 40000.00, 0),
+('DVT-0006-HOP', 'SP-0006', N'Hộp', 30, 120000.00, 0),
+
+-- SP-0007: Blackmores Glucosamine 1500mg (Lọ 180 viên)
+('DVT-0007-VIEN', 'SP-0007', N'Viên', 1, 3500.00, 1),
+('DVT-0007-LO', 'SP-0007', N'Lọ', 180, 630000.00, 0),
+
+-- SP-0008: Hoạt huyết dưỡng não Traphaco (Hộp 5 vỉ x 20 viên)
+('DVT-0008-VIEN', 'SP-0008', N'Viên', 1, 1200.00, 1),
+('DVT-0008-VI', 'SP-0008', N'Vỉ', 20, 24000.00, 0),
+('DVT-0008-HOP', 'SP-0008', N'Hộp', 100, 120000.00, 0),
+
+-- SP-0009: Clorpheniramin 4mg (Vỉ 20 viên)
+('DVT-0009-VIEN', 'SP-0009', N'Viên', 1, 300.00, 1),
+('DVT-0009-VI', 'SP-0009', N'Vỉ', 20, 6000.00, 0),
+
+-- SP-0010: Canxi Corbiere 5ml (Hộp 30 ống)
+('DVT-0010-ONG', 'SP-0010', N'Ống', 1, 5000.00, 1),
+('DVT-0010-HOP', 'SP-0010', N'Hộp', 30, 150000.00, 0),
+
+-- SP-0011: Losartan 50mg (Hộp 3 vỉ x 10 viên)
+('DVT-0011-VIEN', 'SP-0011', N'Viên', 1, 3000.00, 1),
+('DVT-0011-VI', 'SP-0011', N'Vỉ', 10, 30000.00, 0),
+('DVT-0011-HOP', 'SP-0011', N'Hộp', 30, 90000.00, 0),
 
 -- SP-0012: Siro ho Prospan (Chai 100ml)
 ('DVT-0012-CHAI', 'SP-0012', N'Chai', 1, 70000.00, 1),
 
--- SP-0044: Panadol Extra (Hộp 10 vỉ x 12 viên)
-('DVT-0044-VIEN', 'SP-0044', N'Viên', 1, 1500.00, 1),
-('DVT-0044-VI', 'SP-0044', N'Vỉ', 12, 17000.00, 0),
-('DVT-0044-HOP', 'SP-0044', N'Hộp', 120, 165000.00, 0),
+-- SP-0013: Men vi sinh Bifina R (Hộp 20 gói)
+('DVT-0013-GOI', 'SP-0013', N'Gói', 1, 15000.00, 1),
+('DVT-0013-HOP', 'SP-0013', N'Hộp', 20, 300000.00, 0),
 
--- SP-0088: Khẩu trang y tế (Hộp 50 cái)
-('DVT-0088-CAI', 'SP-0088', N'Cái', 1, 1000.00, 1),
-('DVT-0088-HOP', 'SP-0088', N'Hộp', 50, 45000.00, 0);
+-- SP-0014: Oresol 245 (Hộp 20 gói)
+('DVT-0014-GOI', 'SP-0014', N'Gói', 1, 2500.00, 1),
+('DVT-0014-HOP', 'SP-0014', N'Hộp', 20, 50000.00, 0),
+
+-- SP-0015: Salbutamol 2mg (Hộp 10 vỉ x 10 viên)
+('DVT-0015-VIEN', 'SP-0015', N'Viên', 1, 800.00, 1),
+('DVT-0015-VI', 'SP-0015', N'Vỉ', 10, 8000.00, 0),
+('DVT-0015-HOP', 'SP-0015', N'Hộp', 100, 80000.00, 0),
+
+-- SP-0016: Sắt Ferrovit (Hộp 5 vỉ x 10 viên)
+('DVT-0016-VIEN', 'SP-0016', N'Viên', 1, 1800.00, 1),
+('DVT-0016-VI', 'SP-0016', N'Vỉ', 10, 18000.00, 0),
+('DVT-0016-HOP', 'SP-0016', N'Hộp', 50, 90000.00, 0),
+
+-- SP-0017: Cialis 20mg (Vỉ 2 viên)
+('DVT-0017-VIEN', 'SP-0017', N'Viên', 1, 70000.00, 1),
+('DVT-0017-VI', 'SP-0017', N'Vỉ', 2, 140000.00, 0),
+
+-- SP-0018: Boganic (Hộp 5 vỉ x 10 viên)
+('DVT-0018-VIEN', 'SP-0018', N'Viên', 1, 1500.00, 1),
+('DVT-0018-VI', 'SP-0018', N'Vỉ', 10, 15000.00, 0),
+('DVT-0018-HOP', 'SP-0018', N'Hộp', 50, 75000.00, 0),
+
+-- SP-0019: Omeprazol 20mg (Lọ 14 viên)
+('DVT-0019-VIEN', 'SP-0019', N'Viên', 1, 2000.00, 1),
+('DVT-0019-LO', 'SP-0019', N'Lọ', 14, 28000.00, 0),
+
+-- SP-0020: Ginkgo Biloba 120mg (Lọ 60 viên)
+('DVT-0020-VIEN', 'SP-0020', N'Viên', 1, 3000.00, 1),
+('DVT-0020-LO', 'SP-0020', N'Lọ', 60, 180000.00, 0),
+
+-- SP-0021: Metformin 500mg (Hộp 10 vỉ x 10 viên)
+('DVT-0021-VIEN', 'SP-0021', N'Viên', 1, 700.00, 1),
+('DVT-0021-VI', 'SP-0021', N'Vỉ', 10, 7000.00, 0),
+('DVT-0021-HOP', 'SP-0021', N'Hộp', 100, 70000.00, 0),
+
+-- SP-0022: Decolgen Forte (Hộp 25 vỉ x 4 viên)
+('DVT-0022-VIEN', 'SP-0022', N'Viên', 1, 1500.00, 1),
+('DVT-0022-VI', 'SP-0022', N'Vỉ', 4, 6000.00, 0),
+('DVT-0022-HOP', 'SP-0022', N'Hộp', 100, 150000.00, 0),
+
+-- SP-0023: Nature Made Vitamin E 400 IU (Lọ 100 viên)
+('DVT-0023-VIEN', 'SP-0023', N'Viên', 1, 2800.00, 1),
+('DVT-0023-LO', 'SP-0023', N'Lọ', 100, 280000.00, 0),
+
+-- SP-0024: Alprazolam 0.5mg (Hộp 3 vỉ x 10 viên)
+('DVT-0024-VIEN', 'SP-0024', N'Viên', 1, 1500.00, 1),
+('DVT-0024-VI', 'SP-0024', N'Vỉ', 10, 15000.00, 0),
+('DVT-0024-HOP', 'SP-0024', N'Hộp', 30, 45000.00, 0),
+
+-- SP-0025: Betadine 10% (Chai 125ml)
+('DVT-0025-CHAI', 'SP-0025', N'Chai', 1, 35000.00, 1),
+
+-- SP-0026: Centrum Silver 50+ (Lọ 125 viên)
+('DVT-0026-VIEN', 'SP-0026', N'Viên', 1, 4000.00, 1),
+('DVT-0026-LO', 'SP-0026', N'Lọ', 125, 500000.00, 0),
+
+-- SP-0027: Ciprofloxacin 500mg (Hộp 2 vỉ x 10 viên)
+('DVT-0027-VIEN', 'SP-0027', N'Viên', 1, 3500.00, 1),
+('DVT-0027-VI', 'SP-0027', N'Vỉ', 10, 35000.00, 0),
+('DVT-0027-HOP', 'SP-0027', N'Hộp', 20, 70000.00, 0),
+
+-- SP-0028: Efferagan 500mg (Hộp 4 tuýp x 10 viên sủi)
+('DVT-0028-VIENSUI', 'SP-0028', N'Viên sủi', 1, 3000.00, 1),
+('DVT-0028-TUYP', 'SP-0028', N'Tuýp', 10, 30000.00, 0),
+('DVT-0028-HOP', 'SP-0028', N'Hộp', 40, 120000.00, 0),
+
+-- SP-0029: Collagen AEC 12000mg (Hộp 10 lọ)
+('DVT-0029-LO', 'SP-0029', N'Lọ', 1, 80000.00, 1),
+('DVT-0029-HOP', 'SP-0029', N'Hộp', 10, 800000.00, 0),
+
+-- SP-0030: Prednison 5mg (Lọ 200 viên)
+('DVT-0030-VIEN', 'SP-0030', N'Viên', 1, 300.00, 1),
+('DVT-0030-LO', 'SP-0030', N'Lọ', 200, 60000.00, 0),
+
+-- SP-0031: Dầu gió xanh Thiên Thảo (Chai 24ml)
+('DVT-0031-CHAI', 'SP-0031', N'Chai', 1, 45000.00, 1),
+
+-- SP-0032: Sữa Ensure Gold (Lon 850g)
+('DVT-0032-LON', 'SP-0032', N'Lon', 1, 750000.00, 1),
+
+-- SP-0033: Aspirin 81mg (Lọ 100 viên)
+('DVT-0033-VIEN', 'SP-0033', N'Viên', 1, 600.00, 1),
+('DVT-0033-LO', 'SP-0033', N'Lọ', 100, 60000.00, 0),
+
+-- SP-0034: Tiffy (Hộp 25 vỉ x 4 viên)
+('DVT-0034-VIEN', 'SP-0034', N'Viên', 1, 1300.00, 1),
+('DVT-0034-VI', 'SP-0034', N'Vỉ', 4, 5200.00, 0),
+('DVT-0034-HOP', 'SP-0034', N'Hộp', 100, 130000.00, 0),
+
+-- SP-0035: One A Day Men's Health (Lọ 100 viên)
+('DVT-0035-VIEN', 'SP-0035', N'Viên', 1, 4500.00, 1),
+('DVT-0035-LO', 'SP-0035', N'Lọ', 100, 450000.00, 0),
+
+-- SP-0036: Domperidon 10mg (Hộp 10 vỉ x 10 viên)
+('DVT-0036-VIEN', 'SP-0036', N'Viên', 1, 1000.00, 1),
+('DVT-0036-VI', 'SP-0036', N'Vỉ', 10, 10000.00, 0),
+('DVT-0036-HOP', 'SP-0036', N'Hộp', 100, 100000.00, 0),
+
+-- SP-0037: Dầu cá Nature's Bounty 1200mg (Lọ 200 viên)
+('DVT-0037-VIEN', 'SP-0037', N'Viên', 1, 2000.00, 1),
+('DVT-0037-LO', 'SP-0037', N'Lọ', 200, 400000.00, 0),
+
+-- SP-0038: Telfast 180mg (Hộp 1 vỉ x 10 viên)
+('DVT-0038-VIEN', 'SP-0038', N'Viên', 1, 12000.00, 1),
+('DVT-0038-VI', 'SP-0038', N'Vỉ', 10, 120000.00, 0),
+('DVT-0038-HOP', 'SP-0038', N'Hộp', 10, 120000.00, 0),
+
+-- SP-0039: Cephalexin 500mg (Hộp 10 vỉ x 10 viên)
+('DVT-0039-VIEN', 'SP-0039', N'Viên', 1, 1800.00, 1),
+('DVT-0039-VI', 'SP-0039', N'Vỉ', 10, 18000.00, 0),
+('DVT-0039-HOP', 'SP-0039', N'Hộp', 100, 180000.00, 0),
+
+-- SP-0040: Viên uống DHC rau củ (Gói 60 ngày)
+('DVT-0040-GOI', 'SP-0040', N'Gói', 1, 250000.00, 1),
+
+-- SP-0041: Diazepam 5mg (Hộp 10 vỉ x 10 viên)
+('DVT-0041-VIEN', 'SP-0041', N'Viên', 1, 900.00, 1),
+('DVT-0041-VI', 'SP-0041', N'Vỉ', 10, 9000.00, 0),
+('DVT-0041-HOP', 'SP-0041', N'Hộp', 100, 90000.00, 0),
+
+-- SP-0042: Urgo (Hộp 20 miếng)
+('DVT-0042-MIENG', 'SP-0042', N'Miếng', 1, 1500.00, 1),
+('DVT-0042-HOP', 'SP-0042', N'Hộp', 20, 30000.00, 0),
+
+-- SP-0043: Melatonin 10mg (Lọ 60 viên)
+('DVT-0043-VIEN', 'SP-0043', N'Viên', 1, 4000.00, 1),
+('DVT-0043-LO', 'SP-0043', N'Lọ', 60, 240000.00, 0),
+
+-- SP-0044: Panadol Extra (Hộp 10 vỉ x 12 viên)
+('DVT-0044-VIEN', 'SP-0044', N'Viên', 1, 1800.00, 1),
+('DVT-0044-VI', 'SP-0044', N'Vỉ', 12, 21600.00, 0),
+('DVT-0044-HOP', 'SP-0044', N'Hộp', 120, 216000.00, 0),
+
+-- SP-0045: Enervon-C (Hộp 10 vỉ x 10 viên)
+('DVT-0045-VIEN', 'SP-0045', N'Viên', 1, 2000.00, 1),
+('DVT-0045-VI', 'SP-0045', N'Vỉ', 10, 20000.00, 0),
+('DVT-0045-HOP', 'SP-0045', N'Hộp', 100, 200000.00, 0),
+
+-- SP-0046: Nước muối sinh lý Natri Clorid 0.9% (Chai 500ml)
+('DVT-0046-CHAI', 'SP-0046', N'Chai', 1, 10000.00, 1),
+
+-- SP-0047: Crest 3D White (Tuýp 116g)
+('DVT-0047-TUYP', 'SP-0047', N'Tuýp', 1, 120000.00, 1),
+
+-- SP-0048: Strepsils (Hộp 24 viên ngậm)
+('DVT-0048-VIENGAM', 'SP-0048', N'Viên ngậm', 1, 2500.00, 1),
+('DVT-0048-HOP', 'SP-0048', N'Hộp', 24, 60000.00, 0),
+
+-- SP-0049: Viên uống mọc tóc Biotin 10000mcg (Lọ 100 viên)
+('DVT-0049-VIEN', 'SP-0049', N'Viên', 1, 3000.00, 1),
+('DVT-0049-LO', 'SP-0049', N'Lọ', 100, 300000.00, 0),
+
+-- SP-0050: Phosphalugel (Hộp 26 gói)
+('DVT-0050-GOI', 'SP-0050', N'Gói', 1, 4000.00, 1),
+('DVT-0050-HOP', 'SP-0050', N'Hộp', 26, 104000.00, 0);
 GO
 
 -- ===================================================================
--- 8. Bảng LoSanPham
+-- 9. Bảng LoSanPham
+-- ===================================================================
+-- ===================================================================
+-- 9. Bảng LoSanPham (ĐÃ SỬA LẠI THEO ĐÚNG ĐỊNH DẠNG)
 -- ===================================================================
 INSERT INTO LoSanPham (maLoSanPham, maSP, soLuong, ngaySanXuat, ngayHetHan) VALUES
--- Lô cho Paracetamol (SP-0001)
-('PARA-HG-001', 'SP-0001', 10000, '2024-01-01', '2027-01-01'), -- 10000 viên
-('PARA-HG-002', 'SP-0001', 5000, '2024-06-01', '2027-06-01'), -- 5000 viên
+-- SP-0001: Paracetamol 500mg
+('LO-SP-0001-20240510-1', 'SP-0001', 1500, '2024-05-10', '2027-05-10'),
+('LO-SP-0001-20250120-2', 'SP-0001', 1000, '2025-01-20', '2028-01-20'),
 
--- Lô cho Vitamin C (SP-0003)
-('VTC-SANOFI-001', 'SP-0003', 2000, '2024-03-01', '2026-03-01'), -- 2000 viên
+-- SP-0002: Amoxicillin 500mg
+('LO-SP-0002-20241101-1', 'SP-0002', 500, '2024-11-01', '2026-11-01'),
+('LO-SP-0002-20250315-2', 'SP-0002', 300, '2025-03-15', '2027-03-15'),
 
--- Lô cho Prospan (SP-0012)
-('PROSPAN-ECO-001', 'SP-0012', 1000, '2024-09-01', '2026-09-01'), -- 1000 chai
+-- SP-0003: Vitamin C 500mg
+('LO-SP-0003-20240801-1', 'SP-0003', 1000, '2024-08-01', '2026-08-01'),
 
--- Lô cho Panadol Extra (SP-0044)
-('PANAEX-GSK-001', 'SP-0044', 12000, '2024-02-01', '2027-02-01'), -- 12000 viên
+-- SP-0004: Omega 3 Fish Oil 1000mg
+('LO-SP-0004-20240630-1', 'SP-0004', 500, '2024-06-30', '2027-06-30'),
+('LO-SP-0004-20250401-2', 'SP-0004', 400, '2025-04-01', '2028-04-01'),
 
--- Lô cho Khẩu trang (SP-0088)
-('KT-BIDIPHAR-001', 'SP-0088', 50000, '2025-01-01', '2028-01-01'); -- 50000 cái
+-- SP-0005: Berberin 100mg
+('LO-SP-0005-20240715-1', 'SP-0005', 1000, '2024-07-15', '2027-07-15'),
+
+-- SP-0006: Atorvastatin 20mg
+('LO-SP-0006-20241201-1', 'SP-0006', 200, '2024-12-01', '2027-12-01'),
+('LO-SP-0006-20250510-2', 'SP-0006', 150, '2025-05-10', '2028-05-10'),
+
+-- SP-0007: Blackmores Glucosamine 1500mg
+('LO-SP-0007-20240220-1', 'SP-0007', 300, '2024-02-20', '2027-02-20'),
+
+-- SP-0008: Hoạt huyết dưỡng não Traphaco
+('LO-SP-0008-20240905-1', 'SP-0008', 1000, '2024-09-05', '2027-09-05'),
+('LO-SP-0008-20250415-2', 'SP-0008', 800, '2025-04-15', '2028-04-15'),
+
+-- SP-0009: Clorpheniramin 4mg
+('LO-SP-0009-20240110-1', 'SP-0009', 2000, '2024-01-10', '2027-01-10'),
+
+-- SP-0010: Canxi Corbiere 5ml
+('LO-SP-0010-20241030-1', 'SP-0010', 500, '2024-10-30', '2026-10-30'),
+('LO-SP-0010-20250520-2', 'SP-0010', 400, '2025-05-20', '2027-05-20'),
+
+-- SP-0011: Losartan 50mg
+('LO-SP-0011-20240818-1', 'SP-0011', 300, '2024-08-18', '2027-08-18'),
+
+-- SP-0012: Siro ho Prospan
+('LO-SP-0012-20241101-1', 'SP-0012', 300, '2024-11-01', '2026-11-01'),
+('LO-SP-0012-20250601-2', 'SP-0012', 200, '2025-06-01', '2027-06-01'),
+
+-- SP-0013: Men vi sinh Bifina R
+('LO-SP-0013-20240910-1', 'SP-0013', 200, '2024-09-10', '2026-03-10'),
+
+-- SP-0014: Oresol 245
+('LO-SP-0014-20240301-1', 'SP-0014', 1000, '2024-03-01', '2027-03-01'),
+('LO-SP-0014-20250105-2', 'SP-0014', 800, '2025-01-05', '2028-01-05'),
+
+-- SP-0015: Salbutamol 2mg
+('LO-SP-0015-20240725-1', 'SP-0015', 500, '2024-07-25', '2027-07-25'),
+
+-- SP-0016: Sắt Ferrovit
+('LO-SP-0016-20241001-1', 'SP-0016', 600, '2024-10-01', '2027-10-01'),
+('LO-SP-0016-20250420-2', 'SP-0016', 400, '2025-04-20', '2028-04-20'),
+
+-- SP-0017: Cialis 20mg
+('LO-SP-0017-20240515-1', 'SP-0017', 100, '2024-05-15', '2027-05-15'),
+
+-- SP-0018: Boganic
+('LO-SP-0018-20240830-1', 'SP-0018', 1000, '2024-08-30', '2027-08-30'),
+('LO-SP-0018-20250214-2', 'SP-0018', 500, '2025-02-14', '2028-02-14'),
+
+-- SP-0019: Omeprazol 20mg
+('LO-SP-0019-20241120-1', 'SP-0019', 400, '2024-11-20', '2027-11-20'),
+
+-- SP-0020: Ginkgo Biloba 120mg
+('LO-SP-0020-20240610-1', 'SP-0020', 300, '2024-06-10', '2027-06-10'),
+('LO-SP-0020-20250130-2', 'SP-0020', 200, '2025-01-30', '2028-01-30'),
+
+-- SP-0021: Metformin 500mg
+('LO-SP-0021-20240922-1', 'SP-0021', 700, '2024-09-22', '2027-09-22'),
+
+-- SP-0022: Decolgen Forte
+('LO-SP-0022-20240405-1', 'SP-0022', 2000, '2024-04-05', '2027-04-05'),
+('LO-SP-0022-20250310-2', 'SP-0022', 1500, '2025-03-10', '2028-03-10'),
+
+-- SP-0023: Nature Made Vitamin E 400 IU
+('LO-SP-0023-20240701-1', 'SP-0023', 200, '2024-07-01', '2027-07-01'),
+
+-- SP-0024: Alprazolam 0.5mg
+('LO-SP-0024-20241010-1', 'SP-0024', 100, '2024-10-10', '2026-10-10'),
+('LO-SP-0024-20250501-2', 'SP-0024', 50, '2025-05-01', '2027-05-01'),
+
+-- SP-0025: Betadine 10%
+('LO-SP-0025-20240315-1', 'SP-0025', 400, '2024-03-15', '2027-03-15'),
+
+-- SP-0026: Centrum Silver 50+
+('LO-SP-0026-20240808-1', 'SP-0026', 150, '2024-08-08', '2026-08-08'),
+('LO-SP-0026-20250225-2', 'SP-0026', 100, '2025-02-25', '2027-02-25'),
+
+-- SP-0027: Ciprofloxacin 500mg
+('LO-SP-0027-20240914-1', 'SP-0027', 200, '2024-09-14', '2027-09-14'),
+
+-- SP-0028: Efferagan 500mg
+('LO-SP-0028-20240707-1', 'SP-0028', 500, '2024-07-07', '2027-07-07'),
+('LO-SP-0028-20250125-2', 'SP-0028', 300, '2025-01-25', '2028-01-25'),
+
+-- SP-0029: Collagen AEC 12000mg
+('LO-SP-0029-20241001-1', 'SP-0029', 100, '2024-10-01', '2026-10-01'),
+
+-- SP-0030: Prednison 5mg
+('LO-SP-0030-20240620-1', 'SP-0030', 500, '2024-06-20', '2027-06-20'),
+('LO-SP-0030-20250210-2', 'SP-0030', 300, '2025-02-10', '2028-02-10'),
+
+-- SP-0031: Dầu gió xanh Thiên Thảo
+('LO-SP-0031-20240101-1', 'SP-0031', 1000, '2024-01-01', '2029-01-01'),
+
+-- SP-0032: Sữa Ensure Gold
+('LO-SP-0032-20240915-1', 'SP-0032', 100, '2024-09-15', '2026-09-15'),
+('LO-SP-0032-20250301-2', 'SP-0032', 80, '2025-03-01', '2027-03-01'),
+
+-- SP-0033: Aspirin 81mg
+('LO-SP-0033-20240810-1', 'SP-0033', 500, '2024-08-10', '2027-08-10'),
+
+-- SP-0034: Tiffy
+('LO-SP-0034-20240505-1', 'SP-0034', 2500, '2024-05-05', '2027-05-05'),
+('LO-SP-0034-20250115-2', 'SP-0034', 2000, '2025-01-15', '2028-01-15'),
+
+-- SP-0035: One A Day Men's Health
+('LO-SP-0035-20240712-1', 'SP-0035', 100, '2024-07-12', '2026-07-12'),
+
+-- SP-0036: Domperidon 10mg
+('LO-SP-0036-20241020-1', 'SP-0036', 800, '2024-10-20', '2027-10-20'),
+('LO-SP-0036-20250410-2', 'SP-0036', 500, '2025-04-10', '2028-04-10'),
+
+-- SP-0037: Dầu cá Nature's Bounty 1200mg
+('LO-SP-0037-20240614-1', 'SP-0037', 200, '2024-06-14', '2027-06-14'),
+
+-- SP-0038: Telfast 180mg
+('LO-SP-0038-20240901-1', 'SP-0038', 500, '2024-09-01', '2027-09-01'),
+('LO-SP-0038-20250501-2', 'SP-0038', 300, '2025-05-01', '2028-05-01'),
+
+-- SP-0039: Cephalexin 500mg
+('LO-SP-0039-20241105-1', 'SP-0039', 400, '2024-11-05', '2026-11-05'),
+
+-- SP-0040: Viên uống DHC rau củ
+('LO-SP-0040-20240820-1', 'SP-0040', 100, '2024-08-20', '2026-08-20'),
+('LO-SP-0040-20250215-2', 'SP-0040', 80, '2025-02-15', '2027-02-15'),
+
+-- SP-0041: Diazepam 5mg
+('LO-SP-0041-20240730-1', 'SP-0041', 200, '2024-07-30', '2027-07-30'),
+
+-- SP-0042: Urgo
+('LO-SP-0042-20240201-1', 'SP-0042', 1000, '2024-02-01', '2029-02-01'),
+('LO-SP-0042-20250110-2', 'SP-0042', 800, '2025-01-10', '2030-01-10'),
+
+-- SP-0043: Melatonin 10mg
+('LO-SP-0043-20240909-1', 'SP-0043', 150, '2024-09-09', '2026-09-09'),
+
+-- SP-0044: Panadol Extra
+('LO-SP-0044-20240625-1', 'SP-0044', 1200, '2024-06-25', '2027-06-25'),
+('LO-SP-0044-20250305-2', 'SP-0044', 1000, '2025-03-05', '2028-03-05'),
+
+-- SP-0045: Enervon-C
+('LO-SP-0045-20240717-1', 'SP-0045', 1000, '2024-07-17', '2026-07-17'),
+
+-- SP-0046: Nước muối sinh lý Natri Clorid 0.9%
+('LO-SP-0046-20241001-1', 'SP-0046', 2000, '2024-10-01', '2027-10-01'),
+('LO-SP-0046-20250515-2', 'SP-0046', 1500, '2025-05-15', '2028-05-15'),
+
+-- SP-0047: Crest 3D White
+('LO-SP-0047-20240801-1', 'SP-0047', 200, '2024-08-01', '2026-08-01'),
+
+-- SP-0048: Strepsils
+('LO-SP-0048-20240920-1', 'SP-0048', 800, '2024-09-20', '2026-09-20'),
+('LO-SP-0048-20250412-2', 'SP-0048', 600, '2025-04-12', '2027-04-12'),
+
+-- SP-0049: Viên uống mọc tóc Biotin 10000mcg
+('LO-SP-0049-20240530-1', 'SP-0049', 100, '2024-05-30', '2027-05-30'),
+
+-- SP-0050: Phosphalugel
+('LO-SP-0050-20240720-1', 'SP-0050', 500, '2024-07-20', '2027-07-20'),
+('LO-SP-0050-20250410-2', 'SP-0050', 400, '2025-04-10', '2028-04-10');
 GO
 
 -- ===================================================================
--- 9. Bảng SanPhamCungCap
+-- 10. Bảng SanPhamCungCap
 -- ===================================================================
 INSERT INTO SanPhamCungCap (maSP, maNCC, trangThaiHopTac, giaNhap) VALUES
--- SP-0001 (Paracetamol) từ NCC-0001 (Dược Hậu Giang)
-('SP-0001', 'NCC-0001', 1, 800.00), -- Giá nhập 1 viên
+-- SP-0001: Paracetamol (Giá bán viên: 1,000đ -> Thặng 15%. Gốc ~870đ. Hộp 100v)
+('SP-0001', 'NCC-0001', 1, 87000.00),
+('SP-0001', 'NCC-0002', 1, 87200.00),
 
--- SP-0008 (Hoạt huyết) & SP-0018 (Boganic) từ NCC-0002 (Traphaco)
-('SP-0008', 'NCC-0002', 1, 800.00),
-('SP-0018', 'NCC-0002', 1, 1000.00),
+-- SP-0002: Amoxicillin (Giá bán viên: 1,500đ -> Thặng 10%. Gốc ~1,364đ. Hộp 100v)
+('SP-0002', 'NCC-0003', 1, 136400.00),
 
--- SP-0003 (Vitamin C) từ NCC-0005 (Sanofi)
-('SP-0003', 'NCC-0005', 1, 1500.00),
+-- SP-0003: Vitamin C (Giá bán viên: 3,000đ -> Thặng 10%. Gốc ~2,727đ. Tuýp 20v)
+('SP-0003', 'NCC-0004', 1, 54540.00),
 
--- SP-0012 (Prospan) từ NCC-0007 (Eco Pharma)
-('SP-0012', 'NCC-0007', 1, 50000.00), -- Giá nhập 1 chai
+-- SP-0004: Omega 3 (Giá bán viên: 2,500đ -> Thặng 10%. Gốc ~2,273đ. Lọ 100v)
+('SP-0004', 'NCC-0005', 1, 227300.00),
 
--- SP-0044 (Panadol Extra) từ NCC-0006 (Zuellig Pharma)
-('SP-0044', 'NCC-0006', 1, 1200.00), -- Giá nhập 1 viên
+-- SP-0005: Berberin (Giá bán viên: 500đ -> Thặng 15%. Gốc ~435đ. Lọ 100v)
+('SP-0005', 'NCC-0006', 1, 43500.00),
 
--- SP-0088 (Khẩu trang) từ NCC-0009 (Bidiphar)
-('SP-0088', 'NCC-0009', 1, 700.00); -- Giá nhập 1 cái
+-- SP-0006: Atorvastatin (Giá bán viên: 4,000đ -> Thặng 10%. Gốc ~3,636đ. Hộp 30v)
+('SP-0006', 'NCC-0007', 1, 109100.00),
+
+-- SP-0007: Blackmores (Giá bán viên: 3,500đ -> Thặng 10%. Gốc ~3,182đ. Lọ 180v)
+('SP-0007', 'NCC-0008', 1, 572760.00),
+
+-- SP-0008: Hoạt huyết (Giá bán viên: 1,200đ -> Thặng 10%. Gốc ~1,091đ. Hộp 100v)
+('SP-0008', 'NCC-0002', 1, 109100.00), -- Traphaco
+
+-- SP-0009: Clorpheniramin (Giá bán viên: 300đ -> Thặng 15%. Gốc ~261đ. Vỉ 20v)
+('SP-0009', 'NCC-0009', 1, 5220.00),
+('SP-0009', 'NCC-0001', 1, 5250.00),
+
+-- SP-0010: Canxi Corbiere (Giá bán ống: 5,000đ -> Thặng 10%. Gốc ~4,545đ. Hộp 30 ống)
+('SP-0010', 'NCC-0005', 1, 136350.00), -- Sanofi
+
+-- SP-0011: Losartan (Giá bán viên: 3,000đ -> Thặng 10%. Gốc ~2,727đ. Hộp 30v)
+('SP-0011', 'NCC-0010', 1, 81810.00),
+
+-- SP-0012: Siro ho Prospan (Giá bán chai: 70,000đ -> Thặng 7%. Gốc ~65,420đ. Chai 1)
+('SP-0012', 'NCC-0007', 1, 65420.00),
+
+-- SP-0013: Men vi sinh Bifina (Giá bán gói: 15,000đ -> Thặng 7%. Gốc ~14,019đ. Hộp 20 gói)
+('SP-0013', 'NCC-0006', 1, 280380.00),
+
+-- SP-0014: Oresol 245 (Giá bán gói: 2,500đ -> Thặng 10%. Gốc ~2,273đ. Hộp 20 gói)
+('SP-0014', 'NCC-0001', 1, 45460.00),
+
+-- SP-0015: Salbutamol (Giá bán viên: 800đ -> Thặng 15%. Gốc ~696đ. Hộp 100v)
+('SP-0015', 'NCC-0003', 1, 69600.00),
+
+-- SP-0016: Sắt Ferrovit (Giá bán viên: 1,800đ -> Thặng 10%. Gốc ~1,636đ. Hộp 50v)
+('SP-0016', 'NCC-0004', 1, 81800.00),
+
+-- SP-0017: Cialis 20mg (Giá bán viên: 70,000đ -> Thặng 7%. Gốc ~65,420đ. Vỉ 2v)
+('SP-0017', 'NCC-0006', 1, 130840.00),
+
+-- SP-0018: Boganic (Giá bán viên: 1,500đ -> Thặng 10%. Gốc ~1,364đ. Hộp 50v)
+('SP-0018', 'NCC-0002', 1, 68200.00), -- Traphaco
+
+-- SP-0019: Omeprazol (Giá bán viên: 2,000đ -> Thặng 10%. Gốc ~1,818đ. Lọ 14v)
+('SP-0019', 'NCC-0008', 1, 25452.00),
+
+-- SP-0020: Ginkgo Biloba (Giá bán viên: 3,000đ -> Thặng 10%. Gốc ~2,727đ. Lọ 60v)
+('SP-0020', 'NCC-0007', 1, 163620.00),
+('SP-0020', 'NCC-0003', 1, 164000.00),
+
+-- SP-0021: Metformin (Giá bán viên: 700đ -> Thặng 15%. Gốc ~609đ. Hộp 100v)
+('SP-0021', 'NCC-0009', 1, 60900.00),
+
+-- SP-0022: Decolgen (Giá bán viên: 1,500đ -> Thặng 10%. Gốc ~1,364đ. Hộp 100v)
+('SP-0022', 'NCC-0001', 1, 136400.00),
+
+-- SP-0023: Vitamin E (Giá bán viên: 2,800đ -> Thặng 10%. Gốc ~2,545đ. Lọ 100v)
+('SP-0023', 'NCC-0005', 1, 254500.00),
+
+-- SP-0024: Alprazolam (Giá bán viên: 1,500đ -> Thặng 10%. Gốc ~1,364đ. Hộp 30v)
+('SP-0024', 'NCC-0010', 1, 40920.00),
+
+-- SP-0025: Betadine (Giá bán chai: 35,000đ -> Thặng 7%. Gốc ~32,710đ. Chai 1)
+('SP-0025', 'NCC-0004', 1, 32710.00),
+
+-- SP-0026: Centrum Silver (Giá bán viên: 4,000đ -> Thặng 10%. Gốc ~3,636đ. Lọ 125v)
+('SP-0026', 'NCC-0006', 1, 454500.00),
+
+-- SP-0027: Ciprofloxacin (Giá bán viên: 3,500đ -> Thặng 10%. Gốc ~3,182đ. Hộp 20v)
+('SP-0027', 'NCC-0003', 1, 63640.00),
+
+-- SP-0028: Efferagan (Giá bán viên: 3,000đ -> Thặng 10%. Gốc ~2,727đ. Hộp 40v)
+('SP-0028', 'NCC-0001', 1, 109080.00),
+
+-- SP-0029: Collagen (Giá bán lọ: 80,000đ -> Thặng 7%. Gốc ~74,766đ. Hộp 10 lọ)
+('SP-0029', 'NCC-0008', 1, 747660.00),
+
+-- SP-0030: Prednison (Giá bán viên: 300đ -> Thặng 15%. Gốc ~261đ. Lọ 200v)
+('SP-0030', 'NCC-0009', 1, 52200.00),
+
+-- SP-0031: Dầu gió (Giá bán chai: 45,000đ -> Thặng 7%. Gốc ~42,056đ. Chai 1)
+('SP-0031', 'NCC-0002', 1, 42056.00),
+
+-- SP-0032: Sữa Ensure (Giá bán lon: 750,000đ -> Thặng 5%. Gốc ~714,286đ. Lon 1)
+('SP-0032', 'NCC-0006', 1, 714286.00),
+
+-- SP-0033: Aspirin 81mg (Giá bán viên: 600đ -> Thặng 15%. Gốc ~522đ. Lọ 100v)
+('SP-0033', 'NCC-0010', 1, 52200.00),
+('SP-0033', 'NCC-0001', 1, 52000.00),
+
+-- SP-0034: Tiffy (Giá bán viên: 1,300đ -> Thặng 10%. Gốc ~1,182đ. Hộp 100v)
+('SP-0034', 'NCC-0004', 1, 118200.00),
+
+-- SP-0035: One A Day Men (Giá bán viên: 4,500đ -> Thặng 10%. Gốc ~4,091đ. Lọ 100v)
+('SP-0035', 'NCC-0005', 1, 409100.00),
+
+-- SP-0036: Domperidon (Giá bán viên: 1,000đ -> Thặng 15%. Gốc ~870đ. Hộp 100v)
+('SP-0036', 'NCC-0008', 1, 87000.00),
+
+-- SP-0037: Dầu cá (Giá bán viên: 2,000đ -> Thặng 10%. Gốc ~1,818đ. Lọ 200v)
+('SP-0037', 'NCC-0007', 1, 363600.00),
+
+-- SP-0038: Telfast (Giá bán viên: 12,000đ -> Thặng 7%. Gốc ~11,215đ. Hộp 10v)
+('SP-0038', 'NCC-0005', 1, 112150.00), -- Sanofi
+
+-- SP-0039: Cephalexin (Giá bán viên: 1,800đ -> Thặng 10%. Gốc ~1,636đ. Hộp 100v)
+('SP-0039', 'NCC-0003', 1, 163600.00),
+
+-- SP-0040: DHC rau củ (Giá bán gói: 250,000đ -> Thặng 5%. Gốc ~238,095đ. Gói 1)
+('SP-0040', 'NCC-0008', 1, 238095.00),
+
+-- SP-0041: Diazepam (Giá bán viên: 900đ -> Thặng 15%. Gốc ~783đ. Hộp 100v)
+('SP-0041', 'NCC-0010', 1, 78300.00),
+
+-- SP-0042: Urgo (Giá bán miếng: 1,500đ -> Thặng 10%. Gốc ~1,364đ. Hộp 20 miếng)
+('SP-0042', 'NCC-0006', 1, 27280.00),
+
+-- SP-0043: Melatonin (Giá bán viên: 4,000đ -> Thặng 10%. Gốc ~3,636đ. Lọ 60v)
+('SP-0043', 'NCC-0007', 1, 218160.00),
+
+-- SP-0044: Panadol Extra (Giá bán viên: 1,800đ -> Thặng 10%. Gốc ~1,636đ. Hộp 120v)
+('SP-0044', 'NCC-0001', 1, 196320.00),
+
+-- SP-0045: Enervon-C (Giá bán viên: 2,000đ -> Thặng 10%. Gốc ~1,818đ. Hộp 100v)
+('SP-0045', 'NCC-0004', 1, 181800.00),
+
+-- SP-0046: Nước muối (Giá bán chai: 10,000đ -> Thặng 7%. Gốc ~9,346đ. Chai 1)
+('SP-0046', 'NCC-0009', 1, 9346.00),
+('SP-0046', 'NCC-0002', 1, 9350.00),
+
+-- SP-0047: Crest 3D (Giá bán tuýp: 120,000đ -> Thặng 5%. Gốc ~114,286đ. Tuýp 1)
+('SP-0047', 'NCC-0006', 1, 114286.00),
+
+-- SP-0048: Strepsils (Giá bán viên: 2,500đ -> Thặng 10%. Gốc ~2,273đ. Hộp 24v)
+('SP-0048', 'NCC-0003', 1, 54552.00),
+
+-- SP-0049: Biotin (Giá bán viên: 3,000đ -> Thặng 10%. Gốc ~2,727đ. Lọ 100v)
+('SP-0049', 'NCC-0007', 1, 272700.00),
+
+-- SP-0050: Phosphalugel (Giá bán gói: 4,000đ -> Thặng 10%. Gốc ~3,636đ. Hộp 26 gói)
+('SP-0050', 'NCC-0005', 1, 94536.00);
 GO
 
 -- ===================================================================
--- 10. Bảng KhuyenMai_SanPham
+-- 11. Bảng KhuyenMai_SanPham
 -- ===================================================================
-INSERT INTO KhuyenMai_SanPham (maKhuyenMai, maSP, ngayChinhSua) VALUES
--- KM-0001 (Giảm 10% khi mua từ 3 SP) áp dụng cho Paracetamol (SP-0001)
-('KM-0001', 'SP-0001', GETDATE()),
-
--- KM-0002 (Mua 5 tặng 1) áp dụng cho Khẩu trang (SP-0088)
-('KM-0002', 'SP-0088', GETDATE()),
-
--- KM-0006 (Giảm 30% cho TPCN) áp dụng cho Vitamin C (SP-0003) và Omega 3 (SP-0004)
-('KM-0006', 'SP-0003', GETDATE()),
-('KM-0006', 'SP-0004', GETDATE()),
-
--- KM-0008 (Giảm 10% cho Sanofi) áp dụng cho SP của Sanofi: Vitamin C (SP-0003) và Canxi Corbiere (SP-0010)
-('KM-0008', 'SP-0003', GETDATE()),
-('KM-0008', 'SP-0010', GETDATE());
+-- KM-0001: Giảm 10% khi mua từ 3 sản phẩm (Áp dụng cho các mặt hàng thông dụng)
+INSERT INTO KhuyenMai_SanPham (maKhuyenMai, maSP) VALUES
+('KM-0001', 'SP-0001'), -- Paracetamol
+('KM-0001', 'SP-0003'), -- Vitamin C
+('KM-0001', 'SP-0005'), -- Berberin
+('KM-0001', 'SP-0009'), -- Clorpheniramin
+('KM-0001', 'SP-0014'), -- Oresol
+('KM-0001', 'SP-0022'), -- Decolgen
+('KM-0001', 'SP-0025'), -- Betadine
+('KM-0001', 'SP-0031'), -- Dầu gió
+('KM-0001', 'SP-0044'), -- Panadol Extra
+('KM-0001', 'SP-0046'), -- Nước muối sinh lý
+('KM-0001', 'SP-0048'); -- Strepsils
 GO
 
+-- KM-0002: Mua 5 tặng 1 (Áp dụng cho một số TPCN)
+INSERT INTO KhuyenMai_SanPham (maKhuyenMai, maSP) VALUES
+('KM-0002', 'SP-0004'), -- Omega 3
+('KM-0002', 'SP-0020'), -- Ginkgo Biloba
+('KM-0002', 'SP-0045'); -- Enervon-C
+GO
+
+-- KM-0003: Giảm 15% cho sản phẩm của Traphaco
+INSERT INTO KhuyenMai_SanPham (maKhuyenMai, maSP) VALUES
+('KM-0003', 'SP-0008'), -- Hoạt huyết dưỡng não Traphaco
+('KM-0003', 'SP-0018'); -- Boganic (Traphaco)
+GO
+
+-- KM-0004: Giảm giá Black Friday 20% (Sắp diễn ra - Áp dụng cho TPCN/Mỹ phẩm)
+INSERT INTO KhuyenMai_SanPham (maKhuyenMai, maSP) VALUES
+('KM-0004', 'SP-0007'), -- Blackmores Glucosamine
+('KM-0004', 'SP-0023'), -- Nature Made Vitamin E
+('KM-0004', 'SP-0029'), -- Collagen AEC
+('KM-0004', 'SP-0037'), -- Dầu cá Nature's Bounty
+('KM-0004', 'SP-0047'), -- Crest 3D White
+('KM-0004', 'SP-0049'); -- Biotin
+GO
+
+-- KM-0005: Xả hàng cận date giảm 50% (Áp dụng cho 1 số thuốc kê đơn)
+INSERT INTO KhuyenMai_SanPham (maKhuyenMai, maSP) VALUES
+('KM-0005', 'SP-0006'), -- Atorvastatin
+('KM-0005', 'SP-0017'); -- Cialis
+GO
+
+-- KM-0006: Giảm 30% cho Thực phẩm chức năng (TPCN)
+-- Áp dụng cho TẤT CẢ sản phẩm có loaiSanPham = N'THUC_PHAM_CHUC_NANG'
+INSERT INTO KhuyenMai_SanPham (maKhuyenMai, maSP) VALUES
+('KM-0006', 'SP-0003'),
+('KM-0006', 'SP-0004'),
+('KM-0006', 'SP-0007'),
+('KM-0006', 'SP-0008'),
+('KM-0006', 'SP-0010'),
+('KM-0006', 'SP-0013'),
+('KM-0006', 'SP-0016'),
+('KM-0006', 'SP-0018'),
+('KM-0006', 'SP-0020'),
+('KM-0006', 'SP-0023'),
+('KM-0006', 'SP-0026'),
+('KM-0006', 'SP-0029'),
+('KM-0006', 'SP-0032'),
+('KM-0006', 'SP-0035'),
+('KM-0006', 'SP-0037'),
+('KM-0006', 'SP-0040'),
+('KM-0006', 'SP-0042'),
+('KM-0006', 'SP-0043'),
+('KM-0006', 'SP-0045'),
+('KM-0006', 'SP-0047'),
+('KM-0006', 'SP-0049');
+GO
+
+-- KM-0007: Mua 2 Tặng 1
+INSERT INTO KhuyenMai_SanPham (maKhuyenMai, maSP) VALUES
+('KM-0007', 'SP-0012'), -- Siro ho Prospan
+('KM-0007', 'SP-0032'), -- Sữa Ensure Gold
+('KM-0007', 'SP-0042'), -- Urgo
+('KM-0007', 'SP-0050'); -- Phosphalugel
+GO
+
+-- KM-0008: Giảm 10% cho sản phẩm của Sanofi
+INSERT INTO KhuyenMai_SanPham (maKhuyenMai, maSP) VALUES
+('KM-0008', 'SP-0010'), -- Canxi Corbiere (Sanofi)
+('KM-0008', 'SP-0028'), -- Efferagan (Sanofi)
+('KM-0008', 'SP-0050'); -- Phosphalugel (Sanofi)
+GO
+
+-- Ghi chú: 
+-- KM-0009 (Giảm 5% tổng hóa đơn) và KM-0010 (Hàng tặng) 
+-- có thể không cần gán vào bảng này vì chúng được xử lý ở cấp độ Hóa đơn (logic nghiệp vụ)
+-- chứ không phải áp dụng cho 1 sản phẩm cụ thể.
+
 -- ===================================================================
--- 11. Bảng LichSuCaLam
+-- 12. Bảng LichSuCaLam
 -- ===================================================================
+
 INSERT INTO LichSuCaLam (maNV, maCa, ngayLamViec, thoiGianVaoCa, thoiGianRaCa, ghiChu) VALUES
-('NV-0001', 'SANG', '2025-10-25', '06:58:00', '15:05:00', N'Hoàn thành ca'),
-('NV-0003', 'TOI', '2025-10-25', '14:59:00', '22:01:00', NULL),
-('NV-0002', 'SANG', '2025-10-25', '07:00:00', '15:00:00', N'Quản lý ca'),
-('NV-0001', 'SANG', '2025-10-26', '06:59:00', NULL, N'Đang trong ca');
-GO
+-- ===================================================================
+-- Lịch sử cho NV-0001 (Võ Tiến Khoa)
+-- ===================================================================
+('NV-0001', 'SANG', '2025-11-01', '06:58:00', '15:02:00', NULL),
+('NV-0001', 'TOI', '2025-11-02', '14:59:00', '22:01:00', NULL),
+('NV-0001', 'SANG', '2025-11-03', '07:01:00', '15:00:00', NULL),
+('NV-0001', 'TOI', '2025-11-04', '15:00:00', '22:03:00', NULL),
+('NV-0001', 'SANG', '2025-11-05', '06:57:00', '15:05:00', NULL),
+('NV-0001', 'TOI', '2025-11-06', '14:58:00', '22:00:00', NULL),
+('NV-0001', 'SANG', '2025-11-07', '07:00:00', '15:01:00', NULL),
+('NV-0001', 'TOI', '2025-11-08', '15:02:00', '22:05:00', N'Vào trễ 2 phút'),
+('NV-0001', 'SANG', '2025-11-09', '06:59:00', '15:00:00', NULL),
+('NV-0001', 'TOI', '2025-11-10', '14:59:00', '22:01:00', NULL),
+('NV-0001', 'SANG', '2025-11-12', '07:00:00', '15:03:00', NULL),
+-- Ca đang làm (Giả định hôm nay là 13/11/2025)
+('NV-0001', 'SANG', '2025-11-13', '06:59:00', NULL, N'Đang trong ca'),
 
 -- ===================================================================
--- 12. Bảng PhieuDatHang
+-- Lịch sử cho NV-0002 (Hồ Minh Khang)
 -- ===================================================================
-INSERT INTO PhieuDatHang (maPhieuDatHang, ngayLap, maNCC, maNV, tongTien) VALUES
-('PDH-201025-0001', '2025-10-20', 'NCC-0001', 'NV-0002', 15000000.00),
-('PDH-221025-0001', '2025-10-22', 'NCC-0002', 'NV-0002', 8500000.00);
+('NV-0002', 'TOI', '2025-11-01', '14:57:00', '22:02:00', NULL),
+('NV-0002', 'SANG', '2025-11-02', '06:59:00', '15:01:00', NULL),
+('NV-0002', 'TOI', '2025-11-03', '15:00:00', '22:00:00', NULL),
+('NV-0002', 'SANG', '2025-11-04', '07:02:00', '15:03:00', NULL),
+('NV-0002', 'TOI', '2025-11-05', '14:58:00', '22:01:00', NULL),
+('NV-0002', 'SANG', '2025-11-06', '06:58:00', '15:00:00', NULL),
+('NV-0002', 'TOI', '2025-11-07', '15:01:00', '22:02:00', NULL),
+('NV-0002', 'SANG', '2025-11-08', '07:00:00', '15:05:00', NULL),
+('NV-0002', 'TOI', '2025-11-09', '14:59:00', '22:00:00', NULL),
+('NV-0002', 'SANG', '2025-11-10', '06:57:00', '15:01:00', NULL),
+('NV-0002', 'TOI', '2025-11-12', '15:00:00', '22:03:00', NULL),
+
+-- ===================================================================
+-- Lịch sử cho NV-0003 (Nguyễn Khánh Quân)
+-- ===================================================================
+('NV-0003', 'SANG', '2025-10-20', '06:55:00', '15:00:00', NULL),
+('NV-0003', 'SANG', '2025-10-21', '06:58:00', '15:02:00', NULL),
+('NV-0003', 'TOI', '2025-10-22', '14:59:00', '22:01:00', NULL),
+('NV-0003', 'TOI', '2025-10-23', '15:01:00', '22:00:00', NULL),
+('NV-0003', 'SANG', '2025-10-24', '07:00:00', '15:03:00', NULL),
+('NV-0003', 'TOI', '2025-10-25', '14:57:00', '22:05:00', NULL),
+('NV-0003', 'SANG', '2025-10-27', '06:59:00', '15:01:00', NULL),
+('NV-0003', 'TOI', '2025-10-28', '15:00:00', '21:30:00', N'Xin về sớm (việc riêng)'),
+('NV-0003', 'SANG', '2025-10-29', '07:01:00', '15:00:00', NULL),
+('NV-0003', 'TOI', '2025-10-30', '14:58:00', '22:02:00', NULL),
+('NV-0003', 'SANG', '2025-11-12', '06:58:00', '15:00:00', NULL),
+
+-- ===================================================================
+-- Lịch sử cho NV-0004 (Trần Đình Sĩ)
+-- ===================================================================
+('NV-0004', 'TOI', '2025-11-01', '15:00:00', '22:01:00', NULL),
+('NV-0004', 'TOI', '2025-11-02', '14:58:00', '22:03:00', NULL),
+('NV-0004', 'SANG', '2025-11-03', '06:59:00', '15:00:00', NULL),
+('NV-0004', 'SANG', '2025-11-04', '07:00:00', '15:02:00', NULL),
+('NV-0004', 'TOI', '2025-11-05', '14:59:00', '22:00:00', NULL),
+('NV-0004', 'SANG', '2025-11-06', '06:58:00', '15:01:00', NULL),
+('NV-0004', 'TOI', '2025-11-07', '15:01:00', '22:05:00', NULL),
+('NV-0004', 'SANG', '2025-11-08', '07:01:00', '15:00:00', NULL),
+('NV-0004', 'TOI', '2025-11-09', '14:57:00', '22:02:00', NULL),
+('NV-0004', 'SANG', '2025-11-10', '06:59:00', '15:03:00', NULL),
+('NV-0004', 'TOI', '2025-11-11', '15:00:00', '22:00:00', NULL),
+('NV-0004', 'SANG', '2025-11-12', '07:00:00', '15:01:00', NULL);
 GO
 
 -- ===================================================================
 -- 13. Bảng HoaDon
 -- ===================================================================
--- Hóa đơn cho 5 khách hàng có tài khoản
-INSERT INTO HoaDon (maHoaDon, maNV, ngayLapHoaDon, maKH, chuyenKhoan, trangThai, tongTien) VALUES
-('HD-251025-0001', 'NV-0001', '2025-10-25 09:30:00', 'KH-00001', 0, 1, 190000.00), 
-('HD-251025-0002', 'NV-0001', '2025-10-25 10:15:00', 'KH-00002', 1, 1, 70000.00), 
-('HD-251025-0003', 'NV-0003', '2025-10-25 16:00:00', 'KH-00005', 0, 1, 26600.00),
-('HD-251025-0004', 'NV-0003', '2025-10-25 17:30:00', 'KH-00013', 0, 1, 330000.00),
-('HD-251025-0005', 'NV-0001', '2025-10-25 14:00:00', 'KH-00020', 1, 1, 62000.00);  
-
--- Hóa đơn cho 5 khách vãng lai
-INSERT INTO HoaDon (maHoaDon, maNV, ngayLapHoaDon, maKH, chuyenKhoan, trangThai, tongTien) VALUES
-('HD-251025-0006', 'NV-0001', '2025-10-25 08:10:00', 'KH-99999', 0, 1, 10000.00),
-('HD-251025-0007', 'NV-0003', '2025-10-25 15:30:00', 'KH-99999', 0, 1, 45000.00),
-('HD-251025-0008', 'NV-0003', '2025-10-25 18:45:00', 'KH-99999', 0, 1, 165000.00),
-('HD-251025-0009', 'NV-0001', '2025-10-25 11:00:00', 'KH-99999', 1, 1, 34000.00),
-('HD-251025-0010', 'NV-0003', '2025-10-25 20:00:00', 'KH-99999', 0, 1, 45000.00); -- Mua 5 vỉ Para (50k) được giảm 10% (KM-0001)
+SET NOCOUNT ON;
 GO
 
 -- ===================================================================
--- 14. Bảng ChiTietHoaDon
+-- 1. DỮ LIỆU THÁNG 6, 2025 (100 HÓA ĐƠN)
 -- ===================================================================
+GO
+DECLARE @i_T6 INT = 1;
+DECLARE @maHoaDon_T6 NVARCHAR(14);
+DECLARE @maNV_T6 NVARCHAR(7);
+DECLARE @maKH_T6 NVARCHAR(8);
+DECLARE @ngayLap_T6 DATETIME2;
+DECLARE @chuyenKhoan_T6 BIT;
+DECLARE @trangThai_T6 BIT;
+DECLARE @tongTien_T6 DECIMAL(18, 2);
+DECLARE @day_T6 INT, @hour_T6 INT, @minute_T6 INT;
+DECLARE @kh_id_T6 INT, @nv_id_T6 INT;
 
--- Chi tiết cho 5 hóa đơn của khách hàng
-INSERT INTO ChiTietHoaDon (maChiTietHoaDon, maHoaDon, maDonViTinh, soLuong, donGia, giamGia) VALUES
--- HD-251025-0001 (Tổng 190,000.00)
-('CTHD-251025-0001', 'HD-251025-0001', 'DVT-0001-HOP', 2, 95000.00, 0.00), -- 2 Hộp Paracetamol
+WHILE (@i_T6 <= 100) -- Đã giảm từ 200
+BEGIN
+    SET @day_T6 = ((@i_T6 - 1) % 30) + 1;
+    SET @hour_T6 = 7 + ((@i_T6 - 1) % 15);
+    SET @minute_T6 = @i_T6 % 60;
+    SET @ngayLap_T6 = DATETIMEFROMPARTS(2025, 6, @day_T6, @hour_T6, @minute_T6, 0, 0);
+    SET @maHoaDon_T6 = 'HD-' + FORMAT(@ngayLap_T6, 'ddMMyy') + '-' + RIGHT('0000' + CAST(@i_T6 AS NVARCHAR(4)), 4);
+    SET @nv_id_T6 = ((@i_T6 - 1) % 4) + 1;
+    SET @maNV_T6 = 'NV-000' + CAST(@nv_id_T6 AS NVARCHAR(1));
 
--- HD-251025-0002 (Tổng 70,000.00)
-('CTHD-251025-0002', 'HD-251025-0002', 'DVT-0012-CHAI', 1, 70000.00, 0.00), -- 1 Chai Prospan
+    IF @i_T6 <= 60 -- 60% của 100
+        SET @maKH_T6 = 'KH-00000';
+    ELSE 
+    BEGIN
+        SET @kh_id_T6 = ((@i_T6 - 61) % 50) + 1; -- 40 HĐ còn lại
+        SET @maKH_T6 = 'KH-' + RIGHT('00000' + CAST(@kh_id_T6 AS NVARCHAR(2)), 5);
+    END
 
--- HD-251025-0003 (Tổng 26,600.00)
-('CTHD-251025-0003', 'HD-251025-0003', 'DVT-0003-TUYP', 1, 38000.00, 0.30), -- 1 Tuýp VitC (Giá 38k, giảm 30% (KM-0006) còn 26,600)
+    SET @chuyenKhoan_T6 = CASE WHEN @i_T6 % 5 = 0 THEN 1 ELSE 0 END;
+    SET @trangThai_T6 = CASE WHEN @i_T6 % 50 = 0 THEN 0 ELSE 1 END;
+    SET @tongTien_T6 = ROUND((50000 + ((@i_T6 * 317) % 1000000)), -3);
+    
+    INSERT INTO HoaDon (maHoaDon, maNV, ngayLapHoaDon, maKH, chuyenKhoan, trangThai, tongTien)
+    VALUES (@maHoaDon_T6, @maNV_T6, @ngayLap_T6, @maKH_T6, @chuyenKhoan_T6, @trangThai_T6, @tongTien_T6);
 
--- HD-251025-0004 (Tổng 330,000.00)
-('CTHD-251025-0004', 'HD-251025-0004', 'DVT-0044-HOP', 2, 165000.00, 0.00), -- 2 Hộp Panadol Extra
-
--- HD-251025-0005 (Tổng 62,000.00)
-('CTHD-251025-0005', 'HD-251025-0005', 'DVT-0088-HOP', 1, 45000.00, 0.00), -- 1 Hộp Khẩu trang (45,000)
-('CTHD-251025-0006', 'HD-251025-0005', 'DVT-0044-VI', 1, 17000.00, 0.00); -- 1 Vỉ Panadol Extra (17,000)
-
--- Chi tiết cho 5 hóa đơn của khách vãng lai
-INSERT INTO ChiTietHoaDon (maChiTietHoaDon, maHoaDon, maDonViTinh, soLuong, donGia, giamGia) VALUES
--- HD-251025-0006 (Tổng 10,000.00)
-('CTHD-251025-0007', 'HD-251025-0006', 'DVT-0001-VI', 1, 10000.00, 0.00), -- 1 Vỉ Paracetamol
-
--- HD-251025-0007 (Tổng 45,000.00)
-('CTHD-251025-0008', 'HD-251025-0007', 'DVT-0088-HOP', 1, 45000.00, 0.00), -- 1 Hộp Khẩu trang
-
--- HD-251025-0008 (Tổng 165,000.00)
-('CTHD-251025-0009', 'HD-251025-0008', 'DVT-0044-HOP', 1, 165000.00, 0.00), -- 1 Hộp Panadol Extra
-
--- HD-251025-0009 (Tổng 34,000.00)
-('CTHD-251025-0010', 'HD-251025-0009', 'DVT-0044-VI', 2, 17000.00, 0.00), -- 2 Vỉ Panadol Extra
-
--- HD-251025-0010 (Tổng 45,000.00)
-('CTHD-251025-0011', 'HD-251025-0010', 'DVT-0001-VI', 5, 10000.00, 0.10); -- 5 Vỉ Paracetamol (Giá 50k, giảm 10% (KM-0001) còn 45,000)
+    SET @i_T6 = @i_T6 + 1;
+END;
 GO
 
 -- ===================================================================
--- 15. Bảng ChiTietPhieuDat
+-- 2. DỮ LIỆU THÁNG 7, 2025 (100 HÓA ĐƠN)
 -- ===================================================================
-INSERT INTO ChiTietPhieuDat (maPhieuDatHang, maSP, soLuong, donGia) VALUES
--- Chi tiết cho PDH-201025-0001 (NCC-0001 - Dược Hậu Giang)
-('PDH-201025-0001', 'SP-0001', 999, 800.00), -- Đặt Paracetamol (viên), giá nhập 800.00
+GO
+DECLARE @i_T7 INT = 1;
+DECLARE @maHoaDon_T7 NVARCHAR(14);
+DECLARE @maNV_T7 NVARCHAR(7);
+DECLARE @maKH_T7 NVARCHAR(8);
+DECLARE @ngayLap_T7 DATETIME2;
+DECLARE @chuyenKhoan_T7 BIT;
+DECLARE @trangThai_T7 BIT;
+DECLARE @tongTien_T7 DECIMAL(18, 2);
+DECLARE @day_T7 INT, @hour_T7 INT, @minute_T7 INT;
+DECLARE @kh_id_T7 INT, @nv_id_T7 INT;
 
--- Chi tiết cho PDH-221025-0001 (NCC-0002 - Traphaco)
-('PDH-221025-0001', 'SP-0008', 500, 800.00), -- Đặt Hoạt huyết dưỡng não, giá nhập 800.00
-('PDH-221025-0001', 'SP-0018', 300, 1000.00); -- Đặt Boganic, giá nhập 1000.00
+WHILE (@i_T7 <= 100) -- Đã giảm từ 200
+BEGIN
+    SET @day_T7 = ((@i_T7 - 1) % 31) + 1;
+    SET @hour_T7 = 7 + ((@i_T7 - 1) % 15);
+    SET @minute_T7 = @i_T7 % 60;
+    SET @ngayLap_T7 = DATETIMEFROMPARTS(2025, 7, @day_T7, @hour_T7, @minute_T7, 0, 0);
+    SET @maHoaDon_T7 = 'HD-' + FORMAT(@ngayLap_T7, 'ddMMyy') + '-' + RIGHT('0000' + CAST(@i_T7 AS NVARCHAR(4)), 4);
+    SET @nv_id_T7 = ((@i_T7 - 1) % 4) + 1;
+    SET @maNV_T7 = 'NV-000' + CAST(@nv_id_T7 AS NVARCHAR(1));
+
+    IF @i_T7 <= 60 -- 60% của 100
+        SET @maKH_T7 = 'KH-00000';
+    ELSE 
+    BEGIN
+        SET @kh_id_T7 = ((@i_T7 - 61) % 50) + 1;
+        SET @maKH_T7 = 'KH-' + RIGHT('00000' + CAST(@kh_id_T7 AS NVARCHAR(2)), 5);
+    END
+
+    SET @chuyenKhoan_T7 = CASE WHEN @i_T7 % 5 = 0 THEN 1 ELSE 0 END;
+    SET @trangThai_T7 = CASE WHEN @i_T7 % 50 = 0 THEN 0 ELSE 1 END;
+    SET @tongTien_T7 = ROUND((50000 + ((@i_T7 * 317) % 1000000)), -3);
+    
+    INSERT INTO HoaDon (maHoaDon, maNV, ngayLapHoaDon, maKH, chuyenKhoan, trangThai, tongTien)
+    VALUES (@maHoaDon_T7, @maNV_T7, @ngayLap_T7, @maKH_T7, @chuyenKhoan_T7, @trangThai_T7, @tongTien_T7);
+
+    SET @i_T7 = @i_T7 + 1;
+END;
 GO
 
 -- ===================================================================
--- 16. Bảng PhieuTraHang
+-- 3. DỮ LIỆU THÁNG 8, 2025 (100 HÓA ĐƠN)
 -- ===================================================================
-INSERT INTO PhieuTraHang (maPhieuTraHang, ngayLapPhieuTraHang, maNV, maHoaDon, tongTienHoanTra) VALUES
--- KH-00005 trả Tuýp Vitamin C (CTHD-251025-0003) từ HD-251025-0003 do dị ứng
-('PTH-261025-0001', '2025-10-26 09:00:00', 'NV-0001', 'HD-251025-0003', 26600.00),
+GO
+DECLARE @i_T8 INT = 1;
+DECLARE @maHoaDon_T8 NVARCHAR(14);
+DECLARE @maNV_T8 NVARCHAR(7);
+DECLARE @maKH_T8 NVARCHAR(8);
+DECLARE @ngayLap_T8 DATETIME2;
+DECLARE @chuyenKhoan_T8 BIT;
+DECLARE @trangThai_T8 BIT;
+DECLARE @tongTien_T8 DECIMAL(18, 2);
+DECLARE @day_T8 INT, @hour_T8 INT, @minute_T8 INT;
+DECLARE @kh_id_T8 INT, @nv_id_T8 INT;
 
--- KH-00020 trả Vỉ Panadol Extra (CTHD-251025-0006) từ HD-251025-0005 do đổi ý
-('PTH-261025-0002', '2025-10-26 10:15:00', 'NV-0003', 'HD-251025-0005', 17000.00);
+WHILE (@i_T8 <= 100) -- Đã giảm từ 200
+BEGIN
+    SET @day_T8 = ((@i_T8 - 1) % 31) + 1;
+    SET @hour_T8 = 7 + ((@i_T8 - 1) % 15);
+    SET @minute_T8 = @i_T8 % 60;
+    SET @ngayLap_T8 = DATETIMEFROMPARTS(2025, 8, @day_T8, @hour_T8, @minute_T8, 0, 0);
+    SET @maHoaDon_T8 = 'HD-' + FORMAT(@ngayLap_T8, 'ddMMyy') + '-' + RIGHT('0000' + CAST(@i_T8 AS NVARCHAR(4)), 4);
+    SET @nv_id_T8 = ((@i_T8 - 1) % 4) + 1;
+    SET @maNV_T8 = 'NV-000' + CAST(@nv_id_T8 AS NVARCHAR(1));
+
+    IF @i_T8 <= 60 -- 60% của 100
+        SET @maKH_T8 = 'KH-00000';
+    ELSE 
+    BEGIN
+        SET @kh_id_T8 = ((@i_T8 - 61) % 50) + 1;
+        SET @maKH_T8 = 'KH-' + RIGHT('00000' + CAST(@kh_id_T8 AS NVARCHAR(2)), 5);
+    END
+
+    SET @chuyenKhoan_T8 = CASE WHEN @i_T8 % 5 = 0 THEN 1 ELSE 0 END;
+    SET @trangThai_T8 = CASE WHEN @i_T8 % 50 = 0 THEN 0 ELSE 1 END;
+    SET @tongTien_T8 = ROUND((50000 + ((@i_T8 * 317) % 1000000)), -3);
+    
+    INSERT INTO HoaDon (maHoaDon, maNV, ngayLapHoaDon, maKH, chuyenKhoan, trangThai, tongTien)
+    VALUES (@maHoaDon_T8, @maNV_T8, @ngayLap_T8, @maKH_T8, @chuyenKhoan_T8, @trangThai_T8, @tongTien_T8);
+
+    SET @i_T8 = @i_T8 + 1;
+END;
 GO
 
 -- ===================================================================
--- 17. Bảng ChiTietXuatLo
+-- 4. DỮ LIỆU THÁNG 9, 2025 (100 HÓA ĐƠN)
 -- ===================================================================
-INSERT INTO ChiTietXuatLo (maLoSanPham, maChiTietHoaDon, soLuong) VALUES
--- CTHD-251025-0001: 2 Hộp Para (2 * 100 = 200 viên)
-('PARA-HG-001', 'CTHD-251025-0001', 200),
+GO
+DECLARE @i_T9 INT = 1;
+DECLARE @maHoaDon_T9 NVARCHAR(14);
+DECLARE @maNV_T9 NVARCHAR(7);
+DECLARE @maKH_T9 NVARCHAR(8);
+DECLARE @ngayLap_T9 DATETIME2;
+DECLARE @chuyenKhoan_T9 BIT;
+DECLARE @trangThai_T9 BIT;
+DECLARE @tongTien_T9 DECIMAL(18, 2);
+DECLARE @day_T9 INT, @hour_T9 INT, @minute_T9 INT;
+DECLARE @kh_id_T9 INT, @nv_id_T9 INT;
 
--- CTHD-251025-0002: 1 Chai Prospan (1 * 1 = 1 chai)
-('PROSPAN-ECO-001', 'CTHD-251025-0002', 1),
+WHILE (@i_T9 <= 100) -- Đã giảm từ 200
+BEGIN
+    SET @day_T9 = ((@i_T9 - 1) % 30) + 1;
+    SET @hour_T9 = 7 + ((@i_T9 - 1) % 15);
+    SET @minute_T9 = @i_T9 % 60;
+    SET @ngayLap_T9 = DATETIMEFROMPARTS(2025, 9, @day_T9, @hour_T9, @minute_T9, 0, 0);
+    SET @maHoaDon_T9 = 'HD-' + FORMAT(@ngayLap_T9, 'ddMMyy') + '-' + RIGHT('0000' + CAST(@i_T9 AS NVARCHAR(4)), 4);
+    SET @nv_id_T9 = ((@i_T9 - 1) % 4) + 1;
+    SET @maNV_T9 = 'NV-000' + CAST(@nv_id_T9 AS NVARCHAR(1));
 
--- CTHD-251025-0003: 1 Tuýp VitC (1 * 20 = 20 viên)
-('VTC-SANOFI-001', 'CTHD-251025-0003', 20),
+    IF @i_T9 <= 60 -- 60% của 100
+        SET @maKH_T9 = 'KH-00000';
+    ELSE 
+    BEGIN
+        SET @kh_id_T9 = ((@i_T9 - 61) % 50) + 1;
+        SET @maKH_T9 = 'KH-' + RIGHT('00000' + CAST(@kh_id_T9 AS NVARCHAR(2)), 5);
+    END
 
--- CTHD-251025-0004: 2 Hộp Panadol Extra (2 * 120 = 240 viên)
-('PANAEX-GSK-001', 'CTHD-251025-0004', 240),
+    SET @chuyenKhoan_T9 = CASE WHEN @i_T9 % 5 = 0 THEN 1 ELSE 0 END;
+    SET @trangThai_T9 = CASE WHEN @i_T9 % 50 = 0 THEN 0 ELSE 1 END;
+    SET @tongTien_T9 = ROUND((50000 + ((@i_T9 * 317) % 1000000)), -3);
+    
+    INSERT INTO HoaDon (maHoaDon, maNV, ngayLapHoaDon, maKH, chuyenKhoan, trangThai, tongTien)
+    VALUES (@maHoaDon_T9, @maNV_T9, @ngayLap_T9, @maKH_T9, @chuyenKhoan_T9, @trangThai_T9, @tongTien_T9);
 
--- CTHD-251025-0005: 1 Hộp Khẩu trang (1 * 50 = 50 cái)
-('KT-BIDIPHAR-001', 'CTHD-251025-0005', 50),
-
--- CTHD-251025-0006: 1 Vỉ Panadol Extra (1 * 12 = 12 viên)
-('PANAEX-GSK-001', 'CTHD-251025-0006', 12),
-
--- CTHD-251025-0007: 1 Vỉ Para (1 * 10 = 10 viên)
--- Giả sử 10 viên này được lấy từ 2 lô khác nhau
-('PARA-HG-001', 'CTHD-251025-0007', 5),
-('PARA-HG-002', 'CTHD-251025-0007', 5),
-
--- CTHD-251025-0008: 1 Hộp Khẩu trang (1 * 50 = 50 cái)
-('KT-BIDIPHAR-001', 'CTHD-251025-0008', 50),
-
--- CTHD-251025-0009: 1 Hộp Panadol Extra (1 * 120 = 120 viên)
-('PANAEX-GSK-001', 'CTHD-251025-0009', 120),
-
--- CTHD-251025-0010: 2 Vỉ Panadol Extra (2 * 12 = 24 viên)
-('PANAEX-GSK-001', 'CTHD-251025-0010', 24),
-
--- CTHD-251025-0011: 5 Vỉ Para (5 * 10 = 50 viên)
-('PARA-HG-002', 'CTHD-251025-0011', 50);
+    SET @i_T9 = @i_T9 + 1;
+END;
 GO
 
 -- ===================================================================
--- 18. Bảng ChiTietPhieuTraHang
+-- 5. DỮ LIỆU THÁNG 10, 2025 (100 HÓA ĐƠN)
 -- ===================================================================
-INSERT INTO ChiTietPhieuTraHang (maPhieuTraHang, maChiTietHoaDon, soLuong, truongHopDoiTra, tinhTrangSanPham, giaTriHoanTra, thanhTienHoanTra) VALUES
--- Chi tiết cho PTH-261025-0001 (Trả CTHD-251025-0003 - 1 Tuýp VitC)
-(
-    'PTH-261025-0001', 
-    'CTHD-251025-0003', 
-    1, 
-    N'DI_UNG_MAN_CAM', 
-    N'HANG_DA_SU_DUNG', 
-    N'100%', 
-    26600.00 -- Hoàn đúng số tiền đã thanh toán (sau giảm giá)
-),
+GO
+DECLARE @i_T10 INT = 1;
+DECLARE @maHoaDon_T10 NVARCHAR(14);
+DECLARE @maNV_T10 NVARCHAR(7);
+DECLARE @maKH_T10 NVARCHAR(8);
+DECLARE @ngayLap_T10 DATETIME2;
+DECLARE @chuyenKhoan_T10 BIT;
+DECLARE @trangThai_T10 BIT;
+DECLARE @tongTien_T10 DECIMAL(18, 2);
+DECLARE @day_T10 INT, @hour_T10 INT, @minute_T10 INT;
+DECLARE @kh_id_T10 INT, @nv_id_T10 INT;
 
--- Chi tiết cho PTH-261025-0002 (Trả CTHD-251025-0006 - 1 Vỉ Panadol)
-(
-    'PTH-261025-0002', 
-    'CTHD-251025-0006', 
-    1, 
-    N'NHU_CAU_KHACH_HANG', 
-    N'HANG_NGUYEN_VEN', 
-    N'100%', 
-    17000.00 -- Hoàn đúng giá gốc của sản phẩm
-);
+WHILE (@i_T10 <= 100) -- Đã giảm từ 200
+BEGIN
+    SET @day_T10 = ((@i_T10 - 1) % 31) + 1;
+    SET @hour_T10 = 7 + ((@i_T10 - 1) % 15);
+    SET @minute_T10 = @i_T10 % 60;
+    SET @ngayLap_T10 = DATETIMEFROMPARTS(2025, 10, @day_T10, @hour_T10, @minute_T10, 0, 0);
+    SET @maHoaDon_T10 = 'HD-' + FORMAT(@ngayLap_T10, 'ddMMyy') + '-' + RIGHT('0000' + CAST(@i_T10 AS NVARCHAR(4)), 4);
+    SET @nv_id_T10 = ((@i_T10 - 1) % 4) + 1;
+    SET @maNV_T10 = 'NV-000' + CAST(@nv_id_T10 AS NVARCHAR(1));
+
+    IF @i_T10 <= 60 -- 60% của 100
+        SET @maKH_T10 = 'KH-00000';
+    ELSE 
+    BEGIN
+        SET @kh_id_T10 = ((@i_T10 - 61) % 50) + 1;
+        SET @maKH_T10 = 'KH-' + RIGHT('00000' + CAST(@kh_id_T10 AS NVARCHAR(2)), 5);
+    END
+
+    SET @chuyenKhoan_T10 = CASE WHEN @i_T10 % 5 = 0 THEN 1 ELSE 0 END;
+    SET @trangThai_T10 = CASE WHEN @i_T10 % 50 = 0 THEN 0 ELSE 1 END;
+    SET @tongTien_T10 = ROUND((50000 + ((@i_T10 * 317) % 1000000)), -3);
+    
+    INSERT INTO HoaDon (maHoaDon, maNV, ngayLapHoaDon, maKH, chuyenKhoan, trangThai, tongTien)
+    VALUES (@maHoaDon_T10, @maNV_T10, @ngayLap_T10, @maKH_T10, @chuyenKhoan_T10, @trangThai_T10, @tongTien_T10);
+
+    SET @i_T10 = @i_T10 + 1;
+END;
 GO
 
-SELECT *
-FROM SanPham SP JOIN SanPhamCungCap SPCC 
-ON SP.maSP = SPCC.maSP JOIN NhaCungCap NCC
-ON SPCC.maNCC = NCC.maNCC
-WHERE NCC.tenNCC = N'Zuellig Pharma Việt Nam'
+-- ===================================================================
+-- 6. DỮ LIỆU THÁNG 11, 2025 (100 HÓA ĐƠN)
+-- ===================================================================
+GO
+DECLARE @i_T11 INT = 1;
+DECLARE @maHoaDon_T11 NVARCHAR(14);
+DECLARE @maNV_T11 NVARCHAR(7);
+DECLARE @maKH_T11 NVARCHAR(8);
+DECLARE @ngayLap_T11 DATETIME2;
+DECLARE @chuyenKhoan_T11 BIT;
+DECLARE @trangThai_T11 BIT;
+DECLARE @tongTien_T11 DECIMAL(18, 2);
+DECLARE @day_T11 INT, @hour_T11 INT, @minute_T11 INT;
+DECLARE @kh_id_T11 INT, @nv_id_T11 INT;
+
+WHILE (@i_T11 <= 100) -- Đã giảm từ 200
+BEGIN
+    SET @day_T11 = ((@i_T11 - 1) % 30) + 1;
+    SET @hour_T11 = 7 + ((@i_T11 - 1) % 15);
+    SET @minute_T11 = @i_T11 % 60;
+    SET @ngayLap_T11 = DATETIMEFROMPARTS(2025, 11, @day_T11, @hour_T11, @minute_T11, 0, 0);
+    SET @maHoaDon_T11 = 'HD-' + FORMAT(@ngayLap_T11, 'ddMMyy') + '-' + RIGHT('0000' + CAST(@i_T11 AS NVARCHAR(4)), 4);
+    SET @nv_id_T11 = ((@i_T11 - 1) % 4) + 1;
+    SET @maNV_T11 = 'NV-000' + CAST(@nv_id_T11 AS NVARCHAR(1));
+
+    IF @i_T11 <= 60 -- 60% của 100
+        SET @maKH_T11 = 'KH-00000';
+    ELSE 
+    BEGIN
+        SET @kh_id_T11 = ((@i_T11 - 61) % 50) + 1;
+        SET @maKH_T11 = 'KH-' + RIGHT('00000' + CAST(@kh_id_T11 AS NVARCHAR(2)), 5);
+    END
+
+    SET @chuyenKhoan_T11 = CASE WHEN @i_T11 % 5 = 0 THEN 1 ELSE 0 END;
+
+    IF @day_T11 <= 13 -- Giả định hôm nay là 13/11
+        SET @trangThai_T11 = CASE WHEN @i_T11 % 50 = 0 THEN 0 ELSE 1 END;
+    ELSE
+        SET @trangThai_T11 = CASE WHEN @i_T11 % 2 = 0 THEN 0 ELSE 1 END;
+
+    SET @tongTien_T11 = ROUND((50000 + ((@i_T11 * 317) % 1000000)), -3);
+    
+    INSERT INTO HoaDon (maHoaDon, maNV, ngayLapHoaDon, maKH, chuyenKhoan, trangThai, tongTien)
+    VALUES (@maHoaDon_T11, @maNV_T11, @ngayLap_T11, @maKH_T11, @chuyenKhoan_T11, @trangThai_T11, @tongTien_T11);
+
+    SET @i_T11 = @i_T11 + 1;
+END;
+GO
+
+-- ===================================================================
+-- 7. DỮ LIỆU THÁNG 12, 2025 (100 HÓA ĐƠN)
+-- ===================================================================
+GO
+DECLARE @i_T12 INT = 1;
+DECLARE @maHoaDon_T12 NVARCHAR(14);
+DECLARE @maNV_T12 NVARCHAR(7);
+DECLARE @maKH_T12 NVARCHAR(8);
+DECLARE @ngayLap_T12 DATETIME2;
+DECLARE @chuyenKhoan_T12 BIT;
+DECLARE @trangThai_T12 BIT;
+DECLARE @tongTien_T12 DECIMAL(18, 2);
+DECLARE @day_T12 INT, @hour_T12 INT, @minute_T12 INT;
+DECLARE @kh_id_T12 INT, @nv_id_T12 INT;
+
+WHILE (@i_T12 <= 100) -- Đã giảm từ 200
+BEGIN
+    SET @day_T12 = ((@i_T12 - 1) % 31) + 1;
+    SET @hour_T12 = 7 + ((@i_T12 - 1) % 15);
+    SET @minute_T12 = @i_T12 % 60;
+    SET @ngayLap_T12 = DATETIMEFROMPARTS(2025, 12, @day_T12, @hour_T12, @minute_T12, 0, 0);
+    SET @maHoaDon_T12 = 'HD-' + FORMAT(@ngayLap_T12, 'ddMMyy') + '-' + RIGHT('0000' + CAST(@i_T12 AS NVARCHAR(4)), 4);
+    SET @nv_id_T12 = ((@i_T12 - 1) % 4) + 1;
+    SET @maNV_T12 = 'NV-000' + CAST(@nv_id_T12 AS NVARCHAR(1));
+
+    IF @i_T12 <= 60 -- 60% của 100
+        SET @maKH_T12 = 'KH-00000';
+    ELSE 
+    BEGIN
+        SET @kh_id_T12 = ((@i_T12 - 61) % 50) + 1;
+        SET @maKH_T12 = 'KH-' + RIGHT('00000' + CAST(@kh_id_T12 AS NVARCHAR(2)), 5);
+    END
+
+    SET @chuyenKhoan_T12 = CASE WHEN @i_T12 % 5 = 0 THEN 1 ELSE 0 END;
+    SET @trangThai_T12 = CASE WHEN @i_T12 % 2 = 0 THEN 0 ELSE 1 END; -- Tương lai, 50% chưa thanh toán
+    SET @tongTien_T12 = ROUND((50000 + ((@i_T12 * 317) % 1000000)), -3);
+    
+    INSERT INTO HoaDon (maHoaDon, maNV, ngayLapHoaDon, maKH, chuyenKhoan, trangThai, tongTien)
+    VALUES (@maHoaDon_T12, @maNV_T12, @ngayLap_T12, @maKH_T12, @chuyenKhoan_T12, @trangThai_T12, @tongTien_T12);
+
+    SET @i_T12 = @i_T12 + 1;
+END;
+GO
+
+-- ===================================================================
+-- 8. TẠO CHI TIẾT HÓA ĐƠN (CHO 700 HÓA ĐƠN MỚI)
+-- ===================================================================
+
+BEGIN TRANSACTION;
+BEGIN
+    DECLARE @cthd_global_counter INT = 1;
+    DECLARE @maHoaDon NVARCHAR(14);
+    DECLARE @ngayLap DATETIME2;
+
+    DECLARE CTHD_Cursor CURSOR FAST_FORWARD FOR
+    SELECT maHoaDon, ngayLapHoaDon
+    FROM HoaDon
+    ORDER BY ngayLapHoaDon, maHoaDon; -- Sắp xếp cố định
+
+    IF OBJECT_ID('tempdb..#TempDVT') IS NOT NULL
+        DROP TABLE #TempDVT;
+
+    SELECT 
+        ROW_NUMBER() OVER (ORDER BY maDonViTinh) AS id,
+        maDonViTinh,
+        giaBanTheoDonVi
+    INTO #TempDVT
+    FROM DonViTinh;
+
+    DECLARE @maxDVT INT = (SELECT COUNT(*) FROM #TempDVT);
+
+    OPEN CTHD_Cursor;
+    FETCH NEXT FROM CTHD_Cursor INTO @maHoaDon, @ngayLap;
+
+    WHILE @@FETCH_STATUS = 0
+    BEGIN
+        DECLARE @itemsPerInvoice INT = 3 + (@cthd_global_counter % 5);
+        DECLARE @item_i INT = 1;
+
+        WHILE (@item_i <= @itemsPerInvoice)
+        BEGIN
+            DECLARE @maCTHD NVARCHAR(16) = 'CTHD-' + FORMAT(@ngayLap, 'ddMMyy') + '-' + RIGHT('0000' + CAST(@cthd_global_counter AS NVARCHAR(4)), 4);
+            DECLARE @dvt_index INT = 1 + ((@cthd_global_counter - 1) % @maxDVT);
+            DECLARE @maDonViTinh NVARCHAR(20);
+            DECLARE @donGia DECIMAL(18, 2);
+            
+            SELECT 
+                @maDonViTinh = maDonViTinh, 
+                @donGia = giaBanTheoDonVi 
+            FROM #TempDVT 
+            WHERE id = @dvt_index;
+
+            DECLARE @soLuong INT = 1 + (@cthd_global_counter % 3);
+            DECLARE @giamGia DECIMAL(5, 2) = 0.00;
+            IF @cthd_global_counter % 20 = 0 
+                SET @giamGia = 0.05;
+
+            INSERT INTO ChiTietHoaDon (maChiTietHoaDon, maHoaDon, maDonViTinh, soLuong, donGia, giamGia)
+            VALUES (@maCTHD, @maHoaDon, @maDonViTinh, @soLuong, @donGia, @giamGia);
+
+            SET @item_i = @item_i + 1;
+            SET @cthd_global_counter = @cthd_global_counter + 1;
+        END
+        FETCH NEXT FROM CTHD_Cursor INTO @maHoaDon, @ngayLap;
+    END
+
+    CLOSE CTHD_Cursor;
+    DEALLOCATE CTHD_Cursor;
+    DROP TABLE #TempDVT;
+END;
+GO
+
+-- ===================================================================
+-- 9. CẬP NHẬT TỔNG TIỀN HÓA ĐƠN
+-- ===================================================================
+WITH HoaDonTotals AS (
+    SELECT 
+        maHoaDon, 
+        SUM(thanhTien) AS newTongTien
+    FROM ChiTietHoaDon
+    GROUP BY maHoaDon
+)
+UPDATE HoaDon
+SET tongTien = ht.newTongTien
+FROM HoaDon hd
+JOIN HoaDonTotals ht ON hd.maHoaDon = ht.maHoaDon
+WHERE 
+    ISNULL(hd.tongTien, 0) <> ht.newTongTien;
+
+COMMIT TRANSACTION;
+GO
+
+-- ===================================================================
+-- 10. TẠO CHI TIẾT XUẤT LÔ (CHO CTHD MỚI)
+-- ===================================================================
+BEGIN TRANSACTION;
+
+IF OBJECT_ID('tempdb..#CTHD_Info') IS NOT NULL 
+    DROP TABLE #CTHD_Info;
+
+SELECT 
+    cthd.maChiTietHoaDon, 
+    cthd.soLuong, 
+    dvt.maSP,
+    ROW_NUMBER() OVER (ORDER BY cthd.maHoaDon, cthd.maChiTietHoaDon) as global_rn
+INTO #CTHD_Info
+FROM ChiTietHoaDon cthd
+JOIN DonViTinh dvt ON cthd.maDonViTinh = dvt.maDonViTinh;
+
+IF OBJECT_ID('tempdb..#Lo_Info') IS NOT NULL 
+    DROP TABLE #Lo_Info;
+
+SELECT 
+    maSP, 
+    maLoSanPham,
+    ROW_NUMBER() OVER(PARTITION BY maSP ORDER BY ngaySanXuat, maLoSanPham) as rn_per_sp,
+    COUNT(*) OVER(PARTITION BY maSP) as count_per_sp
+INTO #Lo_Info
+FROM LoSanPham;
+
+-- Trường hợp 1:1 (90%)
+INSERT INTO ChiTietXuatLo (maLoSanPham, maChiTietHoaDon, soLuong)
+SELECT
+    lo.maLoSanPham,
+    cthd.maChiTietHoaDon,
+    cthd.soLuong
+FROM #CTHD_Info AS cthd
+JOIN #Lo_Info AS lo ON cthd.maSP = lo.maSP
+WHERE
+    (cthd.global_rn % 10) <> 0
+    AND lo.rn_per_sp = (cthd.global_rn % lo.count_per_sp) + 1;
+
+-- Trường hợp 1:N (10%)
+INSERT INTO ChiTietXuatLo (maLoSanPham, maChiTietHoaDon, soLuong)
+SELECT
+    lo.maLoSanPham,
+    cthd.maChiTietHoaDon,
+    cthd.soLuong / 2
+FROM #CTHD_Info AS cthd
+JOIN #Lo_Info AS lo ON cthd.maSP = lo.maSP
+WHERE
+    (cthd.global_rn % 10) = 0
+    AND lo.count_per_sp > 1
+    AND lo.rn_per_sp = 1
+
+UNION ALL
+
+SELECT
+    lo.maLoSanPham,
+    cthd.maChiTietHoaDon,
+    cthd.soLuong - (cthd.soLuong / 2)
+FROM #CTHD_Info AS cthd
+JOIN #Lo_Info AS lo ON cthd.maSP = lo.maSP
+WHERE
+    (cthd.global_rn % 10) = 0
+    AND lo.count_per_sp > 1
+    AND lo.rn_per_sp = 2;
+
+DROP TABLE #CTHD_Info;
+DROP TABLE #Lo_Info;
+
+COMMIT TRANSACTION;
+GO
+
+-- ===================================================================
+-- 11. TẠO PHIẾU TRẢ HÀNG (20 PHIẾU TỪ HĐ MỚI)
+-- ===================================================================
+BEGIN TRANSACTION;
+
+IF OBJECT_ID('tempdb..#HoaDonToReturn') IS NOT NULL
+    DROP TABLE #HoaDonToReturn;
+
+-- Chọn 20 hóa đơn CŨ NHẤT (từ 700 HĐ mới) để trả hàng
+SELECT 
+    ROW_NUMBER() OVER (ORDER BY ngayLapHoaDon, maHoaDon) AS id, 
+    maHoaDon, 
+    ngayLapHoaDon, 
+    tongTien 
+INTO #HoaDonToReturn 
+FROM (
+    SELECT TOP 20 maHoaDon, ngayLapHoaDon, tongTien 
+    FROM HoaDon 
+    WHERE ngayLapHoaDon < '2025-11-01'
+    ORDER BY ngayLapHoaDon, maHoaDon
+) AS T;
+
+DECLARE @i_PTH INT = 1;
+DECLARE @maPhieuTraHang NVARCHAR(15);
+DECLARE @ngayLapPhieuTraHang DATETIME2;
+DECLARE @maNV_PTH NVARCHAR(7);
+DECLARE @maHoaDon_PTH NVARCHAR(14);
+DECLARE @tongTienHoanTra DECIMAL(18, 2);
+DECLARE @originalTongTien DECIMAL(18, 2);
+
+WHILE (@i_PTH <= 20)
+BEGIN
+    SELECT 
+        @maHoaDon_PTH = maHoaDon, 
+        @originalTongTien = tongTien 
+    FROM #HoaDonToReturn 
+    WHERE id = @i_PTH;
+
+    DECLARE @day_PTH INT = ((@i_PTH - 1) % 10) + 1;
+    DECLARE @month_PTH INT;
+    IF @i_PTH <= 10
+        SET @month_PTH = 10;
+    ELSE
+        SET @month_PTH = 11;
+    
+    SET @ngayLapPhieuTraHang = DATETIMEFROMPARTS(2025, @month_PTH, @day_PTH, 10, @i_PTH, 0, 0);
+    SET @maPhieuTraHang = 'PTH-' + FORMAT(@ngayLapPhieuTraHang, 'ddMMyy') + '-' + RIGHT('0000' + CAST(@i_PTH AS NVARCHAR(4)), 4);
+    DECLARE @nv_id_PTH INT = ((@i_PTH - 1) % 4) + 1;
+    SET @maNV_PTH = 'NV-000' + CAST(@nv_id_PTH AS NVARCHAR(1));
+    SET @tongTienHoanTra = ROUND(@originalTongTien * 0.3, 0); -- Placeholder
+
+    INSERT INTO PhieuTraHang (maPhieuTraHang, ngayLapPhieuTraHang, maNV, maHoaDon, tongTienHoanTra)
+    VALUES (@maPhieuTraHang, @ngayLapPhieuTraHang, @maNV_PTH, @maHoaDon_PTH, @tongTienHoanTra);
+
+    SET @i_PTH = @i_PTH + 1;
+END;
+
+DROP TABLE #HoaDonToReturn;
+COMMIT TRANSACTION;
+GO
+
+-- ===================================================================
+-- 12. TẠO CHI TIẾT PHIẾU TRẢ HÀNG VÀ CẬP NHẬT TỔNG TIỀN PTH
+-- ===================================================================
+BEGIN TRANSACTION;
+
+BEGIN
+    IF OBJECT_ID('tempdb..#CTHD_Data') IS NOT NULL
+        DROP TABLE #CTHD_Data;
+
+    SELECT 
+        cthd.maHoaDon, 
+        cthd.maChiTietHoaDon, 
+        cthd.soLuong, 
+        cthd.donGia,
+        cthd.giamGia,
+        ROW_NUMBER() OVER(PARTITION BY cthd.maHoaDon ORDER BY cthd.maChiTietHoaDon) AS rn
+    INTO #CTHD_Data
+    FROM ChiTietHoaDon cthd
+    JOIN PhieuTraHang pth ON cthd.maHoaDon = pth.maHoaDon;
+
+    DECLARE @i_CTPTH INT = 1; 
+    DECLARE @maPhieuTraHang_CTPTH NVARCHAR(15);
+    DECLARE @maHoaDon_Goc_CTPTH NVARCHAR(14);
+
+    DECLARE PTH_Cursor CURSOR FAST_FORWARD FOR
+    SELECT maPhieuTraHang, maHoaDon 
+    FROM PhieuTraHang
+    ORDER BY maPhieuTraHang;
+
+    OPEN PTH_Cursor;
+    FETCH NEXT FROM PTH_Cursor INTO @maPhieuTraHang_CTPTH, @maHoaDon_Goc_CTPTH;
+
+    WHILE @@FETCH_STATUS = 0
+    BEGIN
+        DECLARE @itemsToReturn INT = 1 + (@i_CTPTH % 2);
+        DECLARE @item_j INT = 1;
+
+        WHILE (@item_j <= @itemsToReturn)
+        BEGIN
+            DECLARE @maCTHD_Goc NVARCHAR(16);
+            DECLARE @soLuong_Goc INT;
+            DECLARE @donGia_Goc DECIMAL(18, 2);
+            DECLARE @giamGia_Goc DECIMAL(5, 2);
+
+            SELECT 
+                @maCTHD_Goc = maChiTietHoaDon,
+                @soLuong_Goc = soLuong,
+                @donGia_Goc = donGia,
+                @giamGia_Goc = giamGia
+            FROM #CTHD_Data
+            WHERE maHoaDon = @maHoaDon_Goc_CTPTH AND rn = @item_j;
+            
+            IF @maCTHD_Goc IS NOT NULL
+            BEGIN
+                DECLARE @truongHop NVARCHAR(50);
+                DECLARE @tinhTrang NVARCHAR(30);
+                DECLARE @giaTriHoanTra_Str NVARCHAR(20);
+                DECLARE @giaTriHoanTra_Percent DECIMAL(5, 2);
+
+                SELECT 
+                    @truongHop = CASE @i_CTPTH % 3
+                                    WHEN 0 THEN N'HANG_LOI_DO_NHA_SAN_XUAT'
+                                    WHEN 1 THEN N'DI_UNG_MAN_CAM'
+                                    ELSE N'NHU_CAU_KHACH_HANG' END,
+                    @tinhTrang = CASE @i_CTPTH % 3
+                                    WHEN 0 THEN N'HANG_NGUYEN_VEN'
+                                    WHEN 1 THEN N'HANG_DA_SU_DUNG'
+                                    ELSE N'HANG_KHONG_NGUYEN_VEN' END;
+
+                IF @truongHop = N'HANG_LOI_DO_NHA_SAN_XUAT'
+                BEGIN
+                    SET @giaTriHoanTra_Str = N'100%';
+                    SET @giaTriHoanTra_Percent = 1.0;
+                END
+                ELSE IF @tinhTrang = N'HANG_DA_SU_DUNG'
+                BEGIN
+                    SET @giaTriHoanTra_Str = N'Miễn trả hàng';
+                    SET @giaTriHoanTra_Percent = 0.0;
+                END
+                ELSE
+                BEGIN
+                    SET @giaTriHoanTra_Str = N'70%';
+                    SET @giaTriHoanTra_Percent = 0.7;
+                END;
+
+                DECLARE @thanhTienHoanTra DECIMAL(18, 2);
+                SET @thanhTienHoanTra = ROUND(((@soLuong_Goc * @donGia_Goc * (1 - @giamGia_Goc)) * @giaTriHoanTra_Percent), 0);
+
+                INSERT INTO ChiTietPhieuTraHang 
+                    (maPhieuTraHang, maChiTietHoaDon, soLuong, truongHopDoiTra, tinhTrangSanPham, giaTriHoanTra, thanhTienHoanTra)
+                VALUES 
+                    (@maPhieuTraHang_CTPTH, @maCTHD_Goc, @soLuong_Goc, @truongHop, @tinhTrang, @giaTriHoanTra_Str, @thanhTienHoanTra);
+            END
+            
+            SET @item_j = @item_j + 1;
+        END
+
+        SET @i_CTPTH = @i_CTPTH + 1;
+        FETCH NEXT FROM PTH_Cursor INTO @maPhieuTraHang_CTPTH, @maHoaDon_Goc_CTPTH;
+    END
+
+    CLOSE PTH_Cursor;
+    DEALLOCATE PTH_Cursor;
+    DROP TABLE #CTHD_Data; 
+END;
+GO
+
+-- ===================================================================
+-- 13. CẬP NHẬT TỔNG TIỀN PHIẾU TRẢ HÀNG
+-- ===================================================================
+WITH PTH_Totals AS (
+    SELECT 
+        maPhieuTraHang, 
+        SUM(thanhTienHoanTra) AS newTongTienHoanTra
+    FROM ChiTietPhieuTraHang
+    GROUP BY maPhieuTraHang
+)
+UPDATE PhieuTraHang
+SET tongTienHoanTra = ISNULL(pth_t.newTongTienHoanTra, 0) -- ISNULL để xử lý phiếu không trả được gì
+FROM PhieuTraHang pth
+LEFT JOIN PTH_Totals pth_t ON pth.maPhieuTraHang = pth_t.maPhieuTraHang
+WHERE 
+    ISNULL(pth.tongTienHoanTra, 0) <> ISNULL(pth_t.newTongTienHoanTra, 0);
+
+COMMIT TRANSACTION;
+GO
+
+PRINT N'>>> TẤT CẢ DỮ LIỆU ĐÃ ĐƯỢC TẠO THÀNH CÔNG <<<';
+GO

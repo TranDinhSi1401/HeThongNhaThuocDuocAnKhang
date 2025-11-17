@@ -52,9 +52,9 @@ public class NhaCungCap {
     }
 
     public void setMaNCC(String maNCC) {
-if (maNCC == null || !maNCC.matches("^NCC-\\d{4}$")) {
-            throw new IllegalArgumentException("Mã NCC không hợp lệ! Định dạng đúng: NCC-0001");
-}
+        if (maNCC == null || !maNCC.matches("^NCC-\\d{4}$")) {
+                    throw new IllegalArgumentException("Mã NCC không hợp lệ! Định dạng đúng: NCC-0001");
+        }
         this.maNCC = maNCC;
     }
 

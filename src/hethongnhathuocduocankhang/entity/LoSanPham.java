@@ -11,16 +11,36 @@ import java.time.LocalDate;
  * @author MINH KHANG
  */
 public class LoSanPham {
-     private String maLoSanPham;
+    private String maLoSanPham;
     private SanPham sanPham;
     private int soLuong;
     private LocalDate ngaySanXuat;
     private LocalDate ngayHetHan;
+    //tinhTrang
+
+    private NhaCungCap ncc;
+    private ChiTietHoaDon ctthd;
+    private DonViTinh dvTinh;
+    
 
     // --- Constructors ---
     public LoSanPham() {
     }
 
+    public LoSanPham(String maLoSanPham, SanPham sanPham, int soLuong, LocalDate ngaySanXuat, LocalDate ngayHetHan, NhaCungCap ncc, ChiTietHoaDon ctthd, DonViTinh dvTinh) {
+        this.maLoSanPham = maLoSanPham;
+        this.sanPham = sanPham;
+        this.soLuong = soLuong;
+        this.ngaySanXuat = ngaySanXuat;
+        this.ngayHetHan = ngayHetHan;
+        this.ncc = ncc;
+        this.ctthd = ctthd;
+        this.dvTinh = dvTinh;
+    }
+
+    
+    
+    
     public LoSanPham(String maLoSanPham, SanPham sanPham, int soLuong,
                      LocalDate ngaySanXuat, LocalDate ngayHetHan) {
         setMaLoSanPham(maLoSanPham);
@@ -87,6 +107,30 @@ public class LoSanPham {
         return ngayHetHan;
     }
 
+    public NhaCungCap getNcc() {
+        return ncc;
+    }
+
+    public void setNcc(NhaCungCap ncc) {
+        this.ncc = ncc;
+    }
+
+    public ChiTietHoaDon getCtthd() {
+        return ctthd;
+    }
+
+    public void setCtthd(ChiTietHoaDon ctthd) {
+        this.ctthd = ctthd;
+    }
+
+    public DonViTinh getDvTinh() {
+        return dvTinh;
+    }
+
+    public void setDvTinh(DonViTinh dvTinh) {
+        this.dvTinh = dvTinh;
+    }
+    
     public void setNgayHetHan(LocalDate ngayHetHan) {
         if (ngayHetHan == null || (ngaySanXuat != null && ngayHetHan.isBefore(ngaySanXuat))) {
             throw new IllegalArgumentException("Ngày hết hạn phải sau hoặc bằng ngày sản xuất.");

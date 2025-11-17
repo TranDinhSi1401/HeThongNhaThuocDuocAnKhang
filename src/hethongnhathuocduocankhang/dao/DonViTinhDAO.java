@@ -72,7 +72,6 @@ public class DonViTinhDAO {
     
     public static String getMaSanPhamTheoMaDVT(String maDVT) {
         String maSP = "";
-
         try {
             Connection con = ConnectDB.getConnection();
             String sql = "SELECT * FROM DonViTinh WHERE maDonViTinh = ?";
