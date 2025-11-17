@@ -1031,11 +1031,10 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
             @Override
             protected Void doInBackground() throws Exception {
                 LoSanPhamDAO loSP = new LoSanPhamDAO();
-                DefaultTableModel tbl = (DefaultTableModel) tblLoSanPham.getModel();
                 for (LoSanPham i: loSP.dsLoSanPham()){
                     String dvt = DonViTinhDAO.getDonViTinhTheoMaDVT(i.getDvTinh().getMaDonViTinh()).getTenDonVi();
-                        String ncc = NhaCungCapDAO.timNCCTheoMa(i.getNcc().getMaNCC()).getTenNCC();
-                        Object[] row = new Object[] {i.getSanPham().getMaSP(), 
+                    String ncc = NhaCungCapDAO.timNCCTheoMa(i.getNcc().getMaNCC()).getTenNCC();
+                    Object[] row = new Object[] {i.getSanPham().getMaSP(), 
                         i.getSanPham().getTen(), i.getMaLoSanPham(), 
                         ncc, dvt, i.getNgaySanXuat(), i.getNgayHetHan(), 
                         i.getSoLuong(), i.getCtthd().getDonGia()};

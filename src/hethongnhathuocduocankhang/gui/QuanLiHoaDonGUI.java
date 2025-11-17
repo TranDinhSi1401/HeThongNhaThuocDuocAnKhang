@@ -122,7 +122,7 @@ public class QuanLiHoaDonGUI extends JPanel {
 
         this.add(pnlNorth, BorderLayout.NORTH);
         this.add(centerPanel, BorderLayout.CENTER);
-
+        
         updateTable();
         addEvents();
     }
@@ -133,16 +133,29 @@ public class QuanLiHoaDonGUI extends JPanel {
             return;
         }
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
-
         for (HoaDon hd : dsHD) { 
-            String tenNV = (hd.getNhanVien() != null && hd.getNhanVien().getTen() != null)
-                           ? hd.getNhanVien().getHoTenDem() + " " + hd.getNhanVien().getTen() 
-                           : hd.getNhanVien().getMaNV(); 
-                           
-            String tenKH = (hd.getKhachHang() != null && hd.getKhachHang().getTen() != null)
-                           ? hd.getKhachHang().getHoTenDem() + " " + hd.getKhachHang().getTen()
-                           : hd.getKhachHang().getMaKH();
-            
+            String tenNV;
+            if (hd.getNhanVien() == null) {
+                tenNV = "Không có NV";
+            } else if (hd.getNhanVien().getTen() == null) {
+                tenNV = hd.getNhanVien().getMaNV();
+            } else {
+                tenNV = hd.getNhanVien().getHoTenDem() + " " + hd.getNhanVien().getTen();
+            }
+
+            String tenKH;
+            if (hd.getKhachHang() == null) {
+                tenKH = "Không có KH";
+            } else if (hd.getKhachHang().getTen() == null) {
+                tenKH = hd.getKhachHang().getMaKH();
+            } else {
+                tenKH = hd.getKhachHang().getHoTenDem() + " " + hd.getKhachHang().getTen();
+            }
+
+            String ngayLap = (hd.getNgayLapHoaDon() != null) 
+                             ? hd.getNgayLapHoaDon().format(formatter) 
+                             : "";
+       
             Object[] row = {
                 hd.getMaHoaDon(),
                 tenNV,
@@ -159,6 +172,7 @@ public class QuanLiHoaDonGUI extends JPanel {
     private void updateTable() {
         ArrayList<HoaDon> dsHD = HoaDonDAO.getAllHoaDon(); 
         updateTable(dsHD);
+        
     }
 
     private void addEvents() {
@@ -284,4 +298,7 @@ public class QuanLiHoaDonGUI extends JPanel {
             }
         }
     }
+
+    
+
 }
