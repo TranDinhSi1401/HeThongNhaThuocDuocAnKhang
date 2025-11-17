@@ -7,30 +7,23 @@ package hethongnhathuocduocankhang.gui;
 import java.awt.Window;
 import javax.swing.SwingUtilities;
 
-/**
- *
- * @author GIGABYTE
- * LƯU Ý: Class này được tái cấu trúc từ ThemSanPhamGUI để CHỈ HIỂN THỊ
- * thông tin chi tiết Lịch Sử Ca Làm.
- */
 public class ChiTietLichSuCaLamGUI extends javax.swing.JPanel {
 
     // Component mới cho Ghi Chú (thay thế jComboBox1)
-    private javax.swing.JTextField jTextField5; 
+    private javax.swing.JTextField txtGioVao; 
     
     public ChiTietLichSuCaLamGUI() {
         initComponents();
         
         // Đặt tất cả các trường ở chế độ chỉ đọc
-        jTextField1.setEditable(false); // MaNV
-        jTextField2.setEditable(false); // TenNV
-        jTextField3.setEditable(false); // NgayLam
-        jTextField4.setEditable(false); // MaCa
-        jTextField5.setEditable(false); // GioVao
-        jTextField6.setEditable(false); // GioRa
-        jTextField7.setEditable(false); // GhiChu
+        txtMaNV.setEditable(false); // MaNV
+        txtTenNV.setEditable(false); // TenNV
+        txtNgayLam.setEditable(false); // NgayLam
+        txtMaCa.setEditable(false); // MaCa
+        txtGioVao.setEditable(false); // GioVao
+        txtGioRa.setEditable(false); // GioRa
+        txtGhiChu.setEditable(false); // GhiChu
         
-        // Ẩn các nút, chúng sẽ được điều khiển bởi JDialog
         jButton1.setVisible(false);
         jButton2.setVisible(false);
     }
@@ -46,31 +39,31 @@ public class ChiTietLichSuCaLamGUI extends javax.swing.JPanel {
 
     // Setters để điền dữ liệu
     public void setTxtMaNhanVien(String maNV) {
-        jTextField1.setText(maNV);
+        txtMaNV.setText(maNV);
     }
 
     public void setTxtTenNhanVien(String tenNV) {
-        jTextField2.setText(tenNV);
+        txtTenNV.setText(tenNV);
     }
 
     public void setTxtNgayLam(String ngayLam) {
-        jTextField3.setText(ngayLam);
+        txtNgayLam.setText(ngayLam);
     }
 
     public void setTxtMaCa(String maCa) {
-        jTextField4.setText(maCa);
+        txtMaCa.setText(maCa);
     }
 
     public void setTxtGioVao(String gioVao) {
-        jTextField5.setText(gioVao);
+        txtGioVao.setText(gioVao);
     }
     
     public void setTxtGioRa(String gioRa) {
-        jTextField6.setText(gioRa);
+        txtGioRa.setText(gioRa);
     }
     
     public void setTxtGhiChu(String ghiChu) {
-        jTextField7.setText(ghiChu);
+        txtGhiChu.setText(ghiChu);
     }
     
 
@@ -93,13 +86,13 @@ public class ChiTietLichSuCaLamGUI extends javax.swing.JPanel {
         jLabel6 = new javax.swing.JLabel(); // Đổi thành Giờ Vào
         jLabel7 = new javax.swing.JLabel(); // Đổi thành Giờ Ra
         jLabel8 = new javax.swing.JLabel(); // Đổi thành Ghi Chú
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
-        jTextField4 = new javax.swing.JTextField();
-        jTextField5 = new javax.swing.JTextField(); // THÊM MỚI (thay jComboBox)
-        jTextField6 = new javax.swing.JTextField();
-        jTextField7 = new javax.swing.JTextField();
+        txtMaNV = new javax.swing.JTextField();
+        txtTenNV = new javax.swing.JTextField();
+        txtNgayLam = new javax.swing.JTextField();
+        txtMaCa = new javax.swing.JTextField();
+        txtGioVao = new javax.swing.JTextField(); // THÊM MỚI (thay jComboBox)
+        txtGioRa = new javax.swing.JTextField();
+        txtGhiChu = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         // jComboBox1 đã bị xóa
@@ -152,8 +145,7 @@ public class ChiTietLichSuCaLamGUI extends javax.swing.JPanel {
         // TÁI CẤU TRÚC LAYOUT
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        jPanel2Layout.setHorizontalGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -173,46 +165,45 @@ public class ChiTietLichSuCaLamGUI extends javax.swing.JPanel {
                             .addComponent(jLabel8))
                         .addGap(24, 24, 24)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField1)
-                            .addComponent(jTextField2)
-                            .addComponent(jTextField3)
-                            .addComponent(jTextField4)
-                            .addComponent(jTextField5) // Thay jComboBox1
-                            .addComponent(jTextField6, javax.swing.GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE)
-                            .addComponent(jTextField7))))
+                            .addComponent(txtMaNV)
+                            .addComponent(txtTenNV)
+                            .addComponent(txtNgayLam)
+                            .addComponent(txtMaCa)
+                            .addComponent(txtGioVao) // Thay jComboBox1
+                            .addComponent(txtGioRa, javax.swing.GroupLayout.DEFAULT_SIZE, 280, Short.MAX_VALUE)
+                            .addComponent(txtGhiChu))))
                 .addContainerGap())
         );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        jPanel2Layout.setVerticalGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtMaNV, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtTenNV, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtNgayLam, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtMaCa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
-                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)) // Thay jComboBox1
+                    .addComponent(txtGioVao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)) // Thay jComboBox1
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel7)
-                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtGioRa, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
-                    .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtGhiChu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
@@ -223,14 +214,13 @@ public class ChiTietLichSuCaLamGUI extends javax.swing.JPanel {
         add(jPanel2, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
         Window window = SwingUtilities.getWindowAncestor(this);
         if (window != null) {
             window.dispose();
         }
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
@@ -243,12 +233,10 @@ public class ChiTietLichSuCaLamGUI extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    //private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField6;
-    private javax.swing.JTextField jTextField7;
-    // End of variables declaration//GEN-END:variables
+    private javax.swing.JTextField txtMaNV;
+    private javax.swing.JTextField txtTenNV;
+    private javax.swing.JTextField txtNgayLam;
+    private javax.swing.JTextField txtMaCa;
+    private javax.swing.JTextField txtGioRa;
+    private javax.swing.JTextField txtGhiChu;
 }

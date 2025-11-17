@@ -21,7 +21,6 @@ import java.util.ArrayList;
 
 public class QuanLiHoaDonGUI extends JPanel { 
 
-    // private JButton btnThem, btnXoa, btnSua; 
     private JTextField txtTimKiem;
     private JTable table;
     private JComboBox<String> cmbTieuChiTimKiem;
@@ -267,10 +266,6 @@ public class QuanLiHoaDonGUI extends JPanel {
         updateTable(dsDaLoc);
     }
 
-    /**
-     * SỬA LẠI HÀM NÀY
-     * Mở JDialog chứa JTable hiển thị danh sách ChiTietHoaDon
-     */
     private void hienThiChiTietHoaDon(MouseEvent e) { 
         int selectRow = table.getSelectedRow();
         if (selectRow != -1) {
@@ -291,7 +286,7 @@ public class QuanLiHoaDonGUI extends JPanel {
                 dialog.setModal(true);
                 dialog.setResizable(true); // Cho phép thay đổi kích thước
                 dialog.setContentPane(pnlChiTiet);
-                dialog.setPreferredSize(new Dimension(800, 400)); // Đặt kích thước
+                dialog.setPreferredSize(new Dimension(800, 400));
                 dialog.pack();
                 dialog.setLocationRelativeTo(null);
                 dialog.setVisible(true);

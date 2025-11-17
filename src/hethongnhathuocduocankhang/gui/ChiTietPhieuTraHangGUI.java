@@ -14,12 +14,6 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.ArrayList;
 
-/**
- *
- * @author GIGABYTE
- * GUI này hiển thị danh sách Chi Tiết Phiếu Trả Hàng (các sản phẩm)
- * thuộc về một Phiếu Trả Hàng.
- */
 public class ChiTietPhieuTraHangGUI extends JPanel {
     private JTable table;
     private DefaultTableModel model;
@@ -38,7 +32,7 @@ public class ChiTietPhieuTraHangGUI extends JPanel {
         lblTongTienHoan.setFont(new Font("Arial", Font.BOLD, 14));
         
         pnlNorth.add(lblMaPhieuTra);
-        pnlNorth.add(new JLabel("")); // Ô trống
+        pnlNorth.add(new JLabel(""));
         pnlNorth.add(lblTongTienHoan);
         this.add(pnlNorth, BorderLayout.NORTH);
 
@@ -46,6 +40,7 @@ public class ChiTietPhieuTraHangGUI extends JPanel {
         String[] columnNames = {
             "Mã CTHD",
             "Sản Phẩm",
+            "Đơn vị tính",
             "Số Lượng Trả",
             "Lý Do Trả",
             "Tình Trạng SP",
@@ -71,10 +66,6 @@ public class ChiTietPhieuTraHangGUI extends JPanel {
         this.add(scrollPane, BorderLayout.CENTER);
     }
 
-    /**
-     * Phương thức chính để tải dữ liệu vào GUI này.
-     * @param phieuTraHang Phiếu trả hàng cha cần hiển thị chi tiết.
-     */
     public void loadData(PhieuTraHang phieuTraHang) {
         if (phieuTraHang == null) return;
 
@@ -91,6 +82,7 @@ public class ChiTietPhieuTraHangGUI extends JPanel {
             Object[] row = {
                 ct.getChiTietHoaDon().getMaChiTietHoaDon(),
                 ct.getChiTietHoaDon().getDonViTinh().getSanPham().getTen(), // Tên SP
+                ct.getChiTietHoaDon().getDonViTinh().getTenDonVi(),
                 ct.getSoLuong(),
                 ct.getTruongHopDoiTra().toString(),
                 ct.getTinhTrangSanPham().toString(),

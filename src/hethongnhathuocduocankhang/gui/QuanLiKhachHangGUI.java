@@ -4,6 +4,7 @@
  */
 package hethongnhathuocduocankhang.gui;
 
+import hethongnhathuocduocankhang.dao.ChiTietHoaDonDAO;
 import hethongnhathuocduocankhang.dao.KhachHangDAO;
 import hethongnhathuocduocankhang.entity.KhachHang;
 import javax.swing.*;
@@ -22,7 +23,6 @@ public class QuanLiKhachHangGUI extends JPanel {
     private JTextField txtTimKiem;
     private JTable table;
     private JComboBox<String> cmbTieuChiTimKiem;
-    // private JComboBox<String> cmbBoLoc; // BỎ BỘ LỌC
     private DefaultTableModel model;
 
     public QuanLiKhachHangGUI() {
@@ -58,11 +58,9 @@ public class QuanLiKhachHangGUI extends JPanel {
         pnlNorthRight.setLayout(new FlowLayout(FlowLayout.RIGHT, 10, 5));
 
         //Tiêu chí tìm kiếm
-        cmbTieuChiTimKiem = new JComboBox<>(new String[]{"Mã khách hàng", "Tên khách hàng", "Số điện thoại"}); // THAY ĐỔI
+        cmbTieuChiTimKiem = new JComboBox<>(new String[]{"Mã khách hàng", "Tên khách hàng", "Số điện thoại"});
         cmbTieuChiTimKiem.setFont(new Font("Arial", Font.PLAIN, 14));
         cmbTieuChiTimKiem.setPreferredSize(new Dimension(150, 30));
-
-        // ComboBox Bộ lọc (ĐÃ BỎ)
 
         // Thanh tìm kiếm
         txtTimKiem = new JTextField(20);
@@ -80,9 +78,6 @@ public class QuanLiKhachHangGUI extends JPanel {
         pnlNorthRight.add(new JLabel("Tìm theo"));
         pnlNorthRight.add(cmbTieuChiTimKiem);
         pnlNorthRight.add(pnlTimKiem);
-
-        // pnlNorthRight.add(new JLabel("Lọc theo")); // BỎ
-        // pnlNorthRight.add(cmbBoLoc); // BỎ
 
         pnlNorth.add(pnlNorthRight, BorderLayout.EAST);
 
@@ -190,8 +185,6 @@ public class QuanLiKhachHangGUI extends JPanel {
                 xuLyTimKiem();
             }
         });
-
-        // Sự kiện khi thay đổi bộ lọc (ĐÃ BỎ)
         
         // Sự kiện khi đổi tiêu chí tìm kiếm -> Xóa rỗng ô tìm kiếm
         cmbTieuChiTimKiem.addActionListener(new ActionListener() {
@@ -235,14 +228,13 @@ public class QuanLiKhachHangGUI extends JPanel {
                     break;
             }
         }
-        updateTable(dsKetQua); // Hiển thị kết quả
+        updateTable(dsKetQua);
 
     }
 
-    //HÀM XỬ LÝ LỌC (ĐÃ BỎ)
-
     //HÀM XỬ LÝ NÚT THÊM
     private void xuLyThem() {
+        System.out.println(ChiTietHoaDonDAO.getChiTietHoaDonTheoMaCTHD("CTHD-251025-0001"));
         ThemKhachHangGUI pnlThemKH = new ThemKhachHangGUI();
         JDialog dialog = new JDialog();
         dialog.setTitle("Thêm khách hàng mới");
@@ -252,9 +244,8 @@ public class QuanLiKhachHangGUI extends JPanel {
         dialog.pack(); // Tự động điều chỉnh kích thước JDialog
         dialog.setLocationRelativeTo(null);
         
-        // Dùng hàm getMaKHCUoiCung (đã sửa) để tạo mã mới
         int maKHCUoiCung = KhachHangDAO.getMaKHCUoiCung();
-        maKHCUoiCung++; // Tăng lên 1
+        maKHCUoiCung++; 
         String maKHNew = String.format("KH-%05d", maKHCUoiCung); // Định dạng KH-XXXXX
         
         pnlThemKH.setTxtMaKhachHang(maKHNew);
