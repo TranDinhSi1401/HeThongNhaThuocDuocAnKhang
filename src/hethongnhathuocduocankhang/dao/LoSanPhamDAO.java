@@ -64,30 +64,19 @@ public class LoSanPhamDAO {
     }
     public static ArrayList<LoSanPham> dsLoSanPham(){
         ArrayList<LoSanPham> ds = new ArrayList<>();
-        String sql = "Select s.maSP, s.ten, l.maLoSanPham, maNCC, cd.maDonViTinh, ngaySanXuat, ngayHetHan, l.soLuong, donGia \n" +
-                    "from LoSanPham l join SanPham s on l.maSP=s.maSP \n" +
-                    "join ChiTietXuatLo cl on cl.maLoSanPham=l.maLoSanPham\n" +
-                    "join ChiTietHoaDon cd on cd.maChiTietHoaDon=cl.maChiTietHoaDon\n" +
-                    "join SanPhamCungCap sc on sc.maSP = s.maSP";
+        String sql = "Select * from LoSanPham";
         try {
             ConnectDB.getInstance().connect();
             Connection con = ConnectDB.getConnection();
             PreparedStatement st = con.prepareStatement(sql);
             ResultSet rs = st.executeQuery();
             while(rs.next()){
-                    String maSP = rs.getString(1);
-                    String ten = rs.getString(2);
-                    String maLoSP = rs.getString(3);
-                    String nhaCC = rs.getString(4);
-                    String maDonVi = rs.getString(5);                    
-                    LocalDate ngaySX = rs.getDate(6).toLocalDate();
-                    LocalDate ngayHH = rs.getDate(7).toLocalDate();
-                    int sl = rs.getInt(8);
-                    double gia = Double.parseDouble(rs.getString(9));
-                    NhaCungCap ncc = new NhaCungCap(nhaCC);
-                    ChiTietHoaDon cthd = new ChiTietHoaDon(gia);
-                    DonViTinh donVi = new DonViTinh(maDonVi);
-                    LoSanPham lo = new LoSanPham(maLoSP, new SanPham(maSP, ten), sl, ngaySX, ngayHH, ncc, cthd, donVi);    
+                    String maSP = rs.getString(2);
+                    String maLoSP = rs.getString(1);
+                    int sl = rs.getInt(3);
+                    LocalDate ngaySX = rs.getDate(4).toLocalDate();
+                    LocalDate ngayHH = rs.getDate(5).toLocalDate();
+                    LoSanPham lo = new LoSanPham(maLoSP, new SanPham(maSP), sl, ngaySX, ngayHH);    
                 ds.add(lo);
             }
         } catch (SQLException sQLException) {
@@ -96,12 +85,7 @@ public class LoSanPhamDAO {
     }
     public static LoSanPham timLoSanPham(String maLo){
         LoSanPham lo = new LoSanPham();
-        String sql = "Select DISTINCT s.maSP, s.ten, l.maLoSanPham, maNCC, cd.maDonViTinh, ngaySanXuat, ngayHetHan, l.soLuong, donGia \n" +
-                    "from LoSanPham l join SanPham s on l.maSP=s.maSP \n" +
-                    "join ChiTietXuatLo cl on cl.maLoSanPham=l.maLoSanPham\n" +
-                    "join ChiTietHoaDon cd on cd.maChiTietHoaDon=cl.maChiTietHoaDon\n" +
-                    "join SanPhamCungCap sc on sc.maSP = s.maSP\n" +
-                    "where l.maLoSanPham = ?";
+        String sql = "Select * from LoSanPham where maLoSanPham = ?";
         lo = null;
         try {
             ConnectDB.getInstance().connect();
@@ -110,19 +94,12 @@ public class LoSanPhamDAO {
             st.setString(1, maLo);
             try(ResultSet rs = st.executeQuery()){
                 while (rs.next()){
-                    String maSP = rs.getString(1);
-                    String ten = rs.getString(2);
-                    String maLoSP = rs.getString(3);
-                    String nhaCC = rs.getString(4);
-                    String maDonVi = rs.getString(5);                    
-                    LocalDate ngaySX = rs.getDate(6).toLocalDate();
-                    LocalDate ngayHH = rs.getDate(7).toLocalDate();
-                    int sl = rs.getInt(8);
-                    double gia = Double.parseDouble(rs.getString(9));
-                    NhaCungCap ncc = new NhaCungCap(nhaCC);
-                    ChiTietHoaDon cthd = new ChiTietHoaDon(gia);
-                    DonViTinh donVi = new DonViTinh(maDonVi);
-                    lo = new LoSanPham(maLoSP, new SanPham(maSP, ten), sl, ngaySX, ngayHH, ncc, cthd, donVi);
+                    String maSP = rs.getString(2);
+                    String maLoSP = rs.getString(1);                  
+                    LocalDate ngaySX = rs.getDate(4).toLocalDate();
+                    LocalDate ngayHH = rs.getDate(5).toLocalDate();
+                    int sl = rs.getInt(3);
+                    lo = new LoSanPham(maLoSP, new SanPham(maSP), sl, ngaySX, ngayHH);
                 }
             }
         } catch (SQLException sQLException) {

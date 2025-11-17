@@ -16,26 +16,30 @@ public class LoSanPham {
     private int soLuong;
     private LocalDate ngaySanXuat;
     private LocalDate ngayHetHan;
-    //tinhTrang
-
-    private NhaCungCap ncc;
-    private ChiTietHoaDon ctthd;
-    private DonViTinh dvTinh;
+    private boolean trangThai;
     
 
     // --- Constructors ---
     public LoSanPham() {
     }
 
-    public LoSanPham(String maLoSanPham, SanPham sanPham, int soLuong, LocalDate ngaySanXuat, LocalDate ngayHetHan, NhaCungCap ncc, ChiTietHoaDon ctthd, DonViTinh dvTinh) {
+    
+//    public LoSanPham(String maLoSanPham, SanPham sanPham, int soLuong, LocalDate ngaySanXuat, LocalDate ngayHetHan) {
+//        this.maLoSanPham = maLoSanPham;
+//        this.sanPham = sanPham;
+//        this.soLuong = soLuong;
+//        this.ngaySanXuat = ngaySanXuat;
+//        this.ngayHetHan = ngayHetHan;
+//
+//    }
+
+    public LoSanPham(String maLoSanPham, SanPham sanPham, int soLuong, LocalDate ngaySanXuat, LocalDate ngayHetHan, boolean trangThai) {
         this.maLoSanPham = maLoSanPham;
         this.sanPham = sanPham;
         this.soLuong = soLuong;
         this.ngaySanXuat = ngaySanXuat;
         this.ngayHetHan = ngayHetHan;
-        this.ncc = ncc;
-        this.ctthd = ctthd;
-        this.dvTinh = dvTinh;
+        this.trangThai = trangThai;
     }
 
     
@@ -107,29 +111,15 @@ public class LoSanPham {
         return ngayHetHan;
     }
 
-    public NhaCungCap getNcc() {
-        return ncc;
+    public boolean isTrangThai() {
+        return trangThai;
     }
 
-    public void setNcc(NhaCungCap ncc) {
-        this.ncc = ncc;
+    public void setTrangThai(boolean trangThai) {
+        this.trangThai = trangThai;
     }
 
-    public ChiTietHoaDon getCtthd() {
-        return ctthd;
-    }
-
-    public void setCtthd(ChiTietHoaDon ctthd) {
-        this.ctthd = ctthd;
-    }
-
-    public DonViTinh getDvTinh() {
-        return dvTinh;
-    }
-
-    public void setDvTinh(DonViTinh dvTinh) {
-        this.dvTinh = dvTinh;
-    }
+    
     
     public void setNgayHetHan(LocalDate ngayHetHan) {
         if (ngayHetHan == null || (ngaySanXuat != null && ngayHetHan.isBefore(ngaySanXuat))) {
@@ -140,12 +130,8 @@ public class LoSanPham {
 
     @Override
     public String toString() {
-        return "LoSanPham{" +
-                "maLoSanPham='" + maLoSanPham + '\'' +
-                ", sanPham=" + (sanPham != null ? sanPham.getMaSP() : "null") +
-                ", soLuong=" + soLuong +
-                ", ngaySanXuat=" + ngaySanXuat +
-                ", ngayHetHan=" + ngayHetHan +
-                '}';
+        return "LoSanPham{" + "maLoSanPham=" + maLoSanPham + ", sanPham=" + sanPham + ", soLuong=" + soLuong + ", ngaySanXuat=" + ngaySanXuat + ", ngayHetHan=" + ngayHetHan + ", trangThai=" + trangThai + '}';
     }
+
+    
 }
