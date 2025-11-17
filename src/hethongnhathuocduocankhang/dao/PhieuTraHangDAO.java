@@ -224,11 +224,11 @@ public class PhieuTraHangDAO {
                 ma = rs.getString(1);
                 ma = ma.substring(ma.length() - 4);
             }
-            
-            
         } catch (SQLException | NumberFormatException e) {
             e.printStackTrace();
         }
+        
+        if(ma == null) return 0;
         return Integer.parseInt(ma);
     }
 }
