@@ -96,6 +96,7 @@ public class BanHangGUI extends javax.swing.JPanel {
                 int tabIndex = tabbedPane.indexOfTabComponent(tabPanel);
                 if (tabIndex != -1) {
                     tabbedPane.remove(tabIndex);
+                    capNhatLaiTenHoaDon(tabbedPane);
                 }
             }
             
@@ -115,6 +116,21 @@ public class BanHangGUI extends javax.swing.JPanel {
         tabbedPane.setTabComponentAt(index, tabPanel);
         
     }
+    
+    private void capNhatLaiTenHoaDon(JTabbedPane tabbedPane) {
+        int count = tabbedPane.getTabCount();
+
+        // Tab cuối cùng là tab "+" → không rename
+        for (int i = 0; i < count - 1; i++) {
+            JPanel tabPanel = (JPanel) tabbedPane.getTabComponentAt(i);
+
+            if (tabPanel != null) {
+                JLabel lblTitle = (JLabel) tabPanel.getComponent(0);
+                lblTitle.setText("Hóa đơn " + (i + 1));
+            }
+        }
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
 }
