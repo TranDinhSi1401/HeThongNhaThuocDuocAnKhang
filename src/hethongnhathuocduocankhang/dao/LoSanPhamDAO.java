@@ -2,11 +2,7 @@ package hethongnhathuocduocankhang.dao;
 
 
 import hethongnhathuocduocankhang.connectDB.ConnectDB;
-import hethongnhathuocduocankhang.entity.ChiTietHoaDon;
-import hethongnhathuocduocankhang.entity.DonViTinh;
-import hethongnhathuocduocankhang.entity.KhachHang;
 import hethongnhathuocduocankhang.entity.LoSanPham;
-import hethongnhathuocduocankhang.entity.NhaCungCap;
 import hethongnhathuocduocankhang.entity.SanPham;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -14,7 +10,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import net.miginfocom.layout.AC;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -43,7 +38,6 @@ public class LoSanPhamDAO {
                 dsLSP.add(lsp);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
         }
         return dsLSP;
     }
@@ -58,18 +52,15 @@ public class LoSanPhamDAO {
             ps.setString(2, maLo);
             rows = ps.executeUpdate(); 
         } catch (SQLException e) {
-            e.printStackTrace();
         }
         return rows > 0;
     }
     public static ArrayList<LoSanPham> dsLoSanPham(){
         ArrayList<LoSanPham> ds = new ArrayList<>();
         String sql = "Select * from LoSanPham";
-        try {
-            ConnectDB.getInstance().connect();
-            Connection con = ConnectDB.getConnection();
+        try (Connection con = ConnectDB.getConnection();
             PreparedStatement st = con.prepareStatement(sql);
-            ResultSet rs = st.executeQuery();
+            ResultSet rs = st.executeQuery()){
             while(rs.next()){
                     String maSP = rs.getString(2);
                     String maLoSP = rs.getString(1);
@@ -84,9 +75,8 @@ public class LoSanPhamDAO {
         return ds;
     }
     public static LoSanPham timLoSanPham(String maLo){
-        LoSanPham lo = new LoSanPham();
+        LoSanPham lo=null;
         String sql = "Select * from LoSanPham where maLoSanPham = ?";
-        lo = null;
         try {
             ConnectDB.getInstance().connect();
             Connection con = ConnectDB.getConnection();

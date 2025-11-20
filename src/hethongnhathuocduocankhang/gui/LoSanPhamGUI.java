@@ -69,12 +69,28 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
         
         tblLoSanPham.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
         tblLoSanPham.getColumnModel().getColumn(0).setPreferredWidth(90);
-        tblLoSanPham.getColumnModel().getColumn(1).setPreferredWidth(300);
-        tblLoSanPham.getColumnModel().getColumn(2).setPreferredWidth(200);
+        tblLoSanPham.getColumnModel().getColumn(1).setPreferredWidth(282);
+        tblLoSanPham.getColumnModel().getColumn(2).setPreferredWidth(170);
         tblLoSanPham.getColumnModel().getColumn(3).setPreferredWidth(90);
-        tblLoSanPham.getColumnModel().getColumn(4).setPreferredWidth(90);
+        tblLoSanPham.getColumnModel().getColumn(4).setPreferredWidth(80);
         tblLoSanPham.getColumnModel().getColumn(5).setPreferredWidth(120);
         
+        tblThemSanPham.getColumnModel().getColumn(0).setPreferredWidth(70);
+        tblThemSanPham.getColumnModel().getColumn(1).setPreferredWidth(280);
+        tblThemSanPham.getColumnModel().getColumn(2).setPreferredWidth(160);
+        tblThemSanPham.getColumnModel().getColumn(3).setPreferredWidth(180);
+        tblThemSanPham.getColumnModel().getColumn(4).setPreferredWidth(60);
+        tblThemSanPham.getColumnModel().getColumn(5).setPreferredWidth(70);
+        tblThemSanPham.getColumnModel().getColumn(6).setPreferredWidth(70);
+        tblThemSanPham.getColumnModel().getColumn(7).setPreferredWidth(90);
+        tblThemSanPham.getColumnModel().getColumn(8).setPreferredWidth(90);
+        tblThemSanPham.getColumnModel().getColumn(9).setPreferredWidth(90);
+        
+        tblThemSanPham.getTableHeader().setReorderingAllowed(false);
+        tblLoSanPham.getTableHeader().setReorderingAllowed(false);
+        tblKetQua.getTableHeader().setReorderingAllowed(false);
+        tblLichSuHoatDong.getTableHeader().setReorderingAllowed(false);
+
         
         tblLoSanPham.getSelectionModel().addListSelectionListener(new ListSelectionListener(){
             @Override
@@ -274,7 +290,7 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
             .addGroup(jPanel12Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 862, Short.MAX_VALUE)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 988, Short.MAX_VALUE)
                     .addGroup(jPanel12Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnThemSanPhamTuExcel)
@@ -378,7 +394,7 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
                             .addComponent(jLabel3))
                         .addGap(9, 9, 9)
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtTenSanPham)
+                            .addComponent(txtTenSanPham, javax.swing.GroupLayout.DEFAULT_SIZE, 272, Short.MAX_VALUE)
                             .addComponent(txtMaSanPham)))
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -392,16 +408,18 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
                             .addComponent(txtDonViTinh)))
                     .addGroup(jPanel5Layout.createSequentialGroup()
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel8)
-                            .addComponent(jLabel9)
-                            .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.TRAILING)
-                                .addComponent(jLabel7)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addGroup(jPanel5Layout.createSequentialGroup()
+                                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jLabel8)
+                                    .addComponent(jLabel9)
+                                    .addComponent(jLabel7))
+                                .addGap(13, 13, 13))
+                            .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.TRAILING))
+                        .addGap(2, 2, 2)
                         .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtNgayHetHan)
-                            .addComponent(txtNgaySanXuat, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 205, Short.MAX_VALUE)
                             .addComponent(txtGiaNhap, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(txtNgayHetHan, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(txtNgaySanXuat)
                             .addComponent(txtTrangThai))))
                 .addContainerGap())
         );
@@ -476,7 +494,7 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
             jPanel22Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel22Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(txtTimKiem, javax.swing.GroupLayout.DEFAULT_SIZE, 436, Short.MAX_VALUE)
+                .addComponent(txtTimKiem, javax.swing.GroupLayout.DEFAULT_SIZE, 499, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -531,7 +549,7 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
             .addGroup(jPanel23Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel23Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 536, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 599, Short.MAX_VALUE)
                     .addGroup(jPanel23Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnGop)
@@ -588,7 +606,7 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtConHan)
-                .addContainerGap(137, Short.MAX_VALUE))
+                .addContainerGap(168, Short.MAX_VALUE))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -616,7 +634,7 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
                 .addComponent(jLabel10)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtSapHetHan)
-                .addContainerGap(115, Short.MAX_VALUE))
+                .addContainerGap(146, Short.MAX_VALUE))
         );
         jPanel15Layout.setVerticalGroup(
             jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -644,7 +662,7 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
                 .addComponent(jLabel11)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtHetHan)
-                .addContainerGap(140, Short.MAX_VALUE))
+                .addContainerGap(171, Short.MAX_VALUE))
         );
         jPanel16Layout.setVerticalGroup(
             jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -672,7 +690,7 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
                 .addComponent(jLabel13)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtDaHuy)
-                .addContainerGap(145, Short.MAX_VALUE))
+                .addContainerGap(176, Short.MAX_VALUE))
         );
         jPanel17Layout.setVerticalGroup(
             jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -715,6 +733,11 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
         });
 
         btnUpdate.setText("Cập nhật trạng thái");
+        btnUpdate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpdateActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
@@ -723,7 +746,7 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
             .addGroup(jPanel7Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 862, Short.MAX_VALUE)
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 988, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnUpdate)
@@ -754,7 +777,7 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
         jPanel18.setLayout(jPanel18Layout);
         jPanel18Layout.setHorizontalGroup(
             jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGap(0, 1000, Short.MAX_VALUE)
         );
         jPanel18Layout.setVerticalGroup(
             jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -820,7 +843,7 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
                         .addComponent(jLabel20)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jDateChooser2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 158, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 284, Short.MAX_VALUE)
                         .addComponent(txtLamMoi, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE))))
         );
         jPanel20Layout.setVerticalGroup(
@@ -876,7 +899,7 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
             jPanel21Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel21Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 852, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 978, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel21Layout.setVerticalGroup(
@@ -954,6 +977,10 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
                 XSSFWorkbook workbook = new XSSFWorkbook(fis);
                 XSSFSheet sheet = workbook.getSheetAt(0);
                 DefaultTableModel model = (DefaultTableModel) tblThemSanPham.getModel();
+                if(model.getRowCount()>0){
+                    JOptionPane.showMessageDialog(this, "Vui lòng xóa các sản phẩm hiện có rồi thử lại");
+                    return;
+                }
                 boolean skipHeader = true;
                 int soSanPham = 0;
                 for (Row row : sheet) {
@@ -1086,6 +1113,10 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
         }
         chonTatCa();
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnUpdateActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
