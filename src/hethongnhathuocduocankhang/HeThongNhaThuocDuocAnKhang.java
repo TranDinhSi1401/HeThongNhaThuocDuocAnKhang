@@ -4,6 +4,7 @@
  */
 package hethongnhathuocduocankhang;
 
+import com.formdev.flatlaf.fonts.roboto.FlatRobotoFont;
 import hethongnhathuocduocankhang.connectDB.ConnectDB;
 import hethongnhathuocduocankhang.dao.KhachHangDAO;
 import hethongnhathuocduocankhang.dao.NhanVienDAO;
@@ -13,6 +14,8 @@ import hethongnhathuocduocankhang.gui.GiaoDienChinhGUI;
 import hethongnhathuocduocankhang.gui.SplashScreen;
 import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
+import javax.swing.UIManager;
+//import raven.application.Application;
 
 /**
  *
@@ -25,6 +28,7 @@ public class HeThongNhaThuocDuocAnKhang {
      */
     public static void main(String[] args) {
         java.awt.EventQueue.invokeLater(() -> {
+            //Application.main(args);
             SplashScreen ss = new SplashScreen(0);
 
             SwingWorker<Void, Void> worker = new SwingWorker<>() {
