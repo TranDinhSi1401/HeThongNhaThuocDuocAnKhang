@@ -4,6 +4,7 @@
  */
 package hethongnhathuocduocankhang.gui;
 
+import hethongnhathuocduocankhang.bus.BanHangBUS;
 import hethongnhathuocduocankhang.connectDB.ConnectDB;
 import hethongnhathuocduocankhang.dao.ChiTietHoaDonDAO;
 import hethongnhathuocduocankhang.dao.ChiTietXuatLoDAO;
@@ -46,6 +47,7 @@ import javax.swing.table.TableColumn;
  * @author trand
  */
 public class BanHangPane extends javax.swing.JPanel {
+    private BanHangBUS bus = new BanHangBUS();
     /**
      * Creates new form BanHangGUI
      */
@@ -79,48 +81,22 @@ public class BanHangPane extends javax.swing.JPanel {
         model.addTableModelListener(e -> {
             if (e.getColumn() == 2 || e.getColumn() == 4) {
                 int row = e.getFirstRow();
-                
-                String tendvt = model.getValueAt(row, 2).toString();
-                int soluong = Integer.parseInt(model.getValueAt(row, 4).toString());
-                double giamgia = 0;
-                
+                // lấy đơn vị tính hoặc số lượng
+                String tenDVT = model.getValueAt(row, 2).toString();
+                int soLuong = Integer.parseInt(model.getValueAt(row, 4).toString());
+                               
                 String masp = model.getValueAt(row, 8).toString();
-                ArrayList<KhuyenMai> dskm = KhuyenMaiDAO.getKhuyenMaiTheoMaSP(masp);
-                dskm.sort((b, a) -> Double.compare(a.getPhanTram(), b.getPhanTram()));  
-                ArrayList<DonViTinh> dsdvt = DonViTinhDAO.getDonViTinhTheoMaSP(masp);
-                
-                ArrayList<LoSanPham> dsLSP = LoSanPhamDAO.getLoSanPhamTheoMaSP(masp);
-                int tongSoLuong = 0;
-                for(LoSanPham lsp : dsLSP) {
-                    tongSoLuong += lsp.getSoLuong();
+                try {
+                    Object[] updatedInfo = bus.thayDoiChiTietHoaDon(masp, soLuong, tenDVT);
+                    model.setValueAt(updatedInfo[0], row, 3);
+                    model.setValueAt(updatedInfo[1], row, 5);
+                    model.setValueAt(updatedInfo[2], row, 6);
+                    model.setValueAt(updatedInfo[3], row, 7);
+                    capNhatTongTien(model);
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(this, ex.getMessage());
                 }
-                
-                for(KhuyenMai km : dskm) {
-                    if(soluong >= km.getSoLuongToiThieu() && soluong <= km.getSoLuongToiDa()) {
-                        giamgia = km.getPhanTram();
-                        break;
-                    } 
-                }
-                for (DonViTinh dvt : dsdvt) {
-                    if (dvt.getTenDonVi().equals(tendvt)) {
-                        int heSoQuyDoi = dvt.getHeSoQuyDoi();
-                        double dongia = dvt.getGiaBanTheoDonVi();
-                        double thanhtien = soluong * dongia * (1 - giamgia / 100);
-                        String madvt = dvt.getMaDonViTinh();
-                        
-                        if(soluong * heSoQuyDoi > tongSoLuong) {
-                            JOptionPane.showMessageDialog(this, "Không đủ số lượng");
-                            return;
-                        }
-                        
-                        model.setValueAt(dongia, row, 3);
-                        model.setValueAt(giamgia, row, 5);
-                        model.setValueAt(thanhtien, row, 6);
-                        model.setValueAt(madvt, row, 7);
-                        break;
-                    }
-                }
-                capNhatTongTien(model);
+               
             }
         });
         
@@ -601,6 +577,87 @@ public class BanHangPane extends javax.swing.JPanel {
         add(pLeftCenter, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
+    public void themCTHDVaoTable(Object[] newRow) {
+        DefaultTableModel model = (DefaultTableModel) tblCTHD.getModel();
+        // Lấy stt của bảng CTHD
+        int stt = model.getRowCount() + 1;
+        newRow[0] = stt;
+        // Thêm vào table
+        model.addRow(newRow);
+        // Định dạng tiền tệ và phần trăm
+        TableColumn colDonGia = tblCTHD.getColumnModel().getColumn(3);
+        TableColumn colGiamGia = tblCTHD.getColumnModel().getColumn(5);
+        TableColumn colThanhTien = tblCTHD.getColumnModel().getColumn(6);
+
+        NumberFormat currencyVN = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
+
+        // Đơn giá & Thành tiền → tiền VN
+        DefaultTableCellRenderer currencyRenderer = new DefaultTableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value,
+                                                           boolean isSelected, boolean hasFocus,
+                                                           int row, int column) {
+                JLabel lbl = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                if (value instanceof Number number) {
+                    lbl.setText(currencyVN.format(number.doubleValue()));
+                }
+                lbl.setHorizontalAlignment(SwingConstants.RIGHT);
+                return lbl;
+            }
+        };
+
+        colDonGia.setCellRenderer(currencyRenderer);
+        colThanhTien.setCellRenderer(currencyRenderer);
+
+        // Giảm giá → thêm %
+        DefaultTableCellRenderer percentRenderer = new DefaultTableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value,
+                                                           boolean isSelected, boolean hasFocus,
+                                                           int row, int column) {
+                JLabel lbl = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                if (value instanceof Number number) {
+                    lbl.setText(number.doubleValue() + " %");
+                }
+                lbl.setHorizontalAlignment(SwingConstants.CENTER);
+                return lbl;
+            }
+        };
+        colGiamGia.setCellRenderer(percentRenderer);
+        
+        // Cột STT căn trái
+        TableColumn colSTT = tblCTHD.getColumnModel().getColumn(0);
+        DefaultTableCellRenderer leftAlignRenderer = new DefaultTableCellRenderer();
+        leftAlignRenderer.setHorizontalAlignment(SwingConstants.CENTER);
+        colSTT.setCellRenderer(leftAlignRenderer);
+        
+        capNhatTongTien(model);
+    }
+    
+    private void capNhatGoiYSauKhiTongTienThayDoi(double tongTien) {
+        long t = (long)tongTien;
+
+        long[] menhGia = {10000, 20000, 50000, 100000, 200000, 500000};
+        JButton[] buttons = {btnGoiY1, btnGoiY2, btnGoiY3, btnGoiY4, btnGoiY5, btnGoiY6};
+
+        for (int i = 0; i < menhGia.length; i++) {
+            long goiY = lamTronLen(t, menhGia[i]);
+
+            if (i > 0 && goiY <= Long.parseLong(buttons[i-1].getText().replace(",", ""))) {
+                goiY += menhGia[i];
+            }
+            
+            buttons[i].setText(String.format("%,d", goiY));
+        }
+    }
+    
+    private long lamTronLen(long soTien, long menhGia) {
+        if (soTien == menhGia) {
+            return soTien;
+        }
+        return ((soTien / menhGia) + 1) * menhGia;
+    }
+    
     public void capNhatTongTien(DefaultTableModel model) {
         int n = model.getRowCount();
         double tongTien = 0;
@@ -627,53 +684,6 @@ public class BanHangPane extends javax.swing.JPanel {
         }
     }
     
-    private void capNhatGoiYSauKhiTongTienThayDoi(double tongTien) {
-        long t = (long)tongTien;
-
-        long[] menhGia = {10000, 20000, 50000, 100000, 200000, 500000};
-        JButton[] buttons = {btnGoiY1, btnGoiY2, btnGoiY3, btnGoiY4, btnGoiY5, btnGoiY6};
-
-        for (int i = 0; i < menhGia.length; i++) {
-            long goiY = lamTronLen(t, menhGia[i]);
-
-            if (i > 0 && goiY <= Long.parseLong(buttons[i-1].getText().replace(",", ""))) {
-                goiY += menhGia[i];
-            }
-            
-            buttons[i].setText(String.format("%,d", goiY));
-        }
-    }
-
-    private long lamTronLen(long soTien, long menhGia) {
-        if (soTien == menhGia) {
-            return soTien;
-        }
-        return ((soTien / menhGia) + 1) * menhGia;
-    }
-    
-    private String chuanHoaMaSP(String input) {
-        if (input == null) return "";
-
-        input = input.trim().toUpperCase();
-
-        // Nếu dạng chuẩn rồi thì giữ nguyên
-        if (input.matches("^SP-\\d{4}$")) {
-            return input;
-        }
-
-        // Nếu dạng sp0001 → thêm dấu "-"
-        if (input.matches("^SP\\d{4}$")) {
-            return input.substring(0, 2) + "-" + input.substring(2);
-        }
-
-        // Nếu người dùng chỉ nhập số
-        if (input.matches("^\\d{4}$")) {
-            return "SP-" + input;
-        }
-
-        return input;
-    }
-
     private void capNhatTienThua() {
         double tienKhachDua = Double.parseDouble(txtTienKhachDua.getText());
         double tongTien = getTongTien();
@@ -692,120 +702,15 @@ public class BanHangPane extends javax.swing.JPanel {
     }//GEN-LAST:event_btnXoaTrangActionPerformed
 
     private void btnTimKiemMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnTimKiemMouseClicked
-        themSanPhamVaoTable();
+        try {
+            String maSP = txtTimKiem.getText().trim();
+            Object[] newRow = bus.themChiTietHoaDon(maSP);
+            themCTHDVaoTable(newRow);
+        }catch(Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
     }//GEN-LAST:event_btnTimKiemMouseClicked
 
-    private void themSanPhamVaoTable() {
-        // Lấy các thông tin liên quan đến mã sp
-        String maSP = chuanHoaMaSP(txtTimKiem.getText());
-        SanPham sp = SanPhamDAO.timSPTheoMa(maSP);
-        ArrayList<DonViTinh> dsDVT = DonViTinhDAO.getDonViTinhTheoMaSP(maSP);
-        ArrayList<KhuyenMai> dsKM = KhuyenMaiDAO.getKhuyenMaiTheoMaSP(maSP);
-        ArrayList<LoSanPham> dsLSP = LoSanPhamDAO.getLoSanPhamTheoMaSP(maSP);
-        int tongSoLuong = dsLSP.stream().mapToInt(LoSanPham :: getSoLuong).sum();
-        
-        // Bắt lỗi các trường hợp có thể xảy ra
-        if (sp == null) {
-            JOptionPane.showMessageDialog(this, "Không tìm thấy sản phẩm!");
-            return;
-        }
-        
-        if (dsDVT == null || dsDVT.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Sản phẩm này chưa có đơn vị tính!");
-            return;
-        }
-        
-        if(tongSoLuong <= 0) {
-            JOptionPane.showMessageDialog(this, "Sản phẩm này không đủ số lượng!");
-            return;
-        }
-        
-        // render chi tiết hóa đơn
-        DefaultTableModel model = (DefaultTableModel)tblCTHD.getModel();
-        
-        int stt = model.getRowCount() + 1;
-        
-        String tenSP = sp.getTen();
-        
-        dsDVT.sort((a, b) -> Double.compare(a.getHeSoQuyDoi(), b.getHeSoQuyDoi()));
-        DonViTinh dvtMacDinh = dsDVT.get(0);
-        String tenDVT = dvtMacDinh.getTenDonVi();
-        
-        double donGia = dvtMacDinh.getGiaBanTheoDonVi();
-        
-        int soLuong = 1;   
-        
-        double giamGia = 0;
-        dsKM.sort((b, a) -> Double.compare(a.getPhanTram(), b.getPhanTram()));
-        for(KhuyenMai km : dsKM) {
-            if(soLuong >= km.getSoLuongToiThieu() && soLuong <= km.getSoLuongToiDa()) {
-                giamGia = km.getPhanTram();
-                break;
-            }
-        }
-        double thanhTien = soLuong * donGia * (1 - giamGia / 100);
-        String maDVT = dvtMacDinh.getMaDonViTinh();
-        
-        Object[] newRow = {stt, tenSP, tenDVT, donGia, soLuong, giamGia, thanhTien, maDVT, maSP};
-        model.addRow(newRow);
-        
-        // tạo combobox cho cột đơn vị tính
-//        TableColumn columnDVT = tblCTHD.getColumnModel().getColumn(2);
-//        JComboBox<String> cbDonViTinh = new JComboBox<>();
-//        for (DonViTinh dvt : dsDVT) {
-//            cbDonViTinh.addItem(dvt.getTenDonVi());
-//        }
-//        columnDVT.setCellEditor(new DefaultCellEditor(cbDonViTinh));
-
-        TableColumn colDonGia = tblCTHD.getColumnModel().getColumn(3);
-        TableColumn colGiamGia = tblCTHD.getColumnModel().getColumn(5);
-        TableColumn colThanhTien = tblCTHD.getColumnModel().getColumn(6);
-
-        NumberFormat currencyVN = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
-
-        // Đơn giá & Thành tiền → tiền VN
-        DefaultTableCellRenderer currencyRenderer = new DefaultTableCellRenderer() {
-            @Override
-            public Component getTableCellRendererComponent(JTable table, Object value,
-                                                           boolean isSelected, boolean hasFocus,
-                                                           int row, int column) {
-                JLabel lbl = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-                if (value instanceof Number) {
-                    lbl.setText(currencyVN.format(((Number) value).doubleValue()));
-                }
-                lbl.setHorizontalAlignment(SwingConstants.RIGHT);
-                return lbl;
-            }
-        };
-
-        colDonGia.setCellRenderer(currencyRenderer);
-        colThanhTien.setCellRenderer(currencyRenderer);
-
-        // Giảm giá → thêm %
-        DefaultTableCellRenderer percentRenderer = new DefaultTableCellRenderer() {
-            @Override
-            public Component getTableCellRendererComponent(JTable table, Object value,
-                                                           boolean isSelected, boolean hasFocus,
-                                                           int row, int column) {
-                JLabel lbl = (JLabel) super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-                if (value instanceof Number) {
-                    lbl.setText(((Number) value).doubleValue() + " %");
-                }
-                lbl.setHorizontalAlignment(SwingConstants.CENTER);
-                return lbl;
-            }
-        };
-        colGiamGia.setCellRenderer(percentRenderer);
-        
-        // Cột STT căn trái
-        TableColumn colSTT = tblCTHD.getColumnModel().getColumn(0);
-        DefaultTableCellRenderer leftAlignRenderer = new DefaultTableCellRenderer();
-        leftAlignRenderer.setHorizontalAlignment(SwingConstants.CENTER);
-        colSTT.setCellRenderer(leftAlignRenderer);
-        
-        capNhatTongTien(model);
-    }
-    
     private void btnXoaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnXoaMouseClicked
         int selectedRow = tblCTHD.getSelectedRow();
         DefaultTableModel model = (DefaultTableModel) tblCTHD.getModel();
@@ -830,23 +735,17 @@ public class BanHangPane extends javax.swing.JPanel {
 
     private void txtSdtKHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtSdtKHActionPerformed
         String sdt = txtSdtKH.getText().trim();
-        KhachHang kh = null;
-        try {
-            kh = KhachHangDAO.getKhachHangTheoSdt(sdt);
-        } catch (SQLException sQLException) {
-            System.out.println("Lỗi tìm sđt kh");
-        }
-        if(kh == null) {
+        KhachHang kh = bus.layThongTinKhachHang(sdt);
+        if(kh != null) {
+            String maKH = kh.getMaKH();
+            String hoTen = kh.getHoTenDem() + " " + kh.getTen();
+            int diemTichLuy = kh.getDiemTichLuy();
+            lblMaKH1.setText(maKH);
+            lblHoTen1.setText(hoTen);
+            lblDiemTichLuy1.setText(String.valueOf(diemTichLuy));
+        } else {
             JOptionPane.showMessageDialog(this, "Số điện thoại không tồn tại");
-            return;
-        }
-        // Render thông tin khách hàng
-        String maKH = kh.getMaKH();
-        String hoTen = kh.getHoTenDem() + " " + kh.getTen();
-        int diemTichLuy = kh.getDiemTichLuy();
-        lblMaKH1.setText(maKH);
-        lblHoTen1.setText(hoTen);
-        lblDiemTichLuy1.setText(String.valueOf(diemTichLuy));
+        }       
     }//GEN-LAST:event_txtSdtKHActionPerformed
 
     private void txtTienKhachDuaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTienKhachDuaActionPerformed
@@ -895,7 +794,6 @@ public class BanHangPane extends javax.swing.JPanel {
             double tongTien = getTongTien();
             HoaDon hd = new HoaDon(maHDMoi, new NhanVien(maNV), ngayLapHD, new KhachHang(maKH), chuyenKhoan, trangThai, tongTien);
 
-            System.out.println(hd);
             if(false == HoaDonDAO.insertHoaDon(hd)) {
                 JOptionPane.showMessageDialog(this, "Tạo hóa đơn thất bại");
                 return;
@@ -983,7 +881,7 @@ public class BanHangPane extends javax.swing.JPanel {
 
     private void txtTimKiemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTimKiemActionPerformed
         // Thêm sản phẩm vào table cthd
-        themSanPhamVaoTable();
+        //themSanPhamVaoTable();
         // Xóa nội dung trong ô text để chuẩn bị cho lần quét tiếp theo
         txtTimKiem.setText("");       
         // Tự động đặt con trỏ chuột trở lại ô này
