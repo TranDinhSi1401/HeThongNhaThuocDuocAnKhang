@@ -16,7 +16,7 @@ public class LoSanPham {
     private int soLuong;
     private LocalDate ngaySanXuat;
     private LocalDate ngayHetHan;
-    private boolean trangThai;
+    private boolean daHuy;
     
 
     // --- Constructors ---
@@ -33,13 +33,13 @@ public class LoSanPham {
 //
 //    }
 
-    public LoSanPham(String maLoSanPham, SanPham sanPham, int soLuong, LocalDate ngaySanXuat, LocalDate ngayHetHan, boolean trangThai) {
+    public LoSanPham(String maLoSanPham, SanPham sanPham, int soLuong, LocalDate ngaySanXuat, LocalDate ngayHetHan, boolean daHuy) {
         this.maLoSanPham = maLoSanPham;
         this.sanPham = sanPham;
         this.soLuong = soLuong;
         this.ngaySanXuat = ngaySanXuat;
         this.ngayHetHan = ngayHetHan;
-        this.trangThai = trangThai;
+        this.daHuy = daHuy;
     }
 
     
@@ -110,14 +110,16 @@ public class LoSanPham {
     public LocalDate getNgayHetHan() {
         return ngayHetHan;
     }
-
-    public boolean isTrangThai() {
-        return trangThai;
+    
+    public boolean isDaHuy() {
+        return daHuy;
     }
 
-    public void setTrangThai(boolean trangThai) {
-        this.trangThai = trangThai;
+    public void setDaHuy(boolean daHuy) {
+        this.daHuy = daHuy;
     }
+
+    
 
     
     
@@ -130,7 +132,7 @@ public class LoSanPham {
 
     @Override
     public String toString() {
-        return "LoSanPham{" + "maLoSanPham=" + maLoSanPham + ", sanPham=" + sanPham + ", soLuong=" + soLuong + ", ngaySanXuat=" + ngaySanXuat + ", ngayHetHan=" + ngayHetHan + ", trangThai=" + trangThai + '}';
+        return "LoSanPham{" + "maLoSanPham=" + maLoSanPham + ", sanPham=" + sanPham + ", soLuong=" + soLuong + ", ngaySanXuat=" + ngaySanXuat + ", ngayHetHan=" + ngayHetHan + ", trangThai=" + daHuy + '}';
     }
 
     

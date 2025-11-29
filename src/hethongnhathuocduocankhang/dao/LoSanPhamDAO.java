@@ -58,17 +58,21 @@ public class LoSanPhamDAO {
     public static ArrayList<LoSanPham> dsLoSanPham(){
         ArrayList<LoSanPham> ds = new ArrayList<>();
         String sql = "Select * from LoSanPham";
-        try (Connection con = ConnectDB.getConnection();
+        try {
+            ConnectDB.getInstance().connect();
+            Connection con = ConnectDB.getConnection();
             PreparedStatement st = con.prepareStatement(sql);
-            ResultSet rs = st.executeQuery()){
-            while(rs.next()){
-                    String maSP = rs.getString(2);
-                    String maLoSP = rs.getString(1);
+            try(ResultSet rs = st.executeQuery()){
+                while(rs.next()){
+                    String malo = rs.getString(1);
+                    String sanPham = rs.getString(2);
                     int sl = rs.getInt(3);
                     LocalDate ngaySX = rs.getDate(4).toLocalDate();
                     LocalDate ngayHH = rs.getDate(5).toLocalDate();
-                    LoSanPham lo = new LoSanPham(maLoSP, new SanPham(maSP), sl, ngaySX, ngayHH);    
-                ds.add(lo);
+                    boolean daHuy = rs.getBoolean(6);
+                    LoSanPham lo = new LoSanPham(malo, new SanPham(sanPham), sl, ngaySX, ngayHH, daHuy);
+                    ds.add(lo);
+                }
             }
         } catch (SQLException sQLException) {
         }
@@ -84,12 +88,13 @@ public class LoSanPhamDAO {
             st.setString(1, maLo);
             try(ResultSet rs = st.executeQuery()){
                 while (rs.next()){
+                    String maLoSP = rs.getString(1);
                     String maSP = rs.getString(2);
-                    String maLoSP = rs.getString(1);                  
+                    int sl = rs.getInt(3);
                     LocalDate ngaySX = rs.getDate(4).toLocalDate();
                     LocalDate ngayHH = rs.getDate(5).toLocalDate();
-                    int sl = rs.getInt(3);
-                    lo = new LoSanPham(maLoSP, new SanPham(maSP), sl, ngaySX, ngayHH);
+                    boolean daHuy = rs.getBoolean(6);
+                    lo = new LoSanPham(maLoSP, new SanPham(maSP), sl, ngaySX, ngayHH, daHuy);
                 }
             }
         } catch (SQLException sQLException) {

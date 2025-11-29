@@ -23,7 +23,7 @@ public class QuanLyLoBUS {
         int hetHan=0;
         int daHuy=0;
         for (LoSanPham i:dsLo){
-            if(!i.isTrangThai()){
+            if(!i.isDaHuy()){
                 long kq = kiemTra(LocalDate.now(), i.getNgayHetHan());
                 if(kq>=0&&kq<=30) sapHetHan++;
                 else if(kq<0) hetHan++;

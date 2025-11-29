@@ -25,8 +25,9 @@ public class SanPham {
     }
 
     public SanPham(String maSP) {
-        setMaSP(maSP);
+        this.maSP = maSP;
     }
+    
     
     public SanPham(String maSP, String ten, String moTa, String thanhPhan,
                    LoaiSanPhamEnum loaiSanPhamEnum, int tonToiThieu, int tonToiDa) {

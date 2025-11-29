@@ -176,10 +176,12 @@ public class ThemSanPhamGUI extends javax.swing.JPanel {
     }
 
     public void setCmbLoaiSanPham(LoaiSanPhamEnum loai) {
-        if (loai == LoaiSanPhamEnum.THUOC) {
-            jComboBox1.setSelectedItem("Thuốc");
+        if (loai == LoaiSanPhamEnum.THUOC_KE_DON) {
+            jComboBox1.setSelectedItem("Thuốc kê đơn");
         } else if (loai == LoaiSanPhamEnum.THUC_PHAM_CHUC_NANG) {
             jComboBox1.setSelectedItem("Thực phẩm chức năng");
+        }else {
+            jComboBox1.setSelectedItem("Thuốc không kê đơn");
         }
     }
 
@@ -538,7 +540,7 @@ public class ThemSanPhamGUI extends javax.swing.JPanel {
             String moTa = jTextField3.getText().trim();
             String thanhPhan = jTextField4.getText().trim();
             LoaiSanPhamEnum loai = jComboBox1.getSelectedItem().toString().equals("Thuốc")
-                    ? LoaiSanPhamEnum.THUOC
+                    ? LoaiSanPhamEnum.THUOC_KE_DON
                     : LoaiSanPhamEnum.THUC_PHAM_CHUC_NANG;
 
             // 2. Tạo đối tượng và lưu vào biến của lớp

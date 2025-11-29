@@ -104,8 +104,20 @@ CREATE TABLE SanPham (
     tonToiThieu INT NOT NULL,
     tonToiDa INT NOT NULL,
     CONSTRAINT CK_SanPham_MaSP_Format CHECK (maSP LIKE 'SP-[0-9][0-9][0-9][0-9]'),
-    CONSTRAINT CK_SanPham_LoaiSanPham_Enum CHECK (loaiSanPham IN (N'THUOC', N'THUC_PHAM_CHUC_NANG')),
+    CONSTRAINT CK_SanPham_LoaiSanPham_Enum CHECK (loaiSanPham IN (N'THUOC_KE_DON', N'THUOC_KHONG_KE_DON', N'THUC_PHAM_CHUC_NANG')),
     CONSTRAINT CK_SanPham_TonKhoHopLe CHECK (tonToiDa >= tonToiThieu AND tonToiThieu >= 0)
+);
+GO
+
+CREATE TABLE MaVachSanPham (
+    maVach VARCHAR(20) NOT NULL,
+    maSP NVARCHAR(7) NOT NULL,     
+    
+    CONSTRAINT PK_MaVachSanPham PRIMARY KEY (maVach),
+    
+    CONSTRAINT FK_MaVach_SanPham FOREIGN KEY (maSP) 
+        REFERENCES SanPham(maSP) 
+        ON DELETE CASCADE
 );
 GO
 
@@ -129,6 +141,7 @@ CREATE TABLE LoSanPham (
     soLuong INT NOT NULL,
     ngaySanXuat DATE NOT NULL,
     ngayHetHan DATE NOT NULL,
+    daHuy BIT NOT NULL DEFAULT 0, -- DEFAULT 0: Mặc định là chưa hủy (False)
     CONSTRAINT FK_LoSanPham_SanPham FOREIGN KEY (maSP) REFERENCES SanPham(maSP) ON DELETE CASCADE,
     CONSTRAINT CK_LoSanPham_SoLuong CHECK (soLuong >= 0),
     CONSTRAINT CK_LoSanPham_NgayHopLe CHECK (ngayHetHan >= ngaySanXuat)
@@ -273,6 +286,49 @@ CREATE TABLE ChiTietPhieuTraHang (
 );
 GO
 
+CREATE TABLE PhieuNhap (
+    maPhieuNhap NVARCHAR(7) NOT NULL,
+    ngayTao DATE DEFAULT GETDATE() NOT NULL,
+    maNV NVARCHAR(7) NOT NULL,
+    maNCC NVARCHAR(8) NOT NULL,
+    tongTien DECIMAL(18, 2) DEFAULT 0,
+    ghiChu NVARCHAR(255) NULL,
+
+    CONSTRAINT PK_PhieuNhap PRIMARY KEY (maPhieuNhap),
+
+    CONSTRAINT FK_PhieuNhap_NhanVien FOREIGN KEY (maNV) REFERENCES NhanVien(maNV),
+    CONSTRAINT FK_PhieuNhap_NhaCungCap FOREIGN KEY (maNCC) REFERENCES NhaCungCap(maNCC),
+
+    CONSTRAINT CK_PhieuNhap_Format CHECK (maPhieuNhap LIKE 'PN-[0-9][0-9][0-9][0-9]'),
+
+    CONSTRAINT CK_PhieuNhap_NgayTao CHECK (ngayTao <= GETDATE()),
+
+    CONSTRAINT CK_PhieuNhap_TongTien CHECK (tongTien >= 0)
+);
+GO
+
+CREATE TABLE ChiTietPhieuNhap (
+    maPhieuNhap NVARCHAR(7) NOT NULL,
+    maLoSanPham NVARCHAR(50) NOT NULL, 
+    soLuong INT NOT NULL,
+    donGia DECIMAL(18, 2) NOT NULL,
+
+    thanhTien DECIMAL(18, 2) NOT NULL, 
+    
+    ghiChu NVARCHAR(255) NULL,
+
+    CONSTRAINT PK_ChiTietPhieuNhap PRIMARY KEY (maPhieuNhap, maLoSanPham),
+
+    CONSTRAINT FK_CTPN_PhieuNhap FOREIGN KEY (maPhieuNhap) REFERENCES PhieuNhap(maPhieuNhap) 
+        ON DELETE CASCADE,
+    CONSTRAINT FK_CTPN_LoSanPham FOREIGN KEY (maLoSanPham) REFERENCES LoSanPham(maLoSanPham),
+
+    CONSTRAINT CK_CTPN_SoLuong CHECK (soLuong > 0),
+    CONSTRAINT CK_CTPN_DonGia CHECK (donGia >= 0),
+    CONSTRAINT CK_CTPN_ThanhTien CHECK (thanhTien >= 0)
+);
+GO
+
 -- ===================================================================
 -- 1. Bảng NhanVien (4 người)
 -- ===================================================================
@@ -368,72 +424,137 @@ GO
 -- 5. Bảng KhuyenMai (10 khuyến mãi)
 -- ===================================================================
 INSERT INTO KhuyenMai (maKhuyenMai, moTa, phanTram, loaiKhuyenMai, ngayBatDau, ngayKetThuc, soLuongToiThieu, soLuongToiDa, ngayChinhSua) VALUES
-('KM-0001', N'Giảm 10% khi mua từ 3 sản phẩm', 10.00, N'SO_LUONG', '2025-10-01 00:00:00', '2025-10-31 23:59:59', 3, 999, GETDATE()),
-('KM-0002', N'Mua 5 tặng 1 (Giảm 20%)', 20.00, N'MUA', '2025-10-15 00:00:00', '2025-11-15 23:59:59', 6, 6, GETDATE()),
-('KM-0003', N'Giảm 15% cho sản phẩm của Traphaco (Đã hết hạn)', 15.00, N'NHA_SAN_XUAT', '2025-09-01 00:00:00', '2025-09-30 23:59:59', 1, 999, '2025-09-01 08:00:00'),
-('KM-0004', N'Giảm giá Black Friday 20% (Sắp diễn ra)', 20.00, N'SO_LUONG', '2025-11-28 00:00:00', '2025-11-30 23:59:59', 1, 999, GETDATE()),
-('KM-0005', N'Xả hàng cận date giảm 50%', 50.00, N'NGUNG_BAN', '2025-10-20 00:00:00', '2025-10-25 23:59:59', 1, 10, GETDATE()),
-('KM-0006', N'Giảm 30% cho Thực phẩm chức năng (TPCN)', 30.00, N'SO_LUONG', '2025-10-01 00:00:00', '2025-10-31 23:59:59', 1, 999, GETDATE()),
-('KM-0007', N'Mua 2 Tặng 1 (Giảm 33.33%)', 33.33, N'MUA', '2025-10-10 00:00:00', '2025-11-10 23:59:59', 3, 3, GETDATE()),
-('KM-0008', N'Giảm 10% cho sản phẩm của Sanofi', 10.00, N'NHA_SAN_XUAT', '2025-10-15 00:00:00', '2025-11-15 23:59:59', 1, 999, GETDATE()),
-('KM-0009', N'Giảm 5% tổng hóa đơn (chạy cả năm)', 5.00, N'MUA', '2025-01-01 00:00:00', '2025-12-31 23:59:59', 1, 1000, GETDATE()),
-('KM-0010', N'Giảm 100% (miễn phí) cho hàng tặng', 100.00, N'MUA', '2025-01-01 00:00:00', '2025-12-31 23:59:59', 1, 1, GETDATE());
+('KM-0001', N'Giảm 10% khi mua từ 3 sản phẩm', 10.00, N'SO_LUONG', '2025-10-01 00:00:00', '2026-02-28 23:59:59', 3, 999, GETDATE()),
+('KM-0002', N'Mua 5 tặng 1 (Giảm 20%)', 20.00, N'MUA', '2025-11-15 00:00:00', '2026-01-28 23:59:59', 6, 6, GETDATE()),
+('KM-0003', N'Giảm 15% cho sản phẩm của Traphaco', 15.00, N'NHA_SAN_XUAT', '2025-09-01 00:00:00', '2026-01-15 23:59:59', 1, 999, GETDATE()),
+('KM-0004', N'Giảm giá Tết Nguyên Đán 20% (Sắp diễn ra)', 20.00, N'SO_LUONG', '2026-01-10 00:00:00', '2026-02-28 23:59:59', 1, 999, GETDATE()),
+('KM-0005', N'Xả hàng cận date giảm 50%', 50.00, N'NGUNG_BAN', '2025-11-01 00:00:00', '2026-02-28 23:59:59', 1, 10, GETDATE()),
+('KM-0006', N'Giảm 30% cho Thực phẩm chức năng (TPCN)', 30.00, N'SO_LUONG', '2025-12-01 00:00:00', '2026-02-28 23:59:59', 1, 999, GETDATE()),
+('KM-0007', N'Mua 2 Tặng 1 (Giảm 33.33%)', 33.33, N'MUA', '2025-12-15 00:00:00', '2026-02-28 23:59:59', 3, 3, GETDATE()),
+('KM-0008', N'Giảm 10% cho sản phẩm của Sanofi', 10.00, N'NHA_SAN_XUAT', '2026-01-15 00:00:00', '2026-02-28 23:59:59', 1, 999, GETDATE()),
+('KM-0009', N'Giảm 5% tổng hóa đơn (chạy dài hạn)', 5.00, N'MUA', '2025-09-01 00:00:00', '2026-02-28 23:59:59', 1, 1000, GETDATE()),
+('KM-0010', N'Giảm 100% (miễn phí) cho hàng tặng', 100.00, N'MUA', '2025-10-01 00:00:00', '2025-12-30 23:59:59', 1, 1, GETDATE());
 GO
 
 -- ===================================================================
 -- 6. Bảng SanPham (50 sản phẩm)
 -- ===================================================================
 INSERT INTO SanPham (maSP, ten, moTa, thanhPhan, loaiSanPham, tonToiThieu, tonToiDa) VALUES
-('SP-0001', N'Paracetamol 500mg (Hộp 10 vỉ x 10 viên)', N'Thuốc giảm đau, hạ sốt không kê đơn.', N'Paracetamol 500mg', N'THUOC', 50, 300),
-('SP-0002', N'Amoxicillin 500mg (Hộp 10 vỉ x 10 viên)', N'Kháng sinh Penicillin điều trị nhiễm khuẩn (kê đơn).', N'Amoxicillin 500mg', N'THUOC', 20, 100),
+-- THUỐC KHÔNG KÊ ĐƠN (OTC)
+('SP-0001', N'Paracetamol 500mg (Hộp 10 vỉ x 10 viên)', N'Thuốc giảm đau, hạ sốt không kê đơn.', N'Paracetamol 500mg', N'THUOC_KHONG_KE_DON', 50, 300),
+('SP-0005', N'Berberin 100mg (Lọ 100 viên)', N'Điều trị tiêu chảy, lỵ trực khuẩn.', N'Berberin Clorid 100mg', N'THUOC_KHONG_KE_DON', 50, 200),
+('SP-0009', N'Clorpheniramin 4mg (Vỉ 20 viên)', N'Thuốc chống dị ứng, sổ mũi.', N'Clorpheniramin Maleat 4mg', N'THUOC_KHONG_KE_DON', 100, 500),
+('SP-0012', N'Siro ho Prospan (Chai 100ml)', N'Trị ho long đờm chiết xuất lá thường xuân.', N'Cao khô lá thường xuân', N'THUOC_KHONG_KE_DON', 50, 200),
+('SP-0014', N'Oresol 245 (Hộp 20 gói)', N'Bù nước và điện giải khi bị tiêu chảy, sốt.', N'Glucose khan, Natri Clorid, Kali Clorid', N'THUOC_KHONG_KE_DON', 100, 400),
+('SP-0022', N'Decolgen Forte (Hộp 25 vỉ x 4 viên)', N'Trị cảm cúm, sốt, nghẹt mũi.', N'Paracetamol, Phenylephrin, Clorpheniramin', N'THUOC_KHONG_KE_DON', 80, 400),
+('SP-0025', N'Betadine 10% (Chai 125ml)', N'Dung dịch sát khuẩn vết thương.', N'Povidone-Iodine 10%', N'THUOC_KHONG_KE_DON', 100, 300),
+('SP-0028', N'Efferagan 500mg (Hộp 4 tuýp x 10 viên sủi)', N'Giảm đau, hạ sốt (viên sủi).', N'Paracetamol 500mg', N'THUOC_KHONG_KE_DON', 40, 150),
+('SP-0031', N'Dầu gió xanh Thiên Thảo (Chai 24ml)', N'Giảm đau đầu, sổ mũi, say tàu xe.', N'Menthol, Methyl Salicylate, Eucalyptol', N'THUOC_KHONG_KE_DON', 200, 1000),
+('SP-0034', N'Tiffy (Hộp 25 vỉ x 4 viên)', N'Trị cảm cúm, sốt, ho, sổ mũi.', N'Paracetamol, Clorpheniramin, Phenylpropanolamin', N'THUOC_KHONG_KE_DON', 100, 500),
+('SP-0038', N'Telfast 180mg (Hộp 1 vỉ x 10 viên)', N'Thuốc chống dị ứng thế hệ mới.', N'Fexofenadine 180mg', N'THUOC_KHONG_KE_DON', 50, 200),
+('SP-0042', N'Urgo (Hộp 20 miếng)', N'Băng dán cá nhân.', N'Băng vải co giãn, gạc', N'THUOC_KHONG_KE_DON', 200, 800),
+('SP-0044', N'Panadol Extra (Hộp 10 vỉ x 12 viên)', N'Giảm đau, hạ sốt (chứa Cafein).', N'Paracetamol 500mg, Caffeine 65mg', N'THUOC_KHONG_KE_DON', 100, 500),
+('SP-0046', N'Nước muối sinh lý Natri Clorid 0.9% (Chai 500ml)', N'Rửa mắt, mũi, súc miệng, rửa vết thương.', N'Natri Clorid 0.9%', N'THUOC_KHONG_KE_DON', 300, 1500),
+('SP-0048', N'Strepsils (Hộp 24 viên ngậm)', N'Viên ngậm sát khuẩn, giảm đau họng.', N'Amylmetacresol, Dichlorobenzyl Alcohol', N'THUOC_KHONG_KE_DON', 150, 600),
+('SP-0050', N'Phosphalugel (Hộp 26 gói)', N'Thuốc chữ P, trị đau dạ dày.', N'Aluminium Phosphate 20%', N'THUOC_KHONG_KE_DON', 80, 250),
+
+-- THUỐC KÊ ĐƠN (Rx)
+('SP-0002', N'Amoxicillin 500mg (Hộp 10 vỉ x 10 viên)', N'Kháng sinh Penicillin điều trị nhiễm khuẩn (kê đơn).', N'Amoxicillin 500mg', N'THUOC_KE_DON', 20, 100),
+('SP-0006', N'Atorvastatin 20mg (Hộp 3 vỉ x 10 viên)', N'Thuốc điều trị mỡ máu (kê đơn).', N'Atorvastatin 20mg', N'THUOC_KE_DON', 15, 80),
+('SP-0011', N'Losartan 50mg (Hộp 3 vỉ x 10 viên)', N'Thuốc điều trị cao huyết áp (kê đơn).', N'Losartan Potassium 50mg', N'THUOC_KE_DON', 20, 100),
+('SP-0015', N'Salbutamol 2mg (Hộp 10 vỉ x 10 viên)', N'Thuốc giãn phế quản, trị hen suyễn (kê đơn).', N'Salbutamol 2mg', N'THUOC_KE_DON', 30, 80),
+('SP-0017', N'Cialis 20mg (Vỉ 2 viên)', N'Điều trị rối loạn cương dương (kê đơn).', N'Tadalafil 20mg', N'THUOC_KE_DON', 10, 50),
+('SP-0019', N'Omeprazol 20mg (Lọ 14 viên)', N'Điều trị viêm loét dạ dày, trào ngược (kê đơn).', N'Omeprazole 20mg', N'THUOC_KE_DON', 30, 150),
+('SP-0021', N'Metformin 500mg (Hộp 10 vỉ x 10 viên)', N'Thuốc điều trị tiểu đường Type 2 (kê đơn).', N'Metformin HCl 500mg', N'THUOC_KE_DON', 40, 120),
+('SP-0024', N'Alprazolam 0.5mg (Hộp 3 vỉ x 10 viên)', N'Thuốc an thần, trị lo âu (kê đơn, kiểm soát đặc biệt).', N'Alprazolam 0.5mg', N'THUOC_KE_DON', 10, 30),
+('SP-0027', N'Ciprofloxacin 500mg (Hộp 2 vỉ x 10 viên)', N'Kháng sinh Quinolon (kê đơn).', N'Ciprofloxacin 500mg', N'THUOC_KE_DON', 15, 60),
+('SP-0030', N'Prednison 5mg (Lọ 200 viên)', N'Thuốc Corticoid kháng viêm (kê đơn).', N'Prednisolone 5mg', N'THUOC_KE_DON', 30, 100),
+('SP-0033', N'Aspirin 81mg (Lọ 100 viên)', N'Thuốc chống kết tập tiểu cầu (kê đơn).', N'Acid Acetylsalicylic 81mg', N'THUOC_KE_DON', 40, 200),
+('SP-0036', N'Domperidon 10mg (Hộp 10 vỉ x 10 viên)', N'Điều trị nôn, buồn nôn.', N'Domperidone 10mg', N'THUOC_KE_DON', 30, 150),
+('SP-0039', N'Cephalexin 500mg (Hộp 10 vỉ x 10 viên)', N'Kháng sinh Cephalosporin (kê đơn).', N'Cephalexin 500mg', N'THUOC_KE_DON', 25, 100),
+('SP-0041', N'Diazepam 5mg (Hộp 10 vỉ x 10 viên)', N'Thuốc an thần, gây ngủ (kê đơn, KSTT).', N'Diazepam 5mg', N'THUOC_KE_DON', 10, 40),
+
+-- THỰC PHẨM CHỨC NĂNG (TPCN)
 ('SP-0003', N'Vitamin C 500mg (Tuýp 20 viên sủi)', N'Bổ sung Vitamin C, tăng cường đề kháng.', N'Ascorbic Acid 500mg', N'THUC_PHAM_CHUC_NANG', 100, 500),
 ('SP-0004', N'Omega 3 Fish Oil 1000mg (Lọ 100 viên)', N'Bổ sung Omega 3, tốt cho mắt và tim mạch.', N'Dầu cá 1000mg (chứa EPA, DHA)', N'THUC_PHAM_CHUC_NANG', 30, 150),
-('SP-0005', N'Berberin 100mg (Lọ 100 viên)', N'Điều trị tiêu chảy, lỵ trực khuẩn.', N'Berberin Clorid 100mg', N'THUOC', 50, 200),
-('SP-0006', N'Atorvastatin 20mg (Hộp 3 vỉ x 10 viên)', N'Thuốc điều trị mỡ máu (kê đơn).', N'Atorvastatin 20mg', N'THUOC', 15, 80),
 ('SP-0007', N'Blackmores Glucosamine 1500mg (Lọ 180 viên)', N'Hỗ trợ xương khớp, giảm đau viêm khớp.', N'Glucosamine Sulfate 1500mg', N'THUC_PHAM_CHUC_NANG', 20, 100),
 ('SP-0008', N'Hoạt huyết dưỡng não Traphaco (Hộp 5 vỉ x 20 viên)', N'Bổ não, tăng cường tuần hoàn máu não.', N'Cao Đinh lăng, Cao Bạch quả', N'THUC_PHAM_CHUC_NANG', 40, 250),
-('SP-0009', N'Clorpheniramin 4mg (Vỉ 20 viên)', N'Thuốc chống dị ứng, sổ mũi.', N'Clorpheniramin Maleat 4mg', N'THUOC', 100, 500),
 ('SP-0010', N'Canxi Corbiere 5ml (Hộp 30 ống)', N'Bổ sung Canxi cho trẻ em, bà bầu.', N'Calcium Glucoheptonate', N'THUC_PHAM_CHUC_NANG', 30, 120),
-('SP-0011', N'Losartan 50mg (Hộp 3 vỉ x 10 viên)', N'Thuốc điều trị cao huyết áp (kê đơn).', N'Losartan Potassium 50mg', N'THUOC', 20, 100),
-('SP-0012', N'Siro ho Prospan (Chai 100ml)', N'Trị ho long đờm chiết xuất lá thường xuân.', N'Cao khô lá thường xuân', N'THUOC', 50, 200),
 ('SP-0013', N'Men vi sinh Bifina R (Hộp 20 gói)', N'Bổ sung lợi khuẩn đường ruột.', N'Bifidobacterium, Lactobacillus', N'THUC_PHAM_CHUC_NANG', 25, 100),
-('SP-0014', N'Oresol 245 (Hộp 20 gói)', N'Bù nước và điện giải khi bị tiêu chảy, sốt.', N'Glucose khan, Natri Clorid, Kali Clorid', N'THUOC', 100, 400),
-('SP-0015', N'Salbutamol 2mg (Hộp 10 vỉ x 10 viên)', N'Thuốc giãn phế quản, trị hen suyễn (kê đơn).', N'Salbutamol 2mg', N'THUOC', 30, 80),
 ('SP-0016', N'Sắt Ferrovit (Hộp 5 vỉ x 10 viên)', N'Bổ sung sắt, acid folic cho người thiếu máu.', N'Sắt Fumarat, Acid Folic, Vitamin B12', N'THUC_PHAM_CHUC_NANG', 40, 150),
-('SP-0017', N'Cialis 20mg (Vỉ 2 viên)', N'Điều trị rối loạn cương dương (kê đơn).', N'Tadalafil 20mg', N'THUOC', 10, 50),
 ('SP-0018', N'Boganic (Hộp 5 vỉ x 10 viên)', N'Thanh nhiệt, giải độc gan, mát gan.', N'Cao Actiso, Cao Rau đắng đất, Cao Bìm bìm', N'THUC_PHAM_CHUC_NANG', 60, 300),
-('SP-0019', N'Omeprazol 20mg (Lọ 14 viên)', N'Điều trị viêm loét dạ dày, trào ngược (kê đơn).', N'Omeprazole 20mg', N'THUOC', 30, 150),
 ('SP-0020', N'Ginkgo Biloba 120mg (Lọ 60 viên)', N'Bổ não, cải thiện trí nhớ.', N'Chiết xuất Bạch quả 120mg', N'THUC_PHAM_CHUC_NANG', 50, 200),
-('SP-0021', N'Metformin 500mg (Hộp 10 vỉ x 10 viên)', N'Thuốc điều trị tiểu đường Type 2 (kê đơn).', N'Metformin HCl 500mg', N'THUOC', 40, 120),
-('SP-0022', N'Decolgen Forte (Hộp 25 vỉ x 4 viên)', N'Trị cảm cúm, sốt, nghẹt mũi.', N'Paracetamol, Phenylephrin, Clorpheniramin', N'THUOC', 80, 400),
 ('SP-0023', N'Nature Made Vitamin E 400 IU (Lọ 100 viên)', N'Bổ sung Vitamin E, đẹp da, chống oxy hóa.', N'Vitamin E 400 IU', N'THUC_PHAM_CHUC_NANG', 30, 90),
-('SP-0024', N'Alprazolam 0.5mg (Hộp 3 vỉ x 10 viên)', N'Thuốc an thần, trị lo âu (kê đơn, kiểm soát đặc biệt).', N'Alprazolam 0.5mg', N'THUOC', 10, 30),
-('SP-0025', N'Betadine 10% (Chai 125ml)', N'Dung dịch sát khuẩn vết thương.', N'Povidone-Iodine 10%', N'THUOC', 100, 300),
 ('SP-0026', N'Centrum Silver 50+ (Lọ 125 viên)', N'Vitamin tổng hợp cho người trên 50 tuổi.', N'Vitamin (A, B, C, D, E, K), Khoáng chất', N'THUC_PHAM_CHUC_NANG', 20, 80),
-('SP-0027', N'Ciprofloxacin 500mg (Hộp 2 vỉ x 10 viên)', N'Kháng sinh Quinolon (kê đơn).', N'Ciprofloxacin 500mg', N'THUOC', 15, 60),
-('SP-0028', N'Efferagan 500mg (Hộp 4 tuýp x 10 viên sủi)', N'Giảm đau, hạ sốt (viên sủi).', N'Paracetamol 500mg', N'THUOC', 40, 150),
 ('SP-0029', N'Collagen AEC 12000mg (Hộp 10 lọ)', N'Bổ sung collagen, làm đẹp da.', N'Collagen thủy phân, Vitamin C', N'THUC_PHAM_CHUC_NANG', 10, 50),
-('SP-0030', N'Prednison 5mg (Lọ 200 viên)', N'Thuốc Corticoid kháng viêm (kê đơn).', N'Prednisolone 5mg', N'THUOC', 30, 100),
-('SP-0031', N'Dầu gió xanh Thiên Thảo (Chai 24ml)', N'Giảm đau đầu, sổ mũi, say tàu xe.', N'Menthol, Methyl Salicylate, Eucalyptol', N'THUOC', 200, 1000),
 ('SP-0032', N'Sữa Ensure Gold (Lon 850g)', N'Dinh dưỡng bổ sung cho người lớn tuổi, người bệnh.', N'Đạm, Chất béo, Vitamin, Khoáng chất', N'THUC_PHAM_CHUC_NANG', 50, 150),
-('SP-0033', N'Aspirin 81mg (Lọ 100 viên)', N'Thuốc chống kết tập tiểu cầu (kê đơn).', N'Acid Acetylsalicylic 81mg', N'THUOC', 40, 200),
-('SP-0034', N'Tiffy (Hộp 25 vỉ x 4 viên)', N'Trị cảm cúm, sốt, ho, sổ mũi.', N'Paracetamol, Clorpheniramin, Phenylpropanolamin', N'THUOC', 100, 500),
 ('SP-0035', N'One A Day Men''s Health (Lọ 100 viên)', N'Vitamin tổng hợp cho nam giới.', N'Vitamin, Khoáng chất (Kẽm, Selen...)', N'THUC_PHAM_CHUC_NANG', 15, 60),
-('SP-0036', N'Domperidon 10mg (Hộp 10 vỉ x 10 viên)', N'Điều trị nôn, buồn nôn.', N'Domperidone 10mg', N'THUOC', 30, 150),
 ('SP-0037', N'Dầu cá Nature''s Bounty 1200mg (Lọ 200 viên)', N'Bổ sung Omega 3.', N'Dầu cá 1200mg', N'THUC_PHAM_CHUC_NANG', 20, 80),
-('SP-0038', N'Telfast 180mg (Hộp 1 vỉ x 10 viên)', N'Thuốc chống dị ứng thế hệ mới.', N'Fexofenadine 180mg', N'THUOC', 50, 200),
-('SP-0039', N'Cephalexin 500mg (Hộp 10 vỉ x 10 viên)', N'Kháng sinh Cephalosporin (kê đơn).', N'Cephalexin 500mg', N'THUOC', 25, 100),
 ('SP-0040', N'Viên uống DHC rau củ (Gói 60 ngày)', N'Bổ sung chất xơ từ rau củ.', N'Bột chiết xuất 32 loại rau củ', N'THUC_PHAM_CHUC_NANG', 60, 200),
-('SP-0041', N'Diazepam 5mg (Hộp 10 vỉ x 10 viên)', N'Thuốc an thần, gây ngủ (kê đơn, KSTT).', N'Diazepam 5mg', N'THUOC', 10, 40),
-('SP-0042', N'Urgo (Hộp 20 miếng)', N'Băng dán cá nhân.', N'Băng vải co giãn, gạc', N'THUC_PHAM_CHUC_NANG', 200, 800),
 ('SP-0043', N'Melatonin 10mg (Lọ 60 viên)', N'Hỗ trợ điều hòa giấc ngủ.', N'Melatonin 10mg', N'THUC_PHAM_CHUC_NANG', 30, 70),
-('SP-0044', N'Panadol Extra (Hộp 10 vỉ x 12 viên)', N'Giảm đau, hạ sốt (chứa Cafein).', N'Paracetamol 500mg, Caffeine 65mg', N'THUOC', 100, 500),
 ('SP-0045', N'Enervon-C (Hộp 10 vỉ x 10 viên)', N'Bổ sung Vitamin B, C.', N'Vitamin B-complex, Vitamin C', N'THUC_PHAM_CHUC_NANG', 50, 300),
-('SP-0046', N'Nước muối sinh lý Natri Clorid 0.9% (Chai 500ml)', N'Rửa mắt, mũi, súc miệng, rửa vết thương.', N'Natri Clorid 0.9%', N'THUOC', 300, 1500),
 ('SP-0047', N'Crest 3D White (Tuýp 116g)', N'Kem đánh răng làm trắng răng.', N'Sodium Fluoride, Hydrated Silica', N'THUC_PHAM_CHUC_NANG', 50, 150),
-('SP-0048', N'Strepsils (Hộp 24 viên ngậm)', N'Viên ngậm sát khuẩn, giảm đau họng.', N'Amylmetacresol, Dichlorobenzyl Alcohol', N'THUOC', 150, 600),
-('SP-0049', N'Viên uống mọc tóc Biotin 10000mcg (Lọ 100 viên)', N'Hỗ trợ mọc tóc, móng chắc khỏe.', N'Biotin 10000mcg', N'THUC_PHAM_CHUC_NANG', 20, 80),
-('SP-0050', N'Phosphalugel (Hộp 26 gói)', N'Thuốc chữ P, trị đau dạ dày.', N'Aluminium Phosphate 20%', N'THUOC', 80, 250);
+('SP-0049', N'Viên uống mọc tóc Biotin 10000mcg (Lọ 100 viên)', N'Hỗ trợ mọc tóc, móng chắc khỏe.', N'Biotin 10000mcg', N'THUC_PHAM_CHUC_NANG', 20, 80);
+GO
+
+-- ===================================================================
+-- 7. Bảng MaVachSanPham
+-- ===================================================================
+INSERT INTO MaVachSanPham (maSP, maVach) VALUES 
+-- Sản phẩm 1 (SP-0001) có 2 mã vạch
+('SP-0001', '893460200101'),
+('SP-0001', '893460200102'),
+
+-- Các sản phẩm còn lại (SP-0002 đến SP-0050) có 1 mã vạch
+('SP-0002', '893460200201'),
+('SP-0003', '893460200301'),
+('SP-0004', '893460200401'),
+('SP-0005', '893460200501'),
+('SP-0006', '893460200601'),
+('SP-0007', '893460200701'),
+('SP-0008', '893460200801'),
+('SP-0009', '893460200901'),
+('SP-0010', '893460201001'),
+('SP-0011', '893460201101'),
+('SP-0012', '893460201201'),
+('SP-0013', '893460201301'),
+('SP-0014', '893460201401'),
+('SP-0015', '893460201501'),
+('SP-0016', '893460201601'),
+('SP-0017', '893460201701'),
+('SP-0018', '893460201801'),
+('SP-0019', '893460201901'),
+('SP-0020', '893460202001'),
+('SP-0021', '893460202101'),
+('SP-0022', '893460202201'),
+('SP-0023', '893460202301'),
+('SP-0024', '893460202401'),
+('SP-0025', '893460202501'),
+('SP-0026', '893460202601'),
+('SP-0027', '893460202701'),
+('SP-0028', '893460202801'),
+('SP-0029', '893460202901'),
+('SP-0030', '893460203001'),
+('SP-0031', '893460203101'),
+('SP-0032', '893460203201'),
+('SP-0033', '893460203301'),
+('SP-0034', '893460203401'),
+('SP-0035', '893460203501'),
+('SP-0036', '893460203601'),
+('SP-0037', '893460203701'),
+('SP-0038', '893460203801'),
+('SP-0039', '893460203901'),
+('SP-0040', '893460204001'),
+('SP-0041', '893460204101'),
+('SP-0042', '893460204201'),
+('SP-0043', '893460204301'),
+('SP-0044', '893460204401'),
+('SP-0045', '893460204501'),
+('SP-0046', '893460204601'),
+('SP-0047', '893460204701'),
+('SP-0048', '893460204801'),
+('SP-0049', '893460204901'),
+('SP-0050', '893460205001');
 GO
 
 -- ===================================================================
@@ -667,9 +788,6 @@ GO
 -- ===================================================================
 -- 9. Bảng LoSanPham
 -- ===================================================================
--- ===================================================================
--- 9. Bảng LoSanPham (ĐÃ SỬA LẠI THEO ĐÚNG ĐỊNH DẠNG)
--- ===================================================================
 INSERT INTO LoSanPham (maLoSanPham, maSP, soLuong, ngaySanXuat, ngayHetHan) VALUES
 -- SP-0001: Paracetamol 500mg
 ('LO-SP-0001-20240510-1', 'SP-0001', 1500, '2024-05-10', '2027-05-10'),
@@ -844,8 +962,11 @@ INSERT INTO LoSanPham (maLoSanPham, maSP, soLuong, ngaySanXuat, ngayHetHan) VALU
 ('LO-SP-0049-20240530-1', 'SP-0049', 100, '2024-05-30', '2027-05-30'),
 
 -- SP-0050: Phosphalugel
-('LO-SP-0050-20240720-1', 'SP-0050', 500, '2024-07-20', '2027-07-20'),
-('LO-SP-0050-20250410-2', 'SP-0050', 400, '2025-04-10', '2028-04-10');
+('LO-SP-0050-20240720-1', 'SP-0050', 500, '2024-07-20', '2027-07-20');
+GO
+
+INSERT INTO LoSanPham (maLoSanPham, maSP, soLuong, ngaySanXuat, ngayHetHan, daHuy) VALUES
+('LO-SP-0050-20250410-2', 'SP-0050', 400, '2025-04-10', '2028-04-10', 1);
 GO
 
 -- ===================================================================
@@ -1835,6 +1956,74 @@ WHERE
     ISNULL(pth.tongTienHoanTra, 0) <> ISNULL(pth_t.newTongTienHoanTra, 0);
 
 COMMIT TRANSACTION;
+GO
+
+-- 1. TẠO 10 DÒNG DỮ LIỆU CHO BẢNG PHIEU NHAP (Ban đầu tongTien = 0)
+INSERT INTO PhieuNhap (maPhieuNhap, ngayTao, maNV, maNCC, tongTien, ghiChu) VALUES
+('PN-0001', DATEADD(DAY, -9, GETDATE()), 'NV-0001', 'NCC-0001', 0, N'Nhập hàng định kỳ tháng 5'),
+('PN-0002', DATEADD(DAY, -8, GETDATE()), 'NV-0002', 'NCC-0002', 0, N'Nhập thuốc kháng sinh'),
+('PN-0003', DATEADD(DAY, -7, GETDATE()), 'NV-0003', 'NCC-0003', 0, N'Nhập bổ sung vitamin'),
+('PN-0004', DATEADD(DAY, -6, GETDATE()), 'NV-0004', 'NCC-0004', 0, NULL),
+('PN-0005', DATEADD(DAY, -5, GETDATE()), 'NV-0001', 'NCC-0005', 0, N'Hàng nhập khẩu'),
+('PN-0006', DATEADD(DAY, -4, GETDATE()), 'NV-0002', 'NCC-0006', 0, NULL),
+('PN-0007', DATEADD(DAY, -3, GETDATE()), 'NV-0003', 'NCC-0007', 0, N'Nhập thực phẩm chức năng'),
+('PN-0008', DATEADD(DAY, -2, GETDATE()), 'NV-0004', 'NCC-0008', 0, N'Đơn hàng gấp'),
+('PN-0009', DATEADD(DAY, -1, GETDATE()), 'NV-0001', 'NCC-0009', 0, NULL),
+('PN-0010', GETDATE(), 'NV-0002', 'NCC-0010', 0, N'Nhập kho cuối tháng');
+GO
+
+-- 2. TẠO CHI TIẾT PHIẾU NHẬP (Tự động random sản phẩm cho từng phiếu)
+-- Sử dụng con trỏ (Cursor) hoặc vòng lặp để chèn dữ liệu cho từng phiếu nhằm đảm bảo số lượng dòng từ 10-15
+
+DECLARE @MaPN NVARCHAR(7);
+DECLARE @SoDongCanTao INT;
+
+-- Khai báo con trỏ duyệt qua 10 mã phiếu nhập vừa tạo
+DECLARE pn_cursor CURSOR FOR 
+SELECT maPhieuNhap FROM PhieuNhap;
+
+OPEN pn_cursor;
+FETCH NEXT FROM pn_cursor INTO @MaPN;
+
+WHILE @@FETCH_STATUS = 0
+BEGIN
+    -- Random số dòng chi tiết từ 10 đến 15
+    -- Công thức: FLOOR(RAND() * (MAX - MIN + 1)) + MIN -> FLOOR(RAND() * 6) + 10
+    SET @SoDongCanTao = FLOOR(RAND() * 6) + 10; 
+
+    -- Insert dữ liệu vào ChiTietPhieuNhap
+    -- Lấy ngẫu nhiên các lô sản phẩm từ bảng LoSanPham
+    INSERT INTO ChiTietPhieuNhap (maPhieuNhap, maLoSanPham, soLuong, donGia, thanhTien, ghiChu)
+    SELECT TOP (@SoDongCanTao)
+        @MaPN,                         -- Mã phiếu nhập hiện tại trong vòng lặp
+        LSP.maLoSanPham,               -- Mã lô lấy từ bảng LoSanPham
+        ABS(CHECKSUM(NEWID()) % 100) + 10, -- Random số lượng nhập từ 10 đến 109
+        ABS(CHECKSUM(NEWID()) % 500000) + 10000, -- Random đơn giá nhập từ 10k đến 500k
+        0, -- Tạm thời để 0, sẽ tính toán ở bước sau (hoặc tính ngay trong câu lệnh select)
+        NULL
+    FROM LoSanPham LSP
+    ORDER BY NEWID(); -- Sắp xếp ngẫu nhiên để lấy các lô khác nhau
+
+    -- Cập nhật lại cột ThanhTien cho các dòng vừa thêm (ThanhTien = SoLuong * DonGia)
+    UPDATE ChiTietPhieuNhap
+    SET thanhTien = soLuong * donGia
+    WHERE maPhieuNhap = @MaPN;
+
+    FETCH NEXT FROM pn_cursor INTO @MaPN;
+END;
+
+CLOSE pn_cursor;
+DEALLOCATE pn_cursor;
+GO
+
+-- 3. CẬP NHẬT TỔNG TIỀN CHO BẢNG PHIEU NHAP
+-- Tính tổng thành tiền từ bảng chi tiết và update ngược lại bảng cha
+UPDATE PhieuNhap
+SET tongTien = (
+    SELECT COALESCE(SUM(thanhTien), 0)
+    FROM ChiTietPhieuNhap CTPN
+    WHERE CTPN.maPhieuNhap = PhieuNhap.maPhieuNhap
+);
 GO
 
 PRINT N'>>> TẤT CẢ DỮ LIỆU ĐÃ ĐƯỢC TẠO THÀNH CÔNG <<<';
