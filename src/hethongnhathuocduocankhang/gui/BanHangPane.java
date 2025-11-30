@@ -278,6 +278,7 @@ public class BanHangPane extends javax.swing.JPanel {
         lblMaKH.setText("Mã khách hàng:");
         p3.add(lblMaKH);
 
+        lblMaKH1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblMaKH1.setForeground(new java.awt.Color(51, 51, 51));
         lblMaKH1.setText("KH-00000");
         p3.add(lblMaKH1);
@@ -293,6 +294,7 @@ public class BanHangPane extends javax.swing.JPanel {
         lblHoTen.setText("Họ tên:");
         p4.add(lblHoTen);
 
+        lblHoTen1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblHoTen1.setForeground(new java.awt.Color(51, 51, 51));
         lblHoTen1.setText("Khách Vãng Lai");
         p4.add(lblHoTen1);
@@ -308,6 +310,7 @@ public class BanHangPane extends javax.swing.JPanel {
         lblDiemTichLuy.setText("Điểm tích lũy:");
         p5.add(lblDiemTichLuy);
 
+        lblDiemTichLuy1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblDiemTichLuy1.setForeground(new java.awt.Color(51, 51, 51));
         lblDiemTichLuy1.setText("0");
         p5.add(lblDiemTichLuy1);
@@ -537,9 +540,11 @@ public class BanHangPane extends javax.swing.JPanel {
         pTimKiem.setLayout(new java.awt.BorderLayout(0, 10));
         pTimKiem.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
 
+        btnTimKiem.setBackground(new java.awt.Color(255, 255, 255));
         btnTimKiem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/search.png"))); // NOI18N
         btnTimKiem.setPreferredSize(new java.awt.Dimension(38, 40));
         btnTimKiem.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+
         btnTimKiem.setCursor(new Cursor(Cursor.HAND_CURSOR));
         btnTimKiem.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -702,6 +707,7 @@ public class BanHangPane extends javax.swing.JPanel {
     }//GEN-LAST:event_btnXoaTrangActionPerformed
 
     private void btnTimKiemMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnTimKiemMouseClicked
+        // Thêm sản phẩm vào table cthd
         try {
             String maSP = txtTimKiem.getText().trim();
             Object[] newRow = bus.themChiTietHoaDon(maSP);
@@ -709,6 +715,10 @@ public class BanHangPane extends javax.swing.JPanel {
         }catch(Exception e) {
             JOptionPane.showMessageDialog(this, e.getMessage());
         }
+        // Xóa nội dung trong ô text để chuẩn bị cho lần quét tiếp theo
+        txtTimKiem.setText("");       
+        // Tự động đặt con trỏ chuột trở lại ô này
+        txtTimKiem.requestFocusInWindow();
     }//GEN-LAST:event_btnTimKiemMouseClicked
 
     private void btnXoaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnXoaMouseClicked
@@ -881,7 +891,13 @@ public class BanHangPane extends javax.swing.JPanel {
 
     private void txtTimKiemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTimKiemActionPerformed
         // Thêm sản phẩm vào table cthd
-        //themSanPhamVaoTable();
+        try {
+            String maSP = txtTimKiem.getText().trim();
+            Object[] newRow = bus.themChiTietHoaDon(maSP);
+            themCTHDVaoTable(newRow);
+        }catch(Exception e) {
+            JOptionPane.showMessageDialog(this, e.getMessage());
+        }
         // Xóa nội dung trong ô text để chuẩn bị cho lần quét tiếp theo
         txtTimKiem.setText("");       
         // Tự động đặt con trỏ chuột trở lại ô này

@@ -7,10 +7,21 @@ package hethongnhathuocduocankhang.gui;
 import hethongnhathuocduocankhang.connectDB.ConnectDB;
 import hethongnhathuocduocankhang.dao.TaiKhoanDAO;
 import hethongnhathuocduocankhang.entity.TaiKhoan;
+import java.awt.BorderLayout;
 import java.awt.Cursor;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.RenderingHints;
+import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.net.URL;
 import java.sql.SQLException;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.border.EmptyBorder;
 
@@ -33,6 +44,11 @@ public class DangNhapGUI extends javax.swing.JFrame{
         }catch(SQLException e) {
             e.printStackTrace();
         }
+        
+        URL url = DangNhapGUI.class.getResource("/resources/images/logo.png");
+        Image icon = Toolkit.getDefaultToolkit().createImage(url);
+        this.setIconImage(icon);
+        lblLogo.setIcon(new ImageIcon(icon));
         
         lblQuenMatKhau.setCursor(new Cursor(Cursor.HAND_CURSOR));
         btnCheMatKhau.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -96,8 +112,6 @@ public class DangNhapGUI extends javax.swing.JFrame{
         lblTitle2.setForeground(new java.awt.Color(25, 118, 210));
         lblTitle2.setText("DƯỢC AN KHANG");
         pDangNhap.add(lblTitle2, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 60, -1, -1));
-
-        lblLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/logo.png"))); // NOI18N
         pDangNhap.add(lblLogo, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 10, -1, -1));
 
         lblTaiKhoan.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -106,7 +120,6 @@ public class DangNhapGUI extends javax.swing.JFrame{
         pDangNhap.add(lblTaiKhoan, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 110, -1, -1));
 
         txtTaiKhoan.setBackground(new java.awt.Color(245, 245, 245));
-        txtTaiKhoan.setForeground(new java.awt.Color(0, 0, 0));
         txtTaiKhoan.setBorder(null);
         pDangNhap.add(txtTaiKhoan, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 130, 330, 40));
 
@@ -137,7 +150,6 @@ public class DangNhapGUI extends javax.swing.JFrame{
         pDangNhap.add(lblQuenMatKhau, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 240, 90, 30));
 
         txtMatKhau.setBackground(new java.awt.Color(245, 245, 245));
-        txtMatKhau.setForeground(new java.awt.Color(0, 0, 0));
         txtMatKhau.setBorder(null);
         txtMatKhau.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
