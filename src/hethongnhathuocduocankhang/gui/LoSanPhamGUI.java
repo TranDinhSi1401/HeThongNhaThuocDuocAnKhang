@@ -929,6 +929,11 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
     }//GEN-LAST:event_txtLamMoiActionPerformed
 
     private void btnThemSanPhamTuExcelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemSanPhamTuExcelActionPerformed
+        DefaultTableModel tbl = (DefaultTableModel) tblThemSanPham.getModel();
+        if(tbl.getRowCount()>0){
+                JOptionPane.showMessageDialog(this, "Vui lòng xóa các sản phẩn hiện có rồi thử lại."); 
+                return;
+            }
         JFileChooser file = new JFileChooser();
         file.setFileFilter(new FileNameExtensionFilter("Excel Files", "xlsx"));
         int result = file.showOpenDialog(this);
@@ -947,10 +952,7 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
         try(FileInputStream fis = new FileInputStream(filee);
                 XSSFWorkbook work = new XSSFWorkbook(fis)){
             XSSFSheet sheet = work.getSheetAt(0);
-            DefaultTableModel tbl = (DefaultTableModel) tblThemSanPham.getModel();
-            if(tbl.getRowCount()>0){
-                JOptionPane.showMessageDialog(this, "Vui lòng xóa các sản phẩn hiện có rồi thử lại."); return;
-            }
+            
                     boolean head = true;
             int soSP = 0;
             final int colMaVach = 0;
@@ -1084,7 +1086,7 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
             }
         }
         if (a==0){
-            JOptionPane.showMessageDialog(this, "Vui lòng chọn sản phẩm để xóas");
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn sản phẩm để xóa.");
             return;
         }
         int x = JOptionPane.showConfirmDialog(this, "Vui lòng xác nhận xóa "+a+" ssản phẩm đã chọn?", "Xác nhận?", JOptionPane.YES_NO_OPTION);
@@ -1255,34 +1257,6 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
                                                     lo.getSoLuong()};
         tbl.addRow(row);
         }                   
-//        SwingWorker<Void, Object[]> worker = new SwingWorker<Void, Object[]>(){           
-//            @Override
-//            protected Void doInBackground() throws Exception {
-//                for (LoSanPham lo: LoSanPhamDAO.dsLoSanPham()){
-//                    //NhaCungCap ncc = NhaCungCapDAO.timNCCTheoMa(SanPhamCungCapDAO.getSanPhamCungCap(lo.getSanPham().getMaSP()).getNhaCungCap().getMaNCC());
-//                    //SanPham sp = SanPhamDAO.timSPTheoMa(lo.getSanPham().getMaSP());
-//                    DonViTinh donVi = DonViTinhDAO.getMotDonViTinhTheoMaSP(lo.getSanPham().getMaSP());
-//                    Object[] row = new Object[] {lo.getSanPham().getMaSP(),
-//                                                    SanPhamDAO.timSPTheoMa(lo.getSanPham().getMaSP()).getTen(),
-//                                                    lo.getMaLoSanPham(), 
-//                                                    donVi.getTenDonVi(),  
-//                                                    lo.getSoLuong()
-//                                                    //SanPhamCungCapDAO.getSanPhamCungCap(lo.getSanPham().getMaSP()).getGiaNhap()
-//                    };
-//                    
-//                    publish(row);
-//                }
-//                return null;
-//            }
-//
-//            @Override
-//            protected void process(List<Object[]> chunks) {
-//                DefaultTableModel tbl = (DefaultTableModel) tblLoSanPham.getModel();
-//                for(Object[] row : chunks){
-//                    tbl.addRow(row);
-//                }
-//            }
-//        }; worker.execute();
     }
     private void chonTatCa(){
         DefaultTableModel tbl = (DefaultTableModel) tblThemSanPham.getModel();
