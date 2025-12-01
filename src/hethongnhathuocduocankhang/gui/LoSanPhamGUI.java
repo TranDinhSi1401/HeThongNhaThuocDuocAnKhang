@@ -7,22 +7,23 @@ package hethongnhathuocduocankhang.gui;
 import hethongnhathuocduocankhang.bus.QuanLyLoBUS;
 import hethongnhathuocduocankhang.dao.DonViTinhDAO;
 import hethongnhathuocduocankhang.dao.LoSanPhamDAO;
+import hethongnhathuocduocankhang.dao.MaVachSanPhamDAO;
 import hethongnhathuocduocankhang.dao.NhaCungCapDAO;
 import hethongnhathuocduocankhang.dao.SanPhamCungCapDAO;
+import hethongnhathuocduocankhang.dao.MaVachSanPhamDAO;
 import hethongnhathuocduocankhang.dao.SanPhamDAO;
 import hethongnhathuocduocankhang.entity.DonViTinh;
 import hethongnhathuocduocankhang.entity.LoSanPham;
+import hethongnhathuocduocankhang.entity.MaVachSanPham;
 import hethongnhathuocduocankhang.entity.NhaCungCap;
-import hethongnhathuocduocankhang.entity.SanPham;
-import hethongnhathuocduocankhang.entity.SanPhamCungCap;
-import java.awt.HeadlessException;
 import java.awt.event.FocusEvent;
 import org.apache.poi.ss.usermodel.DateUtil;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Vector;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -115,8 +116,6 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
                 }
             }
         });
-
-                
     }
 
     /**
@@ -929,73 +928,110 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
     }//GEN-LAST:event_txtLamMoiActionPerformed
 
     private void btnThemSanPhamTuExcelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemSanPhamTuExcelActionPerformed
-        JFileChooser fileChooser = new JFileChooser();
-        FileNameExtensionFilter filter = new FileNameExtensionFilter("Excel Files", "xlsx");
-        fileChooser.setFileFilter(filter);
-
-        int result = fileChooser.showOpenDialog(this);
-        if (result == JFileChooser.APPROVE_OPTION) {
-            File file = fileChooser.getSelectedFile();
-            // Kiểm tra file đang được sử dụng
-            FileInputStream fl = null;
-            try {
-                fl = new FileInputStream(file);
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(this, "Không thể mở được file! Vui lòng đóng file rồi thử lại","Lỗi file đang được sử dụng", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-            try {
-                FileInputStream fis = new FileInputStream(file);
-                XSSFWorkbook workbook = new XSSFWorkbook(fis);
-                XSSFSheet sheet = workbook.getSheetAt(0);
-                DefaultTableModel model = (DefaultTableModel) tblThemSanPham.getModel();
-                if(model.getRowCount()>0){
-                    JOptionPane.showMessageDialog(this, "Vui lòng xóa các sản phẩm hiện có rồi thử lại");
-                    return;
-                }
-                boolean skipHeader = true;
-                int soSanPham = 0;
-                for (Row row : sheet) {
-                    if (skipHeader) {
-                        skipHeader = false;
-                        continue;
-                    }
-                    int lastCellNum = row.getLastCellNum();
-                    if (lastCellNum <= 0) {
-                        continue;
-                    }
-                    Vector<Object> rowData = new Vector<>();
-                    for (int i = 0; i < lastCellNum; i++) {
-                        Cell cell = row.getCell(i, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
-                        switch (cell.getCellType()) {
-                            case STRING: rowData.add(cell.getStringCellValue()); break;
-                            case NUMERIC:
-                                if (DateUtil.isCellDateFormatted(cell)) rowData.add(cell.getDateCellValue());
-                                 else rowData.add(cell.getNumericCellValue());
-                                break;
-                            case BOOLEAN:rowData.add(cell.getBooleanCellValue()); break;
-                            case FORMULA:rowData.add(cell.getCellFormula()); break;
-                            default:rowData.add(""); break;
-                        }
-                    }
-                    int colCount = model.getColumnCount();
-                    while (rowData.size() < colCount) {
-                        if (rowData.size() == colCount - 1 && Boolean.class.equals(model.getColumnClass(colCount - 1))) {
-                            rowData.add(Boolean.FALSE);
-                        } else {
-                            rowData.add("");
-                        }
-                    }
-                    model.addRow(rowData);
-                    soSanPham++;
-                }
-                workbook.close();
-                fis.close();
-                JOptionPane.showMessageDialog(this, "Thêm thành công "+ soSanPham + " sản phẩm từ Excel !");
-            } catch (HeadlessException | IOException e) {
-                JOptionPane.showMessageDialog(this, "Lỗi đọc Excel: " + e.getMessage());
-            }
+        JFileChooser file = new JFileChooser();
+        file.setFileFilter(new FileNameExtensionFilter("Excel Files", "xlsx"));
+        int result = file.showOpenDialog(this);
+        if(result!=JFileChooser.APPROVE_OPTION) return;
+        File filee = file.getSelectedFile();
+        try(FileInputStream test = new FileInputStream(filee)){
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(this, "Không thể mở file! Vui lòng đóng Excel và thử lại.", 
+                    "File đang được sử dụng", JOptionPane.ERROR_MESSAGE); return;
         }
+        List<MaVachSanPham> dsMaVach = MaVachSanPhamDAO.timMaSPTheoMaVach();
+        Map<String, MaVachSanPham> mapMaVach = new HashMap<>();
+        for(MaVachSanPham mv : dsMaVach){
+            mapMaVach.put(mv.getMaVachSanPham(), mv);
+        }
+        try(FileInputStream fis = new FileInputStream(filee);
+                XSSFWorkbook work = new XSSFWorkbook(fis)){
+            XSSFSheet sheet = work.getSheetAt(0);
+            DefaultTableModel tbl = (DefaultTableModel) tblThemSanPham.getModel();
+            if(tbl.getRowCount()>0){
+                JOptionPane.showMessageDialog(this, "Vui lòng xóa các sản phẩn hiện có rồi thử lại."); return;
+            }
+                    boolean head = true;
+            int soSP = 0;
+            final int colMaVach = 0;
+            final int colSoLuong = 7;
+            final int colGiaNhap=8;
+            for(Row is:sheet){
+                if(head){
+                    head = false; continue;
+                }
+                int lastCell = is.getLastCellNum();
+                if(lastCell<=0) continue;
+                Vector<Object> rowData = new Vector<>();
+                for(int i=0;i<lastCell;i++){
+                    Cell c = is.getCell(i, Row.MissingCellPolicy.CREATE_NULL_AS_BLANK);
+                    Object value;
+                    switch(c.getCellType()){
+                        case STRING -> {
+                            String clear = c.getStringCellValue().trim();
+                            value = clear;
+                        }case NUMERIC ->{
+                            if (DateUtil.isCellDateFormatted(c))
+                                value = c.getDateCellValue();
+                            else{
+                                value = c.getNumericCellValue();
+                            }
+                        }case BOOLEAN -> value=c.getBooleanCellValue();
+                        case FORMULA -> value = c.getCellFormula();
+                        default -> value = "";
+                             
+                    }rowData.add(value);
+                }
+                if(colMaVach<rowData.size()){
+                    Object as = rowData.get(colMaVach);
+                    String maVachh = as.toString().trim();
+                    MaVachSanPham maV = mapMaVach.get(maVachh);
+                    if(maV==null){
+                        JOptionPane.showMessageDialog(this, "Mã sản phẩm "+maVachh+" không tìm thấy trong hệ thống. Vui lòng kiểm tra rồi thử lại.",
+                                "Lỗi dữ liệu", JOptionPane.ERROR_MESSAGE); continue;
+                    }rowData.set(colMaVach, maV.getMaSP());
+                    
+                }
+                if(colSoLuong<rowData.size()){
+                    Object as = rowData.get(colSoLuong);
+                    double soLuong =-1;
+                    if(as instanceof Double i) soLuong =i;
+                    else if (as instanceof String s && !s.isBlank()) 
+                            soLuong = Double.parseDouble(s.trim());
+                    if(soLuong <0){
+                        JOptionPane.showMessageDialog(this, "Lỗi tại dòng "+(soSP+2)+
+                                " : Số lượng phải lớn hơn 0.", "Dữ liệu không hợp lệ", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+                    rowData.set(colSoLuong, (int)soLuong);
+                }
+                if (colGiaNhap<rowData.size()){
+                    Object as = rowData.get(colGiaNhap);
+                    double giaNhap = -1;
+                    if(as instanceof Double d) giaNhap = d;
+                    else if (as instanceof String s && !s.isBlank())
+                        giaNhap = Double.parseDouble(s.trim());
+                    if(giaNhap<0){
+                        JOptionPane.showMessageDialog(this, "Lỗi tại dòng "+(soSP+2)+": Giá nhập phải lớn hơn 0", "Dữ liệu không hợp lệ"
+                                , JOptionPane.ERROR_MESSAGE); return;
+                    }
+                    rowData.set(colGiaNhap, giaNhap);
+                }
+                int colCount = tbl.getColumnCount();
+                while(rowData.size()<colCount){
+                    if(rowData.size()==colCount-1 && Boolean.class.equals(tbl.getColumnClass(colCount-1))){
+                        rowData.add(Boolean.FALSE);
+                    }else{
+                        rowData.add("");
+                    }
+                }
+                tbl.addRow(rowData);
+                soSP++;
+            }
+            JOptionPane.showMessageDialog(this, "Thêm thành công "+soSP+" từ file excel!");
+        } catch(Exception e){
+            JOptionPane.showMessageDialog(this, "Lỗi đọc file: "+e.getMessage());
+            e.printStackTrace();
+        }        
         // TODO add your handling code here:
     }//GEN-LAST:event_btnThemSanPhamTuExcelActionPerformed
 
@@ -1260,7 +1296,6 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
         txtSapHetHan.setText(as.get(2)+" lô");
         txtConHan.setText(as.get(3)+ " lô");
     }
-
     private void xoaSanPhamDaChon() {
         DefaultTableModel tbl = (DefaultTableModel) tblThemSanPham.getModel();
         for(int i=tbl.getRowCount()-1;i>=0;i--){
