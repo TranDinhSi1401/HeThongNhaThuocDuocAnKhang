@@ -52,7 +52,7 @@ public class ChiTietHoaDonDAO {
         }
         return cthd;
     }
-
+    
     public static boolean insertChiTietHoaDon(ChiTietHoaDon cthd) {
         int n = 0;
         try {

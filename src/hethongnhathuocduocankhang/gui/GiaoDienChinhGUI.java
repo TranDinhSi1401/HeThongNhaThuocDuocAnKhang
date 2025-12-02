@@ -172,7 +172,7 @@ public class GiaoDienChinhGUI extends javax.swing.JFrame {
         pLogoLayout.setVerticalGroup(
             pLogoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pLogoLayout.createSequentialGroup()
-                .addContainerGap(26, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(pLogoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(lblLogo)
                     .addGroup(pLogoLayout.createSequentialGroup()

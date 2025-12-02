@@ -17,7 +17,6 @@ import java.sql.Timestamp;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.Month;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -46,12 +45,12 @@ public class HoaDonDAO {
         return new HoaDon(maHoaDon, nv, ngayLapHD, kh, chuyenKhoan, trangThai, tongTien);
     }
 
-    public static HoaDon getHoaDonMoiNhat() {
+    public static HoaDon getHoaDonMoiNhatTrongNgay() {
         HoaDon hd = null;
         try {
             ConnectDB.getInstance();
             Connection con = ConnectDB.getConnection();
-            String sql = "SELECT TOP 1 * FROM HoaDon ORDER BY ngayLapHoaDon DESC";
+            String sql = "SELECT TOP 1 * FROM HoaDon WHERE ngayLapHoaDon = GETDATE() ORDER BY ngayLapHoaDon DESC";
             Statement statement = con.createStatement();
             ResultSet rs = statement.executeQuery(sql);
             if (rs.next()) {
