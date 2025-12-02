@@ -2,8 +2,13 @@ package hethongnhathuocduocankhang.dao;
 
 
 import hethongnhathuocduocankhang.connectDB.ConnectDB;
+import hethongnhathuocduocankhang.entity.DonViTinh;
 import hethongnhathuocduocankhang.entity.LoSanPham;
+import hethongnhathuocduocankhang.entity.NhaCungCap;
+import hethongnhathuocduocankhang.entity.PhieuNhap;
 import hethongnhathuocduocankhang.entity.SanPham;
+import hethongnhathuocduocankhang.entity.TaiKhoan;
+import hethongnhathuocduocankhang.gui.GiaoDienChinhGUI;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -124,5 +129,68 @@ public class LoSanPhamDAO {
         }
         return loSP;
     }
-    
+    public static boolean themLoSanPham(LoSanPham lo){
+        int n=0;
+        try {
+            ConnectDB.getInstance().connect();
+            Connection con = ConnectDB.getConnection();
+            String sql = "Insert LoSanPham (maLoSanPham, maSP, soLuong, ngaySanXuat, ngayHetHan, dayHuy) "
+                    + "values(?, ?, ?, ?, ?, ?)";
+            PreparedStatement st = con.prepareStatement(sql);
+            st.setString(1, lo.getMaLoSanPham());
+            st.setString(2, lo.getSanPham().getMaSP());
+            st.setInt(3, lo.getSoLuong());
+            LocalDate ngaySX = lo.getNgaySanXuat();
+            LocalDate ngayHH = lo.getNgayHetHan();
+            java.sql.Date sx = java.sql.Date.valueOf(ngaySX);
+            java.sql.Date hh = java.sql.Date.valueOf(ngayHH);
+            st.setDate(4, sx);
+            st.setDate(5, hh);
+            st.setBoolean(6, lo.isDaHuy());
+            n = st.executeUpdate();
+        } catch (SQLException sQLException) {
+        }
+        return n>0;
+    }
+    public static boolean themGiaNhapTuLo(LoSanPham lo, PhieuNhap pn, double gia, double thanhTien, String ghiChu){
+        int n=0;
+        try {
+            ConnectDB.getInstance().connect();
+            Connection con = ConnectDB.getConnection();
+            String sql = "Insert ChiTietPhieuNhap (maPhieuNhap, maLoSanPham, soLuong, donGia, thanhTien, ghiChu) "
+                    + "values(?, ?, ?, ?, ?, ?)";
+            PreparedStatement st = con.prepareStatement(sql);
+            st.setString(1, pn.getMaPhieuNhap());
+            st.setString(2, lo.getMaLoSanPham());
+            st.setInt(3, lo.getSoLuong());
+            st.setDouble(4, gia);
+            st.setDouble(5, thanhTien);
+            st.setString(6, ghiChu);
+            n = st.executeUpdate();
+        } catch (SQLException sQLException) {
+        }
+        return n>0;
+    }
+    public static boolean themNhaCungCapTuLo(NhaCungCap ncc, double tongTien, String ghiChu){
+        int n=0;
+        try {
+            TaiKhoan tk = GiaoDienChinhGUI.getTk();
+            ConnectDB.getInstance().connect();
+            Connection con = ConnectDB.getConnection();
+            String sql = "Insert PhieuNhap (maPhieuNhap, ngayTao, maNV, maNCC, tongTien, ghiChu) " // Tạo khóa chính tự tăng
+                    + "values(?, ?, ?, ?, ?, ?)";
+            PreparedStatement st = con.prepareStatement(sql);
+            LocalDate ngayTao = LocalDate.now();
+            java.sql.Date nt = java.sql.Date.valueOf(ngayTao);
+            st.setString(1, "");//mã Phiếu
+            st.setDate(2, nt);
+            st.setString(3, tk.getNhanVien().getMaNV());
+            st.setString(4, ncc.getMaNCC());
+            st.setDouble(5, tongTien);
+            st.setString(6, ghiChu);
+            n = st.executeUpdate();
+        } catch (SQLException sQLException) {
+        }
+        return n>0;
+    }
 }

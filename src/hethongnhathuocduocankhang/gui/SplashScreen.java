@@ -17,6 +17,7 @@ import javax.swing.JProgressBar;
 import javax.swing.JWindow;
 import javax.swing.SwingConstants;
 import javax.swing.SwingWorker;
+import javax.swing.border.Border;
 
 /**
  *
@@ -63,7 +64,8 @@ public class SplashScreen extends JWindow {
         title.setFont(new Font("Sans-Serif", Font.BOLD, 16));
         Color boder = new Color(0, 120, 215);
         title.setBorder(BorderFactory.createLineBorder(boder, 5));
-
+        
+        
         content.add(imageLabel, BorderLayout.CENTER);
         content.add(title, BorderLayout.SOUTH);
 
@@ -108,11 +110,13 @@ public class SplashScreen extends JWindow {
             imageLabel.setIcon(icon);
             imageLabel.setHorizontalAlignment(JLabel.CENTER);
         }
-
+        
+        Color blueColor = new Color(0, 120, 215);
         JLabel title = new JLabel("Nhà thuốc Dược An Khang", JLabel.CENTER);
-        title.setFont(new Font("Sans-Serif", Font.BOLD, 16));
-        Color boder = new Color(0, 120, 215);
-        title.setBorder(BorderFactory.createLineBorder(boder, 5));
+        title.setForeground(blueColor);
+        title.setFont(new Font("Sans-Serif", Font.BOLD, 23));
+        
+        //title.setBorder(BorderFactory.createLineBorder(Color.WHITE, 5));
 
         JPanel centerPanel = new JPanel(new BorderLayout());
         centerPanel.setOpaque(false);
@@ -136,6 +140,8 @@ public class SplashScreen extends JWindow {
     bottomPanel.add(messageLabel, BorderLayout.NORTH);
     bottomPanel.add(progressBar, BorderLayout.SOUTH);
 
+    Border bd = BorderFactory.createLineBorder(blueColor, 4, true);
+    content.setBorder(bd);
     content.add(centerPanel, BorderLayout.CENTER);
     content.add(bottomPanel, BorderLayout.SOUTH);
 

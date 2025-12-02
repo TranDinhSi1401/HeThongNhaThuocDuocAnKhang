@@ -42,4 +42,14 @@ public class QuanLyLoBUS {
     public long kiemTra(LocalDate ht, LocalDate hh){
         return ChronoUnit.DAYS.between(ht, hh);
     }
+
+    public ArrayList timKiemVaTraVeLoVoiNhieuDieuKien(){
+        ArrayList<LoSanPham> dsLo = LoSanPhamDAO.dsLoSanPham();
+        
+        
+        
+        
+        return dsLo;
+    }
+
 }
