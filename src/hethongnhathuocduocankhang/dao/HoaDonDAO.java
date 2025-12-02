@@ -50,7 +50,7 @@ public class HoaDonDAO {
         try {
             ConnectDB.getInstance();
             Connection con = ConnectDB.getConnection();
-            String sql = "SELECT TOP 1 * FROM HoaDon WHERE ngayLapHoaDon = GETDATE() ORDER BY ngayLapHoaDon DESC";
+            String sql = "SELECT TOP 1 * FROM HoaDon WHERE CAST(ngayLapHoaDon AS DATE) = CAST(GETDATE() AS DATE) ORDER BY ngayLapHoaDon DESC";
             Statement statement = con.createStatement();
             ResultSet rs = statement.executeQuery(sql);
             if (rs.next()) {

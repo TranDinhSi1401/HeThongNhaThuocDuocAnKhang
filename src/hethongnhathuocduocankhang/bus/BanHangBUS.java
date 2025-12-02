@@ -183,6 +183,13 @@ public class BanHangBUS {
             if(tblCTHD.getRowCount() == 0) {
                 throw new Exception("Vui lòng thêm sản phẩm cần thanh toán");
             }
+            for(int i = 0; i < tblCTHD.getRowCount(); i++) {
+                String maSP = tblCTHD.getValueAt(i, 8).toString();
+                if(kiemTraKeDon(maSP) && maKH.equalsIgnoreCase("KH-00000")) {
+                    throw new Exception("Vui lòng lưu thông tin khách hàng trước khi thanh toán vì có thuốc kê đơn");
+                }
+            }
+            
             
             // Lấy mã hóa đơn mới nhất
             HoaDon hdMoiNhat = HoaDonDAO.getHoaDonMoiNhatTrongNgay();
@@ -219,11 +226,9 @@ public class BanHangBUS {
 
                String maSP = (String) model.getValueAt(i, 8);
 
-               ChiTietHoaDon cthdMoiNhat = ChiTietHoaDonDAO.getChiTietHoaDonMoiNhat();
+               ChiTietHoaDon cthdMoiNhat = ChiTietHoaDonDAO.getChiTietHoaDonMoiNhatTrongNgay();
                String maCTHDMoi;
                if (cthdMoiNhat == null) {
-                   maCTHDMoi = taoMaChiTietHoaDonMoi(now.toLocalDate(), 1);
-               } else if (now.toLocalDate().isAfter(HoaDonDAO.getHoaDonTheoMaHD(cthdMoiNhat.getHoaDon().getMaHoaDon()).getNgayLapHoaDon().toLocalDate())) {
                    maCTHDMoi = taoMaChiTietHoaDonMoi(now.toLocalDate(), 1);
                } else {
                    String maCTHDTruoc = cthdMoiNhat.getMaChiTietHoaDon();
