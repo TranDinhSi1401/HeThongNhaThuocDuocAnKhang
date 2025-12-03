@@ -82,7 +82,7 @@
             <DimensionLayout dim="1">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="1" attributes="0">
-                      <EmptySpace pref="26" max="32767" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="1" attributes="0">
                           <Component id="lblLogo" min="-2" max="-2" attributes="0"/>
                           <Group type="102" attributes="0">
@@ -126,6 +126,19 @@
                 </Property>
                 <Property name="text" type="java.lang.String" value="D&#x1af;&#x1ee2;C AN KHANG"/>
               </Properties>
+            </Component>
+          </SubComponents>
+        </Container>
+        <Container class="hethongnhathuocduocankhang.scroll.win11.ScrollPaneWin11" name="scrollPaneWin11">
+          <Constraints>
+            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
+              <BorderConstraints direction="Center"/>
+            </Constraint>
+          </Constraints>
+
+          <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+          <SubComponents>
+            <Component class="hethongnhathuocduocankhang.menu.Menu" name="menu">
             </Component>
           </SubComponents>
         </Container>
