@@ -172,7 +172,7 @@ public class GiaoDienChinhGUI extends javax.swing.JFrame {
         pLogoLayout.setVerticalGroup(
             pLogoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pLogoLayout.createSequentialGroup()
-                .addContainerGap(26, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(pLogoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(lblLogo)
                     .addGroup(pLogoLayout.createSequentialGroup()
@@ -185,8 +185,6 @@ public class GiaoDienChinhGUI extends javax.swing.JFrame {
 
         pLeft.add(pLogo, java.awt.BorderLayout.PAGE_START);
 
-        menu.setBackground(new java.awt.Color(25, 118, 210));
-        menu.setPreferredSize(new java.awt.Dimension(200, 328));
         scrollPaneWin11.setViewportView(menu);
 
         pLeft.add(scrollPaneWin11, java.awt.BorderLayout.CENTER);

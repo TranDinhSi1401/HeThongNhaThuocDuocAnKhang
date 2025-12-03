@@ -506,8 +506,19 @@ public class ThemSanPhamGUI extends JPanel {
         return btnTimNCC;
     }
 
+
     public JButton getBtnThemNCC() {
         return btnThemNCC;
+    }
+  
+    public void setCmbLoaiSanPham(LoaiSanPhamEnum loai) {
+        if (loai == LoaiSanPhamEnum.THUOC_KE_DON) {
+            jComboBox1.setSelectedItem("Thuốc kê đơn");
+        } else if (loai == LoaiSanPhamEnum.THUC_PHAM_CHUC_NANG) {
+            jComboBox1.setSelectedItem("Thực phẩm chức năng");
+        } else {
+            jComboBox1.setSelectedItem("Thuốc không kê đơn");
+        }
     }
 
     public JButton getBtnXoaNCC() {
@@ -571,4 +582,26 @@ public class ThemSanPhamGUI extends JPanel {
     public JButton getBtnXacNhan() {
         return btnXacNhan;
     }
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextField2;
+    private javax.swing.JTextField jTextField3;
+    private javax.swing.JTextField jTextField4;
+    private javax.swing.JTextField jTextField6;
+    private javax.swing.JTextField jTextField7;
+    // End of variables declaration//GEN-END:variables
 }

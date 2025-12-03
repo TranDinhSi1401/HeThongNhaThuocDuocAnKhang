@@ -263,3 +263,23 @@ public class SanPhamDAO {
         return dsMaVachSP;
     }
 }
+    
+    public static String getMaSpTheoMaVach(String maVach) {
+        String maSP = null;
+        try {
+            ConnectDB.getInstance().connect();
+            Connection con = ConnectDB.getConnection();
+            String query = "SELECT maSP FROM MaVachSanPham WHERE maVach = ?";
+            PreparedStatement stmt = con.prepareStatement(query);
+            stmt.setString(1, maVach);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                maSP = rs.getString("maSP");
+                return maSP;
+            }
+        } catch (SQLException e) {
+            System.out.println("Lỗi kết nối csdl");
+        }
+        return null;
+    }
+}
