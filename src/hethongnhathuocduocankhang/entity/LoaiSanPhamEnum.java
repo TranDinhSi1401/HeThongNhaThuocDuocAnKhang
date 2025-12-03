@@ -9,8 +9,9 @@ package hethongnhathuocduocankhang.entity;
  * @author MINH KHANG
  */
 public enum LoaiSanPhamEnum {
-    THUOC_KHONG_KE_DON("Thuốc không kê đơn"), THUOC_KE_DON("Thuốc kê đơn"), THUC_PHAM_CHUC_NANG("Thực phẩm chức năng");
-    
+  
+    THUOC_KE_DON("Thuốc kê đơn"), THUC_PHAM_CHUC_NANG("Thực phẩm chức năng"), THUOC_KHONG_KE_DON("Thuốc không kê đơn");
+   
     private final String loaiSanPham;
     
     private LoaiSanPhamEnum(String loaiSanPham) {

@@ -142,5 +142,4 @@ public class TaiKhoan {
     public String toString() {
         return "TaiKhoan{" + "tenDangNhap=" + tenDangNhap + ", nhanVien=" + nhanVien + ", matKhau=" + matKhau + ", quanLy=" + quanLy + ", biKhoa=" + biKhoa + ", email=" + email + ", ngayTao=" + ngayTao + '}';
     }
-
 }
