@@ -12,6 +12,7 @@ import java.util.Objects;
  * @author trand
  */
 public class KhuyenMaiSanPham {
+
     private KhuyenMai khuyenMai;
     private SanPham sanPham;
     private LocalDate ngayChinhSua;
@@ -24,7 +25,7 @@ public class KhuyenMaiSanPham {
         this.sanPham = sanPham;
         this.ngayChinhSua = ngayChinhSua;
     }
-    
+
     public KhuyenMaiSanPham(KhuyenMaiSanPham other) {
         this.khuyenMai = other.khuyenMai;
         this.sanPham = other.sanPham;
@@ -33,9 +34,10 @@ public class KhuyenMaiSanPham {
 
     @Override
     public int hashCode() {
-        int hash = 3;
-        hash = 71 * hash + Objects.hashCode(this.khuyenMai);
-        hash = 71 * hash + Objects.hashCode(this.sanPham);
+        int hash = 7;
+        hash = 97 * hash + Objects.hashCode(this.khuyenMai);
+        hash = 97 * hash + Objects.hashCode(this.sanPham);
+        hash = 97 * hash + Objects.hashCode(this.ngayChinhSua);
         return hash;
     }
 
@@ -54,13 +56,39 @@ public class KhuyenMaiSanPham {
         if (!Objects.equals(this.khuyenMai, other.khuyenMai)) {
             return false;
         }
-        return Objects.equals(this.sanPham, other.sanPham);
+        if (!Objects.equals(this.sanPham, other.sanPham)) {
+            return false;
+        }
+        return Objects.equals(this.ngayChinhSua, other.ngayChinhSua);
     }
 
     @Override
     public String toString() {
         return "KhuyenMaiSanPham{" + "khuyenMai=" + khuyenMai + ", sanPham=" + sanPham + ", ngayChinhSua=" + ngayChinhSua + '}';
     }
-    
-    
+
+    public KhuyenMai getKhuyenMai() {
+        return khuyenMai;
+    }
+
+    public void setKhuyenMai(KhuyenMai khuyenMai) {
+        this.khuyenMai = khuyenMai;
+    }
+
+    public SanPham getSanPham() {
+        return sanPham;
+    }
+
+    public void setSanPham(SanPham sanPham) {
+        this.sanPham = sanPham;
+    }
+
+    public LocalDate getNgayChinhSua() {
+        return ngayChinhSua;
+    }
+
+    public void setNgayChinhSua(LocalDate ngayChinhSua) {
+        this.ngayChinhSua = ngayChinhSua;
+    }
+
 }

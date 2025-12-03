@@ -4,11 +4,13 @@
  */
 package hethongnhathuocduocankhang.gui;
 
-import hethongnhathuocduocankhang.dao.PhieuTraHangDAO; // THAY ĐỔI
-import hethongnhathuocduocankhang.entity.PhieuTraHang; // THAY ĐỔI
+import hethongnhathuocduocankhang.dao.PhieuTraHangDAO;
+import hethongnhathuocduocankhang.entity.PhieuTraHang;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumnModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,6 +20,8 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 /**
  *
@@ -27,30 +31,34 @@ import java.util.ArrayList;
  */
 public class QuanLiPhieuTraHangGUI extends JPanel { 
 
-    // private JButton btnThem, btnXoa, btnSua; // BỎ
     private JTextField txtTimKiem;
     private JTable table;
     private JComboBox<String> cmbTieuChiTimKiem;
-    // private JComboBox<String> cmbBoLoc; // BỎ
     private DefaultTableModel model;
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+
+    // Label hiển thị số lượng (Footer)
+    private JLabel lblTongSoDong;
+    private JLabel lblSoDongChon;
 
     public QuanLiPhieuTraHangGUI() {
         this.setLayout(new BorderLayout(10, 10));
         this.setBorder(new EmptyBorder(10, 10, 10, 10));
 
+        // --- 1. PANEL NORTH ---
         JPanel pnlNorth = new JPanel();
         pnlNorth.setLayout(new BorderLayout());
 
+        // 1.1. Panel Chức năng (LEFT - Rỗng, giữ layout)
         JPanel pnlNorthLeft = new JPanel();
         pnlNorthLeft.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 0));
         pnlNorthLeft.setBorder(new EmptyBorder(0, 0, 10, 0));
         pnlNorth.add(pnlNorthLeft, BorderLayout.WEST);
         
+        // 1.2. Panel Tìm kiếm
         JPanel pnlNorthRight = new JPanel();
         pnlNorthRight.setLayout(new FlowLayout(FlowLayout.RIGHT, 10, 5));
 
-        // THAY ĐỔI TIÊU CHÍ TÌM KIẾM
         cmbTieuChiTimKiem = new JComboBox<>(new String[]{
             "Mã Phiếu Trả", 
             "Mã Hóa Đơn Gốc", 
@@ -79,10 +87,11 @@ public class QuanLiPhieuTraHangGUI extends JPanel {
         pnlNorth.add(pnlNorthRight, BorderLayout.EAST);
         this.add(pnlNorth, BorderLayout.NORTH);
 
+        // --- 2. PANEL CENTER (TABLE) ---
         JPanel centerPanel = new JPanel(new BorderLayout(0, 10));
 
-        // THAY ĐỔI CỘT
-        String[] columnNames = {"Mã Phiếu Trả", "Mã Hóa Đơn Gốc", "Nhân Viên Lập", "Ngày Lập", "Tổng Tiền Hoàn Trả"};
+        // Thêm cột STT
+        String[] columnNames = {"STT", "Mã Phiếu Trả", "Mã Hóa Đơn Gốc", "Nhân Viên Lập", "Ngày Lập", "Tổng Tiền Hoàn Trả"};
         Object[][] data = {};
 
         model = new DefaultTableModel(data, columnNames) {
@@ -101,27 +110,82 @@ public class QuanLiPhieuTraHangGUI extends JPanel {
         table.setShowGrid(true);
         table.setGridColor(Color.LIGHT_GRAY);
 
+        // --- CẤU HÌNH KÍCH THƯỚC & CĂN CHỈNH CỘT ---
+        TableColumnModel columnModel = table.getColumnModel();
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+        
+        DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
+        rightRenderer.setHorizontalAlignment(JLabel.RIGHT);
+
+        // 0. STT
+        columnModel.getColumn(0).setPreferredWidth(40);
+        columnModel.getColumn(0).setMaxWidth(40);
+        columnModel.getColumn(0).setCellRenderer(centerRenderer);
+
+        // 1. Mã Phiếu Trả
+        columnModel.getColumn(1).setPreferredWidth(100);
+        columnModel.getColumn(1).setMaxWidth(120);
+        columnModel.getColumn(1).setCellRenderer(centerRenderer);
+
+        // 2. Mã Hóa Đơn Gốc
+        columnModel.getColumn(2).setPreferredWidth(100);
+        columnModel.getColumn(2).setMaxWidth(120);
+        columnModel.getColumn(2).setCellRenderer(centerRenderer);
+
+        // 3. Nhân Viên Lập (Rộng)
+        columnModel.getColumn(3).setPreferredWidth(200);
+
+        // 4. Ngày Lập
+        columnModel.getColumn(4).setPreferredWidth(120);
+        columnModel.getColumn(4).setCellRenderer(centerRenderer);
+        
+        // 5. Tổng Tiền Hoàn Trả (Căn phải)
+        columnModel.getColumn(5).setPreferredWidth(120);
+        columnModel.getColumn(5).setCellRenderer(rightRenderer);
+
         JScrollPane scrollPane = new JScrollPane(table);
         centerPanel.add(scrollPane, BorderLayout.CENTER);
-
-        this.add(pnlNorth, BorderLayout.NORTH);
         this.add(centerPanel, BorderLayout.CENTER);
+        
+        // --- 3. PANEL SOUTH (FOOTER) ---
+        JPanel pnlSouth = new JPanel(new FlowLayout(FlowLayout.LEFT, 20, 5));
+        pnlSouth.setBorder(new EmptyBorder(5, 0, 0, 0));
+        
+        Font fontFooter = new Font("Arial", Font.BOLD, 13);
+        
+        lblTongSoDong = new JLabel("Tổng số phiếu trả: 0");
+        lblTongSoDong.setFont(fontFooter);
+        lblTongSoDong.setForeground(new Color(0, 102, 204));
+        
+        lblSoDongChon = new JLabel("Đang chọn: 0");
+        lblSoDongChon.setFont(fontFooter);
+        lblSoDongChon.setForeground(new Color(204, 0, 0));
+        
+        pnlSouth.add(lblTongSoDong);
+        pnlSouth.add(new JSeparator(JSeparator.VERTICAL));
+        pnlSouth.add(lblSoDongChon);
+        
+        this.add(pnlSouth, BorderLayout.SOUTH);
 
         updateTable();
         addEvents();
     }
 
-    private void updateTable(ArrayList<PhieuTraHang> dsPTH) { // THAY ĐỔI
+    private void updateTable(ArrayList<PhieuTraHang> dsPTH) {
         model.setRowCount(0);
         if (dsPTH == null) {
+            lblTongSoDong.setText("Tổng số phiếu trả: 0");
             return;
         }
-        for (PhieuTraHang pth : dsPTH) { // THAY ĐỔI
+        int stt = 1;
+        for (PhieuTraHang pth : dsPTH) {
             String tenNV = (pth.getNhanVien() != null && pth.getNhanVien().getTen() != null)
                            ? pth.getNhanVien().getHoTenDem() + " " + pth.getNhanVien().getTen() 
                            : pth.getNhanVien().getMaNV(); 
 
             Object[] row = {
+                stt++, // STT
                 pth.getMaPhieuTraHang(),
                 pth.getHoaDon().getMaHoaDon(),
                 tenNV,
@@ -130,10 +194,11 @@ public class QuanLiPhieuTraHangGUI extends JPanel {
             };
             model.addRow(row);
         }
+        lblTongSoDong.setText("Tổng số phiếu trả: " + dsPTH.size());
     }
 
     private void updateTable() {
-        ArrayList<PhieuTraHang> dsPTH = PhieuTraHangDAO.getAllPhieuTraHang(); // THAY ĐỔI
+        ArrayList<PhieuTraHang> dsPTH = PhieuTraHangDAO.getAllPhieuTraHang();
         updateTable(dsPTH);
     }
 
@@ -156,7 +221,17 @@ public class QuanLiPhieuTraHangGUI extends JPanel {
         table.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                hienThiChiTietPhieuTraHang(e); // THAY ĐỔI
+                hienThiChiTietPhieuTraHang(e);
+            }
+        });
+        
+        // Sự kiện đếm dòng chọn
+        table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                if (!e.getValueIsAdjusting()) {
+                    lblSoDongChon.setText("Đang chọn: " + table.getSelectedRowCount());
+                }
             }
         });
     }
@@ -164,29 +239,28 @@ public class QuanLiPhieuTraHangGUI extends JPanel {
     private void xuLyTimKiem() {
         String tuKhoa = txtTimKiem.getText().trim();
         String tieuChi = cmbTieuChiTimKiem.getSelectedItem().toString();
-
-        ArrayList<PhieuTraHang> dsKetQua = new ArrayList<>(); // THAY ĐỔI
+        ArrayList<PhieuTraHang> dsKetQua = new ArrayList<>();
 
         if (tuKhoa.isEmpty()) {
-            dsKetQua = PhieuTraHangDAO.getAllPhieuTraHang(); // THAY ĐỔI
+            dsKetQua = PhieuTraHangDAO.getAllPhieuTraHang();
         } else {
             try {
                 switch (tieuChi) {
                     case "Mã Phiếu Trả":
-                        PhieuTraHang pth = PhieuTraHangDAO.timPTHTheoMa(tuKhoa); // THAY ĐỔI
+                        PhieuTraHang pth = PhieuTraHangDAO.timPTHTheoMa(tuKhoa);
                         if (pth != null) {
                             dsKetQua.add(pth);
                         }
                         break;
                     case "Mã Hóa Đơn Gốc":
-                        dsKetQua = PhieuTraHangDAO.timPTHTheoMaHD(tuKhoa); // THAY ĐỔI
+                        dsKetQua = PhieuTraHangDAO.timPTHTheoMaHD(tuKhoa);
                         break;
                     case "Mã Nhân Viên":
-                        dsKetQua = PhieuTraHangDAO.timPTHTheoMaNV(tuKhoa); // THAY ĐỔI
+                        dsKetQua = PhieuTraHangDAO.timPTHTheoMaNV(tuKhoa);
                         break;
                     case "Ngày Lập (yyyy-MM-dd)":
                         LocalDate date = LocalDate.parse(tuKhoa); 
-                        dsKetQua = PhieuTraHangDAO.timPTHTheoNgayLap(date); // THAY ĐỔI
+                        dsKetQua = PhieuTraHangDAO.timPTHTheoNgayLap(date);
                         break;
                 }
             } catch (DateTimeParseException e) {
@@ -196,31 +270,25 @@ public class QuanLiPhieuTraHangGUI extends JPanel {
         updateTable(dsKetQua); 
     }
 
-    /**
-     * SỬA LẠI HÀM NÀY
-     * Mở JDialog chứa JTable hiển thị danh sách ChiTietPhieuTraHang
-     */
-    private void hienThiChiTietPhieuTraHang(MouseEvent e) { // THAY ĐỔI
+    private void hienThiChiTietPhieuTraHang(MouseEvent e) {
         int selectRow = table.getSelectedRow();
         if (selectRow != -1) {
-            String maPTH = model.getValueAt(selectRow, 0).toString(); 
+            // Lấy Mã PTH ở CỘT 1 (Vì cột 0 là STT)
+            String maPTH = model.getValueAt(selectRow, 1).toString(); 
             PhieuTraHang pthDaChon = PhieuTraHangDAO.timPTHTheoMa(maPTH); 
 
             if (pthDaChon != null && e.getClickCount() == 2) { 
                 
-                // 1. Tạo GUI mới (chứa JTable chi tiết)
                 ChiTietPhieuTraHangGUI pnlChiTiet = new ChiTietPhieuTraHangGUI(); 
                 
-                // 2. Tải dữ liệu vào GUI
-                pnlChiTiet.loadData(pthDaChon); // Truyền đối tượng PTH đầy đủ
+                pnlChiTiet.loadData(pthDaChon);
 
-                // 3. Tạo JDialog để chứa GUI
                 JDialog dialog = new JDialog();
                 dialog.setTitle("Danh sách chi tiết Phiếu Trả Hàng: " + pthDaChon.getMaPhieuTraHang()); 
                 dialog.setModal(true);
                 dialog.setResizable(true); 
                 dialog.setContentPane(pnlChiTiet);
-                dialog.setPreferredSize(new Dimension(900, 400)); // Đặt kích thước
+                dialog.setPreferredSize(new Dimension(900, 400));
                 dialog.pack();
                 dialog.setLocationRelativeTo(null);
                 dialog.setVisible(true);
