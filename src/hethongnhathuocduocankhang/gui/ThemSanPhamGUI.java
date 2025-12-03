@@ -4,6 +4,7 @@
  */
 package hethongnhathuocduocankhang.gui;
 
+import hethongnhathuocduocankhang.entity.LoaiSanPhamEnum;
 import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;

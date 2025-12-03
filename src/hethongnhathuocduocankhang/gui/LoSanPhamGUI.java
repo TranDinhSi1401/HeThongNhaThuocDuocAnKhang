@@ -976,7 +976,7 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
         List<MaVachSanPham> dsMaVach = MaVachSanPhamDAO.timMaSPTheoMaVach();
         Map<String, MaVachSanPham> mapMaVach = new HashMap<>();
         for(MaVachSanPham mv : dsMaVach){
-            mapMaVach.put(mv.getMaVachSanPham(), mv);
+            mapMaVach.put(mv.getMaVach(), mv);
         }
         try(FileInputStream fis = new FileInputStream(filee);
                 XSSFWorkbook work = new XSSFWorkbook(fis)){
@@ -1020,7 +1020,7 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
                     if(maV==null){
                         JOptionPane.showMessageDialog(this, "Mã sản phẩm "+maVachh+" không tìm thấy trong hệ thống. Vui lòng kiểm tra rồi thử lại.",
                                 "Lỗi dữ liệu", JOptionPane.ERROR_MESSAGE); continue;
-                    }rowData.set(colMaVach, maV.getMaSP());
+                    }rowData.set(colMaVach, maV.getSanPham().getMaSP());
                     
                 }
                 if(colSoLuong<rowData.size()){

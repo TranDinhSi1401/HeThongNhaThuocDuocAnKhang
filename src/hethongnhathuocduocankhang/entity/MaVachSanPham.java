@@ -43,6 +43,6 @@ public class MaVachSanPham {
 
     @Override
     public String toString() {
-        return "MaVachSanPham{" + "maSP=" + maSP + ", maVachSanPham=" + maVachSanPham + '}';
+        return "MaVachSanPham{" + "maSP=" + sanPham.getMaSP() + ", maVachSanPham=" + maVach + '}';
     }
 }

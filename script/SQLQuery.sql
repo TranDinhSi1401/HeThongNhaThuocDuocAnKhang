@@ -14,6 +14,7 @@ GO
 USE DuocAnKhang
 GO
 
+-- 1. Bảng Nhân Viên (Đã thêm daXoa)
 CREATE TABLE NhanVien (
     maNV NVARCHAR(7) PRIMARY KEY,
     hoTenDem NVARCHAR(50) NOT NULL,
@@ -23,7 +24,9 @@ CREATE TABLE NhanVien (
     gioiTinh BIT NOT NULL, -- true: Nam, false: Nữ
     ngaySinh DATE NOT NULL,
     diaChi NVARCHAR(255) NULL,
-    nghiViec BIT NOT NULL CONSTRAINT DF_NhanVien_NghiViec DEFAULT 0, -- true: Đã nghỉ việc, false: Đang làm việc
+    nghiViec BIT NOT NULL CONSTRAINT DF_NhanVien_NghiViec DEFAULT 0, -- true: Đã nghỉ việc (Logic NV), false: Đang làm
+    --daXoa BIT NOT NULL CONSTRAINT DF_NhanVien_DaXoa DEFAULT 0, -- true: Đã xóa mềm (Logic hệ thống)
+    
     CONSTRAINT CK_NhanVien_MaNV_Format CHECK (maNV LIKE 'NV-[0-9][0-9][0-9][0-9]'),
     CONSTRAINT CK_NhanVien_Sdt_Format CHECK (LEN(sdt) = 10 AND sdt LIKE '0%'),
     CONSTRAINT CK_NhanVien_Cccd_Format CHECK (LEN(cccd) = 12 AND ISNUMERIC(cccd) = 1),
@@ -40,30 +43,37 @@ CREATE TABLE CaLam (
 );
 GO
 
+-- 2. Bảng Nhà Cung Cấp (Đã thêm daXoa)
 CREATE TABLE NhaCungCap (
     maNCC NVARCHAR(8) PRIMARY KEY,
     tenNCC NVARCHAR(100) NOT NULL,
     diaChi NVARCHAR(255) NULL,
     sdt VARCHAR(10) NOT NULL UNIQUE,
     email NVARCHAR(255) NOT NULL UNIQUE,
+    --daXoa BIT NOT NULL CONSTRAINT DF_NhaCungCap_DaXoa DEFAULT 0,
+
     CONSTRAINT CK_NhaCungCap_MaNCC_Format CHECK (maNCC LIKE 'NCC-[0-9][0-9][0-9][0-9]'),
     CONSTRAINT CK_NhaCungCap_Sdt_Format CHECK (LEN(sdt) = 10 AND sdt LIKE '0%'),
     CONSTRAINT CK_NhaCungCap_Email_Format CHECK (email LIKE '%_@gmail.com')
 );
 GO
 
+-- 3. Bảng Khách Hàng (Đã thêm daXoa)
 CREATE TABLE KhachHang (
     maKH NVARCHAR(8) PRIMARY KEY,
     hoTenDem NVARCHAR(50) NOT NULL,
     ten NVARCHAR(10) NOT NULL,
     sdt VARCHAR(10) NOT NULL UNIQUE,
     diemTichLuy INT NOT NULL CONSTRAINT DF_KhachHang_DiemTichLuy DEFAULT 0,
+    --daXoa BIT NOT NULL CONSTRAINT DF_KhachHang_DaXoa DEFAULT 0,
+
     CONSTRAINT CK_KhachHang_MaKH_Format CHECK (maKH LIKE 'KH-[0-9][0-9][0-9][0-9][0-9]'),
     CONSTRAINT CK_KhachHang_Sdt_Format CHECK (LEN(sdt) = 10 AND sdt LIKE '0%'),
     CONSTRAINT CK_KhachHang_DiemTichLuy CHECK (diemTichLuy >= 0)
 );
 GO
 
+-- 4. Bảng Khuyến Mãi (Đã thêm daXoa)
 CREATE TABLE KhuyenMai (
     maKhuyenMai NVARCHAR(7) PRIMARY KEY,
     moTa NVARCHAR(255) NULL,
@@ -73,8 +83,9 @@ CREATE TABLE KhuyenMai (
     ngayKetThuc DATETIME2 NOT NULL,
     soLuongToiThieu INT NOT NULL,
     soLuongToiDa INT NOT NULL,
-    ngayChinhSua DATETIME2 NOT NULL 
-    CONSTRAINT DF_KhuyenMai_NgayChinhSua DEFAULT GETDATE(),
+    ngayChinhSua DATETIME2 NOT NULL CONSTRAINT DF_KhuyenMai_NgayChinhSua DEFAULT GETDATE(),
+    --daXoa BIT NOT NULL CONSTRAINT DF_KhuyenMai_DaXoa DEFAULT 0,
+
     CONSTRAINT CK_KhuyenMai_MaKM_Format CHECK (maKhuyenMai LIKE 'KM-[0-9][0-9][0-9][0-9]'),
     CONSTRAINT CK_KhuyenMai_PhanTram CHECK (phanTram > 0 AND phanTram <= 100),
     CONSTRAINT CK_KhuyenMai_LoaiKM_Enum CHECK (loaiKhuyenMai IN (N'SO_LUONG', N'MUA', N'NHA_SAN_XUAT', N'NGUNG_BAN')),
@@ -83,6 +94,7 @@ CREATE TABLE KhuyenMai (
 )
 GO
 
+-- 5. Bảng Tài Khoản (Đã thêm daXoa)
 CREATE TABLE TaiKhoan (
     tenDangNhap NVARCHAR(7) PRIMARY KEY,
     matKhau NVARCHAR(256) NOT NULL,
@@ -90,11 +102,14 @@ CREATE TABLE TaiKhoan (
     biKhoa BIT NOT NULL CONSTRAINT DF_TaiKhoan_BiKhoa DEFAULT 1, -- true: Bị khóa, false: Hoạt động
     email NVARCHAR(255) NOT NULL UNIQUE,
     ngayTao DATETIME NOT NULL CONSTRAINT DF_TaiKhoan_NgayTao DEFAULT GETDATE(),
+    --daXoa BIT NOT NULL CONSTRAINT DF_TaiKhoan_DaXoa DEFAULT 0,
+
     CONSTRAINT FK_TaiKhoan_NhanVien FOREIGN KEY (tenDangNhap) REFERENCES NhanVien(maNV),
     CONSTRAINT CK_TaiKhoan_Email_Format CHECK (email LIKE '%_@gmail.com')
 );
 GO
 
+-- 6. Bảng Sản Phẩm (Đã thêm daXoa)
 CREATE TABLE SanPham (
     maSP NVARCHAR(7) PRIMARY KEY,
     ten NVARCHAR(255) NOT NULL,
@@ -103,6 +118,8 @@ CREATE TABLE SanPham (
     loaiSanPham NVARCHAR(50) NOT NULL,
     tonToiThieu INT NOT NULL,
     tonToiDa INT NOT NULL,
+    daXoa BIT NOT NULL CONSTRAINT DF_SanPham_DaXoa DEFAULT 0,
+
     CONSTRAINT CK_SanPham_MaSP_Format CHECK (maSP LIKE 'SP-[0-9][0-9][0-9][0-9]'),
     CONSTRAINT CK_SanPham_LoaiSanPham_Enum CHECK (loaiSanPham IN (N'THUOC_KE_DON', N'THUOC_KHONG_KE_DON', N'THUC_PHAM_CHUC_NANG')),
     CONSTRAINT CK_SanPham_TonKhoHopLe CHECK (tonToiDa >= tonToiThieu AND tonToiThieu >= 0)
@@ -114,13 +131,11 @@ CREATE TABLE MaVachSanPham (
     maSP NVARCHAR(7) NOT NULL,     
     
     CONSTRAINT PK_MaVachSanPham PRIMARY KEY (maVach),
-    
-    CONSTRAINT FK_MaVach_SanPham FOREIGN KEY (maSP) 
-        REFERENCES SanPham(maSP) 
-        ON DELETE CASCADE
+    CONSTRAINT FK_MaVach_SanPham FOREIGN KEY (maSP) REFERENCES SanPham(maSP) ON DELETE CASCADE
 );
 GO
 
+-- 7. Bảng Đơn Vị Tính (Đã thêm daXoa)
 CREATE TABLE DonViTinh (
     maDonViTinh NVARCHAR(20) PRIMARY KEY,
     maSP NVARCHAR(7) NOT NULL,
@@ -128,6 +143,8 @@ CREATE TABLE DonViTinh (
     heSoQuyDoi INT NOT NULL,
     giaBanTheoDonVi DECIMAL(18, 2) NOT NULL,
     donViTinhCoBan BIT NOT NULL,
+    daXoa BIT NOT NULL CONSTRAINT DF_DonViTinh_DaXoa DEFAULT 0,
+
     CONSTRAINT FK_DonViTinh_SanPham FOREIGN KEY (maSP) REFERENCES SanPham(maSP) ON DELETE CASCADE,
     CONSTRAINT CK_DVT_MaDVT_Format CHECK (maDonViTinh LIKE 'DVT-[0-9][0-9][0-9][0-9]-%'),
     CONSTRAINT CK_DVT_HeSoQuyDoi CHECK (heSoQuyDoi > 0),
@@ -141,7 +158,7 @@ CREATE TABLE LoSanPham (
     soLuong INT NOT NULL,
     ngaySanXuat DATE NOT NULL,
     ngayHetHan DATE NOT NULL,
-    daHuy BIT NOT NULL DEFAULT 0, -- DEFAULT 0: Mặc định là chưa hủy (False)
+    daHuy BIT NOT NULL DEFAULT 0,
     CONSTRAINT FK_LoSanPham_SanPham FOREIGN KEY (maSP) REFERENCES SanPham(maSP) ON DELETE CASCADE,
     CONSTRAINT CK_LoSanPham_SoLuong CHECK (soLuong >= 0),
     CONSTRAINT CK_LoSanPham_NgayHopLe CHECK (ngayHetHan >= ngaySanXuat)
@@ -215,8 +232,8 @@ CREATE TABLE HoaDon (
     maNV NVARCHAR(7) NOT NULL,
     ngayLapHoaDon DATETIME2 NOT NULL CONSTRAINT DF_HoaDon_NgayLap DEFAULT GETDATE(),
     maKH NVARCHAR(8) NOT NULL,
-    chuyenKhoan BIT NOT NULL CONSTRAINT DF_HoaDon_ChuyenKhoan DEFAULT 0, -- false: Tiền mặt, true: Chuyển khoản
-    trangThai BIT NOT NULL CONSTRAINT DF_HoaDon_TrangThai DEFAULT 0, -- false: Chưa thanh toán, true: Đã thanh toán
+    chuyenKhoan BIT NOT NULL CONSTRAINT DF_HoaDon_ChuyenKhoan DEFAULT 0, 
+    trangThai BIT NOT NULL CONSTRAINT DF_HoaDon_TrangThai DEFAULT 0, 
     tongTien DECIMAL(18, 2) NOT NULL,
     CONSTRAINT FK_HoaDon_NhanVien FOREIGN KEY (maNV) REFERENCES NhanVien(maNV),
     CONSTRAINT FK_HoaDon_KhachHang FOREIGN KEY (maKH) REFERENCES KhachHang(maKH),
@@ -293,16 +310,11 @@ CREATE TABLE PhieuNhap (
     maNCC NVARCHAR(8) NOT NULL,
     tongTien DECIMAL(18, 2) DEFAULT 0,
     ghiChu NVARCHAR(255) NULL,
-
     CONSTRAINT PK_PhieuNhap PRIMARY KEY (maPhieuNhap),
-
     CONSTRAINT FK_PhieuNhap_NhanVien FOREIGN KEY (maNV) REFERENCES NhanVien(maNV),
     CONSTRAINT FK_PhieuNhap_NhaCungCap FOREIGN KEY (maNCC) REFERENCES NhaCungCap(maNCC),
-
     CONSTRAINT CK_PhieuNhap_Format CHECK (maPhieuNhap LIKE 'PN-[0-9][0-9][0-9][0-9]'),
-
     CONSTRAINT CK_PhieuNhap_NgayTao CHECK (ngayTao <= GETDATE()),
-
     CONSTRAINT CK_PhieuNhap_TongTien CHECK (tongTien >= 0)
 );
 GO
@@ -312,23 +324,16 @@ CREATE TABLE ChiTietPhieuNhap (
     maLoSanPham NVARCHAR(50) NOT NULL, 
     soLuong INT NOT NULL,
     donGia DECIMAL(18, 2) NOT NULL,
-
     thanhTien DECIMAL(18, 2) NOT NULL, 
-    
     ghiChu NVARCHAR(255) NULL,
-
     CONSTRAINT PK_ChiTietPhieuNhap PRIMARY KEY (maPhieuNhap, maLoSanPham),
-
-    CONSTRAINT FK_CTPN_PhieuNhap FOREIGN KEY (maPhieuNhap) REFERENCES PhieuNhap(maPhieuNhap) 
-        ON DELETE CASCADE,
+    CONSTRAINT FK_CTPN_PhieuNhap FOREIGN KEY (maPhieuNhap) REFERENCES PhieuNhap(maPhieuNhap) ON DELETE CASCADE,
     CONSTRAINT FK_CTPN_LoSanPham FOREIGN KEY (maLoSanPham) REFERENCES LoSanPham(maLoSanPham),
-
     CONSTRAINT CK_CTPN_SoLuong CHECK (soLuong > 0),
     CONSTRAINT CK_CTPN_DonGia CHECK (donGia >= 0),
     CONSTRAINT CK_CTPN_ThanhTien CHECK (thanhTien >= 0)
 );
 GO
-
 -- ===================================================================
 -- 1. Bảng NhanVien (4 người)
 -- ===================================================================
@@ -437,64 +442,64 @@ INSERT INTO KhuyenMai (maKhuyenMai, moTa, phanTram, loaiKhuyenMai, ngayBatDau, n
 GO
 
 -- ===================================================================
--- 6. Bảng SanPham (50 sản phẩm)
+-- 6. Bảng SanPham (50 sản phẩm) - Đã bổ sung cột daXoa = 0
 -- ===================================================================
-INSERT INTO SanPham (maSP, ten, moTa, thanhPhan, loaiSanPham, tonToiThieu, tonToiDa) VALUES
+INSERT INTO SanPham (maSP, ten, moTa, thanhPhan, loaiSanPham, tonToiThieu, tonToiDa, daXoa) VALUES
 -- THUỐC KHÔNG KÊ ĐƠN (OTC)
-('SP-0001', N'Paracetamol 500mg (Hộp 10 vỉ x 10 viên)', N'Thuốc giảm đau, hạ sốt không kê đơn.', N'Paracetamol 500mg', N'THUOC_KHONG_KE_DON', 50, 300),
-('SP-0005', N'Berberin 100mg (Lọ 100 viên)', N'Điều trị tiêu chảy, lỵ trực khuẩn.', N'Berberin Clorid 100mg', N'THUOC_KHONG_KE_DON', 50, 200),
-('SP-0009', N'Clorpheniramin 4mg (Vỉ 20 viên)', N'Thuốc chống dị ứng, sổ mũi.', N'Clorpheniramin Maleat 4mg', N'THUOC_KHONG_KE_DON', 100, 500),
-('SP-0012', N'Siro ho Prospan (Chai 100ml)', N'Trị ho long đờm chiết xuất lá thường xuân.', N'Cao khô lá thường xuân', N'THUOC_KHONG_KE_DON', 50, 200),
-('SP-0014', N'Oresol 245 (Hộp 20 gói)', N'Bù nước và điện giải khi bị tiêu chảy, sốt.', N'Glucose khan, Natri Clorid, Kali Clorid', N'THUOC_KHONG_KE_DON', 100, 400),
-('SP-0022', N'Decolgen Forte (Hộp 25 vỉ x 4 viên)', N'Trị cảm cúm, sốt, nghẹt mũi.', N'Paracetamol, Phenylephrin, Clorpheniramin', N'THUOC_KHONG_KE_DON', 80, 400),
-('SP-0025', N'Betadine 10% (Chai 125ml)', N'Dung dịch sát khuẩn vết thương.', N'Povidone-Iodine 10%', N'THUOC_KHONG_KE_DON', 100, 300),
-('SP-0028', N'Efferagan 500mg (Hộp 4 tuýp x 10 viên sủi)', N'Giảm đau, hạ sốt (viên sủi).', N'Paracetamol 500mg', N'THUOC_KHONG_KE_DON', 40, 150),
-('SP-0031', N'Dầu gió xanh Thiên Thảo (Chai 24ml)', N'Giảm đau đầu, sổ mũi, say tàu xe.', N'Menthol, Methyl Salicylate, Eucalyptol', N'THUOC_KHONG_KE_DON', 200, 1000),
-('SP-0034', N'Tiffy (Hộp 25 vỉ x 4 viên)', N'Trị cảm cúm, sốt, ho, sổ mũi.', N'Paracetamol, Clorpheniramin, Phenylpropanolamin', N'THUOC_KHONG_KE_DON', 100, 500),
-('SP-0038', N'Telfast 180mg (Hộp 1 vỉ x 10 viên)', N'Thuốc chống dị ứng thế hệ mới.', N'Fexofenadine 180mg', N'THUOC_KHONG_KE_DON', 50, 200),
-('SP-0042', N'Urgo (Hộp 20 miếng)', N'Băng dán cá nhân.', N'Băng vải co giãn, gạc', N'THUOC_KHONG_KE_DON', 200, 800),
-('SP-0044', N'Panadol Extra (Hộp 10 vỉ x 12 viên)', N'Giảm đau, hạ sốt (chứa Cafein).', N'Paracetamol 500mg, Caffeine 65mg', N'THUOC_KHONG_KE_DON', 100, 500),
-('SP-0046', N'Nước muối sinh lý Natri Clorid 0.9% (Chai 500ml)', N'Rửa mắt, mũi, súc miệng, rửa vết thương.', N'Natri Clorid 0.9%', N'THUOC_KHONG_KE_DON', 300, 1500),
-('SP-0048', N'Strepsils (Hộp 24 viên ngậm)', N'Viên ngậm sát khuẩn, giảm đau họng.', N'Amylmetacresol, Dichlorobenzyl Alcohol', N'THUOC_KHONG_KE_DON', 150, 600),
-('SP-0050', N'Phosphalugel (Hộp 26 gói)', N'Thuốc chữ P, trị đau dạ dày.', N'Aluminium Phosphate 20%', N'THUOC_KHONG_KE_DON', 80, 250),
+('SP-0001', N'Paracetamol 500mg (Hộp 10 vỉ x 10 viên)', N'Thuốc giảm đau, hạ sốt không kê đơn.', N'Paracetamol 500mg', N'THUOC_KHONG_KE_DON', 50, 300, 0),
+('SP-0005', N'Berberin 100mg (Lọ 100 viên)', N'Điều trị tiêu chảy, lỵ trực khuẩn.', N'Berberin Clorid 100mg', N'THUOC_KHONG_KE_DON', 50, 200, 0),
+('SP-0009', N'Clorpheniramin 4mg (Vỉ 20 viên)', N'Thuốc chống dị ứng, sổ mũi.', N'Clorpheniramin Maleat 4mg', N'THUOC_KHONG_KE_DON', 100, 500, 0),
+('SP-0012', N'Siro ho Prospan (Chai 100ml)', N'Trị ho long đờm chiết xuất lá thường xuân.', N'Cao khô lá thường xuân', N'THUOC_KHONG_KE_DON', 50, 200, 0),
+('SP-0014', N'Oresol 245 (Hộp 20 gói)', N'Bù nước và điện giải khi bị tiêu chảy, sốt.', N'Glucose khan, Natri Clorid, Kali Clorid', N'THUOC_KHONG_KE_DON', 100, 400, 0),
+('SP-0022', N'Decolgen Forte (Hộp 25 vỉ x 4 viên)', N'Trị cảm cúm, sốt, nghẹt mũi.', N'Paracetamol, Phenylephrin, Clorpheniramin', N'THUOC_KHONG_KE_DON', 80, 400, 0),
+('SP-0025', N'Betadine 10% (Chai 125ml)', N'Dung dịch sát khuẩn vết thương.', N'Povidone-Iodine 10%', N'THUOC_KHONG_KE_DON', 100, 300, 0),
+('SP-0028', N'Efferagan 500mg (Hộp 4 tuýp x 10 viên sủi)', N'Giảm đau, hạ sốt (viên sủi).', N'Paracetamol 500mg', N'THUOC_KHONG_KE_DON', 40, 150, 0),
+('SP-0031', N'Dầu gió xanh Thiên Thảo (Chai 24ml)', N'Giảm đau đầu, sổ mũi, say tàu xe.', N'Menthol, Methyl Salicylate, Eucalyptol', N'THUOC_KHONG_KE_DON', 200, 1000, 0),
+('SP-0034', N'Tiffy (Hộp 25 vỉ x 4 viên)', N'Trị cảm cúm, sốt, ho, sổ mũi.', N'Paracetamol, Clorpheniramin, Phenylpropanolamin', N'THUOC_KHONG_KE_DON', 100, 500, 0),
+('SP-0038', N'Telfast 180mg (Hộp 1 vỉ x 10 viên)', N'Thuốc chống dị ứng thế hệ mới.', N'Fexofenadine 180mg', N'THUOC_KHONG_KE_DON', 50, 200, 0),
+('SP-0042', N'Urgo (Hộp 20 miếng)', N'Băng dán cá nhân.', N'Băng vải co giãn, gạc', N'THUOC_KHONG_KE_DON', 200, 800, 0),
+('SP-0044', N'Panadol Extra (Hộp 10 vỉ x 12 viên)', N'Giảm đau, hạ sốt (chứa Cafein).', N'Paracetamol 500mg, Caffeine 65mg', N'THUOC_KHONG_KE_DON', 100, 500, 0),
+('SP-0046', N'Nước muối sinh lý Natri Clorid 0.9% (Chai 500ml)', N'Rửa mắt, mũi, súc miệng, rửa vết thương.', N'Natri Clorid 0.9%', N'THUOC_KHONG_KE_DON', 300, 1500, 0),
+('SP-0048', N'Strepsils (Hộp 24 viên ngậm)', N'Viên ngậm sát khuẩn, giảm đau họng.', N'Amylmetacresol, Dichlorobenzyl Alcohol', N'THUOC_KHONG_KE_DON', 150, 600, 0),
+('SP-0050', N'Phosphalugel (Hộp 26 gói)', N'Thuốc chữ P, trị đau dạ dày.', N'Aluminium Phosphate 20%', N'THUOC_KHONG_KE_DON', 80, 250, 0),
 
 -- THUỐC KÊ ĐƠN (Rx)
-('SP-0002', N'Amoxicillin 500mg (Hộp 10 vỉ x 10 viên)', N'Kháng sinh Penicillin điều trị nhiễm khuẩn (kê đơn).', N'Amoxicillin 500mg', N'THUOC_KE_DON', 20, 100),
-('SP-0006', N'Atorvastatin 20mg (Hộp 3 vỉ x 10 viên)', N'Thuốc điều trị mỡ máu (kê đơn).', N'Atorvastatin 20mg', N'THUOC_KE_DON', 15, 80),
-('SP-0011', N'Losartan 50mg (Hộp 3 vỉ x 10 viên)', N'Thuốc điều trị cao huyết áp (kê đơn).', N'Losartan Potassium 50mg', N'THUOC_KE_DON', 20, 100),
-('SP-0015', N'Salbutamol 2mg (Hộp 10 vỉ x 10 viên)', N'Thuốc giãn phế quản, trị hen suyễn (kê đơn).', N'Salbutamol 2mg', N'THUOC_KE_DON', 30, 80),
-('SP-0017', N'Cialis 20mg (Vỉ 2 viên)', N'Điều trị rối loạn cương dương (kê đơn).', N'Tadalafil 20mg', N'THUOC_KE_DON', 10, 50),
-('SP-0019', N'Omeprazol 20mg (Lọ 14 viên)', N'Điều trị viêm loét dạ dày, trào ngược (kê đơn).', N'Omeprazole 20mg', N'THUOC_KE_DON', 30, 150),
-('SP-0021', N'Metformin 500mg (Hộp 10 vỉ x 10 viên)', N'Thuốc điều trị tiểu đường Type 2 (kê đơn).', N'Metformin HCl 500mg', N'THUOC_KE_DON', 40, 120),
-('SP-0024', N'Alprazolam 0.5mg (Hộp 3 vỉ x 10 viên)', N'Thuốc an thần, trị lo âu (kê đơn, kiểm soát đặc biệt).', N'Alprazolam 0.5mg', N'THUOC_KE_DON', 10, 30),
-('SP-0027', N'Ciprofloxacin 500mg (Hộp 2 vỉ x 10 viên)', N'Kháng sinh Quinolon (kê đơn).', N'Ciprofloxacin 500mg', N'THUOC_KE_DON', 15, 60),
-('SP-0030', N'Prednison 5mg (Lọ 200 viên)', N'Thuốc Corticoid kháng viêm (kê đơn).', N'Prednisolone 5mg', N'THUOC_KE_DON', 30, 100),
-('SP-0033', N'Aspirin 81mg (Lọ 100 viên)', N'Thuốc chống kết tập tiểu cầu (kê đơn).', N'Acid Acetylsalicylic 81mg', N'THUOC_KE_DON', 40, 200),
-('SP-0036', N'Domperidon 10mg (Hộp 10 vỉ x 10 viên)', N'Điều trị nôn, buồn nôn.', N'Domperidone 10mg', N'THUOC_KE_DON', 30, 150),
-('SP-0039', N'Cephalexin 500mg (Hộp 10 vỉ x 10 viên)', N'Kháng sinh Cephalosporin (kê đơn).', N'Cephalexin 500mg', N'THUOC_KE_DON', 25, 100),
-('SP-0041', N'Diazepam 5mg (Hộp 10 vỉ x 10 viên)', N'Thuốc an thần, gây ngủ (kê đơn, KSTT).', N'Diazepam 5mg', N'THUOC_KE_DON', 10, 40),
+('SP-0002', N'Amoxicillin 500mg (Hộp 10 vỉ x 10 viên)', N'Kháng sinh Penicillin điều trị nhiễm khuẩn (kê đơn).', N'Amoxicillin 500mg', N'THUOC_KE_DON', 20, 100, 0),
+('SP-0006', N'Atorvastatin 20mg (Hộp 3 vỉ x 10 viên)', N'Thuốc điều trị mỡ máu (kê đơn).', N'Atorvastatin 20mg', N'THUOC_KE_DON', 15, 80, 0),
+('SP-0011', N'Losartan 50mg (Hộp 3 vỉ x 10 viên)', N'Thuốc điều trị cao huyết áp (kê đơn).', N'Losartan Potassium 50mg', N'THUOC_KE_DON', 20, 100, 0),
+('SP-0015', N'Salbutamol 2mg (Hộp 10 vỉ x 10 viên)', N'Thuốc giãn phế quản, trị hen suyễn (kê đơn).', N'Salbutamol 2mg', N'THUOC_KE_DON', 30, 80, 0),
+('SP-0017', N'Cialis 20mg (Vỉ 2 viên)', N'Điều trị rối loạn cương dương (kê đơn).', N'Tadalafil 20mg', N'THUOC_KE_DON', 10, 50, 0),
+('SP-0019', N'Omeprazol 20mg (Lọ 14 viên)', N'Điều trị viêm loét dạ dày, trào ngược (kê đơn).', N'Omeprazole 20mg', N'THUOC_KE_DON', 30, 150, 0),
+('SP-0021', N'Metformin 500mg (Hộp 10 vỉ x 10 viên)', N'Thuốc điều trị tiểu đường Type 2 (kê đơn).', N'Metformin HCl 500mg', N'THUOC_KE_DON', 40, 120, 0),
+('SP-0024', N'Alprazolam 0.5mg (Hộp 3 vỉ x 10 viên)', N'Thuốc an thần, trị lo âu (kê đơn, kiểm soát đặc biệt).', N'Alprazolam 0.5mg', N'THUOC_KE_DON', 10, 30, 0),
+('SP-0027', N'Ciprofloxacin 500mg (Hộp 2 vỉ x 10 viên)', N'Kháng sinh Quinolon (kê đơn).', N'Ciprofloxacin 500mg', N'THUOC_KE_DON', 15, 60, 0),
+('SP-0030', N'Prednison 5mg (Lọ 200 viên)', N'Thuốc Corticoid kháng viêm (kê đơn).', N'Prednisolone 5mg', N'THUOC_KE_DON', 30, 100, 0),
+('SP-0033', N'Aspirin 81mg (Lọ 100 viên)', N'Thuốc chống kết tập tiểu cầu (kê đơn).', N'Acid Acetylsalicylic 81mg', N'THUOC_KE_DON', 40, 200, 0),
+('SP-0036', N'Domperidon 10mg (Hộp 10 vỉ x 10 viên)', N'Điều trị nôn, buồn nôn.', N'Domperidone 10mg', N'THUOC_KE_DON', 30, 150, 0),
+('SP-0039', N'Cephalexin 500mg (Hộp 10 vỉ x 10 viên)', N'Kháng sinh Cephalosporin (kê đơn).', N'Cephalexin 500mg', N'THUOC_KE_DON', 25, 100, 0),
+('SP-0041', N'Diazepam 5mg (Hộp 10 vỉ x 10 viên)', N'Thuốc an thần, gây ngủ (kê đơn, KSTT).', N'Diazepam 5mg', N'THUOC_KE_DON', 10, 40, 0),
 
 -- THỰC PHẨM CHỨC NĂNG (TPCN)
-('SP-0003', N'Vitamin C 500mg (Tuýp 20 viên sủi)', N'Bổ sung Vitamin C, tăng cường đề kháng.', N'Ascorbic Acid 500mg', N'THUC_PHAM_CHUC_NANG', 100, 500),
-('SP-0004', N'Omega 3 Fish Oil 1000mg (Lọ 100 viên)', N'Bổ sung Omega 3, tốt cho mắt và tim mạch.', N'Dầu cá 1000mg (chứa EPA, DHA)', N'THUC_PHAM_CHUC_NANG', 30, 150),
-('SP-0007', N'Blackmores Glucosamine 1500mg (Lọ 180 viên)', N'Hỗ trợ xương khớp, giảm đau viêm khớp.', N'Glucosamine Sulfate 1500mg', N'THUC_PHAM_CHUC_NANG', 20, 100),
-('SP-0008', N'Hoạt huyết dưỡng não Traphaco (Hộp 5 vỉ x 20 viên)', N'Bổ não, tăng cường tuần hoàn máu não.', N'Cao Đinh lăng, Cao Bạch quả', N'THUC_PHAM_CHUC_NANG', 40, 250),
-('SP-0010', N'Canxi Corbiere 5ml (Hộp 30 ống)', N'Bổ sung Canxi cho trẻ em, bà bầu.', N'Calcium Glucoheptonate', N'THUC_PHAM_CHUC_NANG', 30, 120),
-('SP-0013', N'Men vi sinh Bifina R (Hộp 20 gói)', N'Bổ sung lợi khuẩn đường ruột.', N'Bifidobacterium, Lactobacillus', N'THUC_PHAM_CHUC_NANG', 25, 100),
-('SP-0016', N'Sắt Ferrovit (Hộp 5 vỉ x 10 viên)', N'Bổ sung sắt, acid folic cho người thiếu máu.', N'Sắt Fumarat, Acid Folic, Vitamin B12', N'THUC_PHAM_CHUC_NANG', 40, 150),
-('SP-0018', N'Boganic (Hộp 5 vỉ x 10 viên)', N'Thanh nhiệt, giải độc gan, mát gan.', N'Cao Actiso, Cao Rau đắng đất, Cao Bìm bìm', N'THUC_PHAM_CHUC_NANG', 60, 300),
-('SP-0020', N'Ginkgo Biloba 120mg (Lọ 60 viên)', N'Bổ não, cải thiện trí nhớ.', N'Chiết xuất Bạch quả 120mg', N'THUC_PHAM_CHUC_NANG', 50, 200),
-('SP-0023', N'Nature Made Vitamin E 400 IU (Lọ 100 viên)', N'Bổ sung Vitamin E, đẹp da, chống oxy hóa.', N'Vitamin E 400 IU', N'THUC_PHAM_CHUC_NANG', 30, 90),
-('SP-0026', N'Centrum Silver 50+ (Lọ 125 viên)', N'Vitamin tổng hợp cho người trên 50 tuổi.', N'Vitamin (A, B, C, D, E, K), Khoáng chất', N'THUC_PHAM_CHUC_NANG', 20, 80),
-('SP-0029', N'Collagen AEC 12000mg (Hộp 10 lọ)', N'Bổ sung collagen, làm đẹp da.', N'Collagen thủy phân, Vitamin C', N'THUC_PHAM_CHUC_NANG', 10, 50),
-('SP-0032', N'Sữa Ensure Gold (Lon 850g)', N'Dinh dưỡng bổ sung cho người lớn tuổi, người bệnh.', N'Đạm, Chất béo, Vitamin, Khoáng chất', N'THUC_PHAM_CHUC_NANG', 50, 150),
-('SP-0035', N'One A Day Men''s Health (Lọ 100 viên)', N'Vitamin tổng hợp cho nam giới.', N'Vitamin, Khoáng chất (Kẽm, Selen...)', N'THUC_PHAM_CHUC_NANG', 15, 60),
-('SP-0037', N'Dầu cá Nature''s Bounty 1200mg (Lọ 200 viên)', N'Bổ sung Omega 3.', N'Dầu cá 1200mg', N'THUC_PHAM_CHUC_NANG', 20, 80),
-('SP-0040', N'Viên uống DHC rau củ (Gói 60 ngày)', N'Bổ sung chất xơ từ rau củ.', N'Bột chiết xuất 32 loại rau củ', N'THUC_PHAM_CHUC_NANG', 60, 200),
-('SP-0043', N'Melatonin 10mg (Lọ 60 viên)', N'Hỗ trợ điều hòa giấc ngủ.', N'Melatonin 10mg', N'THUC_PHAM_CHUC_NANG', 30, 70),
-('SP-0045', N'Enervon-C (Hộp 10 vỉ x 10 viên)', N'Bổ sung Vitamin B, C.', N'Vitamin B-complex, Vitamin C', N'THUC_PHAM_CHUC_NANG', 50, 300),
-('SP-0047', N'Crest 3D White (Tuýp 116g)', N'Kem đánh răng làm trắng răng.', N'Sodium Fluoride, Hydrated Silica', N'THUC_PHAM_CHUC_NANG', 50, 150),
-('SP-0049', N'Viên uống mọc tóc Biotin 10000mcg (Lọ 100 viên)', N'Hỗ trợ mọc tóc, móng chắc khỏe.', N'Biotin 10000mcg', N'THUC_PHAM_CHUC_NANG', 20, 80);
+('SP-0003', N'Vitamin C 500mg (Tuýp 20 viên sủi)', N'Bổ sung Vitamin C, tăng cường đề kháng.', N'Ascorbic Acid 500mg', N'THUC_PHAM_CHUC_NANG', 100, 500, 0),
+('SP-0004', N'Omega 3 Fish Oil 1000mg (Lọ 100 viên)', N'Bổ sung Omega 3, tốt cho mắt và tim mạch.', N'Dầu cá 1000mg (chứa EPA, DHA)', N'THUC_PHAM_CHUC_NANG', 30, 150, 0),
+('SP-0007', N'Blackmores Glucosamine 1500mg (Lọ 180 viên)', N'Hỗ trợ xương khớp, giảm đau viêm khớp.', N'Glucosamine Sulfate 1500mg', N'THUC_PHAM_CHUC_NANG', 20, 100, 0),
+('SP-0008', N'Hoạt huyết dưỡng não Traphaco (Hộp 5 vỉ x 20 viên)', N'Bổ não, tăng cường tuần hoàn máu não.', N'Cao Đinh lăng, Cao Bạch quả', N'THUC_PHAM_CHUC_NANG', 40, 250, 0),
+('SP-0010', N'Canxi Corbiere 5ml (Hộp 30 ống)', N'Bổ sung Canxi cho trẻ em, bà bầu.', N'Calcium Glucoheptonate', N'THUC_PHAM_CHUC_NANG', 30, 120, 0),
+('SP-0013', N'Men vi sinh Bifina R (Hộp 20 gói)', N'Bổ sung lợi khuẩn đường ruột.', N'Bifidobacterium, Lactobacillus', N'THUC_PHAM_CHUC_NANG', 25, 100, 0),
+('SP-0016', N'Sắt Ferrovit (Hộp 5 vỉ x 10 viên)', N'Bổ sung sắt, acid folic cho người thiếu máu.', N'Sắt Fumarat, Acid Folic, Vitamin B12', N'THUC_PHAM_CHUC_NANG', 40, 150, 0),
+('SP-0018', N'Boganic (Hộp 5 vỉ x 10 viên)', N'Thanh nhiệt, giải độc gan, mát gan.', N'Cao Actiso, Cao Rau đắng đất, Cao Bìm bìm', N'THUC_PHAM_CHUC_NANG', 60, 300, 0),
+('SP-0020', N'Ginkgo Biloba 120mg (Lọ 60 viên)', N'Bổ não, cải thiện trí nhớ.', N'Chiết xuất Bạch quả 120mg', N'THUC_PHAM_CHUC_NANG', 50, 200, 0),
+('SP-0023', N'Nature Made Vitamin E 400 IU (Lọ 100 viên)', N'Bổ sung Vitamin E, đẹp da, chống oxy hóa.', N'Vitamin E 400 IU', N'THUC_PHAM_CHUC_NANG', 30, 90, 0),
+('SP-0026', N'Centrum Silver 50+ (Lọ 125 viên)', N'Vitamin tổng hợp cho người trên 50 tuổi.', N'Vitamin (A, B, C, D, E, K), Khoáng chất', N'THUC_PHAM_CHUC_NANG', 20, 80, 0),
+('SP-0029', N'Collagen AEC 12000mg (Hộp 10 lọ)', N'Bổ sung collagen, làm đẹp da.', N'Collagen thủy phân, Vitamin C', N'THUC_PHAM_CHUC_NANG', 10, 50, 0),
+('SP-0032', N'Sữa Ensure Gold (Lon 850g)', N'Dinh dưỡng bổ sung cho người lớn tuổi, người bệnh.', N'Đạm, Chất béo, Vitamin, Khoáng chất', N'THUC_PHAM_CHUC_NANG', 50, 150, 0),
+('SP-0035', N'One A Day Men''s Health (Lọ 100 viên)', N'Vitamin tổng hợp cho nam giới.', N'Vitamin, Khoáng chất (Kẽm, Selen...)', N'THUC_PHAM_CHUC_NANG', 15, 60, 0),
+('SP-0037', N'Dầu cá Nature''s Bounty 1200mg (Lọ 200 viên)', N'Bổ sung Omega 3.', N'Dầu cá 1200mg', N'THUC_PHAM_CHUC_NANG', 20, 80, 0),
+('SP-0040', N'Viên uống DHC rau củ (Gói 60 ngày)', N'Bổ sung chất xơ từ rau củ.', N'Bột chiết xuất 32 loại rau củ', N'THUC_PHAM_CHUC_NANG', 60, 200, 0),
+('SP-0043', N'Melatonin 10mg (Lọ 60 viên)', N'Hỗ trợ điều hòa giấc ngủ.', N'Melatonin 10mg', N'THUC_PHAM_CHUC_NANG', 30, 70, 0),
+('SP-0045', N'Enervon-C (Hộp 10 vỉ x 10 viên)', N'Bổ sung Vitamin B, C.', N'Vitamin B-complex, Vitamin C', N'THUC_PHAM_CHUC_NANG', 50, 300, 0),
+('SP-0047', N'Crest 3D White (Tuýp 116g)', N'Kem đánh răng làm trắng răng.', N'Sodium Fluoride, Hydrated Silica', N'THUC_PHAM_CHUC_NANG', 50, 150, 0),
+('SP-0049', N'Viên uống mọc tóc Biotin 10000mcg (Lọ 100 viên)', N'Hỗ trợ mọc tóc, móng chắc khỏe.', N'Biotin 10000mcg', N'THUC_PHAM_CHUC_NANG', 20, 80, 0);
 GO
 
 -- ===================================================================
@@ -568,221 +573,221 @@ INSERT INTO TaiKhoan (tenDangNhap, matKhau, quanLy, biKhoa, email, ngayTao) VALU
 GO
 
 -- ===================================================================
--- 8. Bảng DonViTinh
+-- 8. Bảng DonViTinh - Đã bổ sung cột daXoa = 0
 -- ===================================================================
-INSERT INTO DonViTinh (maDonViTinh, maSP, tenDonVi, heSoQuyDoi, giaBanTheoDonVi, donViTinhCoBan) VALUES
+INSERT INTO DonViTinh (maDonViTinh, maSP, tenDonVi, heSoQuyDoi, giaBanTheoDonVi, donViTinhCoBan, daXoa) VALUES
 -- SP-0001: Paracetamol 500mg (Hộp 10 vỉ x 10 viên)
-('DVT-0001-VIEN', 'SP-0001', N'Viên', 1, 1000.00, 1),
-('DVT-0001-VI', 'SP-0001', N'Vỉ', 10, 10000.00, 0),
-('DVT-0001-HOP', 'SP-0001', N'Hộp', 100, 100000.00, 0),
+('DVT-0001-VIEN', 'SP-0001', N'Viên', 1, 1000.00, 1, 0),
+('DVT-0001-VI', 'SP-0001', N'Vỉ', 10, 10000.00, 0, 0),
+('DVT-0001-HOP', 'SP-0001', N'Hộp', 100, 100000.00, 0, 0),
 
 -- SP-0002: Amoxicillin 500mg (Hộp 10 vỉ x 10 viên)
-('DVT-0002-VIEN', 'SP-0002', N'Viên', 1, 1500.00, 1),
-('DVT-0002-VI', 'SP-0002', N'Vỉ', 10, 15000.00, 0),
-('DVT-0002-HOP', 'SP-0002', N'Hộp', 100, 150000.00, 0),
+('DVT-0002-VIEN', 'SP-0002', N'Viên', 1, 1500.00, 1, 0),
+('DVT-0002-VI', 'SP-0002', N'Vỉ', 10, 15000.00, 0, 0),
+('DVT-0002-HOP', 'SP-0002', N'Hộp', 100, 150000.00, 0, 0),
 
 -- SP-0003: Vitamin C 500mg (Tuýp 20 viên sủi)
-('DVT-0003-VIENSUI', 'SP-0003', N'Viên sủi', 1, 3000.00, 1),
-('DVT-0003-TUYP', 'SP-0003', N'Tuýp', 20, 60000.00, 0),
+('DVT-0003-VIENSUI', 'SP-0003', N'Viên sủi', 1, 3000.00, 1, 0),
+('DVT-0003-TUYP', 'SP-0003', N'Tuýp', 20, 60000.00, 0, 0),
 
 -- SP-0004: Omega 3 Fish Oil 1000mg (Lọ 100 viên)
-('DVT-0004-VIEN', 'SP-0004', N'Viên', 1, 2500.00, 1),
-('DVT-0004-LO', 'SP-0004', N'Lọ', 100, 250000.00, 0),
+('DVT-0004-VIEN', 'SP-0004', N'Viên', 1, 2500.00, 1, 0),
+('DVT-0004-LO', 'SP-0004', N'Lọ', 100, 250000.00, 0, 0),
 
 -- SP-0005: Berberin 100mg (Lọ 100 viên)
-('DVT-0005-VIEN', 'SP-0005', N'Viên', 1, 500.00, 1),
-('DVT-0005-LO', 'SP-0005', N'Lọ', 100, 50000.00, 0),
+('DVT-0005-VIEN', 'SP-0005', N'Viên', 1, 500.00, 1, 0),
+('DVT-0005-LO', 'SP-0005', N'Lọ', 100, 50000.00, 0, 0),
 
 -- SP-0006: Atorvastatin 20mg (Hộp 3 vỉ x 10 viên)
-('DVT-0006-VIEN', 'SP-0006', N'Viên', 1, 4000.00, 1),
-('DVT-0006-VI', 'SP-0006', N'Vỉ', 10, 40000.00, 0),
-('DVT-0006-HOP', 'SP-0006', N'Hộp', 30, 120000.00, 0),
+('DVT-0006-VIEN', 'SP-0006', N'Viên', 1, 4000.00, 1, 0),
+('DVT-0006-VI', 'SP-0006', N'Vỉ', 10, 40000.00, 0, 0),
+('DVT-0006-HOP', 'SP-0006', N'Hộp', 30, 120000.00, 0, 0),
 
 -- SP-0007: Blackmores Glucosamine 1500mg (Lọ 180 viên)
-('DVT-0007-VIEN', 'SP-0007', N'Viên', 1, 3500.00, 1),
-('DVT-0007-LO', 'SP-0007', N'Lọ', 180, 630000.00, 0),
+('DVT-0007-VIEN', 'SP-0007', N'Viên', 1, 3500.00, 1, 0),
+('DVT-0007-LO', 'SP-0007', N'Lọ', 180, 630000.00, 0, 0),
 
 -- SP-0008: Hoạt huyết dưỡng não Traphaco (Hộp 5 vỉ x 20 viên)
-('DVT-0008-VIEN', 'SP-0008', N'Viên', 1, 1200.00, 1),
-('DVT-0008-VI', 'SP-0008', N'Vỉ', 20, 24000.00, 0),
-('DVT-0008-HOP', 'SP-0008', N'Hộp', 100, 120000.00, 0),
+('DVT-0008-VIEN', 'SP-0008', N'Viên', 1, 1200.00, 1, 0),
+('DVT-0008-VI', 'SP-0008', N'Vỉ', 20, 24000.00, 0, 0),
+('DVT-0008-HOP', 'SP-0008', N'Hộp', 100, 120000.00, 0, 0),
 
 -- SP-0009: Clorpheniramin 4mg (Vỉ 20 viên)
-('DVT-0009-VIEN', 'SP-0009', N'Viên', 1, 300.00, 1),
-('DVT-0009-VI', 'SP-0009', N'Vỉ', 20, 6000.00, 0),
+('DVT-0009-VIEN', 'SP-0009', N'Viên', 1, 300.00, 1, 0),
+('DVT-0009-VI', 'SP-0009', N'Vỉ', 20, 6000.00, 0, 0),
 
 -- SP-0010: Canxi Corbiere 5ml (Hộp 30 ống)
-('DVT-0010-ONG', 'SP-0010', N'Ống', 1, 5000.00, 1),
-('DVT-0010-HOP', 'SP-0010', N'Hộp', 30, 150000.00, 0),
+('DVT-0010-ONG', 'SP-0010', N'Ống', 1, 5000.00, 1, 0),
+('DVT-0010-HOP', 'SP-0010', N'Hộp', 30, 150000.00, 0, 0),
 
 -- SP-0011: Losartan 50mg (Hộp 3 vỉ x 10 viên)
-('DVT-0011-VIEN', 'SP-0011', N'Viên', 1, 3000.00, 1),
-('DVT-0011-VI', 'SP-0011', N'Vỉ', 10, 30000.00, 0),
-('DVT-0011-HOP', 'SP-0011', N'Hộp', 30, 90000.00, 0),
+('DVT-0011-VIEN', 'SP-0011', N'Viên', 1, 3000.00, 1, 0),
+('DVT-0011-VI', 'SP-0011', N'Vỉ', 10, 30000.00, 0, 0),
+('DVT-0011-HOP', 'SP-0011', N'Hộp', 30, 90000.00, 0, 0),
 
 -- SP-0012: Siro ho Prospan (Chai 100ml)
-('DVT-0012-CHAI', 'SP-0012', N'Chai', 1, 70000.00, 1),
+('DVT-0012-CHAI', 'SP-0012', N'Chai', 1, 70000.00, 1, 0),
 
 -- SP-0013: Men vi sinh Bifina R (Hộp 20 gói)
-('DVT-0013-GOI', 'SP-0013', N'Gói', 1, 15000.00, 1),
-('DVT-0013-HOP', 'SP-0013', N'Hộp', 20, 300000.00, 0),
+('DVT-0013-GOI', 'SP-0013', N'Gói', 1, 15000.00, 1, 0),
+('DVT-0013-HOP', 'SP-0013', N'Hộp', 20, 300000.00, 0, 0),
 
 -- SP-0014: Oresol 245 (Hộp 20 gói)
-('DVT-0014-GOI', 'SP-0014', N'Gói', 1, 2500.00, 1),
-('DVT-0014-HOP', 'SP-0014', N'Hộp', 20, 50000.00, 0),
+('DVT-0014-GOI', 'SP-0014', N'Gói', 1, 2500.00, 1, 0),
+('DVT-0014-HOP', 'SP-0014', N'Hộp', 20, 50000.00, 0, 0),
 
 -- SP-0015: Salbutamol 2mg (Hộp 10 vỉ x 10 viên)
-('DVT-0015-VIEN', 'SP-0015', N'Viên', 1, 800.00, 1),
-('DVT-0015-VI', 'SP-0015', N'Vỉ', 10, 8000.00, 0),
-('DVT-0015-HOP', 'SP-0015', N'Hộp', 100, 80000.00, 0),
+('DVT-0015-VIEN', 'SP-0015', N'Viên', 1, 800.00, 1, 0),
+('DVT-0015-VI', 'SP-0015', N'Vỉ', 10, 8000.00, 0, 0),
+('DVT-0015-HOP', 'SP-0015', N'Hộp', 100, 80000.00, 0, 0),
 
 -- SP-0016: Sắt Ferrovit (Hộp 5 vỉ x 10 viên)
-('DVT-0016-VIEN', 'SP-0016', N'Viên', 1, 1800.00, 1),
-('DVT-0016-VI', 'SP-0016', N'Vỉ', 10, 18000.00, 0),
-('DVT-0016-HOP', 'SP-0016', N'Hộp', 50, 90000.00, 0),
+('DVT-0016-VIEN', 'SP-0016', N'Viên', 1, 1800.00, 1, 0),
+('DVT-0016-VI', 'SP-0016', N'Vỉ', 10, 18000.00, 0, 0),
+('DVT-0016-HOP', 'SP-0016', N'Hộp', 50, 90000.00, 0, 0),
 
 -- SP-0017: Cialis 20mg (Vỉ 2 viên)
-('DVT-0017-VIEN', 'SP-0017', N'Viên', 1, 70000.00, 1),
-('DVT-0017-VI', 'SP-0017', N'Vỉ', 2, 140000.00, 0),
+('DVT-0017-VIEN', 'SP-0017', N'Viên', 1, 70000.00, 1, 0),
+('DVT-0017-VI', 'SP-0017', N'Vỉ', 2, 140000.00, 0, 0),
 
 -- SP-0018: Boganic (Hộp 5 vỉ x 10 viên)
-('DVT-0018-VIEN', 'SP-0018', N'Viên', 1, 1500.00, 1),
-('DVT-0018-VI', 'SP-0018', N'Vỉ', 10, 15000.00, 0),
-('DVT-0018-HOP', 'SP-0018', N'Hộp', 50, 75000.00, 0),
+('DVT-0018-VIEN', 'SP-0018', N'Viên', 1, 1500.00, 1, 0),
+('DVT-0018-VI', 'SP-0018', N'Vỉ', 10, 15000.00, 0, 0),
+('DVT-0018-HOP', 'SP-0018', N'Hộp', 50, 75000.00, 0, 0),
 
 -- SP-0019: Omeprazol 20mg (Lọ 14 viên)
-('DVT-0019-VIEN', 'SP-0019', N'Viên', 1, 2000.00, 1),
-('DVT-0019-LO', 'SP-0019', N'Lọ', 14, 28000.00, 0),
+('DVT-0019-VIEN', 'SP-0019', N'Viên', 1, 2000.00, 1, 0),
+('DVT-0019-LO', 'SP-0019', N'Lọ', 14, 28000.00, 0, 0),
 
 -- SP-0020: Ginkgo Biloba 120mg (Lọ 60 viên)
-('DVT-0020-VIEN', 'SP-0020', N'Viên', 1, 3000.00, 1),
-('DVT-0020-LO', 'SP-0020', N'Lọ', 60, 180000.00, 0),
+('DVT-0020-VIEN', 'SP-0020', N'Viên', 1, 3000.00, 1, 0),
+('DVT-0020-LO', 'SP-0020', N'Lọ', 60, 180000.00, 0, 0),
 
 -- SP-0021: Metformin 500mg (Hộp 10 vỉ x 10 viên)
-('DVT-0021-VIEN', 'SP-0021', N'Viên', 1, 700.00, 1),
-('DVT-0021-VI', 'SP-0021', N'Vỉ', 10, 7000.00, 0),
-('DVT-0021-HOP', 'SP-0021', N'Hộp', 100, 70000.00, 0),
+('DVT-0021-VIEN', 'SP-0021', N'Viên', 1, 700.00, 1, 0),
+('DVT-0021-VI', 'SP-0021', N'Vỉ', 10, 7000.00, 0, 0),
+('DVT-0021-HOP', 'SP-0021', N'Hộp', 100, 70000.00, 0, 0),
 
 -- SP-0022: Decolgen Forte (Hộp 25 vỉ x 4 viên)
-('DVT-0022-VIEN', 'SP-0022', N'Viên', 1, 1500.00, 1),
-('DVT-0022-VI', 'SP-0022', N'Vỉ', 4, 6000.00, 0),
-('DVT-0022-HOP', 'SP-0022', N'Hộp', 100, 150000.00, 0),
+('DVT-0022-VIEN', 'SP-0022', N'Viên', 1, 1500.00, 1, 0),
+('DVT-0022-VI', 'SP-0022', N'Vỉ', 4, 6000.00, 0, 0),
+('DVT-0022-HOP', 'SP-0022', N'Hộp', 100, 150000.00, 0, 0),
 
 -- SP-0023: Nature Made Vitamin E 400 IU (Lọ 100 viên)
-('DVT-0023-VIEN', 'SP-0023', N'Viên', 1, 2800.00, 1),
-('DVT-0023-LO', 'SP-0023', N'Lọ', 100, 280000.00, 0),
+('DVT-0023-VIEN', 'SP-0023', N'Viên', 1, 2800.00, 1, 0),
+('DVT-0023-LO', 'SP-0023', N'Lọ', 100, 280000.00, 0, 0),
 
 -- SP-0024: Alprazolam 0.5mg (Hộp 3 vỉ x 10 viên)
-('DVT-0024-VIEN', 'SP-0024', N'Viên', 1, 1500.00, 1),
-('DVT-0024-VI', 'SP-0024', N'Vỉ', 10, 15000.00, 0),
-('DVT-0024-HOP', 'SP-0024', N'Hộp', 30, 45000.00, 0),
+('DVT-0024-VIEN', 'SP-0024', N'Viên', 1, 1500.00, 1, 0),
+('DVT-0024-VI', 'SP-0024', N'Vỉ', 10, 15000.00, 0, 0),
+('DVT-0024-HOP', 'SP-0024', N'Hộp', 30, 45000.00, 0, 0),
 
 -- SP-0025: Betadine 10% (Chai 125ml)
-('DVT-0025-CHAI', 'SP-0025', N'Chai', 1, 35000.00, 1),
+('DVT-0025-CHAI', 'SP-0025', N'Chai', 1, 35000.00, 1, 0),
 
 -- SP-0026: Centrum Silver 50+ (Lọ 125 viên)
-('DVT-0026-VIEN', 'SP-0026', N'Viên', 1, 4000.00, 1),
-('DVT-0026-LO', 'SP-0026', N'Lọ', 125, 500000.00, 0),
+('DVT-0026-VIEN', 'SP-0026', N'Viên', 1, 4000.00, 1, 0),
+('DVT-0026-LO', 'SP-0026', N'Lọ', 125, 500000.00, 0, 0),
 
 -- SP-0027: Ciprofloxacin 500mg (Hộp 2 vỉ x 10 viên)
-('DVT-0027-VIEN', 'SP-0027', N'Viên', 1, 3500.00, 1),
-('DVT-0027-VI', 'SP-0027', N'Vỉ', 10, 35000.00, 0),
-('DVT-0027-HOP', 'SP-0027', N'Hộp', 20, 70000.00, 0),
+('DVT-0027-VIEN', 'SP-0027', N'Viên', 1, 3500.00, 1, 0),
+('DVT-0027-VI', 'SP-0027', N'Vỉ', 10, 35000.00, 0, 0),
+('DVT-0027-HOP', 'SP-0027', N'Hộp', 20, 70000.00, 0, 0),
 
 -- SP-0028: Efferagan 500mg (Hộp 4 tuýp x 10 viên sủi)
-('DVT-0028-VIENSUI', 'SP-0028', N'Viên sủi', 1, 3000.00, 1),
-('DVT-0028-TUYP', 'SP-0028', N'Tuýp', 10, 30000.00, 0),
-('DVT-0028-HOP', 'SP-0028', N'Hộp', 40, 120000.00, 0),
+('DVT-0028-VIENSUI', 'SP-0028', N'Viên sủi', 1, 3000.00, 1, 0),
+('DVT-0028-TUYP', 'SP-0028', N'Tuýp', 10, 30000.00, 0, 0),
+('DVT-0028-HOP', 'SP-0028', N'Hộp', 40, 120000.00, 0, 0),
 
 -- SP-0029: Collagen AEC 12000mg (Hộp 10 lọ)
-('DVT-0029-LO', 'SP-0029', N'Lọ', 1, 80000.00, 1),
-('DVT-0029-HOP', 'SP-0029', N'Hộp', 10, 800000.00, 0),
+('DVT-0029-LO', 'SP-0029', N'Lọ', 1, 80000.00, 1, 0),
+('DVT-0029-HOP', 'SP-0029', N'Hộp', 10, 800000.00, 0, 0),
 
 -- SP-0030: Prednison 5mg (Lọ 200 viên)
-('DVT-0030-VIEN', 'SP-0030', N'Viên', 1, 300.00, 1),
-('DVT-0030-LO', 'SP-0030', N'Lọ', 200, 60000.00, 0),
+('DVT-0030-VIEN', 'SP-0030', N'Viên', 1, 300.00, 1, 0),
+('DVT-0030-LO', 'SP-0030', N'Lọ', 200, 60000.00, 0, 0),
 
 -- SP-0031: Dầu gió xanh Thiên Thảo (Chai 24ml)
-('DVT-0031-CHAI', 'SP-0031', N'Chai', 1, 45000.00, 1),
+('DVT-0031-CHAI', 'SP-0031', N'Chai', 1, 45000.00, 1, 0),
 
 -- SP-0032: Sữa Ensure Gold (Lon 850g)
-('DVT-0032-LON', 'SP-0032', N'Lon', 1, 750000.00, 1),
+('DVT-0032-LON', 'SP-0032', N'Lon', 1, 750000.00, 1, 0),
 
 -- SP-0033: Aspirin 81mg (Lọ 100 viên)
-('DVT-0033-VIEN', 'SP-0033', N'Viên', 1, 600.00, 1),
-('DVT-0033-LO', 'SP-0033', N'Lọ', 100, 60000.00, 0),
+('DVT-0033-VIEN', 'SP-0033', N'Viên', 1, 600.00, 1, 0),
+('DVT-0033-LO', 'SP-0033', N'Lọ', 100, 60000.00, 0, 0),
 
 -- SP-0034: Tiffy (Hộp 25 vỉ x 4 viên)
-('DVT-0034-VIEN', 'SP-0034', N'Viên', 1, 1300.00, 1),
-('DVT-0034-VI', 'SP-0034', N'Vỉ', 4, 5200.00, 0),
-('DVT-0034-HOP', 'SP-0034', N'Hộp', 100, 130000.00, 0),
+('DVT-0034-VIEN', 'SP-0034', N'Viên', 1, 1300.00, 1, 0),
+('DVT-0034-VI', 'SP-0034', N'Vỉ', 4, 5200.00, 0, 0),
+('DVT-0034-HOP', 'SP-0034', N'Hộp', 100, 130000.00, 0, 0),
 
 -- SP-0035: One A Day Men's Health (Lọ 100 viên)
-('DVT-0035-VIEN', 'SP-0035', N'Viên', 1, 4500.00, 1),
-('DVT-0035-LO', 'SP-0035', N'Lọ', 100, 450000.00, 0),
+('DVT-0035-VIEN', 'SP-0035', N'Viên', 1, 4500.00, 1, 0),
+('DVT-0035-LO', 'SP-0035', N'Lọ', 100, 450000.00, 0, 0),
 
 -- SP-0036: Domperidon 10mg (Hộp 10 vỉ x 10 viên)
-('DVT-0036-VIEN', 'SP-0036', N'Viên', 1, 1000.00, 1),
-('DVT-0036-VI', 'SP-0036', N'Vỉ', 10, 10000.00, 0),
-('DVT-0036-HOP', 'SP-0036', N'Hộp', 100, 100000.00, 0),
+('DVT-0036-VIEN', 'SP-0036', N'Viên', 1, 1000.00, 1, 0),
+('DVT-0036-VI', 'SP-0036', N'Vỉ', 10, 10000.00, 0, 0),
+('DVT-0036-HOP', 'SP-0036', N'Hộp', 100, 100000.00, 0, 0),
 
 -- SP-0037: Dầu cá Nature's Bounty 1200mg (Lọ 200 viên)
-('DVT-0037-VIEN', 'SP-0037', N'Viên', 1, 2000.00, 1),
-('DVT-0037-LO', 'SP-0037', N'Lọ', 200, 400000.00, 0),
+('DVT-0037-VIEN', 'SP-0037', N'Viên', 1, 2000.00, 1, 0),
+('DVT-0037-LO', 'SP-0037', N'Lọ', 200, 400000.00, 0, 0),
 
 -- SP-0038: Telfast 180mg (Hộp 1 vỉ x 10 viên)
-('DVT-0038-VIEN', 'SP-0038', N'Viên', 1, 12000.00, 1),
-('DVT-0038-VI', 'SP-0038', N'Vỉ', 10, 120000.00, 0),
-('DVT-0038-HOP', 'SP-0038', N'Hộp', 10, 120000.00, 0),
+('DVT-0038-VIEN', 'SP-0038', N'Viên', 1, 12000.00, 1, 0),
+('DVT-0038-VI', 'SP-0038', N'Vỉ', 10, 120000.00, 0, 0),
+('DVT-0038-HOP', 'SP-0038', N'Hộp', 10, 120000.00, 0, 0),
 
 -- SP-0039: Cephalexin 500mg (Hộp 10 vỉ x 10 viên)
-('DVT-0039-VIEN', 'SP-0039', N'Viên', 1, 1800.00, 1),
-('DVT-0039-VI', 'SP-0039', N'Vỉ', 10, 18000.00, 0),
-('DVT-0039-HOP', 'SP-0039', N'Hộp', 100, 180000.00, 0),
+('DVT-0039-VIEN', 'SP-0039', N'Viên', 1, 1800.00, 1, 0),
+('DVT-0039-VI', 'SP-0039', N'Vỉ', 10, 18000.00, 0, 0),
+('DVT-0039-HOP', 'SP-0039', N'Hộp', 100, 180000.00, 0, 0),
 
 -- SP-0040: Viên uống DHC rau củ (Gói 60 ngày)
-('DVT-0040-GOI', 'SP-0040', N'Gói', 1, 250000.00, 1),
+('DVT-0040-GOI', 'SP-0040', N'Gói', 1, 250000.00, 1, 0),
 
 -- SP-0041: Diazepam 5mg (Hộp 10 vỉ x 10 viên)
-('DVT-0041-VIEN', 'SP-0041', N'Viên', 1, 900.00, 1),
-('DVT-0041-VI', 'SP-0041', N'Vỉ', 10, 9000.00, 0),
-('DVT-0041-HOP', 'SP-0041', N'Hộp', 100, 90000.00, 0),
+('DVT-0041-VIEN', 'SP-0041', N'Viên', 1, 900.00, 1, 0),
+('DVT-0041-VI', 'SP-0041', N'Vỉ', 10, 9000.00, 0, 0),
+('DVT-0041-HOP', 'SP-0041', N'Hộp', 100, 90000.00, 0, 0),
 
 -- SP-0042: Urgo (Hộp 20 miếng)
-('DVT-0042-MIENG', 'SP-0042', N'Miếng', 1, 1500.00, 1),
-('DVT-0042-HOP', 'SP-0042', N'Hộp', 20, 30000.00, 0),
+('DVT-0042-MIENG', 'SP-0042', N'Miếng', 1, 1500.00, 1, 0),
+('DVT-0042-HOP', 'SP-0042', N'Hộp', 20, 30000.00, 0, 0),
 
 -- SP-0043: Melatonin 10mg (Lọ 60 viên)
-('DVT-0043-VIEN', 'SP-0043', N'Viên', 1, 4000.00, 1),
-('DVT-0043-LO', 'SP-0043', N'Lọ', 60, 240000.00, 0),
+('DVT-0043-VIEN', 'SP-0043', N'Viên', 1, 4000.00, 1, 0),
+('DVT-0043-LO', 'SP-0043', N'Lọ', 60, 240000.00, 0, 0),
 
 -- SP-0044: Panadol Extra (Hộp 10 vỉ x 12 viên)
-('DVT-0044-VIEN', 'SP-0044', N'Viên', 1, 1800.00, 1),
-('DVT-0044-VI', 'SP-0044', N'Vỉ', 12, 21600.00, 0),
-('DVT-0044-HOP', 'SP-0044', N'Hộp', 120, 216000.00, 0),
+('DVT-0044-VIEN', 'SP-0044', N'Viên', 1, 1800.00, 1, 0),
+('DVT-0044-VI', 'SP-0044', N'Vỉ', 12, 21600.00, 0, 0),
+('DVT-0044-HOP', 'SP-0044', N'Hộp', 120, 216000.00, 0, 0),
 
 -- SP-0045: Enervon-C (Hộp 10 vỉ x 10 viên)
-('DVT-0045-VIEN', 'SP-0045', N'Viên', 1, 2000.00, 1),
-('DVT-0045-VI', 'SP-0045', N'Vỉ', 10, 20000.00, 0),
-('DVT-0045-HOP', 'SP-0045', N'Hộp', 100, 200000.00, 0),
+('DVT-0045-VIEN', 'SP-0045', N'Viên', 1, 2000.00, 1, 0),
+('DVT-0045-VI', 'SP-0045', N'Vỉ', 10, 20000.00, 0, 0),
+('DVT-0045-HOP', 'SP-0045', N'Hộp', 100, 200000.00, 0, 0),
 
 -- SP-0046: Nước muối sinh lý Natri Clorid 0.9% (Chai 500ml)
-('DVT-0046-CHAI', 'SP-0046', N'Chai', 1, 10000.00, 1),
+('DVT-0046-CHAI', 'SP-0046', N'Chai', 1, 10000.00, 1, 0),
 
 -- SP-0047: Crest 3D White (Tuýp 116g)
-('DVT-0047-TUYP', 'SP-0047', N'Tuýp', 1, 120000.00, 1),
+('DVT-0047-TUYP', 'SP-0047', N'Tuýp', 1, 120000.00, 1, 0),
 
 -- SP-0048: Strepsils (Hộp 24 viên ngậm)
-('DVT-0048-VIENGAM', 'SP-0048', N'Viên ngậm', 1, 2500.00, 1),
-('DVT-0048-HOP', 'SP-0048', N'Hộp', 24, 60000.00, 0),
+('DVT-0048-VIENGAM', 'SP-0048', N'Viên ngậm', 1, 2500.00, 1, 0),
+('DVT-0048-HOP', 'SP-0048', N'Hộp', 24, 60000.00, 0, 0),
 
 -- SP-0049: Viên uống mọc tóc Biotin 10000mcg (Lọ 100 viên)
-('DVT-0049-VIEN', 'SP-0049', N'Viên', 1, 3000.00, 1),
-('DVT-0049-LO', 'SP-0049', N'Lọ', 100, 300000.00, 0),
+('DVT-0049-VIEN', 'SP-0049', N'Viên', 1, 3000.00, 1, 0),
+('DVT-0049-LO', 'SP-0049', N'Lọ', 100, 300000.00, 0, 0),
 
 -- SP-0050: Phosphalugel (Hộp 26 gói)
-('DVT-0050-GOI', 'SP-0050', N'Gói', 1, 4000.00, 1),
-('DVT-0050-HOP', 'SP-0050', N'Hộp', 26, 104000.00, 0);
+('DVT-0050-GOI', 'SP-0050', N'Gói', 1, 4000.00, 1, 0),
+('DVT-0050-HOP', 'SP-0050', N'Hộp', 26, 104000.00, 0, 0);
 GO
 
 -- ===================================================================

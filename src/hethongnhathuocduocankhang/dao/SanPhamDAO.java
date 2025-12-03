@@ -238,6 +238,7 @@ public class SanPhamDAO {
         }
         return maCuoiCung;
     }
+    
     public static SanPham timMotSPTheoMaNCC(String maNhaCC) {
         SanPham sp = new SanPham();
         try {
@@ -258,7 +259,12 @@ public class SanPhamDAO {
                 int tonToiThieu = rs.getInt("tonToiThieu");
                 int tonToiDa = rs.getInt("tonToiDa");
                 sp = new SanPham(maSP, ten, moTa, thanhPhan, loaiSanPham, tonToiThieu, tonToiDa);
-                
+            }   
+        }catch(Exception ex) {
+            ex.printStackTrace();
+        }
+            return sp;
+    }
 
     private static ArrayList<MaVachSanPham> timMaBarcodeTheoMaSP(String masp) {
         ArrayList<MaVachSanPham> dsMaVachSP = new ArrayList<>(); // Fixed: Khởi tạo ArrayList
@@ -283,7 +289,6 @@ public class SanPhamDAO {
         }
         return dsMaVachSP;
     }
-}
     
     public static String getMaSpTheoMaVach(String maVach) {
         String maSP = null;

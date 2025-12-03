@@ -22,21 +22,6 @@ public class LoSanPham {
     
 
     // --- Constructors ---
-    
-    // 1. Constructor mặc định
-    public LoSanPham() {
-        this.isDaHuy = false; // Mặc định là false theo đặc tả
-    }
-
-    
-//    public LoSanPham(String maLoSanPham, SanPham sanPham, int soLuong, LocalDate ngaySanXuat, LocalDate ngayHetHan) {
-//        this.maLoSanPham = maLoSanPham;
-//        this.sanPham = sanPham;
-//        this.soLuong = soLuong;
-//        this.ngaySanXuat = ngaySanXuat;
-//        this.ngayHetHan = ngayHetHan;
-//
-//    }
 
     public LoSanPham(String maLoSanPham, SanPham sanPham, int soLuong, LocalDate ngaySanXuat, LocalDate ngayHetHan, boolean daHuy) {
         this.maLoSanPham = maLoSanPham;
@@ -54,24 +39,14 @@ public class LoSanPham {
         setSoLuong(soLuong);
         setNgaySanXuat(ngaySanXuat);
         setNgayHetHan(ngayHetHan);
-        this.isDaHuy = false; // Mặc định false
+        this.daHuy = false; // Mặc định false
     }
 
     // 4. Constructor cũ (Chỉ có mã lô) - GIỮ NGUYÊN
     public LoSanPham(String maLo) {
         setMaLoSanPham(maLo);
     }
-    
-    // 5. Constructor mới (Theo bảng đặc tả 1.1 có isDaHuy)
-    public LoSanPham(String maLoSanPham, SanPham sanPham, int soLuong, LocalDate ngaySanXuat, LocalDate ngayHetHan, boolean isDaHuy) {
-        setMaLoSanPham(maLoSanPham);
-        setSanPham(sanPham);
-        setSoLuong(soLuong);
-        setNgaySanXuat(ngaySanXuat);
-        setNgayHetHan(ngayHetHan);
-        setDaHuy(isDaHuy);
-    }
-
+   
     // 6. Copy constructor - CẬP NHẬT THÊM isDaHuy
     public LoSanPham(LoSanPham lo) {
         this.maLoSanPham = lo.maLoSanPham;
@@ -79,12 +54,7 @@ public class LoSanPham {
         this.soLuong = lo.soLuong;
         this.ngaySanXuat = lo.ngaySanXuat;
         this.ngayHetHan = lo.ngayHetHan;
-        this.isDaHuy = lo.isDaHuy;
-        
-        // Copy các trường cũ
-        this.ncc = lo.ncc;
-        this.ctthd = lo.ctthd;
-        this.dvTinh = lo.dvTinh;
+        this.daHuy = lo.daHuy;
     }
 
     // --- Getter & Setter (Đã cập nhật Validation theo đặc tả) ---
@@ -140,6 +110,10 @@ public class LoSanPham {
         return ngayHetHan;
     }
     
+    public void setNgayHetHan(LocalDate ngayHetHan) {
+        this.ngayHetHan = ngayHetHan;
+    }
+    
     public boolean isDaHuy() {
         return daHuy;
     }
@@ -147,10 +121,6 @@ public class LoSanPham {
     public void setDaHuy(boolean daHuy) {
         this.daHuy = daHuy;
     }
-
-    
-
-    
     
     // --- toString ---
     @Override
