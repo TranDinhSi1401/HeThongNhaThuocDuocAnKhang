@@ -1,565 +1,586 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package hethongnhathuocduocankhang.gui;
 
-import hethongnhathuocduocankhang.dao.SanPhamDAO;
-import hethongnhathuocduocankhang.entity.LoaiSanPhamEnum;
-import hethongnhathuocduocankhang.entity.SanPham;
-import java.awt.Window;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import javax.swing.JComponent;
-import javax.swing.JComboBox;
-import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
+import java.awt.*;
+import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.TitledBorder;
+import javax.swing.table.DefaultTableModel;
 
-/**
- *
- * @author GIGABYTE
- */
-public class ThemSanPhamGUI extends javax.swing.JPanel {
+public class ThemSanPhamGUI extends JPanel {
 
-    private SanPham sanPhamMoi = null;
+    // --- 1. Components Thông tin chung ---
+    private JTextField txtMaSanPham, txtTenSanPham;
+    private JTextArea txtMoTa, txtThanhPhan;
+    private JComboBox<String> cmbLoaiSanPham;
+    private JTextField txtTonToiThieu, txtTonToiDa;
+
+    // --- 2. Components QUẢN LÝ BARCODE ---
+    private JTextField txtInputBarcode;
+    private JButton btnThemBarcode, btnXoaBarcode;
+    private JTable tblBarcode;
+    private DefaultTableModel modelBarcode;
+
+    // --- 3. Components QUẢN LÝ ĐƠN VỊ TÍNH (Tab 1) ---
+    private JTextField txtTenDonVi, txtHeSoQuyDoi, txtGiaBanDonVi;
+    private JCheckBox chkDonViCoBan;
+    private JButton btnThemDVT, btnXoaDVT;
+    private JTable tblDonViTinh;
+    private DefaultTableModel modelDVT;
+
+    // --- 4. Components QUẢN LÝ NHÀ CUNG CẤP (Tab 2) ---
+    private JTextField txtTimNCC;
+    private JButton btnTimNCC;
+    private JTextField txtGiaNhap;
+    private JButton btnThemNCC;
+    private JButton btnXoaNCC;
+
+    private JTable tableKQTimKiemNCC;       // Bảng kết quả tìm kiếm
+    private DefaultTableModel modelKQTimKiemNCC;
+
+    private JTable tblNCCChon;          // Bảng danh sách đã chọn
+    private DefaultTableModel modelNCCChon;
+
+    // --- 5. Components QUẢN LÝ KHUYẾN MÃI (Tab 3) ---
+    private JTextField txtTimKM;
+    private JButton btnTimKM;
+    private JButton btnThemKM;
+    private JButton btnXoaKM;
+
+    private JTable tableKQTimKiemKM;        // Bảng kết quả tìm kiếm
+    private DefaultTableModel modelKQTimKiemKM;
+
+    private JTable tblKMChon;           // Bảng danh sách đã chọn
+    private DefaultTableModel modelKMChon;
+
+    // --- 6. Components điều hướng ---
+    private JButton btnHuy, btnXacNhan;
 
     public ThemSanPhamGUI() {
         initComponents();
+    }
 
-        jButton2.addActionListener(new ActionListener() {
+    private void initComponents() {
+        this.setLayout(new BorderLayout());
+
+        JPanel mainContentPanel = new JPanel(new BorderLayout(10, 10));
+        mainContentPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
+
+        // =====================================================================
+        // 1. PANEL TRÊN: THÔNG TIN CHI TIẾT SẢN PHẨM (GridBagLayout)
+        // =====================================================================
+        JPanel pnlInfo = new JPanel(new GridBagLayout());
+        pnlInfo.setBorder(new TitledBorder("Thông tin chi tiết sản phẩm"));
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(5, 5, 5, 5);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.anchor = GridBagConstraints.NORTHWEST;
+
+        // --- Row 0: Mã SP + Barcode ---
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.weightx = 0;
+        pnlInfo.add(new JLabel("Mã sản phẩm:"), gbc);
+
+        txtMaSanPham = new JTextField(15);
+        // txtMaSanPham.setEditable(false); // Thường mã tự sinh sẽ không cho sửa
+        gbc.gridx = 1;
+        gbc.weightx = 0.5;
+        pnlInfo.add(txtMaSanPham, gbc);
+
+        // Phần Barcode (Góc phải)
+        gbc.gridx = 2;
+        gbc.weightx = 0;
+        pnlInfo.add(new JLabel("Mã Vạch:"), gbc);
+
+        JPanel pnlBarcodeContainer = new JPanel(new BorderLayout(5, 5));
+        JPanel pnlInputBC = new JPanel(new BorderLayout(5, 0));
+
+        txtInputBarcode = new JTextField();
+        btnThemBarcode = new JButton("+");
+        btnThemBarcode.setMargin(new Insets(2, 8, 2, 8));
+
+        pnlInputBC.add(txtInputBarcode, BorderLayout.CENTER);
+        pnlInputBC.add(btnThemBarcode, BorderLayout.EAST);
+
+        modelBarcode = new DefaultTableModel(new String[]{"Mã Barcode"}, 0) {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                xuLyXacNhan();
+            public boolean isCellEditable(int row, int column) {
+                return false;
             }
-        });
+        };
+        tblBarcode = new JTable(modelBarcode);
+        tblBarcode.setTableHeader(null); // Ẩn header cho gọn
 
-        // Tên sản phẩm
-        jTextField2.addActionListener(new ActionListener() {
+        JScrollPane scrBarcode = new JScrollPane(tblBarcode);
+        scrBarcode.setBorder(new TitledBorder("DS Mã vạch"));
+        scrBarcode.setPreferredSize(new Dimension(150, 80));
+
+        btnXoaBarcode = new JButton("Xóa mã chọn");
+        btnXoaBarcode.setFont(new Font("Arial", Font.PLAIN, 10));
+
+        pnlBarcodeContainer.add(pnlInputBC, BorderLayout.NORTH);
+        pnlBarcodeContainer.add(scrBarcode, BorderLayout.CENTER);
+        pnlBarcodeContainer.add(btnXoaBarcode, BorderLayout.SOUTH);
+
+        gbc.gridx = 3;
+        gbc.weightx = 0.5;
+        gbc.gridheight = 3; // Chiếm 3 dòng dọc
+        gbc.fill = GridBagConstraints.BOTH;
+        pnlInfo.add(pnlBarcodeContainer, gbc);
+
+        // Reset lại ràng buộc cho các dòng sau
+        gbc.gridheight = 1;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+
+        // --- Row 1: Tên Sản Phẩm ---
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.weightx = 0;
+        pnlInfo.add(new JLabel("Tên sản phẩm:"), gbc);
+
+        txtTenSanPham = new JTextField();
+        gbc.gridx = 1;
+        gbc.weightx = 0.5;
+        pnlInfo.add(txtTenSanPham, gbc);
+
+        // --- Row 2: Loại Sản Phẩm ---
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        gbc.weightx = 0;
+        pnlInfo.add(new JLabel("Loại sản phẩm:"), gbc);
+
+        cmbLoaiSanPham = new JComboBox<>(new String[]{"Thuốc kê đơn", "Thuốc không kê đơn", "Thực phẩm chức năng"});
+        gbc.gridx = 1;
+        gbc.weightx = 0.5;
+        pnlInfo.add(cmbLoaiSanPham, gbc);
+
+        // --- Row 3: Thành phần ---
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        gbc.weightx = 0;
+        pnlInfo.add(new JLabel("Thành phần:"), gbc);
+
+        txtThanhPhan = new JTextArea(3, 20);
+        txtThanhPhan.setLineWrap(true);
+        txtThanhPhan.setWrapStyleWord(true);
+        JScrollPane scrThanhPhan = new JScrollPane(txtThanhPhan);
+
+        gbc.gridx = 1;
+        gbc.gridwidth = 3;
+        gbc.weightx = 1.0;
+        pnlInfo.add(scrThanhPhan, gbc);
+        gbc.gridwidth = 1;
+
+        // --- Row 4: Mô tả ---
+        gbc.gridx = 0;
+        gbc.gridy = 4;
+        gbc.weightx = 0;
+        pnlInfo.add(new JLabel("Mô tả công dụng:"), gbc);
+
+        txtMoTa = new JTextArea(3, 20);
+        txtMoTa.setLineWrap(true);
+        txtMoTa.setWrapStyleWord(true);
+        JScrollPane scrMoTa = new JScrollPane(txtMoTa);
+
+        gbc.gridx = 1;
+        gbc.gridwidth = 3;
+        gbc.weightx = 1.0;
+        pnlInfo.add(scrMoTa, gbc);
+        gbc.gridwidth = 1;
+
+        // --- Row 5: Tồn kho ---
+        JPanel pnlTonKho = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
+        txtTonToiThieu = new JTextField(5);
+        txtTonToiDa = new JTextField(5);
+
+        pnlTonKho.add(txtTonToiThieu);
+        pnlTonKho.add(new JLabel("   Tồn tối đa:  "));
+        pnlTonKho.add(txtTonToiDa);
+
+        gbc.gridx = 0;
+        gbc.gridy = 5;
+        gbc.weightx = 0;
+        pnlInfo.add(new JLabel("Tồn tối thiểu:"), gbc);
+
+        gbc.gridx = 1;
+        gbc.gridwidth = 3;
+        pnlInfo.add(pnlTonKho, gbc);
+        gbc.gridwidth = 1;
+
+        // =====================================================================
+        // 2. PANEL DƯỚI: TABBED PANE (Chi tiết con)
+        // =====================================================================
+        JTabbedPane tabbedPane = new JTabbedPane();
+
+        // ---------------- TAB 1: ĐƠN VỊ TÍNH ----------------
+        JPanel pnlDVT = new JPanel(new BorderLayout(5, 5));
+        pnlDVT.setBorder(new EmptyBorder(5, 5, 5, 5));
+
+        JPanel pnlInputDVT = new JPanel(new FlowLayout(FlowLayout.LEFT));
+        txtTenDonVi = new JTextField(6);
+        txtHeSoQuyDoi = new JTextField(4);
+        txtGiaBanDonVi = new JTextField(7);
+        chkDonViCoBan = new JCheckBox("Cơ bản");
+        btnThemDVT = new JButton("Thêm");
+        btnXoaDVT = new JButton("Xóa");
+
+        pnlInputDVT.add(new JLabel("Tên ĐV:"));
+        pnlInputDVT.add(txtTenDonVi);
+        pnlInputDVT.add(new JLabel("Quy đổi:"));
+        pnlInputDVT.add(txtHeSoQuyDoi);
+        pnlInputDVT.add(new JLabel("Giá bán:"));
+        pnlInputDVT.add(txtGiaBanDonVi);
+        pnlInputDVT.add(chkDonViCoBan);
+        pnlInputDVT.add(btnThemDVT);
+        pnlInputDVT.add(btnXoaDVT);
+
+        String[] colsDVT = {"Mã ĐV", "Tên Đơn Vị", "Hệ Số Quy Đổi", "Giá Bán", "Cơ Bản"};
+        modelDVT = new DefaultTableModel(colsDVT, 0) {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                validateTen();
+            public boolean isCellEditable(int row, int column) {
+                return false;
             }
-        });
+        };
+        tblDonViTinh = new JTable(modelDVT);
+        tblDonViTinh.setRowHeight(22);
+        tblDonViTinh.getColumnModel().getColumn(0).setPreferredWidth(80);
 
-        // Mô tả
-        jTextField3.addActionListener(new ActionListener() {
+        pnlDVT.add(pnlInputDVT, BorderLayout.NORTH);
+        pnlDVT.add(new JScrollPane(tblDonViTinh), BorderLayout.CENTER);
+        tabbedPane.addTab("1. Đơn vị tính", pnlDVT);
+
+        // ---------------- TAB 2: NHÀ CUNG CẤP ----------------
+        JPanel pnlNCC = new JPanel(new BorderLayout(5, 5));
+        pnlNCC.setBorder(new EmptyBorder(5, 5, 5, 5));
+
+        JPanel pnlTopControlNCC = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 5));
+        pnlTopControlNCC.setBorder(BorderFactory.createEtchedBorder());
+
+        txtTimNCC = new JTextField(12);
+        btnTimNCC = new JButton("Tìm");
+        txtGiaNhap = new JTextField(8);
+        btnThemNCC = new JButton("↓ Thêm xuống DS");
+        btnThemNCC.setBackground(new Color(220, 235, 250));
+
+        pnlTopControlNCC.add(new JLabel("Tìm NCC (Mã/Tên):"));
+        pnlTopControlNCC.add(txtTimNCC);
+        pnlTopControlNCC.add(btnTimNCC);
+        pnlTopControlNCC.add(new JSeparator(JSeparator.VERTICAL));
+        pnlTopControlNCC.add(new JLabel("Giá nhập:"));
+        pnlTopControlNCC.add(txtGiaNhap);
+        pnlTopControlNCC.add(btnThemNCC);
+
+        pnlNCC.add(pnlTopControlNCC, BorderLayout.NORTH);
+
+        JPanel pnlTablesAreaNCC = new JPanel(new GridLayout(2, 1, 0, 10));
+
+        // Bảng 1: Kết quả tìm kiếm
+        JPanel pnlTable1NCC = new JPanel(new BorderLayout());
+        pnlTable1NCC.setBorder(BorderFactory.createTitledBorder("Kết quả tìm kiếm"));
+        modelKQTimKiemNCC = new DefaultTableModel(new String[]{"Mã NCC", "Tên NCC", "SĐT", "Địa chỉ"}, 0) {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                validateMoTa();
+            public boolean isCellEditable(int row, int column) {
+                return false;
             }
-        });
+        };
+        tableKQTimKiemNCC = new JTable(modelKQTimKiemNCC);
+        tableKQTimKiemNCC.setRowHeight(22);
+        pnlTable1NCC.add(new JScrollPane(tableKQTimKiemNCC), BorderLayout.CENTER);
 
-        // Thành phần
-        jTextField4.addActionListener(new ActionListener() {
+        // Bảng 2: DS Đã chọn
+        JPanel pnlTable2NCC = new JPanel(new BorderLayout());
+        pnlTable2NCC.setBorder(BorderFactory.createTitledBorder("DS Nhà cung cấp đã chọn"));
+        modelNCCChon = new DefaultTableModel(new String[]{"Mã NCC", "Tên NCC", "Giá Nhập"}, 0) {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                validateThanhPhan();
+            public boolean isCellEditable(int row, int column) {
+                return false;
             }
-        });
+        };
+        tblNCCChon = new JTable(modelNCCChon);
+        tblNCCChon.setRowHeight(22);
 
-        // Loại sản phẩm
-        jComboBox1.addActionListener(new ActionListener() {
+        JPanel pnlFooterNCC = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        btnXoaNCC = new JButton("Xóa khỏi DS");
+        pnlFooterNCC.add(btnXoaNCC);
+
+        pnlTable2NCC.add(new JScrollPane(tblNCCChon), BorderLayout.CENTER);
+        pnlTable2NCC.add(pnlFooterNCC, BorderLayout.SOUTH);
+
+        pnlTablesAreaNCC.add(pnlTable1NCC);
+        pnlTablesAreaNCC.add(pnlTable2NCC);
+        pnlNCC.add(pnlTablesAreaNCC, BorderLayout.CENTER);
+        tabbedPane.addTab("2. Nhà cung cấp", pnlNCC);
+
+        // ---------------- TAB 3: KHUYẾN MÃI ----------------
+        JPanel pnlKM = new JPanel(new BorderLayout(5, 5));
+        pnlKM.setBorder(new EmptyBorder(5, 5, 5, 5));
+
+        JPanel pnlTopControlKM = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 5));
+        pnlTopControlKM.setBorder(BorderFactory.createEtchedBorder());
+
+        txtTimKM = new JTextField(15);
+        btnTimKM = new JButton("Tìm");
+        btnThemKM = new JButton("↓ Thêm xuống DS");
+        btnThemKM.setBackground(new Color(220, 235, 250));
+
+        pnlTopControlKM.add(new JLabel("Tìm KM (Mã KM/Mô tả):"));
+        pnlTopControlKM.add(txtTimKM);
+        pnlTopControlKM.add(btnTimKM);
+        pnlTopControlKM.add(Box.createHorizontalStrut(20));
+        pnlTopControlKM.add(btnThemKM);
+
+        pnlKM.add(pnlTopControlKM, BorderLayout.NORTH);
+
+        JPanel pnlTablesAreaKM = new JPanel(new GridLayout(2, 1, 0, 10));
+
+        // Bảng 1: Kết quả tìm kiếm
+        JPanel pnlTable1KM = new JPanel(new BorderLayout());
+        pnlTable1KM.setBorder(BorderFactory.createTitledBorder("Kết quả tìm kiếm Khuyến mãi"));
+        modelKQTimKiemKM = new DefaultTableModel(new String[]{"Mã KM", "Mô tả", "Giảm (%)", "Bắt đầu", "Kết thúc"}, 0) {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                validateLoai();
+            public boolean isCellEditable(int row, int column) {
+                return false;
             }
-        });
+        };
+        tableKQTimKiemKM = new JTable(modelKQTimKiemKM);
+        tableKQTimKiemKM.setRowHeight(22);
+        pnlTable1KM.add(new JScrollPane(tableKQTimKiemKM), BorderLayout.CENTER);
 
-        // Tồn tối thiểu
-        jTextField6.addActionListener(new ActionListener() {
+        // Bảng 2: DS KM đã chọn
+        JPanel pnlTable2KM = new JPanel(new BorderLayout());
+        pnlTable2KM.setBorder(BorderFactory.createTitledBorder("DS Khuyến mãi áp dụng"));
+        modelKMChon = new DefaultTableModel(new String[]{"Mã KM", "Mô tả", "Giảm (%)", "SL Min", "SL Max", "Ngày sửa"}, 0) {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                validateTonToiThieu();
+            public boolean isCellEditable(int row, int column) {
+                return false;
             }
-        });
+        };
+        tblKMChon = new JTable(modelKMChon);
+        tblKMChon.setRowHeight(22);
 
-        // Tồn tối đa
-        jTextField7.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                validateTonToiDa();
-            }
-        });
+        JPanel pnlFooterKM = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        btnXoaKM = new JButton("Xóa khỏi DS");
+        pnlFooterKM.add(btnXoaKM);
+
+        pnlTable2KM.add(new JScrollPane(tblKMChon), BorderLayout.CENTER);
+        pnlTable2KM.add(pnlFooterKM, BorderLayout.SOUTH);
+
+        pnlTablesAreaKM.add(pnlTable1KM);
+        pnlTablesAreaKM.add(pnlTable2KM);
+        pnlKM.add(pnlTablesAreaKM, BorderLayout.CENTER);
+        tabbedPane.addTab("3. Khuyến mãi", pnlKM);
+
+        tabbedPane.setPreferredSize(new Dimension(100, 380));
+
+        // =====================================================================
+        // 3. NÚT XÁC NHẬN / HỦY (Footer Form)
+        // =====================================================================
+        JPanel pnlButton = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        btnHuy = new JButton("Hủy bỏ");
+        btnXacNhan = new JButton("Lưu sản phẩm");
+
+        btnXacNhan.setBackground(new Color(0, 153, 51));
+        btnXacNhan.setForeground(Color.WHITE);
+        btnXacNhan.setPreferredSize(new Dimension(120, 35));
+
+        pnlButton.add(btnHuy);
+        pnlButton.add(btnXacNhan);
+
+        // --- Add main components to this JPanel ---
+        mainContentPanel.add(pnlInfo, BorderLayout.NORTH);
+        mainContentPanel.add(tabbedPane, BorderLayout.CENTER);
+
+        JScrollPane scrollPane = new JScrollPane(mainContentPanel);
+        scrollPane.getVerticalScrollBar().setUnitIncrement(16);
+        scrollPane.setBorder(null);
+
+        this.add(scrollPane, BorderLayout.CENTER);
+        this.add(pnlButton, BorderLayout.SOUTH);
+
+        // Cấu hình selection mode cho bảng
+        tblNCCChon.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        tblKMChon.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        tableKQTimKiemNCC.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        tableKQTimKiemKM.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
     }
 
-    @SuppressWarnings("unchecked")
-    public javax.swing.JButton getBtnHuy() {
-        return jButton1;
+    // ==========================================================================
+    // GETTERS (Để lớp BUS truy cập lấy dữ liệu và gán sự kiện)
+    // ==========================================================================
+    public JTextField getTxtMaSanPham() {
+        return txtMaSanPham;
     }
 
-    public javax.swing.JButton getBtnXacNhan() {
-        return jButton2;
+    public JTextField getTxtTenSanPham() {
+        return txtTenSanPham;
     }
 
-    public javax.swing.JLabel getLblTieuDe() {
-        return jLabel1;
+    public JTextArea getTxtMoTa() {
+        return txtMoTa;
     }
 
-    public javax.swing.JLabel getLblMaSanPham() {
-        return jLabel2;
-    }
-
-    public javax.swing.JLabel getLblTenSanPham() {
-        return jLabel3;
-    }
-
-    public javax.swing.JLabel getLblMoTa() {
-        return jLabel4;
-    }
-
-    public javax.swing.JLabel getLblThanhPhan() {
-        return jLabel5;
-    }
-
-    public javax.swing.JLabel getLblLoaiSanPham() {
-        return jLabel6;
-    }
-
-    public javax.swing.JLabel getLblSoLuongToiThieu() {
-        return jLabel7;
-    }
-
-    public javax.swing.JLabel getLblSoLuongToiDa() {
-        return jLabel8;
-    }
-
-    public javax.swing.JPanel getPanelTieuDe() {
-        return jPanel1;
-    }
-
-    public javax.swing.JPanel getPanelNoiDung() {
-        return jPanel2;
-    }
-
-    public javax.swing.JTextField getTxtMaSanPham() {
-        return jTextField1;
-    }
-
-    public javax.swing.JTextField getTxtTenSanPham() {
-        return jTextField2;
-    }
-
-    public javax.swing.JTextField getTxtMoTa() {
-        return jTextField3;
-    }
-
-    public javax.swing.JTextField getTxtThanhPhan() {
-        return jTextField4;
+    public JTextArea getTxtThanhPhan() {
+        return txtThanhPhan;
     }
 
     public JComboBox<String> getCmbLoaiSanPham() {
-        return jComboBox1;
+        return cmbLoaiSanPham;
     }
 
-    public javax.swing.JTextField getTxtSoLuongToiThieu() {
-        return jTextField6;
+    public JTextField getTxtTonToiThieu() {
+        return txtTonToiThieu;
     }
 
-    public javax.swing.JTextField getTxtSoLuongToiDa() {
-        return jTextField7;
+    public JTextField getTxtTonToiDa() {
+        return txtTonToiDa;
     }
 
-    public void setTxtMaSanPham(String maSP) {
-        jTextField1.setText(maSP);
+    // Barcode
+    public JTextField getTxtInputBarcode() {
+        return txtInputBarcode;
     }
 
-    public void setTxtTenSanPham(String tenSP) {
-        jTextField2.setText(tenSP);
+    public JButton getBtnThemBarcode() {
+        return btnThemBarcode;
     }
 
-    public void setTxtMoTa(String moTa) {
-        jTextField3.setText(moTa);
+    public JButton getBtnXoaBarcode() {
+        return btnXoaBarcode;
     }
 
-    public void setTxtThanhPhan(String thanhPhan) {
-        jTextField4.setText(thanhPhan);
+    public JTable getTblBarcode() {
+        return tblBarcode;
     }
 
+    public DefaultTableModel getModelBarcode() {
+        return modelBarcode;
+    }
+
+    // Đơn vị tính
+    public JTextField getTxtTenDonVi() {
+        return txtTenDonVi;
+    }
+
+    public JTextField getTxtHeSoQuyDoi() {
+        return txtHeSoQuyDoi;
+    }
+
+    public JTextField getTxtGiaBanDonVi() {
+        return txtGiaBanDonVi;
+    }
+
+    public JCheckBox getChkDonViCoBan() {
+        return chkDonViCoBan;
+    }
+
+    public JButton getBtnThemDVT() {
+        return btnThemDVT;
+    }
+
+    public JButton getBtnXoaDVT() {
+        return btnXoaDVT;
+    }
+
+    public JTable getTblDonViTinh() {
+        return tblDonViTinh;
+    }
+
+    public DefaultTableModel getModelDVT() {
+        return modelDVT;
+    }
+
+    // Nhà cung cấp
+    public JTextField getTxtTimNCC() {
+        return txtTimNCC;
+    }
+
+    public JTextField getTxtGiaNhap() {
+        return txtGiaNhap;
+    }
+
+    public JButton getBtnTimNCC() {
+        return btnTimNCC;
+    }
+
+
+    public JButton getBtnThemNCC() {
+        return btnThemNCC;
+    }
+  
     public void setCmbLoaiSanPham(LoaiSanPhamEnum loai) {
         if (loai == LoaiSanPhamEnum.THUOC_KE_DON) {
             jComboBox1.setSelectedItem("Thuốc kê đơn");
         } else if (loai == LoaiSanPhamEnum.THUC_PHAM_CHUC_NANG) {
             jComboBox1.setSelectedItem("Thực phẩm chức năng");
-        }else {
+        } else {
             jComboBox1.setSelectedItem("Thuốc không kê đơn");
         }
     }
 
-    /**
-     * Thiết lập giá trị cho ô số lượng tồn tối thiểu.
-     *
-     * @param tonToiThieu Giá trị int
-     */
-    public void setTxtSoLuongToiThieu(int tonToiThieu) {
-        jTextField6.setText(String.valueOf(tonToiThieu));
+    public JButton getBtnXoaNCC() {
+        return btnXoaNCC;
     }
 
-    /**
-     * Thiết lập giá trị cho ô số lượng tồn tối đa.
-     *
-     * @param tonToiDa Giá trị int
-     */
-    public void setTxtSoLuongToiDa(int tonToiDa) {
-        jTextField7.setText(String.valueOf(tonToiDa));
-    }
-    // </editor-fold>
-
-    /**
-     * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
-     * regenerated by the Form Editor.
-     */
-    @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
-
-        jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        jPanel2 = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
-        jTextField4 = new javax.swing.JTextField();
-        jTextField6 = new javax.swing.JTextField();
-        jTextField7 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jComboBox1 = new javax.swing.JComboBox<>();
-
-        setLayout(new java.awt.BorderLayout());
-
-        jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel1.setText("Thông tin sản phẩm");
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-                jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(jLabel1)
-                                .addContainerGap(233, Short.MAX_VALUE))
-        );
-        jPanel1Layout.setVerticalGroup(
-                jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(jLabel1)
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-        add(jPanel1, java.awt.BorderLayout.PAGE_START);
-
-        jPanel2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-
-        jLabel2.setText("Mã sản phẩm:");
-
-        jLabel3.setText("Tên sản phẩm:");
-
-        jLabel4.setText("Mô tả:");
-
-        jLabel5.setText("Thành phần:");
-
-        jLabel6.setText("Loại sản phẩm:");
-
-        jLabel7.setText("Số lượng tối thiểu:");
-
-        jLabel8.setText("Số lượng tối đa:");
-
-        jTextField1.setEnabled(false);
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
-            }
-        });
-
-        jTextField2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField2ActionPerformed(evt);
-            }
-        });
-
-        jTextField4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField4ActionPerformed(evt);
-            }
-        });
-
-        jTextField6.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField6ActionPerformed(evt);
-            }
-        });
-
-        jButton1.setText("Hủy");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-
-        jButton2.setText("Xác nhận");
-
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Thuốc", "Thực phẩm chức năng"}));
-
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-                jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                        .addComponent(jLabel4)
-                                                        .addComponent(jLabel5)
-                                                        .addComponent(jLabel6)
-                                                        .addComponent(jLabel3)
-                                                        .addComponent(jLabel2))
-                                                .addGap(31, 31, 31)
-                                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                        .addComponent(jTextField2, javax.swing.GroupLayout.Alignment.TRAILING)
-                                                        .addComponent(jTextField3, javax.swing.GroupLayout.Alignment.TRAILING)
-                                                        .addComponent(jTextField4, javax.swing.GroupLayout.Alignment.TRAILING)
-                                                        .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                        .addComponent(jTextField1)))
-                                        .addGroup(jPanel2Layout.createSequentialGroup()
-                                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                        .addComponent(jLabel7)
-                                                        .addComponent(jLabel8))
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                        .addComponent(jTextField7)
-                                                        .addGroup(jPanel2Layout.createSequentialGroup()
-                                                                .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                .addGap(0, 0, Short.MAX_VALUE))))
-                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                                                .addComponent(jButton1)
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addComponent(jButton2)))
-                                .addContainerGap())
-        );
-        jPanel2Layout.setVerticalGroup(
-                jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(jLabel2)
-                                        .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(18, 18, 18)
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(jLabel3)
-                                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(18, 18, 18)
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(jLabel4)
-                                        .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(18, 18, 18)
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(jLabel5)
-                                        .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(18, 18, 18)
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(jLabel6)
-                                        .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(jLabel7)
-                                        .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(18, 18, 18)
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(jLabel8)
-                                        .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
-                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(jButton1)
-                                        .addComponent(jButton2))
-                                .addContainerGap())
-        );
-
-        add(jPanel2, java.awt.BorderLayout.CENTER);
-    }// </editor-fold>//GEN-END:initComponents
-
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        xuLyHuy();
-    }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
-
-    }//GEN-LAST:event_jTextField2ActionPerformed
-
-    private void jTextField4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField4ActionPerformed
-
-    }//GEN-LAST:event_jTextField4ActionPerformed
-
-    private void jTextField6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField6ActionPerformed
-
-    }//GEN-LAST:event_jTextField6ActionPerformed
-
-    private void showError(String message, JComponent component) {
-        JOptionPane.showMessageDialog(this, message, "Lỗi nhập liệu", JOptionPane.ERROR_MESSAGE);
-        if (component != null) {
-            component.requestFocusInWindow(); // Đặt con trỏ vào ô bị sai
-        }
+    public JTable getTableKQTimKiemNCC() {
+        return tableKQTimKiemNCC;
     }
 
-    private void xuLyHuy() {
-        this.sanPhamMoi = null;
-        closeDialog();
+    public DefaultTableModel getModelTimKiemNCC() {
+        return modelKQTimKiemNCC;
     }
 
-    private void closeDialog() {
-        Window window = SwingUtilities.getWindowAncestor(this);
-        if (window != null) {
-            window.dispose();
-        }
+    public JTable getTblNCCChon() {
+        return tblNCCChon;
     }
 
-    public SanPham getSanPhamMoi() {
-        return this.sanPhamMoi;
+    public DefaultTableModel getModelNCCChon() {
+        return modelNCCChon;
     }
 
-    private boolean validateTen() {
-        String ten = jTextField2.getText().trim();
-        if (ten.isEmpty()) {
-            showError("Tên thuốc không được rỗng.", jTextField2);
-            return false;
-        }
-        return true;
+    // Khuyến mãi
+    public JTextField getTxtTimKM() {
+        return txtTimKM;
     }
 
-    private boolean validateMoTa() {
-        String moTa = jTextField3.getText().trim();
-        if (moTa.isEmpty()) {
-            showError("Mô tả không được rỗng.", jTextField3);
-            return false;
-        }
-        return true;
+    public JButton getBtnTimKM() {
+        return btnTimKM;
     }
 
-    private boolean validateThanhPhan() {
-        String thanhPhan = jTextField4.getText().trim();
-        if (thanhPhan.isEmpty()) {
-            showError("Thành phần không được rỗng.", jTextField4);
-            return false;
-        }
-        return true;
+    public JButton getBtnThemKM() {
+        return btnThemKM;
     }
 
-    private boolean validateLoai() {
-        if (jComboBox1.getSelectedItem() == null) {
-            showError("Bạn phải chọn một loại sản phẩm.", jComboBox1);
-            return false;
-        }
-        return true;
+    public JButton getBtnXoaKM() {
+        return btnXoaKM;
     }
 
-    private boolean validateTonToiThieu() {
-        String tonToiThieuStr = jTextField6.getText().trim();
-        if (tonToiThieuStr.isEmpty()) {
-            showError("Tồn tối thiểu không được rỗng.", jTextField6);
-            return false;
-        }
-        try {
-            int tonToiThieu = Integer.parseInt(tonToiThieuStr);
-            if (tonToiThieu < 0) {
-                showError("Tồn tối thiểu phải lớn hơn hoặc bằng 0.", jTextField6);
-                return false;
-            }
-        } catch (NumberFormatException e) {
-            showError("Tồn tối thiểu phải là một số nguyên.", jTextField6);
-            return false;
-        }
-        return true;
+    public JTable getTblTimKiemKM() {
+        return tableKQTimKiemKM;
     }
 
-    private boolean validateTonToiDa() {
-        String tonToiDaStr = jTextField7.getText().trim();
-        if (tonToiDaStr.isEmpty()) {
-            showError("Tồn tối đa không được rỗng.", jTextField7);
-            return false;
-        }
-        try {
-            int tonToiDa = Integer.parseInt(tonToiDaStr);
-            if (tonToiDa < 0) {
-                showError("Tồn tối đa phải lớn hơn hoặc bằng 0.", jTextField7);
-                return false;
-            }
-        } catch (NumberFormatException e) {
-            showError("Tồn tối đa phải là một số nguyên.", jTextField7);
-            return false;
-        }
-        return true;
+    public DefaultTableModel getModelKQTimKiemKM() {
+        return modelKQTimKiemKM;
     }
 
-    private void xuLyXacNhan() {
-        if (!validateTen()) {
-            return;
-        }
-        if (!validateMoTa()) {
-            return;
-        }
-        if (!validateThanhPhan()) {
-            return;
-        }
-        if (!validateLoai()) {
-            return;
-        }
-        if (!validateTonToiThieu()) {
-            return;
-        }
-        if (!validateTonToiDa()) {
-            return;
-        }
+    public JTable getTblKMChon() {
+        return tblKMChon;
+    }
 
-        try {
-            int tonToiThieu = Integer.parseInt(jTextField6.getText().trim());
-            int tonToiDa = Integer.parseInt(jTextField7.getText().trim());
+    public DefaultTableModel getModelKMChon() {
+        return modelKMChon;
+    }
 
-            if (tonToiDa < tonToiThieu) {
-                showError("Tồn tối đa (" + tonToiDa + ") phải lớn hơn hoặc bằng tồn tối thiểu (" + tonToiThieu + ").", jTextField7);
-                return;
-            }
+    // Action buttons
+    public JButton getBtnHuy() {
+        return btnHuy;
+    }
 
-            // 1. Lấy dữ liệu
-            String maSP = jTextField1.getText().trim();
-            String ten = jTextField2.getText().trim();
-            String moTa = jTextField3.getText().trim();
-            String thanhPhan = jTextField4.getText().trim();
-            LoaiSanPhamEnum loai = jComboBox1.getSelectedItem().toString().equals("Thuốc")
-                    ? LoaiSanPhamEnum.THUOC_KE_DON
-                    : LoaiSanPhamEnum.THUC_PHAM_CHUC_NANG;
-
-            // 2. Tạo đối tượng và lưu vào biến của lớp
-            this.sanPhamMoi = new SanPham();
-
-            sanPhamMoi.setMaSP(maSP);
-            sanPhamMoi.setTen(ten);
-            sanPhamMoi.setMoTa(moTa);
-            sanPhamMoi.setThanhPhan(thanhPhan);
-            sanPhamMoi.setLoaiSanPham(loai);
-            sanPhamMoi.setTonToiThieu(tonToiThieu);
-            sanPhamMoi.setTonToiDa(tonToiDa);
-
-            closeDialog();
-
-        } catch (Exception ex) {
-            this.sanPhamMoi = null;
-            JOptionPane.showMessageDialog(this, "Lỗi hệ thống: " + ex.getMessage(), "Lỗi hệ thống", JOptionPane.ERROR_MESSAGE);
-        }
+    public JButton getBtnXacNhan() {
+        return btnXacNhan;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

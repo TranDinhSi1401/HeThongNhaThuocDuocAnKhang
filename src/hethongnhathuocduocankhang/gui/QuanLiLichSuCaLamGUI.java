@@ -8,7 +8,9 @@ import hethongnhathuocduocankhang.dao.LichSuCaLamDAO;
 import hethongnhathuocduocankhang.entity.LichSuCaLam;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumnModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,6 +20,8 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 public class QuanLiLichSuCaLamGUI extends JPanel {
 
@@ -28,26 +32,28 @@ public class QuanLiLichSuCaLamGUI extends JPanel {
     private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     private final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
 
+    // Label hiển thị số lượng (Footer)
+    private JLabel lblTongSoDong;
+    private JLabel lblSoDongChon;
+
     public QuanLiLichSuCaLamGUI() {
         this.setLayout(new BorderLayout(10, 10));
         this.setBorder(new EmptyBorder(10, 10, 10, 10));
 
-        // 1. TẠO PANEL NORTH
+        // --- 1. PANEL NORTH ---
         JPanel pnlNorth = new JPanel();
         pnlNorth.setLayout(new BorderLayout());
 
-        // 1.1. Panel Chức năng (LEFT - TRỐNG)
+        // 1.1. Panel Chức năng (LEFT - TRỐNG nhưng giữ layout)
         JPanel pnlNorthLeft = new JPanel();
         pnlNorthLeft.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 0));
         pnlNorthLeft.setBorder(new EmptyBorder(0, 0, 10, 0));
         pnlNorth.add(pnlNorthLeft, BorderLayout.WEST);
 
-        // (Đã xóa các nút Thêm, Xóa, Sửa)
         // 1.2. Panel Tìm kiếm (RIGHT)
         JPanel pnlNorthRight = new JPanel();
         pnlNorthRight.setLayout(new FlowLayout(FlowLayout.RIGHT, 10, 5));
 
-        // THAY ĐỔI TIÊU CHÍ TÌM KIẾM
         cmbTieuChiTimKiem = new JComboBox<>(new String[]{
             "Mã NV",
             "Tên Nhân Viên",
@@ -57,7 +63,6 @@ public class QuanLiLichSuCaLamGUI extends JPanel {
         cmbTieuChiTimKiem.setFont(new Font("Arial", Font.PLAIN, 14));
         cmbTieuChiTimKiem.setPreferredSize(new Dimension(180, 30));
 
-        // (Đã xóa cmbBoLoc)
         txtTimKiem = new JTextField(20);
         txtTimKiem.setFont(new Font("Arial", Font.PLAIN, 14));
         txtTimKiem.setPreferredSize(new Dimension(200, 30));
@@ -73,17 +78,15 @@ public class QuanLiLichSuCaLamGUI extends JPanel {
         pnlNorthRight.add(new JLabel("Tìm theo"));
         pnlNorthRight.add(cmbTieuChiTimKiem);
         pnlNorthRight.add(pnlTimKiem);
-        // (Đã xóa Lọc theo)
 
         pnlNorth.add(pnlNorthRight, BorderLayout.EAST);
-
         this.add(pnlNorth, BorderLayout.NORTH);
 
-        // 3. TẠO PANEL CENTER (Bảng dữ liệu)
+        // --- 2. PANEL CENTER (TABLE) ---
         JPanel centerPanel = new JPanel(new BorderLayout(0, 10));
 
-        // THAY ĐỔI CỘT
-        String[] columnNames = {"Mã NV", "Tên Nhân Viên", "Ngày Làm", "Mã Ca", "Giờ Vào", "Giờ Ra", "Ghi Chú"};
+        // Thêm cột STT
+        String[] columnNames = {"STT", "Mã NV", "Tên Nhân Viên", "Ngày Làm", "Mã Ca", "Giờ Vào", "Giờ Ra", "Ghi Chú"};
         Object[][] data = {};
 
         model = new DefaultTableModel(data, columnNames) {
@@ -102,11 +105,64 @@ public class QuanLiLichSuCaLamGUI extends JPanel {
         table.setShowGrid(true);
         table.setGridColor(Color.LIGHT_GRAY);
 
+        // --- CẤU HÌNH KÍCH THƯỚC & CĂN CHỈNH CỘT ---
+        TableColumnModel columnModel = table.getColumnModel();
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+
+        // 0. STT
+        columnModel.getColumn(0).setPreferredWidth(40);
+        columnModel.getColumn(0).setMaxWidth(40);
+        columnModel.getColumn(0).setCellRenderer(centerRenderer);
+
+        // 1. Mã NV
+        columnModel.getColumn(1).setPreferredWidth(80);
+        columnModel.getColumn(1).setMaxWidth(100);
+        columnModel.getColumn(1).setCellRenderer(centerRenderer);
+
+        // 2. Tên Nhân Viên (Rộng)
+        columnModel.getColumn(2).setPreferredWidth(200);
+
+        // 3. Ngày Làm
+        columnModel.getColumn(3).setPreferredWidth(100);
+        columnModel.getColumn(3).setCellRenderer(centerRenderer);
+
+        // 4. Mã Ca
+        columnModel.getColumn(4).setPreferredWidth(80);
+        columnModel.getColumn(4).setCellRenderer(centerRenderer);
+
+        // 5 & 6. Giờ Vào - Giờ Ra
+        columnModel.getColumn(5).setPreferredWidth(100);
+        columnModel.getColumn(5).setCellRenderer(centerRenderer);
+        columnModel.getColumn(6).setPreferredWidth(100);
+        columnModel.getColumn(6).setCellRenderer(centerRenderer);
+        
+        // 7. Ghi chú (Rộng)
+        columnModel.getColumn(7).setPreferredWidth(150);
+
         JScrollPane scrollPane = new JScrollPane(table);
         centerPanel.add(scrollPane, BorderLayout.CENTER);
-
-        this.add(pnlNorth, BorderLayout.NORTH);
         this.add(centerPanel, BorderLayout.CENTER);
+        
+        // --- 3. PANEL SOUTH (FOOTER) ---
+        JPanel pnlSouth = new JPanel(new FlowLayout(FlowLayout.LEFT, 20, 5));
+        pnlSouth.setBorder(new EmptyBorder(5, 0, 0, 0));
+        
+        Font fontFooter = new Font("Arial", Font.BOLD, 13);
+        
+        lblTongSoDong = new JLabel("Tổng số lịch sử ca làm: 0");
+        lblTongSoDong.setFont(fontFooter);
+        lblTongSoDong.setForeground(new Color(0, 102, 204));
+        
+        lblSoDongChon = new JLabel("Đang chọn: 0");
+        lblSoDongChon.setFont(fontFooter);
+        lblSoDongChon.setForeground(new Color(204, 0, 0));
+        
+        pnlSouth.add(lblTongSoDong);
+        pnlSouth.add(new JSeparator(JSeparator.VERTICAL));
+        pnlSouth.add(lblSoDongChon);
+        
+        this.add(pnlSouth, BorderLayout.SOUTH);
 
         updateTable();
         addEvents();
@@ -115,10 +171,11 @@ public class QuanLiLichSuCaLamGUI extends JPanel {
     private void updateTable(ArrayList<LichSuCaLam> dsLS) {
         model.setRowCount(0);
         if (dsLS == null) {
+            lblTongSoDong.setText("Tổng số lịch sử ca làm: 0");
             return;
         }
+        int stt = 1;
         for (LichSuCaLam ls : dsLS) {
-            // Lấy tên từ đối tượng (DAO đã tải đầy đủ)
             String tenNV = (ls.getNhanVien() != null && ls.getNhanVien().getTen() != null)
                     ? ls.getNhanVien().getHoTenDem() + " " + ls.getNhanVien().getTen()
                     : ls.getNhanVien().getMaNV();
@@ -130,6 +187,7 @@ public class QuanLiLichSuCaLamGUI extends JPanel {
                     : "Chưa ra ca";
 
             Object[] row = {
+                stt++, // STT
                 ls.getNhanVien().getMaNV(),
                 tenNV,
                 ls.getNgayLamViec().format(dateFormatter),
@@ -140,6 +198,7 @@ public class QuanLiLichSuCaLamGUI extends JPanel {
             };
             model.addRow(row);
         }
+        lblTongSoDong.setText("Tổng số lịch sử ca làm: " + dsLS.size());
     }
 
     private void updateTable() {
@@ -148,7 +207,6 @@ public class QuanLiLichSuCaLamGUI extends JPanel {
     }
 
     private void addEvents() {
-
         txtTimKiem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -170,12 +228,21 @@ public class QuanLiLichSuCaLamGUI extends JPanel {
                 hienThiChiTietLichSuCaLam(e);
             }
         });
+        
+        // Sự kiện đếm dòng chọn
+        table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                if (!e.getValueIsAdjusting()) {
+                    lblSoDongChon.setText("Đang chọn: " + table.getSelectedRowCount());
+                }
+            }
+        });
     }
 
     private void xuLyTimKiem() {
         String tuKhoa = txtTimKiem.getText().trim();
         String tieuChi = cmbTieuChiTimKiem.getSelectedItem().toString();
-
         ArrayList<LichSuCaLam> dsKetQua = new ArrayList<>();
 
         if (tuKhoa.isEmpty()) {
@@ -206,49 +273,47 @@ public class QuanLiLichSuCaLamGUI extends JPanel {
 
     private void hienThiChiTietLichSuCaLam(MouseEvent e) {
         int selectRow = table.getSelectedRow();
-        if (selectRow != -1) {
+        if (selectRow != -1 && e.getClickCount() == 2) {
 
-            if (e.getClickCount() == 2) { // Double click
-                ChiTietLichSuCaLamGUI pnlChiTiet = new ChiTietLichSuCaLamGUI();
-                JDialog dialog = new JDialog();
-                dialog.setTitle("Thông tin chi tiết Ca Làm");
-                dialog.setModal(true);
-                dialog.setResizable(false);
-                dialog.setContentPane(pnlChiTiet);
-                dialog.pack();
-                dialog.setLocationRelativeTo(null);
+            ChiTietLichSuCaLamGUI pnlChiTiet = new ChiTietLichSuCaLamGUI();
+            JDialog dialog = new JDialog();
+            dialog.setTitle("Thông tin chi tiết Ca Làm");
+            dialog.setModal(true);
+            dialog.setResizable(false);
+            dialog.setContentPane(pnlChiTiet);
+            dialog.pack();
+            dialog.setLocationRelativeTo(null);
 
-                // Lấy dữ liệu String từ bảng
-                String maNV = model.getValueAt(selectRow, 0).toString();
-                String tenNV = model.getValueAt(selectRow, 1).toString();
-                String ngayLam = model.getValueAt(selectRow, 2).toString();
-                String maCa = model.getValueAt(selectRow, 3).toString();
-                String gioVao = model.getValueAt(selectRow, 4).toString();
-                String gioRa = model.getValueAt(selectRow, 5).toString();
-                Object ghiChuObj = model.getValueAt(selectRow, 6);
-                String ghiChu = (ghiChuObj != null) ? ghiChuObj.toString() : "";
+            // Lấy dữ liệu String từ bảng (Chú ý: Cột 0 là STT, nên dữ liệu bắt đầu từ 1)
+            String maNV = model.getValueAt(selectRow, 1).toString();
+            String tenNV = model.getValueAt(selectRow, 2).toString();
+            String ngayLam = model.getValueAt(selectRow, 3).toString();
+            String maCa = model.getValueAt(selectRow, 4).toString();
+            String gioVao = model.getValueAt(selectRow, 5).toString();
+            String gioRa = model.getValueAt(selectRow, 6).toString();
+            Object ghiChuObj = model.getValueAt(selectRow, 7);
+            String ghiChu = (ghiChuObj != null) ? ghiChuObj.toString() : "";
 
-                // Đổ dữ liệu
-                pnlChiTiet.setTxtMaNhanVien(maNV);
-                pnlChiTiet.setTxtTenNhanVien(tenNV);
-                pnlChiTiet.setTxtNgayLam(ngayLam);
-                pnlChiTiet.setTxtMaCa(maCa);
-                pnlChiTiet.setTxtGioVao(gioVao);
-                pnlChiTiet.setTxtGioRa(gioRa);
-                pnlChiTiet.setTxtGhiChu(ghiChu);
+            // Đổ dữ liệu
+            pnlChiTiet.setTxtMaNhanVien(maNV);
+            pnlChiTiet.setTxtTenNhanVien(tenNV);
+            pnlChiTiet.setTxtNgayLam(ngayLam);
+            pnlChiTiet.setTxtMaCa(maCa);
+            pnlChiTiet.setTxtGioVao(gioVao);
+            pnlChiTiet.setTxtGioRa(gioRa);
+            pnlChiTiet.setTxtGhiChu(ghiChu);
 
-                // Cấu hình nút Đóng
-                pnlChiTiet.getBtnHuy().setVisible(false);
-                pnlChiTiet.getBtnXacNhan().setVisible(true);
-                pnlChiTiet.getBtnXacNhan().setText("Đóng");
+            // Cấu hình nút Đóng
+            pnlChiTiet.getBtnHuy().setVisible(false);
+            pnlChiTiet.getBtnXacNhan().setVisible(true);
+            pnlChiTiet.getBtnXacNhan().setText("Đóng");
 
-                for (ActionListener al : pnlChiTiet.getBtnXacNhan().getActionListeners()) {
-                    pnlChiTiet.getBtnXacNhan().removeActionListener(al);
-                }
-                pnlChiTiet.getBtnXacNhan().addActionListener(l -> dialog.dispose());
-
-                dialog.setVisible(true);
+            for (ActionListener al : pnlChiTiet.getBtnXacNhan().getActionListeners()) {
+                pnlChiTiet.getBtnXacNhan().removeActionListener(al);
             }
+            pnlChiTiet.getBtnXacNhan().addActionListener(l -> dialog.dispose());
+
+            dialog.setVisible(true);
         }
     }
 }

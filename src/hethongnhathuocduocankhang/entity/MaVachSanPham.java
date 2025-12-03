@@ -4,36 +4,41 @@
  */
 package hethongnhathuocduocankhang.entity;
 
+import java.util.Objects;
+
 /**
  *
- * @author admin
+ * @author GIGABYTE
  */
 public class MaVachSanPham {
-    private String maSP;
-    private String maVachSanPham;
 
-    public MaVachSanPham() {
+    private SanPham sanPham;
+    private String maVach;
+
+    public MaVachSanPham(SanPham sanPham, String maVach) {
+        this.sanPham = sanPham;
+        this.maVach = maVach;
     }
 
-    public MaVachSanPham(String maSP, String maVachSanPham) {
-        this.maSP = maSP;
-        this.maVachSanPham = maVachSanPham;
+    public MaVachSanPham(MaVachSanPham other) {
+        this.sanPham = other.sanPham;
+        this.maVach = other.maVach;
     }
 
-    public String getMaSP() {
-        return maSP;
+    public SanPham getSanPham() {
+        return sanPham;
     }
 
-    public String getMaVachSanPham() {
-        return maVachSanPham;
+    public void setSanPham(SanPham sanPham) {
+        this.sanPham = sanPham;
     }
 
-    public void setMaSP(String maSP) {
-        this.maSP = maSP;
+    public String getMaVach() {
+        return maVach;
     }
 
-    public void setMaVachSanPham(String maVachSanPham) {
-        this.maVachSanPham = maVachSanPham;
+    public void setMaVach(String maVach) {
+        this.maVach = maVach;
     }
 
     @Override

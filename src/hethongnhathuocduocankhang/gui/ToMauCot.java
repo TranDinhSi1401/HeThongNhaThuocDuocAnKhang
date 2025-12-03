@@ -6,6 +6,7 @@ package hethongnhathuocduocankhang.gui;
 
 import java.awt.Color;
 import java.awt.Paint;
+import org.jfree.chart.labels.StandardCategoryToolTipGenerator;
 import org.jfree.chart.renderer.category.BarRenderer;
 import org.jfree.data.category.CategoryDataset;
 

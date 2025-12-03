@@ -1,6 +1,5 @@
 package hethongnhathuocduocankhang.entity;
 
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -9,12 +8,12 @@ import java.util.Objects;
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-
 /**
  *
  * @author trand
  */
 public class KhuyenMai {
+
     private String maKhuyenMai;
     private String moTa;
     private double phanTram;
@@ -27,14 +26,14 @@ public class KhuyenMai {
 
     public KhuyenMai() {
     }
-    
+
     public KhuyenMai(String maKhuyenMai, double phanTram, int soLuongToiThieu, int soLuongToiDa) {
         this.maKhuyenMai = maKhuyenMai;
         this.phanTram = phanTram;
         this.soLuongToiThieu = soLuongToiThieu;
         this.soLuongToiDa = soLuongToiDa;
     }
-    
+
     public KhuyenMai(String maKhuyenMai, String moTa, double phanTram, LoaiKhuyenMaiEnum loaiKhuyenMai, LocalDateTime ngayBatDau, LocalDateTime ngayKetThuc, int soLuongToiThieu, int soLuongToiDa, LocalDateTime ngayChinhSua) {
         this.maKhuyenMai = maKhuyenMai;
         this.moTa = moTa;
@@ -46,7 +45,7 @@ public class KhuyenMai {
         this.soLuongToiDa = soLuongToiDa;
         this.ngayChinhSua = ngayChinhSua;
     }
-    
+
     public KhuyenMai(KhuyenMai other) {
         this.maKhuyenMai = other.maKhuyenMai;
         this.moTa = other.moTa;
@@ -64,7 +63,7 @@ public class KhuyenMai {
     }
 
     public void setMaKhuyenMai(String maKhuyenMai) {
-        
+
         this.maKhuyenMai = maKhuyenMai;
     }
 
@@ -158,5 +157,5 @@ public class KhuyenMai {
     public String toString() {
         return "KhuyenMai{" + "maKhuyenMai=" + maKhuyenMai + ", moTa=" + moTa + ", phanTram=" + phanTram + ", loaiKhuyenMai=" + loaiKhuyenMai + ", ngayBatDau=" + ngayBatDau + ", ngayKetThuc=" + ngayKetThuc + ", soLuongToiThieu=" + soLuongToiThieu + ", soLuongToiDa=" + soLuongToiDa + ", ngayChinhSua=" + ngayChinhSua + '}';
     }
-    
+
 }

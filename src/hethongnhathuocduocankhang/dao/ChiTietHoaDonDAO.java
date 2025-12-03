@@ -52,7 +52,41 @@ public class ChiTietHoaDonDAO {
         }
         return cthd;
     }
+    
+    public static ChiTietHoaDon getChiTietHoaDonMoiNhatTrongNgay() {
+        ChiTietHoaDon cthd = null;
+        try {
+            ConnectDB.getInstance().connect();
+            Connection con = ConnectDB.getConnection();
+            String sql = "SELECT TOP 1 *\n" +
+                            "FROM ChiTietHoaDon cthd \n" +
+                            "JOIN HoaDon hd ON hd.maHoaDon = cthd.maHoaDon\n" +
+                            "WHERE CAST(hd.ngayLapHoaDon AS DATE) = CAST(GETDATE() AS DATE)\n" +
+                            "ORDER BY maChiTietHoaDon DESC";
 
+            Statement statement = con.createStatement();
+            ResultSet rs = statement.executeQuery(sql);
+
+            if (rs.next()) {
+                String maCTHD = rs.getString("maChiTietHoaDon");
+                String maHD = rs.getString("maHoaDon");
+                String maDVT = rs.getString("maDonViTinh");
+                int soLuong = rs.getInt("soLuong");
+                double donGia = rs.getDouble("donGia");
+                double giamGia = rs.getDouble("giamGia");
+                double thanhTien = rs.getDouble("thanhTien");
+
+                HoaDon hd = HoaDonDAO.getHoaDonTheoMaHD(maHD);
+                DonViTinh dvt = DonViTinhDAO.getDonViTinhTheoMaDVT(maDVT);
+
+                cthd = new ChiTietHoaDon(maCTHD, hd, dvt, soLuong, donGia, giamGia, thanhTien);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return cthd;
+    }
+    
     public static boolean insertChiTietHoaDon(ChiTietHoaDon cthd) {
         int n = 0;
         try {

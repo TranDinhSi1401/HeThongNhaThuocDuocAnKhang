@@ -1,19 +1,12 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package hethongnhathuocduocankhang.dao;
 
 import java.sql.*;
 import hethongnhathuocduocankhang.connectDB.ConnectDB;
 import hethongnhathuocduocankhang.entity.SanPham;
 import hethongnhathuocduocankhang.entity.LoaiSanPhamEnum;
+import hethongnhathuocduocankhang.entity.MaVachSanPham;
 import java.util.ArrayList;
 
-/**
- *
- * @author trand
- */
 public class SanPhamDAO {
 
     public static ArrayList<SanPham> getAllTableSanPham() {
@@ -21,7 +14,7 @@ public class SanPhamDAO {
         try {
             ConnectDB.getInstance().connect();
             Connection con = ConnectDB.getConnection();
-            String sql = "SELECT * FROM SanPham";
+            String sql = "SELECT * FROM SanPham WHERE daXoa = 0";
             Statement statement = con.createStatement();
             ResultSet rs = statement.executeQuery(sql);
 
@@ -33,7 +26,10 @@ public class SanPhamDAO {
                 LoaiSanPhamEnum loaiSanPham = LoaiSanPhamEnum.valueOf(rs.getString("loaiSanPham"));
                 int tonToiThieu = rs.getInt("tonToiThieu");
                 int tonToiDa = rs.getInt("tonToiDa");
+                //boolean daXoa = rs.getBoolean("daXoa");
+                
                 SanPham sp = new SanPham(maSP, tenSP, moTa, thanhPhan, loaiSanPham, tonToiThieu, tonToiDa);
+                //SanPham sp = new SanPham(maSP, tenSP, moTa, thanhPhan, loaiSanPham, tonToiThieu, tonToiDa, daXoa);
                 dsSP.add(sp);
             }
 
@@ -48,7 +44,7 @@ public class SanPhamDAO {
         try {
             ConnectDB.getInstance().connect();
             Connection con = ConnectDB.getConnection();
-            String sql = "INSERT INTO SanPham VALUES (?, ?, ?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO SanPham VALUES (?, ?, ?, ?, ?, ?, ?, 0)";
             PreparedStatement stmt = con.prepareStatement(sql);
             stmt.setString(1, sp.getMaSP());
             stmt.setString(2, sp.getTen());
@@ -64,15 +60,19 @@ public class SanPhamDAO {
         return n > 0;
     }
 
+    // [SOFT DELETE]
     public static boolean xoaSanPham(String maSP) {
         int n = 0;
         try {
             ConnectDB.getInstance().connect();
             Connection con = ConnectDB.getConnection();
-            String query = "DELETE FROM SanPham WHERE maSP = ?";
+            String query = "UPDATE SanPham SET daXoa = 1 WHERE maSP = ?";
             PreparedStatement stmt = con.prepareStatement(query);
             stmt.setString(1, maSP);
             n = stmt.executeUpdate();
+            
+            DonViTinhDAO.xoaDonViTinhTheoMaSP(maSP);
+            
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -105,7 +105,7 @@ public class SanPhamDAO {
         try {
             ConnectDB.getInstance().connect();
             Connection con = ConnectDB.getConnection();
-            String query = "SELECT * FROM SanPham WHERE maSP = ?";
+            String query = "SELECT * FROM SanPham WHERE maSP = ? AND daXoa = 0";
             PreparedStatement stmt = con.prepareStatement(query);
             stmt.setString(1, ma);
             ResultSet rs = stmt.executeQuery();
@@ -117,7 +117,8 @@ public class SanPhamDAO {
                 LoaiSanPhamEnum loaiSanPham = LoaiSanPhamEnum.valueOf(rs.getString("loaiSanPham"));
                 int tonToiThieu = rs.getInt("tonToiThieu");
                 int tonToiDa = rs.getInt("tonToiDa");
-                sp = new SanPham(maSP, ten, moTa, thanhPhan, loaiSanPham, tonToiThieu, tonToiDa);
+                boolean daXoa = rs.getBoolean("daXoa");
+                sp = new SanPham(maSP, ten, moTa, thanhPhan, loaiSanPham, tonToiThieu, tonToiDa, daXoa);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -130,7 +131,7 @@ public class SanPhamDAO {
         try {
             ConnectDB.getInstance().connect();
             Connection con = ConnectDB.getConnection();
-            String query = "SELECT * FROM SanPham WHERE ten LIKE ?";
+            String query = "SELECT * FROM SanPham WHERE ten LIKE ? AND daXoa = 0";
             PreparedStatement stmt = con.prepareStatement(query);
             stmt.setString(1, "%" + tenSP + "%");
             ResultSet rs = stmt.executeQuery();
@@ -142,7 +143,8 @@ public class SanPhamDAO {
                 LoaiSanPhamEnum loaiSanPham = LoaiSanPhamEnum.valueOf(rs.getString("loaiSanPham"));
                 int tonToiThieu = rs.getInt("tonToiThieu");
                 int tonToiDa = rs.getInt("tonToiDa");
-                SanPham sp = new SanPham(maSP, ten, moTa, thanhPhan, loaiSanPham, tonToiThieu, tonToiDa);
+                boolean daXoa = rs.getBoolean("daXoa");
+                SanPham sp = new SanPham(maSP, ten, moTa, thanhPhan, loaiSanPham, tonToiThieu, tonToiDa, daXoa);
                 dsSP.add(sp);
             }
         } catch (SQLException e) {
@@ -156,9 +158,10 @@ public class SanPhamDAO {
         try {
             ConnectDB.getInstance().connect();
             Connection con = ConnectDB.getConnection();
+            // Cần check daXoa của bảng SanPham (SP.daXoa = 0)
             String query = "SELECT SP.* FROM SanPham SP JOIN SanPhamCungCap SPCC "
                     + "ON SP.maSP = SPCC.maSP JOIN NhaCungCap NCC "
-                    + "ON SPCC.maNCC = NCC.maNCC WHERE NCC.maNCC = ?";
+                    + "ON SPCC.maNCC = NCC.maNCC WHERE NCC.maNCC = ? AND SP.daXoa = 0";
             PreparedStatement stmt = con.prepareStatement(query);
             stmt.setString(1, maNhaCC);
             ResultSet rs = stmt.executeQuery();
@@ -170,7 +173,8 @@ public class SanPhamDAO {
                 LoaiSanPhamEnum loaiSanPham = LoaiSanPhamEnum.valueOf(rs.getString("loaiSanPham"));
                 int tonToiThieu = rs.getInt("tonToiThieu");
                 int tonToiDa = rs.getInt("tonToiDa");
-                SanPham sp = new SanPham(maSP, ten, moTa, thanhPhan, loaiSanPham, tonToiThieu, tonToiDa);
+                boolean daXoa = rs.getBoolean("daXoa");
+                SanPham sp = new SanPham(maSP, ten, moTa, thanhPhan, loaiSanPham, tonToiThieu, tonToiDa, daXoa);
                 dsSP.add(sp);
             }
         } catch (SQLException e) {
@@ -184,7 +188,7 @@ public class SanPhamDAO {
         try {
             ConnectDB.getInstance().connect();
             Connection con = ConnectDB.getConnection();
-            String query = "SELECT * FROM SanPham WHERE loaiSanPham = ?";
+            String query = "SELECT * FROM SanPham WHERE loaiSanPham = ? AND daXoa = 0";
             PreparedStatement stmt = con.prepareStatement(query);
             stmt.setString(1, loaiSP);
             ResultSet rs = stmt.executeQuery();
@@ -196,7 +200,8 @@ public class SanPhamDAO {
                 LoaiSanPhamEnum loaiSanPham = LoaiSanPhamEnum.valueOf(rs.getString("loaiSanPham"));
                 int tonToiThieu = rs.getInt("tonToiThieu");
                 int tonToiDa = rs.getInt("tonToiDa");
-                SanPham sp = new SanPham(maSP, ten, moTa, thanhPhan, loaiSanPham, tonToiThieu, tonToiDa);
+                boolean daXoa = rs.getBoolean("daXoa");
+                SanPham sp = new SanPham(maSP, ten, moTa, thanhPhan, loaiSanPham, tonToiThieu, tonToiDa, daXoa);
                 dsSP.add(sp);
             }
         } catch (SQLException e) {
@@ -254,11 +259,48 @@ public class SanPhamDAO {
                 int tonToiDa = rs.getInt("tonToiDa");
                 sp = new SanPham(maSP, ten, moTa, thanhPhan, loaiSanPham, tonToiThieu, tonToiDa);
                 
+
+    private static ArrayList<MaVachSanPham> timMaBarcodeTheoMaSP(String masp) {
+        ArrayList<MaVachSanPham> dsMaVachSP = new ArrayList<>(); // Fixed: Khởi tạo ArrayList
+        SanPham sp = SanPhamDAO.timSPTheoMa(masp);
+        try {
+            ConnectDB.getInstance().connect();
+            Connection con = ConnectDB.getConnection();
+            String query = "SELECT * FROM [dbo].[MaVachSanPham] WHERE [maSP] = ?";
+            PreparedStatement stmt = con.prepareStatement(query);
+            stmt.setString(1, masp);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                String maBarcode = rs.getString("maBarcode");
+                String maSP = rs.getString("maSP");
+
+                MaVachSanPham mvsp = new MaVachSanPham(sp, maBarcode);
+
+                dsMaVachSP.add(mvsp);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return sp;
+        return dsMaVachSP;
     }
-
+}
+    
+    public static String getMaSpTheoMaVach(String maVach) {
+        String maSP = null;
+        try {
+            ConnectDB.getInstance().connect();
+            Connection con = ConnectDB.getConnection();
+            String query = "SELECT maSP FROM MaVachSanPham WHERE maVach = ?";
+            PreparedStatement stmt = con.prepareStatement(query);
+            stmt.setString(1, maVach);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                maSP = rs.getString("maSP");
+                return maSP;
+            }
+        } catch (SQLException e) {
+            System.out.println("Lỗi kết nối csdl");
+        }
+        return null;
+    }
 }

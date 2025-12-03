@@ -9,13 +9,17 @@ import hethongnhathuocduocankhang.dao.KhachHangDAO;
 import hethongnhathuocduocankhang.entity.KhachHang;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumnModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 public class QuanLiKhachHangGUI extends JPanel {
 
@@ -25,20 +29,23 @@ public class QuanLiKhachHangGUI extends JPanel {
     private JComboBox<String> cmbTieuChiTimKiem;
     private DefaultTableModel model;
 
+    // 1. KHAI BÁO THÊM 2 LABEL
+    private JLabel lblTongSoDong;
+    private JLabel lblSoDongChon;
+
     public QuanLiKhachHangGUI() {
         this.setLayout(new BorderLayout(10, 10));
         this.setBorder(new EmptyBorder(10, 10, 10, 10));
 
-        // 1. TẠO PANEL NORTH
+        // --- 1. TẠO PANEL NORTH (GIỮ NGUYÊN) ---
         JPanel pnlNorth = new JPanel();
         pnlNorth.setLayout(new BorderLayout());
 
-        // 1.1. Panel Chức năng (LEFT - Thêm, Xóa, Sửa)
+        // 1.1. Panel Chức năng (LEFT)
         JPanel pnlNorthLeft = new JPanel();
         pnlNorthLeft.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 0));
         pnlNorthLeft.setBorder(new EmptyBorder(0, 0, 10, 0));
 
-        // 1.1.1. Các nút chức năng
         btnThem = new JButton("Thêm");
         btnXoa = new JButton("Xóa");
         btnSua = new JButton("Sửa");
@@ -57,12 +64,10 @@ public class QuanLiKhachHangGUI extends JPanel {
         JPanel pnlNorthRight = new JPanel();
         pnlNorthRight.setLayout(new FlowLayout(FlowLayout.RIGHT, 10, 5));
 
-        //Tiêu chí tìm kiếm
         cmbTieuChiTimKiem = new JComboBox<>(new String[]{"Mã khách hàng", "Tên khách hàng", "Số điện thoại"});
         cmbTieuChiTimKiem.setFont(new Font("Arial", Font.PLAIN, 14));
         cmbTieuChiTimKiem.setPreferredSize(new Dimension(150, 30));
 
-        // Thanh tìm kiếm
         txtTimKiem = new JTextField(20);
         txtTimKiem.setFont(new Font("Arial", Font.PLAIN, 14));
         txtTimKiem.setPreferredSize(new Dimension(200, 30));
@@ -83,17 +88,17 @@ public class QuanLiKhachHangGUI extends JPanel {
 
         this.add(pnlNorth, BorderLayout.NORTH);
 
-        // 3. TẠO PANEL CENTER (Bảng dữ liệu)
+        // --- 2. TẠO PANEL CENTER (Bảng dữ liệu) ---
         JPanel centerPanel = new JPanel(new BorderLayout(0, 10));
 
-        // 3.1. Bảng dữ liệu
-        String[] columnNames = {"Mã KH", "Họ tên đệm", "Tên", "Số điện thoại", "Điểm tích lũy"}; // THAY ĐỔI
+        // 2.1. Bảng dữ liệu - THÊM CỘT STT
+        String[] columnNames = {"STT", "Mã KH", "Họ tên đệm", "Tên", "Số điện thoại", "Điểm tích lũy"};
         Object[][] data = {};
 
         model = new DefaultTableModel(data, columnNames) {
             @Override
             public boolean isCellEditable(int row, int column) {
-                return false; // Ngăn chỉnh sửa trực tiếp trong bảng
+                return false;
             }
         };
 
@@ -109,15 +114,55 @@ public class QuanLiKhachHangGUI extends JPanel {
         table.setShowGrid(true);
         table.setGridColor(Color.LIGHT_GRAY);
 
-        JScrollPane scrollPane = new JScrollPane(table);
+        // --- ĐOẠN CHỈNH KÍCH THƯỚC CỘT ---
+        TableColumnModel columnModel = table.getColumnModel();
 
+        // 1. Cột STT (Cột 0): Nhỏ xíu, căn giữa
+        columnModel.getColumn(0).setPreferredWidth(40);
+        columnModel.getColumn(0).setMaxWidth(40);
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+        columnModel.getColumn(0).setCellRenderer(centerRenderer);
+
+        // 2. Cột Mã KH (Cột 1): Vừa đủ hiển thị "KH-XXXXX", căn giữa cho đẹp
+        columnModel.getColumn(1).setPreferredWidth(100);
+        columnModel.getColumn(1).setMaxWidth(100); // Khóa cứng chiều rộng tối đa là 100px
+        columnModel.getColumn(1).setCellRenderer(centerRenderer); // Dùng chung căn giữa với STT
+
+        // 3. Cột Số điện thoại (Cột 4): Cũng nên thu gọn lại chút và căn giữa
+        columnModel.getColumn(4).setPreferredWidth(100);
+        columnModel.getColumn(4).setMaxWidth(100);
+        columnModel.getColumn(4).setCellRenderer(centerRenderer);
+
+        // 4. Cột Điểm tích lũy (Cột 5): Căn giữa
+        columnModel.getColumn(5).setCellRenderer(centerRenderer);
+
+        JScrollPane scrollPane = new JScrollPane(table);
         centerPanel.add(scrollPane, BorderLayout.CENTER);
 
-        // 4. THÊM CÁC PANEL VÀO PANEL CHÍNH
-        this.add(pnlNorth, BorderLayout.NORTH);
         this.add(centerPanel, BorderLayout.CENTER);
 
-        //Đăng kí sự kiện
+        // --- 3. TẠO PANEL SOUTH (FOOTER) MỚI ---
+        JPanel pnlSouth = new JPanel(new FlowLayout(FlowLayout.LEFT, 20, 5));
+        pnlSouth.setBorder(new EmptyBorder(5, 0, 0, 0));
+
+        Font fontFooter = new Font("Arial", Font.BOLD, 13);
+
+        lblTongSoDong = new JLabel("Tổng số khách hàng: 0");
+        lblTongSoDong.setFont(fontFooter);
+        lblTongSoDong.setForeground(new Color(0, 102, 204)); // Màu xanh đậm
+
+        lblSoDongChon = new JLabel("Đang chọn: 0");
+        lblSoDongChon.setFont(fontFooter);
+        lblSoDongChon.setForeground(new Color(204, 0, 0)); // Màu đỏ đậm
+
+        pnlSouth.add(lblTongSoDong);
+        pnlSouth.add(new JSeparator(JSeparator.VERTICAL)); // Đường ngăn cách
+        pnlSouth.add(lblSoDongChon);
+
+        this.add(pnlSouth, BorderLayout.SOUTH);
+
+        // Đăng kí sự kiện
         updateTable();
         addEvents();
     }
@@ -133,10 +178,14 @@ public class QuanLiKhachHangGUI extends JPanel {
     private void updateTable(ArrayList<KhachHang> dsKH) {
         model.setRowCount(0);
         if (dsKH == null) {
+            lblTongSoDong.setText("Tổng số khách hàng: 0");
             return;
         }
+
+        int stt = 1; // Biến đếm STT
         for (KhachHang kh : dsKH) {
             Object[] row = {
+                stt++, // Tăng STT
                 kh.getMaKH(),
                 kh.getHoTenDem(),
                 kh.getTen(),
@@ -145,6 +194,9 @@ public class QuanLiKhachHangGUI extends JPanel {
             };
             model.addRow(row);
         }
+
+        // Cập nhật label tổng số dòng
+        lblTongSoDong.setText("Tổng số khách hàng: " + dsKH.size());
     }
 
     private void updateTable() {
@@ -154,7 +206,6 @@ public class QuanLiKhachHangGUI extends JPanel {
 
     //HÀM ĐĂNG KÝ TẤT CẢ SỰ KIỆN
     private void addEvents() {
-        // Sự kiện cho nút Thêm
         btnThem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -162,7 +213,6 @@ public class QuanLiKhachHangGUI extends JPanel {
             }
         });
 
-        // Sự kiện cho nút Xóa
         btnXoa.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -170,7 +220,6 @@ public class QuanLiKhachHangGUI extends JPanel {
             }
         });
 
-        // Sự kiện cho nút Sửa
         btnSua.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -178,15 +227,13 @@ public class QuanLiKhachHangGUI extends JPanel {
             }
         });
 
-        // Sự kiện khi nhấn Enter trên thanh tìm kiếm
         txtTimKiem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 xuLyTimKiem();
             }
         });
-        
-        // Sự kiện khi đổi tiêu chí tìm kiếm -> Xóa rỗng ô tìm kiếm
+
         cmbTieuChiTimKiem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -199,6 +246,20 @@ public class QuanLiKhachHangGUI extends JPanel {
             @Override
             public void mouseClicked(MouseEvent e) {
                 hienThiChiTietKhachHang(e);
+            }
+        });
+
+        // --- SỰ KIỆN CHỌN DÒNG TRONG TABLE ---
+        // Sử dụng ListSelectionListener để bắt sự kiện tốt hơn MouseListener (hỗ trợ cả phím Shift/Ctrl)
+        table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                // getValueIsAdjusting() trả về true khi người dùng đang kéo chuột, 
+                // chỉ cập nhật khi hành động kết thúc (false)
+                if (!e.getValueIsAdjusting()) {
+                    int soDongDaChon = table.getSelectedRowCount();
+                    lblSoDongChon.setText("Đang chọn: " + soDongDaChon);
+                }
             }
         });
     }
@@ -229,7 +290,6 @@ public class QuanLiKhachHangGUI extends JPanel {
             }
         }
         updateTable(dsKetQua);
-
     }
 
     //HÀM XỬ LÝ NÚT THÊM
@@ -238,20 +298,20 @@ public class QuanLiKhachHangGUI extends JPanel {
         ThemKhachHangGUI pnlThemKH = new ThemKhachHangGUI();
         JDialog dialog = new JDialog();
         dialog.setTitle("Thêm khách hàng mới");
-        dialog.setModal(true); // Chặn tương tác với cửa sổ chính
+        dialog.setModal(true);
         dialog.setResizable(false);
         dialog.setContentPane(pnlThemKH);
-        dialog.pack(); // Tự động điều chỉnh kích thước JDialog
+        dialog.pack();
         dialog.setLocationRelativeTo(null);
-        
+
         int maKHCUoiCung = KhachHangDAO.getMaKHCUoiCung();
-        maKHCUoiCung++; 
-        String maKHNew = String.format("KH-%05d", maKHCUoiCung); // Định dạng KH-XXXXX
-        
+        maKHCUoiCung++;
+        String maKHNew = String.format("KH-%05d", maKHCUoiCung);
+
         pnlThemKH.setTxtMaKhachHang(maKHNew);
-        pnlThemKH.setTxtDiemTichLuy(0); // Khách hàng mới có 0 điểm
-        pnlThemKH.getTxtDiemTichLuy().setEnabled(false); // Không cho sửa điểm khi thêm
-        
+        pnlThemKH.setTxtDiemTichLuy(0);
+        pnlThemKH.getTxtDiemTichLuy().setEnabled(false);
+
         dialog.setVisible(true);
 
         KhachHang khNew = pnlThemKH.getKhachHangMoi();
@@ -277,7 +337,8 @@ public class QuanLiKhachHangGUI extends JPanel {
 
         String message;
         if (selectedRows.length == 1) {
-            String tenKH = model.getValueAt(selectedRows[0], 1).toString() + " " + model.getValueAt(selectedRows[0], 2).toString();
+            // Lưu ý: Cột 1 bây giờ là Mã KH, Cột 2 là Họ đệm, Cột 3 là Tên (do thêm STT vào cột 0)
+            String tenKH = model.getValueAt(selectedRows[0], 2).toString() + " " + model.getValueAt(selectedRows[0], 3).toString();
             message = "Bạn có chắc muốn xóa khách hàng '" + tenKH + "' không?";
         } else {
             message = "Bạn có chắc muốn xóa " + selectedRows.length + " khách hàng đã chọn không?";
@@ -293,7 +354,8 @@ public class QuanLiKhachHangGUI extends JPanel {
 
             for (int i = selectedRows.length - 1; i >= 0; i--) {
                 int row = selectedRows[i];
-                String maKH = model.getValueAt(row, 0).toString();
+                // Lấy mã KH ở cột 1 (vì cột 0 là STT)
+                String maKH = model.getValueAt(row, 1).toString();
 
                 if (KhachHangDAO.xoaKhachHang(maKH)) {
                     soLuongXoaThanhCong++;
@@ -303,6 +365,8 @@ public class QuanLiKhachHangGUI extends JPanel {
             if (soLuongXoaThanhCong > 0) {
                 JOptionPane.showMessageDialog(this, "Đã xóa thành công " + soLuongXoaThanhCong + " khách hàng.");
                 updateTable();
+                // Cập nhật lại số dòng chọn về 0 sau khi xóa
+                lblSoDongChon.setText("Đang chọn: 0");
             } else {
                 JOptionPane.showMessageDialog(this, "Xóa khách hàng thất bại (có thể do khách hàng đã có hóa đơn).", "Lỗi xóa", JOptionPane.ERROR_MESSAGE);
             }
@@ -318,7 +382,8 @@ public class QuanLiKhachHangGUI extends JPanel {
             return;
         }
 
-        String maKH = model.getValueAt(selectedRow, 0).toString();
+        // Lấy Mã KH ở cột 1 (vì cột 0 là STT)
+        String maKH = model.getValueAt(selectedRow, 1).toString();
         KhachHang khCanSua = KhachHangDAO.timKHTheoMa(maKH);
 
         if (khCanSua == null) {
@@ -335,13 +400,12 @@ public class QuanLiKhachHangGUI extends JPanel {
         dialog.pack();
         dialog.setLocationRelativeTo(null);
 
-        // Đổ dữ liệu cũ lên form
         pnlThemKH.setTxtMaKhachHang(khCanSua.getMaKH());
         pnlThemKH.setTxtHoTenDem(khCanSua.getHoTenDem());
         pnlThemKH.setTxtTen(khCanSua.getTen());
         pnlThemKH.setTxtSDT(khCanSua.getSdt());
         pnlThemKH.setTxtDiemTichLuy(khCanSua.getDiemTichLuy());
-        pnlThemKH.getTxtDiemTichLuy().setEnabled(true); // Cho phép sửa điểm
+        pnlThemKH.getTxtDiemTichLuy().setEnabled(true);
 
         dialog.setVisible(true);
 
@@ -360,9 +424,10 @@ public class QuanLiKhachHangGUI extends JPanel {
     private void hienThiChiTietKhachHang(MouseEvent e) {
         int selectRow = table.getSelectedRow();
         if (selectRow != -1) {
-            String maKH = model.getValueAt(selectRow, 0).toString();
+            // Lấy Mã KH ở cột 1
+            String maKH = model.getValueAt(selectRow, 1).toString();
             KhachHang khDaChon = KhachHangDAO.timKHTheoMa(maKH);
-            
+
             if (e.getClickCount() == 2) { // Double click
                 ThemKhachHangGUI pnlThemKH = new ThemKhachHangGUI();
                 JDialog dialog = new JDialog();
@@ -373,18 +438,15 @@ public class QuanLiKhachHangGUI extends JPanel {
                 dialog.pack();
                 dialog.setLocationRelativeTo(null);
 
-                // Ẩn nút Hủy, đổi tên nút Xác nhận -> Đóng
                 pnlThemKH.getBtnHuy().setVisible(false);
                 pnlThemKH.getBtnXacNhan().setText("Đóng");
                 pnlThemKH.getBtnXacNhan().addActionListener(l -> dialog.dispose());
-                
-                // Vô hiệu hóa chỉnh sửa
+
                 pnlThemKH.getTxtHoTenDem().setEditable(false);
                 pnlThemKH.getTxtTen().setEditable(false);
                 pnlThemKH.getTxtSDT().setEditable(false);
                 pnlThemKH.getTxtDiemTichLuy().setEditable(false);
 
-                // Đổ dữ liệu
                 pnlThemKH.setTxtMaKhachHang(khDaChon.getMaKH());
                 pnlThemKH.setTxtHoTenDem(khDaChon.getHoTenDem());
                 pnlThemKH.setTxtTen(khDaChon.getTen());

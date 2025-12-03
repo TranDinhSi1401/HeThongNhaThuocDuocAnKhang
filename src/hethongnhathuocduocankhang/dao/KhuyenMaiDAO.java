@@ -23,10 +23,9 @@ public class KhuyenMaiDAO {
         int slToiThieu = rs.getInt("soLuongToiThieu");
         int slToiDa = rs.getInt("soLuongToiDa");
         LocalDateTime ngayChinhSua = rs.getTimestamp("ngayChinhSua").toLocalDateTime();
-        
+
         return new KhuyenMai(maKM, moTa, phanTram, loai, ngayBatDau, ngayKetThuc, slToiThieu, slToiDa, ngayChinhSua);
     }
-    
 
     public static ArrayList<KhuyenMai> getKhuyenMaiTheoMaSP(String maSp) {
         ArrayList<KhuyenMai> dsKM = new ArrayList<>();
@@ -49,7 +48,7 @@ public class KhuyenMaiDAO {
                 double phanTram = rs.getDouble(2);
                 int soLuongToiThieu = rs.getInt(3);
                 int soLuongToiDa = rs.getInt(4);
-                KhuyenMai km = new KhuyenMai(maKM, phanTram, soLuongToiThieu, soLuongToiDa); 
+                KhuyenMai km = new KhuyenMai(maKM, phanTram, soLuongToiThieu, soLuongToiDa);
                 dsKM.add(km);
             }
         } catch (SQLException e) {
@@ -57,7 +56,7 @@ public class KhuyenMaiDAO {
         }
         return dsKM;
     }
- 
+
     public static ArrayList<KhuyenMai> getAllKhuyenMai() {
         ArrayList<KhuyenMai> dsKM = new ArrayList<>();
         try {
@@ -81,7 +80,7 @@ public class KhuyenMaiDAO {
             ConnectDB.getInstance().connect();
             Connection con = ConnectDB.getConnection();
             String sql = "INSERT INTO KhuyenMai (maKhuyenMai, moTa, phanTram, loaiKhuyenMai, ngayBatDau, ngayKetThuc, soLuongToiThieu, soLuongToiDa) "
-                       + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+                    + "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement stmt = con.prepareStatement(sql);
             stmt.setString(1, km.getMaKhuyenMai());
             stmt.setString(2, km.getMoTa());
@@ -91,7 +90,7 @@ public class KhuyenMaiDAO {
             stmt.setTimestamp(6, Timestamp.valueOf(km.getNgayKetThuc()));
             stmt.setInt(7, km.getSoLuongToiThieu());
             stmt.setInt(8, km.getSoLuongToiDa());
-            
+
             n = stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -120,8 +119,8 @@ public class KhuyenMaiDAO {
             ConnectDB.getInstance().connect();
             Connection con = ConnectDB.getConnection();
             String querry = "UPDATE KhuyenMai SET moTa = ?, phanTram = ?, loaiKhuyenMai = ?, ngayBatDau = ?, "
-                          + "ngayKetThuc = ?, soLuongToiThieu = ?, soLuongToiDa = ?, ngayChinhSua = GETDATE() "
-                          + "WHERE maKhuyenMai = ?";
+                    + "ngayKetThuc = ?, soLuongToiThieu = ?, soLuongToiDa = ?, ngayChinhSua = GETDATE() "
+                    + "WHERE maKhuyenMai = ?";
             PreparedStatement stmt = con.prepareStatement(querry);
             stmt.setString(1, kmNew.getMoTa());
             stmt.setDouble(2, kmNew.getPhanTram());
@@ -131,7 +130,7 @@ public class KhuyenMaiDAO {
             stmt.setInt(6, kmNew.getSoLuongToiThieu());
             stmt.setInt(7, kmNew.getSoLuongToiDa());
             stmt.setString(8, maKM);
-            
+
             n = stmt.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -201,11 +200,11 @@ public class KhuyenMaiDAO {
             String sql = "SELECT MAX(maKhuyenMai) FROM KhuyenMai";
             Statement statement = con.createStatement();
             ResultSet rs = statement.executeQuery(sql);
-            
+
             if (rs.next()) {
                 String maKMMax = rs.getString(1);
                 if (maKMMax != null && maKMMax.matches("KM-\\d{4}")) {
-                    String maSo = maKMMax.substring(3); 
+                    String maSo = maKMMax.substring(3);
                     maCuoiCung = Integer.parseInt(maSo);
                 }
             }
