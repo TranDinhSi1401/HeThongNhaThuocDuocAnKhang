@@ -39,6 +39,30 @@ public class DonViTinhDAO {
         }
         return dsDVT;
     }
+        public static DonViTinh getMotDonViTinhTheoMaSP(String maSp) {
+        DonViTinh donVi = new DonViTinh();
+
+        try {
+            Connection con = ConnectDB.getConnection();
+            String sql = "SELECT * FROM DonViTinh WHERE MaSP = ?";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, maSp);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                String maDVT = rs.getString(1);
+                String maSP = rs.getString(2);
+                String tenDVT = rs.getString(3);
+                int heSoQuyDoi = rs.getInt(4);
+                double giaBanTheoDonVi = rs.getDouble(5);
+                boolean donViTinhCoBan = rs.getInt(6) == 1 ? true : false;
+                SanPham sp = new SanPham(maSP);
+                donVi = new DonViTinh(maDVT, sp, heSoQuyDoi, giaBanTheoDonVi, tenDVT, donViTinhCoBan);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return donVi;
+    }
 
     public static DonViTinh getDonViTinhTheoMaDVT(String maDVT) {
         DonViTinh dvt = null;

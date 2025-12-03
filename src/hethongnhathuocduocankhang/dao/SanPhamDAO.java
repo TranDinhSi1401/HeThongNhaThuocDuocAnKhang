@@ -238,6 +238,27 @@ public class SanPhamDAO {
         }
         return maCuoiCung;
     }
+    public static SanPham timMotSPTheoMaNCC(String maNhaCC) {
+        SanPham sp = new SanPham();
+        try {
+            ConnectDB.getInstance().connect();
+            Connection con = ConnectDB.getConnection();
+            String query = "SELECT SP.* FROM SanPham SP JOIN SanPhamCungCap SPCC "
+                    + "ON SP.maSP = SPCC.maSP JOIN NhaCungCap NCC "
+                    + "ON SPCC.maNCC = NCC.maNCC WHERE NCC.maNCC = ?";
+            PreparedStatement stmt = con.prepareStatement(query);
+            stmt.setString(1, maNhaCC);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                String maSP = rs.getString("maSP");
+                String ten = rs.getString("ten");
+                String moTa = rs.getString("moTa");
+                String thanhPhan = rs.getString("thanhPhan");
+                LoaiSanPhamEnum loaiSanPham = LoaiSanPhamEnum.valueOf(rs.getString("loaiSanPham"));
+                int tonToiThieu = rs.getInt("tonToiThieu");
+                int tonToiDa = rs.getInt("tonToiDa");
+                sp = new SanPham(maSP, ten, moTa, thanhPhan, loaiSanPham, tonToiThieu, tonToiDa);
+                
 
     private static ArrayList<MaVachSanPham> timMaBarcodeTheoMaSP(String masp) {
         ArrayList<MaVachSanPham> dsMaVachSP = new ArrayList<>(); // Fixed: Khởi tạo ArrayList

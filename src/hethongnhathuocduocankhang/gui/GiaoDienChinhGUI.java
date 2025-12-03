@@ -5,6 +5,7 @@
 package hethongnhathuocduocankhang.gui;
 
 import hethongnhathuocduocankhang.entity.TaiKhoan;
+import hethongnhathuocduocankhang.menu.Menu;
 import hethongnhathuocduocankhang.menu.MenuEvent;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -18,12 +19,15 @@ public class GiaoDienChinhGUI extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(GiaoDienChinhGUI.class.getName());
     private static TaiKhoan tk = null;
+    private hethongnhathuocduocankhang.menu.Menu menu;
     /**
      * Creates new form GiaoDienChinhGUI
      * @param tk
      */
     public GiaoDienChinhGUI(TaiKhoan tk) {
         initComponents();
+        menu = new hethongnhathuocduocankhang.menu.Menu();
+        pLeft.add(menu, java.awt.BorderLayout.CENTER);
         menu.setEvent(new MenuEvent() {
             @Override
             public void selected(int index, int subIndex) {
@@ -128,8 +132,6 @@ public class GiaoDienChinhGUI extends javax.swing.JFrame {
         lblLogo = new javax.swing.JLabel();
         lblTenNV = new javax.swing.JLabel();
         lblChucVu = new javax.swing.JLabel();
-        scrollPaneWin11 = new hethongnhathuocduocankhang.scroll.win11.ScrollPaneWin11();
-        menu = new hethongnhathuocduocankhang.menu.Menu();
         pCenter = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -238,10 +240,8 @@ public class GiaoDienChinhGUI extends javax.swing.JFrame {
     private javax.swing.JLabel lblChucVu;
     private javax.swing.JLabel lblLogo;
     private javax.swing.JLabel lblTenNV;
-    private hethongnhathuocduocankhang.menu.Menu menu;
     private javax.swing.JPanel pCenter;
     private javax.swing.JPanel pLeft;
     private javax.swing.JPanel pLogo;
-    private hethongnhathuocduocankhang.scroll.win11.ScrollPaneWin11 scrollPaneWin11;
     // End of variables declaration//GEN-END:variables
 }

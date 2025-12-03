@@ -18,12 +18,8 @@ public class LoSanPham {
     private int soLuong;
     private LocalDate ngaySanXuat;
     private LocalDate ngayHetHan;
-    private boolean isDaHuy; // Thuộc tính mới theo đặc tả
-
-    // Các thuộc tính cũ (Giữ lại để hỗ trợ constructor cũ)
-    private NhaCungCap ncc;
-    private ChiTietHoaDon ctthd;
-    private DonViTinh dvTinh;
+    private boolean daHuy;
+    
 
     // --- Constructors ---
     
@@ -32,18 +28,23 @@ public class LoSanPham {
         this.isDaHuy = false; // Mặc định là false theo đặc tả
     }
 
-    // 2. Constructor cũ (Đầy đủ các trường cũ) - GIỮ NGUYÊN
-    public LoSanPham(String maLoSanPham, SanPham sanPham, int soLuong, LocalDate ngaySanXuat, LocalDate ngayHetHan, NhaCungCap ncc, ChiTietHoaDon ctthd, DonViTinh dvTinh) {
-        setMaLoSanPham(maLoSanPham);
-        setSanPham(sanPham);
-        setSoLuong(soLuong);
-        setNgaySanXuat(ngaySanXuat);
-        setNgayHetHan(ngayHetHan);
-        
-        this.ncc = ncc;
-        this.ctthd = ctthd;
-        this.dvTinh = dvTinh;
-        this.isDaHuy = false; // Mặc định false cho constructor cũ
+    
+//    public LoSanPham(String maLoSanPham, SanPham sanPham, int soLuong, LocalDate ngaySanXuat, LocalDate ngayHetHan) {
+//        this.maLoSanPham = maLoSanPham;
+//        this.sanPham = sanPham;
+//        this.soLuong = soLuong;
+//        this.ngaySanXuat = ngaySanXuat;
+//        this.ngayHetHan = ngayHetHan;
+//
+//    }
+
+    public LoSanPham(String maLoSanPham, SanPham sanPham, int soLuong, LocalDate ngaySanXuat, LocalDate ngayHetHan, boolean daHuy) {
+        this.maLoSanPham = maLoSanPham;
+        this.sanPham = sanPham;
+        this.soLuong = soLuong;
+        this.ngaySanXuat = ngaySanXuat;
+        this.ngayHetHan = ngayHetHan;
+        this.daHuy = daHuy;
     }
 
     // 3. Constructor cũ (Chỉ có thông tin cơ bản) - GIỮ NGUYÊN
@@ -138,61 +139,24 @@ public class LoSanPham {
     public LocalDate getNgayHetHan() {
         return ngayHetHan;
     }
-
-    public void setNgayHetHan(LocalDate ngayHetHan) {
-        if (ngayHetHan == null) {
-             throw new IllegalArgumentException("Ngày hết hạn không được rỗng."); 
-        }
-        if (this.ngaySanXuat != null && ngayHetHan.isBefore(this.ngaySanXuat)) {
-            throw new IllegalArgumentException("Ngày hết hạn phải sau hoặc bằng ngày sản xuất.");
-        }
-        this.ngayHetHan = ngayHetHan;
-    }
-
-    // Getter/Setter mới cho isDaHuy
+    
     public boolean isDaHuy() {
-        return isDaHuy;
+        return daHuy;
     }
 
-    public void setDaHuy(boolean isDaHuy) {
-        this.isDaHuy = isDaHuy;
+    public void setDaHuy(boolean daHuy) {
+        this.daHuy = daHuy;
     }
 
-    // --- Getter & Setter cho các trường cũ (Giữ lại để code cũ không lỗi) ---
-    public NhaCungCap getNcc() {
-        return ncc;
-    }
+    
 
-    public void setNcc(NhaCungCap ncc) {
-        this.ncc = ncc;
-    }
-
-    public ChiTietHoaDon getCtthd() {
-        return ctthd;
-    }
-
-    public void setCtthd(ChiTietHoaDon ctthd) {
-        this.ctthd = ctthd;
-    }
-
-    public DonViTinh getDvTinh() {
-        return dvTinh;
-    }
-
-    public void setDvTinh(DonViTinh dvTinh) {
-        this.dvTinh = dvTinh;
-    }
+    
     
     // --- toString ---
     @Override
     public String toString() {
-        return "LoSanPham{" +
-                "maLoSanPham='" + maLoSanPham + '\'' +
-                ", sanPham=" + (sanPham != null ? sanPham.getMaSP() : "null") +
-                ", soLuong=" + soLuong +
-                ", ngaySanXuat=" + ngaySanXuat +
-                ", ngayHetHan=" + ngayHetHan +
-                ", isDaHuy=" + isDaHuy +
-                '}';
+        return "LoSanPham{" + "maLoSanPham=" + maLoSanPham + ", sanPham=" + sanPham + ", soLuong=" + soLuong + ", ngaySanXuat=" + ngaySanXuat + ", ngayHetHan=" + ngayHetHan + ", trangThai=" + daHuy + '}';
     }
+
+    
 }
