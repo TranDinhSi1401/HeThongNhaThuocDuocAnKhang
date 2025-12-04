@@ -73,8 +73,8 @@ public class TraHangGUI extends javax.swing.JPanel {
         txtMaHoaDon = new javax.swing.JTextField();
         jButton7 = new javax.swing.JButton();
         jPanel30 = new javax.swing.JPanel();
-        jButton8 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
+        jButton8 = new javax.swing.JButton();
         jPanel23 = new javax.swing.JPanel();
         jPanel12 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
@@ -166,14 +166,6 @@ public class TraHangGUI extends javax.swing.JPanel {
 
         jPanel30.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
 
-        jButton8.setText("Đánh dấu tất cả");
-        jButton8.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton8ActionPerformed(evt);
-            }
-        });
-        jPanel30.add(jButton8);
-
         jButton2.setText("Bỏ đánh dấu tất cả");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -181,6 +173,14 @@ public class TraHangGUI extends javax.swing.JPanel {
             }
         });
         jPanel30.add(jButton2);
+
+        jButton8.setText("Đánh dấu tất cả");
+        jButton8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton8ActionPerformed(evt);
+            }
+        });
+        jPanel30.add(jButton8);
 
         jPanel23.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
         jPanel23.add(jPanel12);
@@ -397,11 +397,6 @@ public class TraHangGUI extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
-        tblTraHang.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mousePressed(java.awt.event.MouseEvent evt) {
-                tblTraHangMousePressed(evt);
-            }
-        });
         tblTraHang.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
             public void propertyChange(java.beans.PropertyChangeEvent evt) {
                 tblTraHangPropertyChange(evt);
@@ -450,7 +445,7 @@ public class TraHangGUI extends javax.swing.JPanel {
 
     private void txtMaHoaDonFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtMaHoaDonFocusGained
         // TODO add your handling code here:
-        txtMaHoaDon.setText("HD-010625-0091");
+        txtMaHoaDon.setText("HD-251025-0001");
     }//GEN-LAST:event_txtMaHoaDonFocusGained
 
     private void txtMaHoaDonKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtMaHoaDonKeyPressed
@@ -530,9 +525,8 @@ public class TraHangGUI extends javax.swing.JPanel {
         int chon = JOptionPane.showConfirmDialog(null, "Xác nhận tạo phiếu trả?", "Xác nhận", JOptionPane.YES_NO_OPTION);
         if(chon == JOptionPane.YES_OPTION){
             
-            //hoanTraLaiVaoLo();
-            
             PhieuTraHang pth = getPhieuTraHang(); 
+            
             List<ChiTietPhieuTraHang> list = getListCTPTH(pth);
             //
             luuPhieuVaoCSDL(pth, list);
@@ -568,56 +562,43 @@ public class TraHangGUI extends javax.swing.JPanel {
         // TODO add your handling code here:
         DefaultTableModel dtm = (DefaultTableModel) tblTraHang.getModel();
         int selectRow = tblTraHang.getSelectedRow();
-
         if(selectRow>=0){
-            
-            String regex = "^[1-9]\\d{0,2}$";
-            String slInput = dtm.getValueAt(selectRow, 2).toString();
-            if(slInput.matches(regex)){
-                int soLuong =  Integer.parseInt(slInput) ;
-                String maCTHD = dtm.getValueAt(selectRow, 10).toString();
-                if(soLuong <= ChiTietHoaDonDAO.getChiTietHoaDonTheoMaCTHD(maCTHD).getSoLuong() && soLuong >0){
-                    double donGia = boDinhDangTien(dtm.getValueAt(selectRow, 3).toString()) ;
-                    double khuyenMai = boDinhDangTien(dtm.getValueAt(selectRow, 4).toString());
-                    dtm.setValueAt(dinhDangTien(soLuong*donGia-khuyenMai), selectRow, 5);
-                }
-                else{
-                    int stt = selectRow+1;
-
-                    JOptionPane.showMessageDialog(null, "Yêu cầu kiểm tra lại tại STT: "+stt +"\n"
-                            + "- Số lượng trả bé hơn hoặc bằng số lượng mua\n"
-                            + "- Số lượng trả lớn hơn 0 ");
-
-                    tblTraHang.setValueAt(getSLHienTai(),selectRow, 2);
-                }
-
-                if(dtm.getValueAt(selectRow, 7) == Boolean.TRUE){
-                        dtm.setValueAt("100%", selectRow, 8);
-                        Object thanhTien = dtm.getValueAt(selectRow, 5);
-                        dtm.setValueAt(thanhTien, selectRow, 9);
-                }
-                else if(dtm.getValueAt(selectRow, 7) == Boolean.FALSE){
-                    if(dtm.getValueAt(selectRow, 6).equals(TruongHopDoiTraEnum.HANG_LOI_DO_NHA_SAN_XUAT.getTruongHopDoiTra())){
-                        dtm.setValueAt("100%", selectRow, 8);
-                        Object thanhTien = dtm.getValueAt(selectRow, 5);
-                        dtm.setValueAt(thanhTien, selectRow, 9);
-                    }
-                    else if(dtm.getValueAt(selectRow, 6).equals(TruongHopDoiTraEnum.DI_UNG_MAN_CAM.getTruongHopDoiTra())){
-                        dtm.setValueAt("70%", selectRow, 8);
-                        String thanhTien = dinhDangTien(boDinhDangTien(dtm.getValueAt(selectRow, 5).toString())*0.7);
-                        dtm.setValueAt(thanhTien, selectRow, 9);
-                    }
-                    else if(dtm.getValueAt(selectRow, 6).equals(TruongHopDoiTraEnum.NHU_CAU_KHACH_HANG.getTruongHopDoiTra()) ){
-                        dtm.setValueAt("Miễn trả hàng", selectRow, 8);
-                        dtm.setValueAt(0, selectRow, 9);
-                    }
-                }
-                capNhatTongThanhTien();
+            int soLuong = Integer.parseInt(dtm.getValueAt(selectRow, 2).toString()) ;
+            String maCTHD = dtm.getValueAt(selectRow, 10).toString();
+            if(soLuong <= ChiTietHoaDonDAO.getChiTietHoaDonTheoMaCTHD(maCTHD).getSoLuong() && soLuong >0){
+                double donGia = boDinhDangTien(dtm.getValueAt(selectRow, 3).toString()) ;
+                double khuyenMai = boDinhDangTien(dtm.getValueAt(selectRow, 4).toString());
+                dtm.setValueAt(dinhDangTien(soLuong*donGia-khuyenMai), selectRow, 5);
             }
-            else {
-               JOptionPane.showMessageDialog(null, "Chỉ nhận số nguyên dương 3 chữ số");
-               dtm.setValueAt(getSLHienTai(), selectRow, 2);
+            else{
+                int stt = selectRow+1;
+                JOptionPane.showMessageDialog(null, "Yêu cầu kiểm tra lại tại STT: "+stt +"\n"
+                        + "- Số lượng trả bé hơn hoặc bằng số lượng mua\n"
+                        + "- Số lượng trả lớn hơn 0 ");
             }
+
+            if(dtm.getValueAt(selectRow, 7) == Boolean.TRUE){
+                    dtm.setValueAt("100% giá trị", selectRow, 8);
+                    Object thanhTien = dtm.getValueAt(selectRow, 5);
+                    dtm.setValueAt(thanhTien, selectRow, 9);
+            }
+            else if(dtm.getValueAt(selectRow, 7) == Boolean.FALSE){
+                if(dtm.getValueAt(selectRow, 6).equals(TruongHopDoiTraEnum.HANG_LOI_DO_NHA_SAN_XUAT.getTruongHopDoiTra())){
+                    dtm.setValueAt("100% giá trị", selectRow, 8);
+                    Object thanhTien = dtm.getValueAt(selectRow, 5);
+                    dtm.setValueAt(thanhTien, selectRow, 9);
+                }
+                else if(dtm.getValueAt(selectRow, 6).equals(TruongHopDoiTraEnum.DI_UNG_MAN_CAM.getTruongHopDoiTra())){
+                    dtm.setValueAt("70% giá trị", selectRow, 8);
+                    String thanhTien = dinhDangTien(boDinhDangTien(dtm.getValueAt(selectRow, 5).toString())*0.7);
+                    dtm.setValueAt(thanhTien, selectRow, 9);
+                }
+                else if(dtm.getValueAt(selectRow, 6).equals(TruongHopDoiTraEnum.NHU_CAU_KHACH_HANG.getTruongHopDoiTra()) ){
+                    dtm.setValueAt("Miễn hoàn trả", selectRow, 8);
+                    dtm.setValueAt(0, selectRow, 9);
+                }
+            }
+            capNhatTongThanhTien();
         }
     }//GEN-LAST:event_tblTraHangPropertyChange
 
@@ -625,20 +606,6 @@ public class TraHangGUI extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField3ActionPerformed
 
-    private void tblTraHangMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblTraHangMousePressed
-        // TODO add your handling code here:
-        setSLHienTai((int) tblTraHang.getModel().getValueAt(tblTraHang.getSelectedRow(), 2));
-        System.out.println((int) tblTraHang.getModel().getValueAt(tblTraHang.getSelectedRow(), 2));
-    }//GEN-LAST:event_tblTraHangMousePressed
-    
-    int soLuongHienTai = 0;
-    private void setSLHienTai(int sl){
-        soLuongHienTai = sl;
-    }
-    private int getSLHienTai(){
-        return soLuongHienTai;
-    }
-    
     
     
 
@@ -1076,6 +1043,4 @@ public class TraHangGUI extends javax.swing.JPanel {
         }
         capNhatTongThanhTien(); 
     }
-
-
 }
