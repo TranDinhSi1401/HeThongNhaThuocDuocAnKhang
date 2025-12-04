@@ -4,6 +4,7 @@
  */
 package hethongnhathuocduocankhang;
 
+import com.formdev.flatlaf.FlatLightLaf;
 import com.formdev.flatlaf.fonts.roboto.FlatRobotoFont;
 import hethongnhathuocduocankhang.connectDB.ConnectDB;
 import hethongnhathuocduocankhang.dao.KhachHangDAO;
@@ -30,6 +31,8 @@ public class HeThongNhaThuocDuocAnKhang {
         java.awt.EventQueue.invokeLater(() -> {
             //Application.main(args);
             SplashScreen ss = new SplashScreen(0);
+            FlatRobotoFont.install();
+            FlatLightLaf.setup();
 
             SwingWorker<Void, Void> worker = new SwingWorker<>() {
                 @Override
