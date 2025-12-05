@@ -168,7 +168,8 @@ public class LoSanPhamDAO {
             st.setDouble(5, thanhTien);
             st.setString(6, ghiChu);
             n = st.executeUpdate();
-        } catch (SQLException sQLException) {
+        } catch (SQLException s) {
+            s.printStackTrace();
         }
         return n>0;
     }
@@ -191,7 +192,8 @@ public class LoSanPhamDAO {
             st.setDouble(5, tongTien);
             st.setString(6, ghiChu);
             n = st.executeUpdate();
-        } catch (SQLException sQLException) {
+        } catch (SQLException s) {
+            s.printStackTrace();
         }
         return n>0;
     }

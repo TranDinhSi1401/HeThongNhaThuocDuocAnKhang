@@ -1072,7 +1072,7 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
         if (tbl.getRowCount()==0){
             JOptionPane.showMessageDialog(this, "Chưa có sản phẩm để chọn, Vui lòng thêm sản phẩm rồi thử lại");
         }
-        
+        int kiemTra =0;
         for(int i=0;i<tbl.getRowCount();i++){
             LocalDate sx = LocalDate.parse(QuanLyLoBUS.chuyenDinhDang(tbl.getValueAt(i, 5).toString()));
             LocalDate hh = LocalDate.parse(QuanLyLoBUS.chuyenDinhDang(tbl.getValueAt(i, 6).toString()));    
@@ -1080,11 +1080,16 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
                             new SanPham((String) tbl.getValueAt(i, 0)), 
                             (Integer)tbl.getValueAt(i, 7), sx, hh, false);
             NhaCungCap ncc = new NhaCungCap(tbl.getValueAt(i, 3).toString());
-            if(LoSanPhamDAO.themLoSanPham(lo) ){
+            boolean check = (Boolean) tbl.getValueAt(i, 9);
+            if(check && LoSanPhamDAO.themLoSanPham(lo)){
+                kiemTra++;
                 JOptionPane.showMessageDialog(this, "Lô "+ lo.getMaLoSanPham()+" thêm thành công!");
+                tbl.removeRow(i);
             }else{
-                JOptionPane.showMessageDialog(this, "Thêm thất bại !");
+                if(!check) continue;
+                else JOptionPane.showMessageDialog(this, "Thêm lô "+ lo.getMaLoSanPham() +" thất bại !");
             }
+            
         }
 
         
