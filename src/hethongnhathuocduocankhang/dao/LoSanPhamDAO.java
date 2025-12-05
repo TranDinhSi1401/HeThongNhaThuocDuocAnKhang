@@ -153,7 +153,7 @@ public class LoSanPhamDAO {
         }
         return n>0;
     }
-    public static boolean themGiaNhapTuLo(LoSanPham lo, PhieuNhap pn, double gia, double thanhTien, String ghiChu){
+    public static boolean themChiTietPhieuNhap(LoSanPham lo, PhieuNhap pn, double gia, double thanhTien, String ghiChu){
         int n=0;
         try {
             ConnectDB.getInstance().connect();
@@ -172,9 +172,10 @@ public class LoSanPhamDAO {
             s.printStackTrace();
         }
         return n>0;
-    }
+    }                                                               /// mã nhà cung cấp ứng với mỗi sản phẩm thì nó phải nằm trong phần
+                                                                            /// chi tiết phiếu nhập 
 
-    public static boolean themNhaCungCapTuLo(NhaCungCap ncc, double tongTien, String ghiChu){
+    public static boolean themPhieuNhap(NhaCungCap ncc, double tongTien, String ghiChu){
         int n=0;
         try {
             TaiKhoan tk = GiaoDienChinhGUI.getTk();

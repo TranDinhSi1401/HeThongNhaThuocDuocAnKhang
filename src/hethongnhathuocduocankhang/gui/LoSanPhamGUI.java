@@ -46,6 +46,8 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
  */
 public class LoSanPhamGUI extends javax.swing.JPanel {
 
+    private String ngayLap;
+
     /**
      * Creates new form LoSanPhamGUI
      */
@@ -71,7 +73,6 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
         loadDanhSachLoSanPham();
         // kiểm tra trạng thái của các lô hàng
         capNhatSoLo();
-        
         tblLoSanPham.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
         tblLoSanPham.getColumnModel().getColumn(0).setPreferredWidth(120);
         tblLoSanPham.getColumnModel().getColumn(1).setPreferredWidth(307);
@@ -970,8 +971,7 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
         File filee = file.getSelectedFile();
         try(FileInputStream test = new FileInputStream(filee)){
         }catch(Exception e){
-            JOptionPane.showMessageDialog(this, "Không thể mở file! Vui lòng đóng Excel và thử lại.", 
-                    "File đang được sử dụng", JOptionPane.ERROR_MESSAGE); return;
+            return;
         }
         List<MaVachSanPham> dsMaVach = MaVachSanPhamDAO.timMaSPTheoMaVach();
         Map<String, MaVachSanPham> mapMaVach = new HashMap<>();
@@ -982,14 +982,18 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
                 XSSFWorkbook work = new XSSFWorkbook(fis)){
             XSSFSheet sheet = work.getSheetAt(0);
             
-                    boolean head = true;
+            //boolean head = true;
             int soSP = 0;
+            int skip=0;
             final int colMaVach = 0;
             final int colSoLuong = 7;
             final int colGiaNhap=8;
+            
             for(Row is:sheet){
-                if(head){
-                    head = false; continue;
+                if(skip<3){
+                    skip++;
+                    continue;
+                    //head = false; continue;
                 }
                 int lastCell = is.getLastCellNum();
                 if(lastCell<=0) continue;
@@ -1059,28 +1063,54 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
                 tbl.addRow(rowData);
                 soSP++;
             }
+            Row date = sheet.getRow(2);
+            Cell c = date.getCell(0);
+            String layNgay = c.getStringCellValue();
+            String ngayTaoExcel = layNgay.split(":")[1].trim();
+            ngayLap = QuanLyLoBUS.chuyenDinhDang(ngayTaoExcel);
             JOptionPane.showMessageDialog(this, "Thêm thành công "+soSP+" từ file excel!");
         } catch(Exception e){
             JOptionPane.showMessageDialog(this, "Lỗi đọc file: "+e.getMessage());
             e.printStackTrace();
         }        
         // TODO add your handling code here:
+        //System.out.println("ngaytao: " + ngayLap);
     }//GEN-LAST:event_btnThemSanPhamTuExcelActionPerformed
 
     private void btnXacNhanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXacNhanActionPerformed
         DefaultTableModel tbl = (DefaultTableModel) tblThemSanPham.getModel();
         if (tbl.getRowCount()==0){
-            JOptionPane.showMessageDialog(this, "Chưa có sản phẩm để chọn, Vui lòng thêm sản phẩm rồi thử lại");
+            JOptionPane.showMessageDialog(this, "Chưa có sản phẩm để chọn, Vui lòng chọn \"Thêm từ Excel\" để thêm sản phẩm rồi thử lại");
+            return;
         }
+        boolean kiemTraGiaTri = false;
+        for(int a=0;a<tbl.getRowCount();a++){
+            if ((Boolean)tbl.getValueAt(a, 9)) 
+                kiemTraGiaTri = true;
+        }
+        if(kiemTraGiaTri==false){
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn lô sản phẩm cần thêm rồi thử lại sau");
+            return;
+        }
+        
+            
         int kiemTra =0;
+        double tongTien = 0;
+
         for(int i=0;i<tbl.getRowCount();i++){
+            // Thêm lô sản phẩm
             LocalDate sx = LocalDate.parse(QuanLyLoBUS.chuyenDinhDang(tbl.getValueAt(i, 5).toString()));
             LocalDate hh = LocalDate.parse(QuanLyLoBUS.chuyenDinhDang(tbl.getValueAt(i, 6).toString()));    
             LoSanPham lo = new LoSanPham((String) tbl.getValueAt(i, 2), 
                             new SanPham((String) tbl.getValueAt(i, 0)), 
                             (Integer)tbl.getValueAt(i, 7), sx, hh, false);
-            NhaCungCap ncc = new NhaCungCap(tbl.getValueAt(i, 3).toString());
             boolean check = (Boolean) tbl.getValueAt(i, 9);
+            // Thêm phiếu nhập cho lô sản phẩm vừa thêm
+            NhaCungCap ncc = new NhaCungCap(tbl.getValueAt(i, 3).toString());
+            if(check){
+                tongTien+= Double.parseDouble(tbl.getValueAt(i, 8).toString());
+            }
+            
             if(check && LoSanPhamDAO.themLoSanPham(lo)){
                 kiemTra++;
                 JOptionPane.showMessageDialog(this, "Lô "+ lo.getMaLoSanPham()+" thêm thành công!");
@@ -1091,7 +1121,11 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
             }
             
         }
-
+//        if(LoSanPhamDAO.themPhieuNhapTuLo(ncc, tongTien, "")){
+//                JOptionPane.showMessageDialog(this, "Thêm thành công phiếu nhập!");
+//            }else {
+//                JOptionPane.showMessageDialog(this, "Thêm phiếu đặt thất bại");
+//            }
         
         
         
