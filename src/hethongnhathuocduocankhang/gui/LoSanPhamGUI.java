@@ -18,6 +18,7 @@ import hethongnhathuocduocankhang.entity.MaVachSanPham;
 import hethongnhathuocduocankhang.entity.NhaCungCap;
 import hethongnhathuocduocankhang.entity.PhieuNhap;
 import hethongnhathuocduocankhang.entity.SanPham;
+import java.awt.event.ActionEvent;
 import java.awt.event.FocusEvent;
 import org.apache.poi.ss.usermodel.DateUtil;
 import java.io.File;
@@ -28,8 +29,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
+import javax.swing.AbstractAction;
+import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.KeyStroke;
 import javax.swing.SwingWorker;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -121,6 +125,7 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
                 }
             }
         });
+
     }
 
     /**
@@ -1079,6 +1084,9 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
 
     private void btnXacNhanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXacNhanActionPerformed
         DefaultTableModel tbl = (DefaultTableModel) tblThemSanPham.getModel();
+        int kiemTra =0;
+        int slLo = tbl.getRowCount();
+        //double tongTien = 0;
         if (tbl.getRowCount()==0){
             JOptionPane.showMessageDialog(this, "Chưa có sản phẩm để chọn, Vui lòng chọn \"Thêm từ Excel\" để thêm sản phẩm rồi thử lại");
             return;
@@ -1092,12 +1100,7 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "Vui lòng chọn lô sản phẩm cần thêm rồi thử lại sau");
             return;
         }
-        
-            
-        int kiemTra =0;
-        double tongTien = 0;
-
-        for(int i=0;i<tbl.getRowCount();i++){
+        for(int i=0;i<slLo;i++){
             // Thêm lô sản phẩm
             LocalDate sx = LocalDate.parse(QuanLyLoBUS.chuyenDinhDang(tbl.getValueAt(i, 5).toString()));
             LocalDate hh = LocalDate.parse(QuanLyLoBUS.chuyenDinhDang(tbl.getValueAt(i, 6).toString()));    
@@ -1108,19 +1111,23 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
             // Thêm phiếu nhập cho lô sản phẩm vừa thêm
             NhaCungCap ncc = new NhaCungCap(tbl.getValueAt(i, 3).toString());
             if(check){
-                tongTien+= Double.parseDouble(tbl.getValueAt(i, 8).toString());
+                //tongTien+= Double.parseDouble(tbl.getValueAt(i, 8).toString());
             }
             
             if(check && LoSanPhamDAO.themLoSanPham(lo)){
                 kiemTra++;
                 JOptionPane.showMessageDialog(this, "Lô "+ lo.getMaLoSanPham()+" thêm thành công!");
-                tbl.removeRow(i);
+                tbl.removeRow(i); i--; slLo--;
             }else{
                 if(!check) continue;
                 else JOptionPane.showMessageDialog(this, "Thêm lô "+ lo.getMaLoSanPham() +" thất bại !");
             }
-            
         }
+
+        DefaultTableModel tb =(DefaultTableModel)tblLoSanPham.getModel();
+        tb.setRowCount(0);
+        loadDanhSachLoSanPham();
+
 //        if(LoSanPhamDAO.themPhieuNhapTuLo(ncc, tongTien, "")){
 //                JOptionPane.showMessageDialog(this, "Thêm thành công phiếu nhập!");
 //            }else {
@@ -1169,7 +1176,7 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
     }//GEN-LAST:event_txtTimKiemActionPerformed
 
     private void btnXoaSanPhamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaSanPhamActionPerformed
-        int a=0;
+        int a=1;
         DefaultTableModel tbl = (DefaultTableModel) tblThemSanPham.getModel(); 
         for (int i=0; i< tbl.getRowCount()-1;i++){
             Boolean sel = (Boolean) tbl.getValueAt(i, 9);
@@ -1181,7 +1188,7 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "Vui lòng chọn sản phẩm để xóa.");
             return;
         }
-        int x = JOptionPane.showConfirmDialog(this, "Vui lòng xác nhận xóa "+a+" ssản phẩm đã chọn?", "Xác nhận?", JOptionPane.YES_NO_OPTION);
+        int x = JOptionPane.showConfirmDialog(this, "Vui lòng xác nhận xóa "+a+" sản phẩm đã chọn?", "Xác nhận?", JOptionPane.YES_NO_OPTION);
         if(x==JOptionPane.YES_OPTION){
             xoaSanPhamDaChon();
         }
