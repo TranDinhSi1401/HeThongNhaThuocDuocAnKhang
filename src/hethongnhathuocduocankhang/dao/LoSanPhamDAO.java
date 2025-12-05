@@ -134,7 +134,7 @@ public class LoSanPhamDAO {
         try {
             ConnectDB.getInstance().connect();
             Connection con = ConnectDB.getConnection();
-            String sql = "Insert LoSanPham (maLoSanPham, maSP, soLuong, ngaySanXuat, ngayHetHan, dayHuy) "
+            String sql = "Insert LoSanPham (maLoSanPham, maSP, soLuong, ngaySanXuat, ngayHetHan, daHuy) "
                     + "values(?, ?, ?, ?, ?, ?)";
             PreparedStatement st = con.prepareStatement(sql);
             st.setString(1, lo.getMaLoSanPham());
@@ -148,7 +148,8 @@ public class LoSanPhamDAO {
             st.setDate(5, hh);
             st.setBoolean(6, lo.isDaHuy());
             n = st.executeUpdate();
-        } catch (SQLException sQLException) {
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return n>0;
     }
@@ -171,6 +172,7 @@ public class LoSanPhamDAO {
         }
         return n>0;
     }
+
     public static boolean themNhaCungCapTuLo(NhaCungCap ncc, double tongTien, String ghiChu){
         int n=0;
         try {
@@ -182,7 +184,7 @@ public class LoSanPhamDAO {
             PreparedStatement st = con.prepareStatement(sql);
             LocalDate ngayTao = LocalDate.now();
             java.sql.Date nt = java.sql.Date.valueOf(ngayTao);
-            st.setString(1, "");//mã Phiếu
+            st.setString(1, String.format("PN-%04d", PhieuNhapDAO.getPhieuCuoiCung() +1));//mã Phiếu nhập
             st.setDate(2, nt);
             st.setString(3, tk.getNhanVien().getMaNV());
             st.setString(4, ncc.getMaNCC());
