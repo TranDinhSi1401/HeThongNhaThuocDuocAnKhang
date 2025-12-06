@@ -34,7 +34,6 @@ public class GiaoDienChinhGUI extends javax.swing.JFrame {
                 }
                 if(index == 1 && subIndex == 0) {
                     showPanel(new BanHangGUI());
-                    System.out.println("Clicked");
                 }
                 if(index == 2) {
                         switch (subIndex) {

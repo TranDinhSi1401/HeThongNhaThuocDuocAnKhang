@@ -7,6 +7,7 @@ package hethongnhathuocduocankhang.gui;
 import hethongnhathuocduocankhang.bus.BanHangBUS;
 import hethongnhathuocduocankhang.connectDB.ConnectDB;
 import hethongnhathuocduocankhang.dao.DonViTinhDAO;
+import hethongnhathuocduocankhang.dao.KhachHangDAO;
 import hethongnhathuocduocankhang.entity.DonViTinh;
 import hethongnhathuocduocankhang.entity.KhachHang;
 import java.awt.BorderLayout;
@@ -59,15 +60,57 @@ public class BanHangPane extends javax.swing.JPanel {
         group.add(radTienMat);
         group.add(radChuyenKhoan);
         
+        TableColumn columnDVT = tblCTHD.getColumnModel().getColumn(2);
+
+        columnDVT.setCellEditor(new DefaultCellEditor(new JComboBox<String>()) {
+
+            private JComboBox<String> currentCombo;
+
+            @Override
+            public Component getTableCellEditorComponent(JTable table, Object value,
+                    boolean isSelected, int row, int column) {
+
+                String maSP = table.getValueAt(row, 8).toString();
+                ArrayList<DonViTinh> dsDVT = DonViTinhDAO.getDonViTinhTheoMaSP(maSP);
+
+                currentCombo = new JComboBox<>();
+                for (DonViTinh dvt : dsDVT) {
+                    currentCombo.addItem(dvt.getTenDonVi());
+                }
+
+                if (value != null) {
+                    currentCombo.setSelectedItem(value.toString());
+                }
+                
+                currentCombo.addActionListener(e -> stopCellEditing());
+                
+                return currentCombo;
+            }
+
+            @Override
+            public Object getCellEditorValue() {
+                return currentCombo.getSelectedItem();
+            }
+        });
+
+        
         DefaultTableModel model = (DefaultTableModel)tblCTHD.getModel();
         model.addTableModelListener(e -> {
             if (e.getColumn() == 2 || e.getColumn() == 4) {
                 int row = e.getFirstRow();
-                // lấy đơn vị tính hoặc số lượng
-                String tenDVT = model.getValueAt(row, 2).toString();
-                int soLuong = Integer.parseInt(model.getValueAt(row, 4).toString());
-                               
-                String masp = model.getValueAt(row, 8).toString();
+                Object dvtObj = model.getValueAt(row, 2);
+                Object slObj  = model.getValueAt(row, 4);
+                Object maSPObj = model.getValueAt(row, 8);
+
+                if (dvtObj == null || slObj == null || maSPObj == null) {
+                    System.out.println("null pointer");
+                    return;
+                }
+
+                String tenDVT = dvtObj.toString();
+                int soLuong = Integer.parseInt(slObj.toString());
+                String masp = maSPObj.toString();
+
                 try {
                     Object[] updatedInfo = bus.thayDoiChiTietHoaDon(masp, soLuong, tenDVT);
                     model.setValueAt(updatedInfo[0], row, 3);
@@ -113,6 +156,7 @@ public class BanHangPane extends javax.swing.JPanel {
         pLeftSouth = new javax.swing.JPanel();
         btnXoa = new javax.swing.JButton();
         btnXoaTrang = new javax.swing.JButton();
+        btnThemKH = new javax.swing.JButton();
         pRightSouth = new javax.swing.JPanel();
         btnThanhToan = new javax.swing.JButton();
         pRightCenter = new javax.swing.JPanel();
@@ -193,6 +237,16 @@ public class BanHangPane extends javax.swing.JPanel {
             }
         });
         pLeftSouth.add(btnXoaTrang);
+
+        btnThemKH.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnThemKH.setText("Thêm KH");
+        btnThemKH.setPreferredSize(new java.awt.Dimension(140, 35));
+        btnThemKH.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnThemKHActionPerformed(evt);
+            }
+        });
+        pLeftSouth.add(btnThemKH);
 
         pSouth.add(pLeftSouth, java.awt.BorderLayout.LINE_START);
 
@@ -499,7 +553,7 @@ public class BanHangPane extends javax.swing.JPanel {
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.Object.class, java.lang.Double.class, java.lang.Integer.class, java.lang.Double.class, java.lang.Double.class, java.lang.String.class, java.lang.String.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.Integer.class, java.lang.Double.class, java.lang.Double.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
                 false, false, true, false, true, false, false, false, false
@@ -518,11 +572,6 @@ public class BanHangPane extends javax.swing.JPanel {
         tblCTHD.setShowVerticalLines(false);
         tblCTHD.setGridColor(new Color(220, 220, 220));
         tblCTHD.setIntercellSpacing(new Dimension(0, 0));
-        tblCTHD.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                tblCTHDMouseClicked(evt);
-            }
-        });
         jScrollPane.setViewportView(tblCTHD);
         if (tblCTHD.getColumnModel().getColumnCount() > 0) {
             tblCTHD.getColumnModel().getColumn(0).setResizable(false);
@@ -721,9 +770,10 @@ public class BanHangPane extends javax.swing.JPanel {
             if(bus.kiemTraKeDon(maSP)) {
                 JOptionPane.showMessageDialog(this, "Thuốc bạn vừa tìm kiếm là thuốc kê đơn \n Vui lòng kiểm tra đơn kê rõ ràng và lưu thông tin khách hàng", "Cảnh báo kê đơn", JOptionPane.WARNING_MESSAGE);
             }
-            System.out.println(bus.kiemTraKeDon(maSP));
-            Object[] newRow = bus.themChiTietHoaDon(maSP);
-            themCTHDVaoTable(newRow);
+            Object[] newRow = bus.themChiTietHoaDon(maSP, tblCTHD);
+            if(newRow != null) {
+                themCTHDVaoTable(newRow);
+            }
         }catch(Exception e) {
             JOptionPane.showMessageDialog(this, e.getMessage(), "Warning Message", JOptionPane.WARNING_MESSAGE);
         }
@@ -773,9 +823,11 @@ public class BanHangPane extends javax.swing.JPanel {
             String maSP = txtTimKiem.getText().trim();
             if(bus.kiemTraKeDon(maSP)) {
                 JOptionPane.showMessageDialog(this, "Thuốc bạn vừa tìm kiếm là thuốc kê đơn \n Vui lòng kiểm tra đơn kê rõ ràng và lưu thông tin khách hàng", "Cảnh báo kê đơn", JOptionPane.WARNING_MESSAGE);
-            }
-            Object[] newRow = bus.themChiTietHoaDon(maSP);
-            themCTHDVaoTable(newRow);
+            }           
+            Object[] newRow = bus.themChiTietHoaDon(maSP, tblCTHD);
+            if(newRow != null) {
+                themCTHDVaoTable(newRow);
+            }          
         }catch(Exception e) {
             JOptionPane.showMessageDialog(this, e.getMessage(), "Warning Message", JOptionPane.WARNING_MESSAGE);
         }
@@ -796,30 +848,6 @@ public class BanHangPane extends javax.swing.JPanel {
             txtTimKiem.setText("Nhập mã sản phẩm [F1]");
         }
     }//GEN-LAST:event_txtTimKiemFocusLost
-
-    private void tblCTHDMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblCTHDMouseClicked
-        DefaultTableModel model = (DefaultTableModel)tblCTHD.getModel();
-        int row = tblCTHD.rowAtPoint(evt.getPoint());
-        int col = tblCTHD.columnAtPoint(evt.getPoint());
-        String maSP = model.getValueAt(row, 8).toString();
-        ArrayList<DonViTinh> dsDVT = DonViTinhDAO.getDonViTinhTheoMaSP(maSP);
-
-        if (tblCTHD.isEditing()) {
-            tblCTHD.getCellEditor().stopCellEditing();
-        }
-        JComboBox<String> cbDonViTinh = new JComboBox<>();
-        for (DonViTinh dvt : dsDVT) {
-            cbDonViTinh.addItem(dvt.getTenDonVi());
-        }
-
-        TableColumn columnDVT = tblCTHD.getColumnModel().getColumn(2);
-        columnDVT.setCellEditor(new DefaultCellEditor(cbDonViTinh));
-        tblCTHD.editCellAt(row, col);
-        Component editor = tblCTHD.getEditorComponent();
-        if (editor != null) {
-            editor.requestFocus();
-        }
-    }//GEN-LAST:event_tblCTHDMouseClicked
 
     private void txtSdtKHFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtSdtKHFocusGained
         if(txtSdtKH.getText().equals("Nhập sđt khách hàng [F2]")) {
@@ -896,6 +924,37 @@ public class BanHangPane extends javax.swing.JPanel {
             txtTienKhachDua.setText("Nhập tiền khách đưa [F5]");
         }
     }//GEN-LAST:event_txtTienKhachDuaFocusLost
+
+    private void btnThemKHActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThemKHActionPerformed
+        ThemKhachHangGUI pnlThemKH = new ThemKhachHangGUI();
+        JDialog dialog = new JDialog();
+        dialog.setTitle("Thêm khách hàng mới");
+        dialog.setModal(true);
+        dialog.setResizable(false);
+        dialog.setContentPane(pnlThemKH);
+        dialog.pack();
+        dialog.setLocationRelativeTo(null);
+
+        int maKHCUoiCung = KhachHangDAO.getMaKHCUoiCung();
+        maKHCUoiCung++;
+        String maKHNew = String.format("KH-%05d", maKHCUoiCung);
+
+        pnlThemKH.setTxtMaKhachHang(maKHNew);
+        pnlThemKH.setTxtDiemTichLuy(0);
+        pnlThemKH.getTxtDiemTichLuy().setEnabled(false);
+
+        dialog.setVisible(true);
+
+        KhachHang khNew = pnlThemKH.getKhachHangMoi();
+
+        if (khNew != null) {
+            if (KhachHangDAO.themKhachHang(khNew)) {
+                JOptionPane.showMessageDialog(this, "Thêm khách hàng thành công!");
+            } else {
+                JOptionPane.showMessageDialog(this, "Thêm khách hàng thất bại (có thể trùng SĐT).");
+            }
+        }
+    }//GEN-LAST:event_btnThemKHActionPerformed
         
     private void xoaTrang() {
         DefaultTableModel model = (DefaultTableModel)tblCTHD.getModel();
@@ -962,6 +1021,7 @@ public class BanHangPane extends javax.swing.JPanel {
     private javax.swing.JButton btnGoiY5;
     private javax.swing.JButton btnGoiY6;
     private javax.swing.JButton btnThanhToan;
+    private javax.swing.JButton btnThemKH;
     private javax.swing.JButton btnTimKiem;
     private javax.swing.JButton btnXoa;
     private javax.swing.JButton btnXoaTrang;

@@ -67,7 +67,7 @@ public class BanHangBUS {
         return input;
     }
     
-    public Object[] themChiTietHoaDon(String maSp) throws Exception{
+    public Object[] themChiTietHoaDon(String maSp, JTable tblCTHD) throws Exception{
         // Lấy các thông tin liên quan đến mã sp
         String maSP = chuanHoaMaSP(maSp);
         SanPham sp = SanPhamDAO.timSPTheoMa(maSP);
@@ -86,18 +86,27 @@ public class BanHangBUS {
         if(tongSoLuong <= 0) {
             throw new Exception("Sản phẩm hiện tại hết hàng!");
         }
-        
-        // Tạo thông tin chi tiết hóa đơn       
-        String tenSP = sp.getTen();
-        
+               
+             
+        // Lấy đơn vị tính cơ bản     
         dsDVT.sort((a, b) -> Double.compare(a.getHeSoQuyDoi(), b.getHeSoQuyDoi()));
         DonViTinh dvtMacDinh = dsDVT.get(0);
         String tenDVT = dvtMacDinh.getTenDonVi();
         
-        double donGia = dvtMacDinh.getGiaBanTheoDonVi();
+        // Nếu trùng sản phẩm
+        for(int i = 0; i < tblCTHD.getRowCount(); i++) {
+            if(dvtMacDinh.getMaDonViTinh().equalsIgnoreCase(tblCTHD.getValueAt(i, 7).toString())) {
+                int soLuong = Integer.parseInt(tblCTHD.getValueAt(i, 4).toString());
+                soLuong+=1;
+                tblCTHD.setValueAt(soLuong, i, 4);
+                return null;
+            }
+        }
         
-        int soLuong = 1;   
-        
+        // Tạo thông tin chi tiết hóa đơn  
+        String tenSP = sp.getTen(); 
+        double donGia = dvtMacDinh.getGiaBanTheoDonVi();       
+        int soLuong = 1;
         double giamGia = 0;
         dsKM.sort((b, a) -> Double.compare(a.getPhanTram(), b.getPhanTram()));
         for(KhuyenMai km : dsKM) {
