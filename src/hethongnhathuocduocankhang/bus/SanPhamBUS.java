@@ -99,7 +99,7 @@ public class SanPhamBUS {
                 sp.getLoaiSanPham().toString(),
                 sp.getTonToiThieu(),
                 sp.getTonToiDa(),
-                sp.isDaXoa()
+                sp.isDaXoa() ? "Ngừng bán" : "Đang bán"
             });
         }
         QLSanPhamGUI.getLblTongSoDong().setText("Tổng số sản phẩm: " + dsSP.size());
@@ -316,10 +316,13 @@ public class SanPhamBUS {
                     throw new Exception("Chưa nhập tên ĐVT");
                 }
                 int heSo = Integer.parseInt(pnlThemSP.getTxtHeSoQuyDoi().getText().trim());
-                double gia = Double.parseDouble(pnlThemSP.getTxtGiaBanDonVi().getText().trim());
+                String giaBanFormatted = pnlThemSP.getTxtGiaBanDonVi().getText();
+                String giaBanRaw = giaBanFormatted.replaceAll("\\D", "");
+                double gia = 0.0;
+                if (!giaBanRaw.trim().isEmpty()) {
+                    gia = Double.parseDouble(giaBanRaw);
+                }
                 boolean isCoBan = pnlThemSP.getChkDonViCoBan().isSelected();
-
-                // Kiểm tra đã có đơn vị cơ bản chưa
                 if (isCoBan) {
                     for (DonViTinh dv : listTempDVT) {
                         if (dv.isDonViTinhCoBan()) {
@@ -561,7 +564,7 @@ public class SanPhamBUS {
 
         // Bước C: Xử lý Thêm mới hoặc Cập nhật (Duyệt danh sách mới từ GUI)
         for (DonViTinh dvt : listTempDVT) {
-            dvt.setSanPham(sp); 
+            dvt.setSanPham(sp);
 
             // Kiểm tra xem ĐVT này đã tồn tại trong DB chưa
             if (DonViTinhDAO.getDonViTinhTheoMaDVT(dvt.getMaDonViTinh()) != null) {

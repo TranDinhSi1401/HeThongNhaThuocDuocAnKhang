@@ -99,7 +99,7 @@ public class QuanLiSanPhamGUI extends JPanel {
 
         String[] columnNames = {
             "STT", "Mã SP", "Tên SP", "Mô tả",
-            "Thành phần", "Loại sản phẩm", "Tồn tối thiểu", "Tồn tối đa", "Đã ngưng kinh doanh"
+            "Thành phần", "Loại sản phẩm", "Tồn tối thiểu", "Tồn tối đa", "Trạng thái"
         };
 
         // Khởi tạo Model bảng (chặn edit trực tiếp trên ô)
