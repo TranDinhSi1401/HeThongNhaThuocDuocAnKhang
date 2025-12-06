@@ -5,9 +5,16 @@
 package hethongnhathuocduocankhang.gui;
 
 import com.orsoncharts.util.TextAnchor;
+import hethongnhathuocduocankhang.bus.QuanLyLoBUS;
+import hethongnhathuocduocankhang.dao.DonViTinhDAO;
 import hethongnhathuocduocankhang.dao.HoaDonDAO;
+import hethongnhathuocduocankhang.dao.LoSanPhamDAO;
 import hethongnhathuocduocankhang.dao.NhanVienDAO;
+import hethongnhathuocduocankhang.dao.SanPhamDAO;
+import hethongnhathuocduocankhang.entity.DonViTinh;
+import hethongnhathuocduocankhang.entity.LoSanPham;
 import hethongnhathuocduocankhang.entity.NhanVien;
+import hethongnhathuocduocankhang.entity.SanPham;
 import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -22,9 +29,11 @@ import java.sql.SQLException;
 import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Map;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -61,15 +70,25 @@ import org.jfree.ui.RectangleInsets;
 public class DashBoardQuanLi extends javax.swing.JPanel {
 
     private final JPanel pnlCenter;
-    private final JRadioButton radThang;
-    private final JRadioButton radNam;
-    private final JComboBox<String> cmbThang;
-    private final JComboBox<String> cmbNam;
-    private final JPanel pnlNutTaiLai;
+    private JRadioButton radThang;
+    private JRadioButton radNam;
+    private JComboBox<String> cmbThang;
+    private JComboBox<String> cmbNam;
+    private JPanel pnlNutTaiLai;
 
-    /**
-     * Creates new form TongQuanGUI
-     */
+    private DefaultTableModel dtmSPSapHetHang;
+    private JTable tblSPSapHetHang;
+
+    private DefaultTableModel dtmLoSapHetHan;
+    private JTable tblLoSapHetHan;
+
+    private JLabel lblDongHo;
+    private JLabel lblTenCa;
+    private JLabel lblGioVaoCa;
+    private JLabel lblNhanVienTruc;
+    private javax.swing.Timer timer;
+    private JLabel lblNgay;
+
     public DashBoardQuanLi() {
         initComponents();
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -81,14 +100,26 @@ public class DashBoardQuanLi extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "Không có thông tin nhân viên");
         }
 
-        //pnlBieuDo.setBorder(BorderFactory.createTitledBorder("Biểu đồ Doanh thu tháng MM"));
+        setupThongTinCaLam();
+        startRealTimeClock();
+
         pnlBieuDo.setLayout(new BorderLayout());
 
-        pnlCenter = new JPanel();
-        pnlCenter.setLayout(new BorderLayout());
+        pnlBieuDo.setLayout(new BorderLayout());
+        pnlCenter = new JPanel(new BorderLayout());
         pnlBieuDo.add(pnlCenter, BorderLayout.CENTER);
 
-        // Khởi tạo nút bấm
+        initBieuDo();
+        initTableSPSapHetHang();
+        initTableLoSapHetHan();
+
+        initPanelThongKeNgay();
+
+        veBieuDo(LocalDate.now().getMonthValue(), LocalDate.now().getYear(), "tháng");
+
+    }
+
+    private void initBieuDo() {
         JButton btnTaiBieuDo = new JButton("Tải Biểu Đồ");
         radThang = new JRadioButton("Tháng", true);
         radNam = new JRadioButton("Năm");
@@ -96,37 +127,29 @@ public class DashBoardQuanLi extends javax.swing.JPanel {
         tieuChiGroup.add(radThang);
         tieuChiGroup.add(radNam);
 
-        String[] cacThang = {"Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5", "Tháng 6", "Tháng 7", "Tháng 8", "Tháng 19", "Tháng 10", "Tháng 11", "Tháng 12"};
+        String[] cacThang = {"Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5", "Tháng 6", "Tháng 7", "Tháng 8", "Tháng 9", "Tháng 10", "Tháng 11", "Tháng 12"};
 
         int startYear = 2025;
         int endYear = 2045;
         int arrayLength = endYear - startYear + 1;
         String[] cacNam = new String[arrayLength];
         for (int i = 0; i < arrayLength; i++) {
-            int currentYear = startYear + i;
-            cacNam[i] = String.valueOf(currentYear);
+            cacNam[i] = String.valueOf(startYear + i);
         }
 
         cmbThang = new JComboBox<>(cacThang);
         cmbThang.setSelectedItem("Tháng " + LocalDate.now().getMonthValue());
         cmbNam = new JComboBox<>(cacNam);
-        cmbNam.setSelectedItem(LocalDate.now().getYear());
+        cmbNam.setSelectedItem(String.valueOf(LocalDate.now().getYear()));
 
-        pnlNutTaiLai = new JPanel();
-        pnlNutTaiLai.setLayout(new FlowLayout(FlowLayout.RIGHT));
+        pnlNutTaiLai = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         pnlNutTaiLai.add(new JLabel("Thống kê theo: "));
         pnlNutTaiLai.add(radThang);
         pnlNutTaiLai.add(radNam);
-        pnlNutTaiLai.add(new Label(""));
+        pnlNutTaiLai.add(Box.createHorizontalStrut(10));
         pnlNutTaiLai.add(cmbThang);
         pnlNutTaiLai.add(cmbNam);
-        cmbThang.setVisible(true);
-        cmbNam.setVisible(true);
-
-        pnlNutTaiLai.add(new Label(""));
-        pnlNutTaiLai.add(new Label(""));
-        pnlNutTaiLai.add(new Label(""));
-
+        pnlNutTaiLai.add(Box.createHorizontalStrut(20));
         pnlNutTaiLai.add(btnTaiBieuDo);
 
         pnlBieuDo.add(pnlNutTaiLai, BorderLayout.NORTH);
@@ -135,182 +158,268 @@ public class DashBoardQuanLi extends javax.swing.JPanel {
         btnVaoCa.setBackground(Color.GREEN);
         btnVaoCa.setForeground(Color.WHITE);
 
-        // Thêm sự kiện cho nút
-        btnTaiBieuDo.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (radThang.isSelected()) {
-                    int thang = Integer.parseInt(cmbThang.getSelectedItem().toString().substring(6)); //với: Tháng 1
-                    int nam = Integer.parseInt(cmbNam.getSelectedItem().toString());
-                    veBieuDo(thang, nam, "tháng");
-                } else {
-                    int nam = Integer.parseInt(cmbNam.getSelectedItem().toString());
-                    veBieuDo(1, nam, "năm");
-                }
+        btnTaiBieuDo.addActionListener(e -> {
+            if (radThang.isSelected()) {
+                int thang = Integer.parseInt(cmbThang.getSelectedItem().toString().substring(6));
+                int nam = Integer.parseInt(cmbNam.getSelectedItem().toString());
+                veBieuDo(thang, nam, "tháng");
+            } else {
+                int nam = Integer.parseInt(cmbNam.getSelectedItem().toString());
+                veBieuDo(1, nam, "năm");
             }
         });
 
-        radThang.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                cmbThang.setVisible(true);
-                cmbNam.setVisible(true);
-                // Cập nhật giao diện
-                pnlNutTaiLai.revalidate();
-                pnlNutTaiLai.repaint();
-            }
+        radThang.addActionListener(e -> {
+            cmbThang.setVisible(true);
+            pnlNutTaiLai.revalidate();
+            pnlNutTaiLai.repaint();
         });
 
-        radNam.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                cmbThang.setVisible(false);
-                cmbNam.setVisible(true);
-                // Cập nhật giao diện
-                pnlNutTaiLai.revalidate();
-                pnlNutTaiLai.repaint();
-            }
+        radNam.addActionListener(e -> {
+            cmbThang.setVisible(false);
+            pnlNutTaiLai.revalidate();
+            pnlNutTaiLai.repaint();
         });
 
-        btnVaoCa.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if (btnVaoCa.getText().equals("Vào Ca")) {
-
-                    btnVaoCa.setText("Ra Ca");
-                    //Cho phép nút hiển thị màu nền
-                    btnVaoCa.setOpaque(true);
-                    btnVaoCa.setBackground(Color.RED);
-                    btnVaoCa.setForeground(Color.WHITE);
-                } else {
-
-                    btnVaoCa.setText("Vào Ca");
-                    btnVaoCa.setOpaque(true);
-                    btnVaoCa.setBackground(Color.GREEN);
-                    btnVaoCa.setForeground(Color.WHITE);
-                }
+        btnVaoCa.addActionListener(e -> {
+            if (btnVaoCa.getText().equals("Vào Ca")) {
+                btnVaoCa.setText("Ra Ca");
+                btnVaoCa.setBackground(Color.RED);
+            } else {
+                btnVaoCa.setText("Vào Ca");
+                btnVaoCa.setBackground(Color.GREEN);
             }
         });
+    }
 
-        JPanel pnlCardBanChay = new JPanel(new BorderLayout());
-        pnlCardBanChay.setBackground(Color.WHITE);
-        pnlCardBanChay.setBorder(BorderFactory.createLineBorder(new Color(220, 220, 220)));
+    private void setupThongTinCaLam() {
+        jPanel17.removeAll();
+        jPanel17.setLayout(new BorderLayout());
+        jPanel17.setBackground(Color.WHITE);
+
+        // 1. Panel Đồng hồ
+        JPanel pnlClock = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        pnlClock.setBackground(Color.WHITE);
+        lblDongHo = new JLabel("00:00:00");
+        lblDongHo.setFont(new Font("Segoe UI", Font.BOLD, 28));
+        lblDongHo.setForeground(new Color(0, 153, 51));
+        pnlClock.add(lblDongHo);
+
+        // 2. Panel Thông tin chi tiết
+        JPanel pnlInfo = new JPanel();
+        pnlInfo.setLayout(new BoxLayout(pnlInfo, BoxLayout.Y_AXIS));
+        pnlInfo.setBackground(Color.WHITE);
+        pnlInfo.setBorder(BorderFactory.createEmptyBorder(0, 15, 10, 0));
+
+        // --- LABEL NGÀY ---
+        lblNgay = new JLabel("Đang tải ngày...");
+        styleLabelCaLam(lblNgay);
+        lblNgay.setFont(new Font("Segoe UI", Font.BOLD, 16));
+        lblNgay.setForeground(new Color(0, 102, 204));
+
+        // --- LABEL CA VÀ GIỜ ---
+        lblTenCa = new JLabel("Ca: ...");
+        lblGioVaoCa = new JLabel("Bắt đầu: ...");
+        styleLabelCaLam(lblTenCa);
+        styleLabelCaLam(lblGioVaoCa);
+
+        // --- [MỚI] LABEL NHÂN VIÊN ---
+        // Lấy tên từ label hiển thị thông tin (nếu có)
+        String tenNV = "";
+        if (lblHoTen != null) {
+            tenNV = lblHoTen.getText();
+        }
+//        // Fallback nếu chưa có dữ liệu hoặc là tên mẫu
+//        if (tenNV == null || tenNV.isEmpty() || tenNV.equals("Nguyễn Văn A")) {
+//            tenNV = "Võ Tiến Khoa";
+//        }
+
+        lblNhanVienTruc = new JLabel("NV: " + tenNV);
+        styleLabelCaLam(lblNhanVienTruc);
+        lblNhanVienTruc.setFont(new Font("Segoe UI", Font.BOLD, 15)); // Chữ đậm
+        lblNhanVienTruc.setForeground(new Color(204, 0, 0)); // Màu đỏ nổi bật
+
+        // --- THÊM VÀO PANEL THEO THỨ TỰ ---
+        pnlInfo.add(lblNgay);           // 1. Ngày
+        pnlInfo.add(Box.createVerticalStrut(5));
+        pnlInfo.add(lblTenCa);          // 2. Tên ca
+        pnlInfo.add(Box.createVerticalStrut(5));
+        pnlInfo.add(lblGioVaoCa);       // 3. Giờ vào ca
+        pnlInfo.add(Box.createVerticalStrut(5));
+        pnlInfo.add(lblNhanVienTruc);   // 4. Nhân viên trực [MỚI]
+
+        // 3. Add vào jPanel17
+        jPanel17.add(pnlClock, BorderLayout.NORTH);
+        jPanel17.add(pnlInfo, BorderLayout.CENTER);
+
+        jPanel17.revalidate();
+        jPanel17.repaint();
+    }
+
+    // Hàm phụ trợ để set font nhanh
+    private void styleLabelCaLam(JLabel lbl) {
+        lbl.setFont(new Font("Segoe UI", Font.PLAIN, 15));
+        lbl.setForeground(new Color(51, 51, 51));
+    }
+
+    private void startRealTimeClock() {
+        // --- [MỚI] Định dạng ngày tháng tiếng Việt ---
+        // Ví dụ: "Thứ Bảy, 06/12/2025"
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("EEEE, dd/MM/yyyy", new java.util.Locale("vi", "VN"));
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+
+        timer = new javax.swing.Timer(1000, e -> {
+            // Dùng LocalDateTime để lấy cả ngày và giờ
+            java.time.LocalDateTime now = java.time.LocalDateTime.now();
+
+            // Cập nhật đồng hồ
+            lblDongHo.setText(now.format(timeFormatter));
+
+            // --- [MỚI] Cập nhật Ngày ---
+            lblNgay.setText(now.format(dateFormatter));
+
+            // Logic xác định ca
+            int hour = now.getHour();
+            if (hour >= 6 && hour < 14) {
+                lblTenCa.setText("Ca hiện tại: Ca Sáng");
+                lblGioVaoCa.setText("Thời gian: 07:00 - 14:00");
+            } else if (hour >= 14 && hour < 22) {
+                lblTenCa.setText("Ca hiện tại: Ca Chiều");
+                lblGioVaoCa.setText("Thời gian: 14:00 - 21:00");
+            } else {
+                lblTenCa.setText("Ca hiện tại: Ngoài giờ");
+                lblGioVaoCa.setText("Thời gian: --:--");
+            }
+        });
+        timer.start();
+    }
+
+    /**
+     * Khởi tạo Bảng: SẢN PHẨM SẮP HẾT HÀNG (gán vào jPanel19)
+     */
+    private void initTableSPSapHetHang() {
+        JPanel pnlCardSPSapHetHang = new JPanel(new BorderLayout());
+        pnlCardSPSapHetHang.setBackground(Color.WHITE);
+        pnlCardSPSapHetHang.setBorder(BorderFactory.createLineBorder(new Color(220, 220, 220)));
 
         JPanel pnlTieuDe = new JPanel(new BorderLayout(10, 10));
         pnlTieuDe.setBackground(new Color(245, 247, 250));
         pnlTieuDe.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        JLabel lblTieuDe = new JLabel("Sản phẩm bán chạy");
+        JLabel lblTieuDe = new JLabel("Sản phẩm sắp hết hàng");
         lblTieuDe.setFont(new Font("Segoe UI", Font.BOLD, 16));
-
-        String[] cacLuaChonLoc = {"Tuần này", "Tháng này"};
-        JComboBox<String> cmbLoc = new JComboBox<>(cacLuaChonLoc);
-        cmbLoc.setBorder(BorderFactory.createLineBorder(new Color(200, 200, 200)));
-
         pnlTieuDe.add(lblTieuDe, BorderLayout.WEST);
-        pnlTieuDe.add(cmbLoc, BorderLayout.EAST);
 
-        String[] tenCot = {"STT", "Tên SP", "SL", "Đơn giá"};
-        Object[][] duLieu = {
-            {1, "Sản phẩm 1", 112, "76.000"},
-            {2, "Sản phẩm 1", 134, "55.000"},
-            {3, "Sản phẩm 1", 342, "178.000"}
-        };
-
-// Tạo model và set không cho phép sửa
-        DefaultTableModel moHinhBang = new DefaultTableModel(duLieu, tenCot) {
+        String[] tenCot = {"STT", "Mã SP", "Tên SP", "ĐVT", "Tồn Kho", "Tồn max"};
+        dtmSPSapHetHang = new DefaultTableModel(new Object[][]{}, tenCot) {
             @Override
             public boolean isCellEditable(int row, int column) {
                 return false;
             }
         };
 
-        JTable bang = new JTable(moHinhBang);
+        Map<SanPham, Integer> dsSPSapHetHang = SanPhamDAO.getSPSapHetHang();
+        int stt = 0;
+        for (Map.Entry<SanPham, Integer> i : dsSPSapHetHang.entrySet()) {
+            stt++;
+            DonViTinh dvtCB = null;
+            ArrayList<DonViTinh> dsDVTSP = DonViTinhDAO.getDonViTinhTheoMaSP(i.getKey().getMaSP());
+            for (DonViTinh d : dsDVTSP) {
+                if (d.isDonViTinhCoBan()) {
+                    dvtCB = d;
+                    break;
+                }
+            }
 
-// --- TÙY CHỈNH GIAO DIỆN BẢNG ---
-// 4. Tùy chỉnh Header của bảng
-        JTableHeader tieuDeBang = bang.getTableHeader();
-        tieuDeBang.setFont(new Font("Segoe UI", Font.BOLD, 14));
-        tieuDeBang.setForeground(new Color(102, 102, 102));
-        tieuDeBang.setBackground(new Color(245, 247, 250));
-        tieuDeBang.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(220, 220, 220)));
-        tieuDeBang.setOpaque(false);
+            Object[] row = {
+                stt + "",
+                i.getKey().getMaSP(),
+                i.getKey().getTen(),
+                dvtCB.getTenDonVi(),
+                i.getValue(),
+                i.getKey().getTonToiDa()
+            };
+            dtmSPSapHetHang.addRow(row);
+        }
 
-// Bật sắp xếp
-        bang.setAutoCreateRowSorter(true);
+        DefaultTableCellRenderer rendererTonKhoDo = new DefaultTableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                // 1. Gọi super để lấy component (thường là JLabel)
+                Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 
-// 5. Tùy chỉnh nội dung Bảng
-        bang.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-        bang.setRowHeight(35);
-        bang.setShowGrid(false);
-        bang.setIntercellSpacing(new Dimension(0, 0));
-        bang.setSelectionBackground(new Color(230, 245, 255));
+                // 2. Định dạng màu sắc: LUÔN ĐẶT MÀU ĐỎ
+                c.setForeground(Color.RED);
 
-// 6. Căn lề cho các cột
-        DefaultTableCellRenderer canhLePhai = new DefaultTableCellRenderer();
-        canhLePhai.setHorizontalAlignment(JLabel.RIGHT);
-        canhLePhai.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 10));
+                // 3. Định dạng hiển thị (Căn phải, Định dạng số)
+                if (value instanceof Number) {
+                    int sl = ((Number) value).intValue();
+                    setText(String.format("%,d", sl)); // Định dạng số có dấu phẩy
+                } else {
+                    // Nếu không phải Number, hiển thị giá trị mặc định
+                    setText(value != null ? value.toString() : "");
+                }
 
-        DefaultTableCellRenderer canhLeGiua = new DefaultTableCellRenderer();
-        canhLeGiua.setHorizontalAlignment(JLabel.CENTER);
+                setHorizontalAlignment(JLabel.RIGHT); // Căn phải
+                setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 10)); // Đệm bên phải
 
-        DefaultTableCellRenderer canhLeTrai = new DefaultTableCellRenderer();
-        canhLeTrai.setHorizontalAlignment(JLabel.LEFT);
-        canhLeTrai.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
-
-        bang.getColumnModel().getColumn(0).setCellRenderer(canhLeGiua);   // STT
-        bang.getColumnModel().getColumn(1).setCellRenderer(canhLeTrai);    // Tên SP
-        bang.getColumnModel().getColumn(2).setCellRenderer(canhLePhai);  // SL
-        bang.getColumnModel().getColumn(3).setCellRenderer(canhLePhai);  // Đơn giá
-
-// 7. Đặt độ rộng cột
-        bang.getColumnModel().getColumn(0).setPreferredWidth(50);
-        bang.getColumnModel().getColumn(1).setPreferredWidth(200);
-        bang.getColumnModel().getColumn(2).setPreferredWidth(80);
-        bang.getColumnModel().getColumn(3).setPreferredWidth(100);
-
-// 8. Đưa bảng vào JScrollPane
-        JScrollPane thanhCuon = new JScrollPane(bang);
-        thanhCuon.setBorder(BorderFactory.createEmptyBorder());
-        thanhCuon.getViewport().setBackground(Color.WHITE);
-
-// 9. Gắn Title Bar và Bảng vào "Card" chính
-        pnlCardBanChay.add(pnlTieuDe, BorderLayout.NORTH);
-        pnlCardBanChay.add(thanhCuon, BorderLayout.CENTER);
-
-// --- THÊM VÀO jPanel19 ---
-        jPanel19.setPreferredSize(new Dimension(400, 0));
-        jPanel19.setLayout(new BorderLayout());
-        jPanel19.setPreferredSize(new Dimension(200, 100));
-
-        jPanel19.add(pnlCardBanChay, BorderLayout.CENTER);
-
-        jPanel19.revalidate();
-        jPanel19.repaint();
-
-        // --- KẾT THÚC CODE ---
-        JPanel pnlCard_HetHang = new JPanel(new BorderLayout());
-        pnlCard_HetHang.setBackground(Color.WHITE);
-        pnlCard_HetHang.setBorder(BorderFactory.createLineBorder(new Color(220, 220, 220)));
-
-        JPanel pnlTieuDe_HetHang = new JPanel(new BorderLayout(10, 10));
-        pnlTieuDe_HetHang.setBackground(new Color(245, 247, 250));
-        pnlTieuDe_HetHang.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-
-        JLabel lblTieuDe_HetHang = new JLabel("Sản phẩm sắp hết hàng");
-        lblTieuDe_HetHang.setFont(new Font("Segoe UI", Font.BOLD, 16));
-        pnlTieuDe_HetHang.add(lblTieuDe_HetHang, BorderLayout.WEST);
-
-// 3. Tạo Bảng (tên biến mới)
-        String[] tenCot_HetHang = {"STT", "Tên SP", "Tồn kho", "Tồn tối thiểu"};
-        Object[][] duLieu_HetHang = {
-            {1, "Sản phẩm 1", 1, 10},
-            {2, "Sản phẩm 1", 125, 10},
-            {3, "Sản phẩm 1", 324, 10}
+                return c;
+            }
         };
 
-// Model
-        DefaultTableModel moHinhBang_HetHang = new DefaultTableModel(duLieu_HetHang, tenCot_HetHang) {
+        tblSPSapHetHang = new JTable(dtmSPSapHetHang);
+        styleTable(tblSPSapHetHang);
+
+        tblSPSapHetHang.getColumnModel().getColumn(0).setCellRenderer(getCenterRenderer());
+        tblSPSapHetHang.getColumnModel().getColumn(1).setCellRenderer(getLeftRenderer());
+        tblSPSapHetHang.getColumnModel().getColumn(2).setCellRenderer(getLeftRenderer());
+        tblSPSapHetHang.getColumnModel().getColumn(3).setCellRenderer(getRightRenderer());
+        tblSPSapHetHang.getColumnModel().getColumn(4).setCellRenderer(rendererTonKhoDo); // <--- SỬA DỤNG RENDERER MỚI
+        tblSPSapHetHang.getColumnModel().getColumn(5).setCellRenderer(getRightRenderer());
+
+        // Giả sử: 
+        tblSPSapHetHang.getColumnModel().getColumn(0).setPreferredWidth(10);   // STT
+        tblSPSapHetHang.getColumnModel().getColumn(1).setPreferredWidth(50);  // Mã SP
+        tblSPSapHetHang.getColumnModel().getColumn(2).setPreferredWidth(200);  // Tên SP
+        tblSPSapHetHang.getColumnModel().getColumn(3).setPreferredWidth(30);   // ĐVT
+        tblSPSapHetHang.getColumnModel().getColumn(4).setPreferredWidth(50);   // Tồn Kho
+        tblSPSapHetHang.getColumnModel().getColumn(5).setPreferredWidth(50);  // Tồn tối đa
+
+        JScrollPane scrollPane = new JScrollPane(tblSPSapHetHang);
+        scrollPane.setBorder(BorderFactory.createEmptyBorder());
+        scrollPane.getViewport().setBackground(Color.WHITE);
+
+        pnlCardSPSapHetHang.add(pnlTieuDe, BorderLayout.NORTH);
+        pnlCardSPSapHetHang.add(scrollPane, BorderLayout.CENTER);
+
+        jPanel19.removeAll();
+        jPanel9.setPreferredSize(new Dimension(120, 0));
+        jPanel19.setLayout(new BorderLayout());
+        jPanel19.add(pnlCardSPSapHetHang, BorderLayout.CENTER);
+        jPanel19.revalidate();
+        jPanel19.repaint();
+    }
+
+    /**
+     * Khởi tạo Bảng: LÔ SẮP HẾT HẠN (gán vào jPanel20)
+     */
+    private void initTableLoSapHetHan() {
+        JPanel pnlCardLoSapHetHan = new JPanel(new BorderLayout());
+        pnlCardLoSapHetHan.setBackground(Color.WHITE);
+        pnlCardLoSapHetHan.setBorder(BorderFactory.createLineBorder(new Color(220, 220, 220)));
+
+        // Header Panel
+        JPanel pnlTieuDe = new JPanel(new BorderLayout(10, 10));
+        pnlTieuDe.setBackground(new Color(245, 247, 250));
+        pnlTieuDe.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        JLabel lblTieuDe = new JLabel("Lô sắp hết hạn");
+        lblTieuDe.setFont(new Font("Segoe UI", Font.BOLD, 16));
+        pnlTieuDe.add(lblTieuDe, BorderLayout.WEST);
+
+        // Table Setup
+        String[] tenCot = {"STT", "Mã lô", "Mã SP", "Tên SP", "SL", "ĐVT", "NHH"};
+        dtmLoSapHetHan = new DefaultTableModel(new Object[][]{}, tenCot) {
             @Override
             public boolean isCellEditable(int row, int column) {
                 return false;
@@ -318,113 +427,132 @@ public class DashBoardQuanLi extends javax.swing.JPanel {
 
             @Override
             public Class<?> getColumnClass(int columnIndex) {
-                if (columnIndex == 2 || columnIndex == 3) {
+                if (columnIndex == 4) {
                     return Integer.class;
                 }
                 return super.getColumnClass(columnIndex);
             }
         };
 
-// 
-        JTable bang_HetHang = new JTable(moHinhBang_HetHang);
+        tblLoSapHetHan = new JTable(dtmLoSapHetHan);
+        styleTable(tblLoSapHetHan);
 
-// --- TÙY CHỈNH GIAO DIỆN BẢNG ---
-// 4. Header (tên biến mới)
-        JTableHeader tieuDeBang_HetHang = bang_HetHang.getTableHeader();
-        tieuDeBang_HetHang.setFont(new Font("Segoe UI", Font.BOLD, 14));
-        tieuDeBang_HetHang.setForeground(new Color(102, 102, 102));
-        tieuDeBang_HetHang.setBackground(new Color(245, 247, 250));
-        tieuDeBang_HetHang.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(220, 220, 220)));
-        tieuDeBang_HetHang.setOpaque(false);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
-        bang_HetHang.setAutoCreateRowSorter(true);
-
-// 5. Tùy chỉnh nội dung Bảng
-        bang_HetHang.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-        bang_HetHang.setRowHeight(35);
-        bang_HetHang.setShowGrid(false);
-        bang_HetHang.setIntercellSpacing(new Dimension(0, 0));
-        bang_HetHang.setSelectionBackground(new Color(230, 245, 255));
-
-// 6. Căn lề (tên biến mới)
-        DefaultTableCellRenderer canhLePhai_HetHang = new DefaultTableCellRenderer();
-        canhLePhai_HetHang.setHorizontalAlignment(JLabel.RIGHT);
-        canhLePhai_HetHang.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 10));
-
-        DefaultTableCellRenderer canhLeGiua_HetHang = new DefaultTableCellRenderer();
-        canhLeGiua_HetHang.setHorizontalAlignment(JLabel.CENTER);
-
-        DefaultTableCellRenderer canhLeTrai_HetHang = new DefaultTableCellRenderer();
-        canhLeTrai_HetHang.setHorizontalAlignment(JLabel.LEFT);
-        canhLeTrai_HetHang.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
-
-        bang_HetHang.getColumnModel().getColumn(0).setCellRenderer(canhLeGiua_HetHang);
-        bang_HetHang.getColumnModel().getColumn(1).setCellRenderer(canhLeTrai_HetHang);
-        bang_HetHang.getColumnModel().getColumn(3).setCellRenderer(canhLePhai_HetHang);
-
-// 7. RENDERER TÙY CHỈNH CHO CỘT "TỒN KHO" (tên biến mới)
-        DefaultTableCellRenderer rendererTonKho_HetHang = new DefaultTableCellRenderer() {
-            @Override
-            public Component getTableCellRendererComponent(JTable table, Object value,
-                    boolean isSelected, boolean hasFocus,
-                    int row, int column) {
-
-                Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-
-                if (value instanceof Integer) {
-                    int tonKho = (Integer) value;
-                    int hanMucTon = (Integer) table.getValueAt(row, 3);
-
-                    setText(String.format("%02d", tonKho));
-
-                    if (tonKho <= hanMucTon) {
-                        c.setForeground(Color.RED);
-                    } else {
-                        c.setForeground(isSelected ? table.getSelectionForeground() : table.getForeground());
-                    }
+        // Load Dữ liệu
+        ArrayList<LoSanPham> dsLo = LoSanPhamDAO.dsLoSanPham();
+        ArrayList<LoSanPham> dsLoSapHetHan = (ArrayList<LoSanPham>) new QuanLyLoBUS().thongKe(dsLo).get("dsLoSapHetHan");
+        int stt = 0;
+        for (LoSanPham i : dsLoSapHetHan) {
+            stt++;
+            DonViTinh dvtCB = null;
+            ArrayList<DonViTinh> dsDVTSP = DonViTinhDAO.getDonViTinhTheoMaSP(i.getSanPham().getMaSP());
+            for (DonViTinh d : dsDVTSP) {
+                if (d.isDonViTinhCoBan()) {
+                    dvtCB = d;
+                    break;
                 }
+            }
 
+            Object[] row = {
+                stt + "",
+                i.getMaLoSanPham(),
+                i.getSanPham().getMaSP(),
+                SanPhamDAO.timSPTheoMa(i.getSanPham().getMaSP()).getTen(),
+                i.getSoLuong(),
+                (dvtCB != null ? dvtCB.getTenDonVi() : ""),
+                i.getNgayHetHan().format(formatter) + ""
+            };
+            dtmLoSapHetHan.addRow(row);
+        }
+
+        DefaultTableCellRenderer rendererSoLuong = new DefaultTableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                if (value instanceof Number) {
+                    int sl = ((Number) value).intValue();
+//                    if (sl < 1000) {
+//                        c.setForeground(Color.RED);
+//                    } else {
+//                        c.setForeground(isSelected ? table.getSelectionForeground() : table.getForeground());
+//                    }
+                    setText(String.format("%,d", sl));
+                }
                 setHorizontalAlignment(JLabel.RIGHT);
                 setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 10));
                 return c;
             }
         };
 
-// Áp dụng renderer cho bảng mới
-        bang_HetHang.getColumnModel().getColumn(2).setCellRenderer(rendererTonKho_HetHang);
+        // Gán Renderer
+        tblLoSapHetHan.getColumnModel().getColumn(0).setCellRenderer(getCenterRenderer());
+        tblLoSapHetHan.getColumnModel().getColumn(1).setCellRenderer(getLeftRenderer());
+        tblLoSapHetHan.getColumnModel().getColumn(3).setCellRenderer(getLeftRenderer());
+        tblLoSapHetHan.getColumnModel().getColumn(4).setCellRenderer(rendererSoLuong); // Cột SL
+        tblLoSapHetHan.getColumnModel().getColumn(6).setCellRenderer(getCenterRenderer()); // NHH
 
-// 8. Đặt độ rộng cột
-        bang_HetHang.getColumnModel().getColumn(0).setPreferredWidth(50);
-        bang_HetHang.getColumnModel().getColumn(1).setPreferredWidth(200);
-        bang_HetHang.getColumnModel().getColumn(2).setPreferredWidth(80);
-        bang_HetHang.getColumnModel().getColumn(3).setPreferredWidth(100);
+        // Độ rộng cột
+        tblLoSapHetHan.getColumnModel().getColumn(0).setPreferredWidth(10);     //STT
+        tblLoSapHetHan.getColumnModel().getColumn(1).setPreferredWidth(150);    //Mã lô
+        tblLoSapHetHan.getColumnModel().getColumn(2).setPreferredWidth(50);    //Mã SP
+        tblLoSapHetHan.getColumnModel().getColumn(3).setPreferredWidth(90);     //Tên SP
+        tblLoSapHetHan.getColumnModel().getColumn(4).setPreferredWidth(20);    //SL
+        tblLoSapHetHan.getColumnModel().getColumn(5).setPreferredWidth(40);    //ĐVT
+        tblLoSapHetHan.getColumnModel().getColumn(6).setPreferredWidth(80);    //NHH
 
-// 9. Đưa bảng vào JScrollPane
-        JScrollPane thanhCuon_HetHang = new JScrollPane(bang_HetHang);
-        thanhCuon_HetHang.setBorder(BorderFactory.createEmptyBorder());
-        thanhCuon_HetHang.getViewport().setBackground(Color.WHITE);
+        JScrollPane scrollPane = new JScrollPane(tblLoSapHetHan);
+        scrollPane.setBorder(BorderFactory.createEmptyBorder());
+        scrollPane.getViewport().setBackground(Color.WHITE);
 
-// 10. Gắn Title Bar và Bảng vào panel chính
-        pnlCard_HetHang.add(pnlTieuDe_HetHang, BorderLayout.NORTH);
-        pnlCard_HetHang.add(thanhCuon_HetHang, BorderLayout.CENTER);
+        pnlCardLoSapHetHan.add(pnlTieuDe, BorderLayout.NORTH);
+        pnlCardLoSapHetHan.add(scrollPane, BorderLayout.CENTER);
 
-// --- THÊM "CARD" MỚI NÀY VÀO jPanel20 ---
-// BƯỚC 1: Đặt layout cho jPanel20
-        jPanel20.setPreferredSize(new Dimension(250, 0));
+        // Add vào Container chính (jPanel20)
+        jPanel20.removeAll();
+        jPanel20.setPreferredSize(new Dimension(500, 0)); // Set độ rộng mong muốn nếu dùng BorderLayout bên ngoài
         jPanel20.setLayout(new BorderLayout());
-
-// BƯỚC 2: Thêm "Card" (mới) vào jPanel20
-        jPanel20.add(pnlCard_HetHang, BorderLayout.CENTER);
-
-// BƯỚC 3: Cập nhật lại giao diện (quan trọng)
+        jPanel20.add(pnlCardLoSapHetHan, BorderLayout.CENTER);
         jPanel20.revalidate();
         jPanel20.repaint();
+    }
 
-        jPanel21.setPreferredSize(new Dimension(400, 0));
+    // --- CÁC HÀM TIỆN ÍCH STYLE CHUNG CHO TABLE ---
+    private void styleTable(JTable table) {
+        table.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        table.setRowHeight(35);
+        table.setShowGrid(false);
+        table.setIntercellSpacing(new Dimension(0, 0));
+        table.setSelectionBackground(new Color(230, 245, 255));
 
-// --- KẾT THÚC CODE ---
-        veBieuDo(LocalDate.now().getMonthValue(), LocalDate.now().getYear(), "tháng");
-        //renderThongTinCaLam();
+        JTableHeader header = table.getTableHeader();
+        header.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        header.setForeground(new Color(102, 102, 102));
+        header.setBackground(new Color(245, 247, 250));
+        header.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, new Color(220, 220, 220)));
+        header.setOpaque(false);
+
+        table.setAutoCreateRowSorter(true);
+    }
+
+    private DefaultTableCellRenderer getRightRenderer() {
+        DefaultTableCellRenderer right = new DefaultTableCellRenderer();
+        right.setHorizontalAlignment(JLabel.RIGHT);
+        right.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 10));
+        return right;
+    }
+
+    private DefaultTableCellRenderer getCenterRenderer() {
+        DefaultTableCellRenderer center = new DefaultTableCellRenderer();
+        center.setHorizontalAlignment(JLabel.CENTER);
+        return center;
+    }
+
+    private DefaultTableCellRenderer getLeftRenderer() {
+        DefaultTableCellRenderer left = new DefaultTableCellRenderer();
+        left.setHorizontalAlignment(JLabel.LEFT);
+        left.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 0));
+        return left;
     }
 
     private void veBieuDo(int thang, int nam, String tieuChi) {
@@ -507,14 +635,13 @@ public class DashBoardQuanLi extends javax.swing.JPanel {
             plot.setRangeGridlinePaint(Color.LIGHT_GRAY);
 
             // Thêm đường KPI (ValueMarker)
-            ValueMarker kpiMarker = new ValueMarker(giaTriKPI);
-            kpiMarker.setPaint(Color.BLUE);
-            kpiMarker.setStroke(new BasicStroke( // Cài đặt nét đứt
-                    2.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND,
-                    1.0f, new float[]{6.0f, 6.0f}, 0.0f
-            ));
-            plot.addRangeMarker(kpiMarker); // Thêm đường KPI vào trục Y (Range)
-
+//            ValueMarker kpiMarker = new ValueMarker(giaTriKPI);
+//            kpiMarker.setPaint(Color.BLUE);
+//            kpiMarker.setStroke(new BasicStroke( // Cài đặt nét đứt
+//                    2.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND,
+//                    1.0f, new float[]{6.0f, 6.0f}, 0.0f
+//            ));
+//            plot.addRangeMarker(kpiMarker); // Thêm đường KPI vào trục Y (Range)
             // *** GÁN RENDERER (CHỈ CẦN 2 DÒNG NÀY) ***
             ToMauCot rendererThang = new ToMauCot(giaTriKPI); //Tạo renderer
             plot.setRenderer(rendererThang); // Gán renderer cho plot
@@ -540,15 +667,14 @@ public class DashBoardQuanLi extends javax.swing.JPanel {
             // Bạn có thể muốn có một KPI khác cho năm
             double kpiNam = giaTriKPI * 25; // Ví dụ: KPI năm = KPI ngày * 25 ngày làm việc
 
-            // Thêm đường KPI (ValueMarker)
-            ValueMarker kpiMarker = new ValueMarker(kpiNam); // Dùng KPI năm
-            kpiMarker.setPaint(Color.BLUE);
-            kpiMarker.setStroke(new BasicStroke(
-                    2.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND,
-                    1.0f, new float[]{6.0f, 6.0f}, 0.0f
-            ));
-            plot.addRangeMarker(kpiMarker);
-
+//            // Thêm đường KPI (ValueMarker)
+//            ValueMarker kpiMarker = new ValueMarker(kpiNam); // Dùng KPI năm
+//            kpiMarker.setPaint(Color.BLUE);
+//            kpiMarker.setStroke(new BasicStroke(
+//                    2.0f, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND,
+//                    1.0f, new float[]{6.0f, 6.0f}, 0.0f
+//            ));
+//            plot.addRangeMarker(kpiMarker);
             // *** GÁN RENDERER (CHỈ CẦN 2 DÒNG NÀY) ***
             ToMauCot rendererNam = new ToMauCot(kpiNam); // Dùng KPI năm
             plot.setRenderer(rendererNam); // Gán renderer cho plot
@@ -966,5 +1092,111 @@ public class DashBoardQuanLi extends javax.swing.JPanel {
         public void chartMouseClicked(ChartMouseEvent event) {
             // Không cần làm gì
         }
+    }
+
+    /**
+     * ĐÃ SỬA: Chỉ còn 2 phần (Doanh thu & Hóa đơn)
+     */
+    private void initPanelThongKeNgay() {
+        jPanel21.removeAll();
+        jPanel21.setPreferredSize(new Dimension(200, 0)); // Chiều rộng đã giảm
+        jPanel21.setBackground(Color.WHITE);
+        jPanel21.setLayout(new java.awt.GridLayout(2, 1, 0, 15));
+        jPanel21.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+
+        // --- PHẦN 1: DOANH THU ---
+        // TODO: Thay bằng dữ liệu thật từ DAO
+        LocalDate homNay = LocalDate.now();
+        LocalDate homQua = homNay.minusDays(1);
+
+        double doanhThuHomNay = HoaDonDAO.getDoanhThuTheoNgay(homNay);
+        double doanhThuHomQua = HoaDonDAO.getDoanhThuTheoNgay(homQua);
+
+        // Tính % tăng trưởng:
+        double phanTramDoanhThu = 0;
+        if (doanhThuHomQua > 0) {
+            phanTramDoanhThu = ((doanhThuHomNay - doanhThuHomQua) / doanhThuHomQua) * 100;
+        }
+
+        // Gọi hàm tạo panel với tham số %
+        JPanel pnlDoanhThu = taoPanelThongKeCon("Doanh thu hôm nay", doanhThuHomNay, phanTramDoanhThu, true);
+
+        // --- PHẦN 2: HÓA ĐƠN ---
+        // TODO: Thay bằng dữ liệu thật từ DAO
+        int hoaDonHomNay = HoaDonDAO.timHDTheoNgayLap(homNay).size();
+        int hoaDonHomQua = HoaDonDAO.timHDTheoNgayLap(homQua).size();
+
+        double phanTramHoaDon = 0;
+        if (hoaDonHomQua > 0) {
+            phanTramHoaDon = ((double) (hoaDonHomNay - hoaDonHomQua) / hoaDonHomQua) * 100;
+        }
+
+        JPanel pnlHoaDon = taoPanelThongKeCon("Tổng hóa đơn", hoaDonHomNay, phanTramHoaDon, false);
+
+        jPanel21.add(pnlDoanhThu);
+        jPanel21.add(pnlHoaDon);
+
+        jPanel21.revalidate();
+        jPanel21.repaint();
+    }
+
+    /**
+     * Hàm vẽ giao diện cho 1 ô thống kê
+     */
+    private JPanel taoPanelThongKeCon(String tieuDe, double giaTri, double phanTramTang, boolean isTienTe) {
+        JPanel pnl = new JPanel(new BorderLayout());
+        pnl.setBackground(Color.WHITE);
+        pnl.setBorder(BorderFactory.createCompoundBorder(
+                BorderFactory.createLineBorder(new Color(220, 220, 220), 1),
+                BorderFactory.createEmptyBorder(10, 15, 10, 15)
+        ));
+
+        // 1. Tiêu đề
+        JLabel lblTieuDe = new JLabel(tieuDe);
+        lblTieuDe.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        lblTieuDe.setForeground(Color.GRAY);
+
+        // 2. Giá trị chính
+        JLabel lblGiaTri = new JLabel();
+        lblGiaTri.setFont(new Font("Segoe UI", Font.BOLD, 20));
+        if (isTienTe) {
+            lblGiaTri.setForeground(new Color(51, 51, 51)); // Màu đen xám
+            lblGiaTri.setText(NumberFormat.getCurrencyInstance(new java.util.Locale("vi", "VN")).format(giaTri));
+        } else {
+            lblGiaTri.setForeground(new Color(51, 51, 51));
+            lblGiaTri.setText(String.valueOf((int) giaTri));
+        }
+
+        // 3. Dòng so sánh (Mới thêm)
+        JLabel lblSoSanh = new JLabel();
+        lblSoSanh.setFont(new Font("Segoe UI", Font.PLAIN, 13));
+
+        String muiTen = phanTramTang >= 0 ? "↑" : "↓";
+        String trangThai = String.format("%.1f%% so với hôm qua", Math.abs(phanTramTang));
+        lblSoSanh.setText(muiTen + " " + trangThai);
+
+        if (phanTramTang >= 0) {
+            lblSoSanh.setForeground(new Color(0, 153, 51)); // Màu xanh lá (Tăng)
+        } else {
+            lblSoSanh.setForeground(new Color(220, 53, 69)); // Màu đỏ (Giảm)
+        }
+
+        // 4. Icon bên phải
+//        JLabel lblIcon = new JLabel();
+//        lblIcon.setFont(new Font("Segoe UI", Font.PLAIN, 24));
+//        if (tieuDe.contains("Doanh thu")) lblIcon.setText("💰");
+//        else lblIcon.setText("🧾");
+        // --- Layout ---
+        // Panel chứa text (dùng GridLayout 3 dòng: Tiêu đề, Giá trị, So sánh)
+        JPanel pnlText = new JPanel(new java.awt.GridLayout(3, 1, 0, 2));
+        pnlText.setBackground(Color.WHITE);
+        pnlText.add(lblTieuDe);
+        pnlText.add(lblGiaTri);
+        pnlText.add(lblSoSanh);
+
+        pnl.add(pnlText, BorderLayout.CENTER);
+        //pnl.add(lblIcon, BorderLayout.EAST);
+
+        return pnl;
     }
 }

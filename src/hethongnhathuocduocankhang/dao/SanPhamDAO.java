@@ -2,10 +2,13 @@ package hethongnhathuocduocankhang.dao;
 
 import java.sql.*;
 import hethongnhathuocduocankhang.connectDB.ConnectDB;
+import hethongnhathuocduocankhang.entity.DonViTinh;
 import hethongnhathuocduocankhang.entity.SanPham;
 import hethongnhathuocduocankhang.entity.LoaiSanPhamEnum;
 import hethongnhathuocduocankhang.entity.MaVachSanPham;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class SanPhamDAO {
 
@@ -27,7 +30,7 @@ public class SanPhamDAO {
                 int tonToiThieu = rs.getInt("tonToiThieu");
                 int tonToiDa = rs.getInt("tonToiDa");
                 //boolean daXoa = rs.getBoolean("daXoa");
-                
+
                 SanPham sp = new SanPham(maSP, tenSP, moTa, thanhPhan, loaiSanPham, tonToiThieu, tonToiDa);
                 //SanPham sp = new SanPham(maSP, tenSP, moTa, thanhPhan, loaiSanPham, tonToiThieu, tonToiDa, daXoa);
                 dsSP.add(sp);
@@ -70,9 +73,9 @@ public class SanPhamDAO {
             PreparedStatement stmt = con.prepareStatement(query);
             stmt.setString(1, maSP);
             n = stmt.executeUpdate();
-            
+
             DonViTinhDAO.xoaDonViTinhTheoMaSP(maSP);
-            
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -238,7 +241,7 @@ public class SanPhamDAO {
         }
         return maCuoiCung;
     }
-    
+
     public static SanPham timMotSPTheoMaNCC(String maNhaCC) {
         SanPham sp = new SanPham();
         try {
@@ -259,11 +262,11 @@ public class SanPhamDAO {
                 int tonToiThieu = rs.getInt("tonToiThieu");
                 int tonToiDa = rs.getInt("tonToiDa");
                 sp = new SanPham(maSP, ten, moTa, thanhPhan, loaiSanPham, tonToiThieu, tonToiDa);
-            }   
-        }catch(Exception ex) {
+            }
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
-            return sp;
+        return sp;
     }
 
     private static ArrayList<MaVachSanPham> timMaBarcodeTheoMaSP(String masp) {
@@ -289,7 +292,72 @@ public class SanPhamDAO {
         }
         return dsMaVachSP;
     }
-    
+
+    public static ArrayList<SanPham> getSPDaHetHang() {
+        ArrayList<SanPham> dsSP = new ArrayList<>();
+
+        try {
+            ConnectDB.getInstance().connect();
+            Connection con = ConnectDB.getConnection();
+            String query = "select sp.maSP, sp.ten, sp.moTa, sp.thanhPhan, sp.loaiSanPham, sp.tonToiThieu, sp.tonToiDa, sp.daXoa, soLuong = sum(soLuong)\n"
+                    + "from LoSanPham lsp join SanPham sp\n"
+                    + "on lsp.maSP = sp.maSP\n"
+                    + "group by sp.maSP, sp.ten, sp.moTa, sp.thanhPhan, sp.loaiSanPham, sp.tonToiThieu, sp.tonToiDa, sp.daXoa\n"
+                    + "having sum(soLuong) = 0";
+            PreparedStatement stmt = con.prepareStatement(query);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                String maSP = rs.getString("maSP");
+                String ten = rs.getString("ten");
+                String moTa = rs.getString("moTa");
+                String thanhPhan = rs.getString("thanhPhan");
+                LoaiSanPhamEnum loaiSanPham = LoaiSanPhamEnum.valueOf(rs.getString("loaiSanPham"));
+                int tonToiThieu = rs.getInt("tonToiThieu");
+                int tonToiDa = rs.getInt("tonToiDa");
+                boolean daXoa = rs.getBoolean("daXoa");
+                SanPham sp = new SanPham(maSP, ten, moTa, thanhPhan, loaiSanPham, tonToiThieu, tonToiDa, daXoa);
+                //int soLuong = rs.getInt("soLuong");
+                dsSP.add(sp);
+            }
+        } catch (SQLException e) {
+            System.out.println("Lỗi kết nối csdl");
+        }
+
+        return dsSP;
+    }
+
+    public static Map<SanPham, Integer> getSPSapHetHang() {
+        Map<SanPham, Integer> dsSP = new HashMap<>();
+
+        try {
+            ConnectDB.getInstance().connect();
+            Connection con = ConnectDB.getConnection();
+            String query = "select sp.maSP, sp.ten, sp.moTa, sp.thanhPhan, sp.loaiSanPham, sp.tonToiThieu, sp.tonToiDa, sp.daXoa, soLuong = sum(soLuong)\n"
+                    + "from LoSanPham lsp join SanPham sp\n"
+                    + "on lsp.maSP = sp.maSP\n"
+                    + "group by sp.maSP, sp.ten, sp.moTa, sp.thanhPhan, sp.loaiSanPham, sp.tonToiThieu, sp.tonToiDa, sp.daXoa\n"
+                    + "having sum(soLuong) <= tonToiDa";
+            PreparedStatement stmt = con.prepareStatement(query);
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                String maSP = rs.getString("maSP");
+                String ten = rs.getString("ten");
+                String moTa = rs.getString("moTa");
+                String thanhPhan = rs.getString("thanhPhan");
+                LoaiSanPhamEnum loaiSanPham = LoaiSanPhamEnum.valueOf(rs.getString("loaiSanPham"));
+                int tonToiThieu = rs.getInt("tonToiThieu");
+                int tonToiDa = rs.getInt("tonToiDa");
+                boolean daXoa = rs.getBoolean("daXoa");
+                SanPham sp = new SanPham(maSP, ten, moTa, thanhPhan, loaiSanPham, tonToiThieu, tonToiDa, daXoa);
+                int soLuong = rs.getInt("soLuong");
+                dsSP.put(sp, soLuong);
+            }
+        } catch (SQLException e) {
+            System.out.println("Lỗi kết nối csdl");
+        }
+        return dsSP;
+    }
+
     public static String getMaSpTheoMaVach(String maVach) {
         String maSP = null;
         try {
