@@ -480,7 +480,7 @@ public class TraHangGUI extends javax.swing.JPanel {
         
         int soLuongChonHienTai = 0;
         for(int i=0;i<dtmCTHD.getRowCount();i++){
-            if(dtmCTHD.getValueAt(i, 8)==Boolean.TRUE){
+            if(dtmCTHD.getValueAt(i, 8)==Boolean.TRUE && Integer.parseInt(dtmCTHD.getValueAt(i, 3).toString()) > 0){
                 soLuongChonHienTai++;
             }
         }
@@ -493,7 +493,7 @@ public class TraHangGUI extends javax.swing.JPanel {
         int count=0;
         for(int i=0; i<dtmCTHD.getRowCount(); i++){
             System.out.println(1);
-            if(dtmCTHD.getValueAt(i, 8) == Boolean.TRUE){
+            if(dtmCTHD.getValueAt(i, 8)==Boolean.TRUE && Integer.parseInt(dtmCTHD.getValueAt(i, 3).toString()) > 0){
                 if(HoaDonDAO.getSoPTH(txtMaHoaDon.getText())>0){
                     themDongBangPhieuTraHangDaTungTraRoi(dtmCTHD.getValueAt(i, 1).toString());
                     count++;
@@ -727,6 +727,9 @@ public class TraHangGUI extends javax.swing.JPanel {
             row[6] = dinhDangTien(giamGia) ;
             row[7] = dinhDangTien(thanhTien);
             row[8] = chon;
+            if(soLuong<=0){
+                row[2] = "(Không nhận trả hàng nữa!) " + tenSanPham;
+            }
             bangCTHD.addRow(row);
         } 
     }
