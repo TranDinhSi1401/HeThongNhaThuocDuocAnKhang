@@ -11,6 +11,7 @@ package hethongnhathuocduocankhang.entity;
 public class ChiTietPhieuNhap {
     private PhieuNhap maPhieuNhap;
     private LoSanPham maLoSanPham;
+    private NhaCungCap ncc;
     private int soLuong;
     private double donGia;
     private double thanhTien;
@@ -24,11 +25,10 @@ public class ChiTietPhieuNhap {
         this.maLoSanPham = maLoSanPham;
     }
 
-    
-    
-    public ChiTietPhieuNhap(PhieuNhap maPhieuNhap, LoSanPham maLoSanPham, int soLuong, double donGia, double thanhTien, String ghiChu) {
+    public ChiTietPhieuNhap(PhieuNhap maPhieuNhap, LoSanPham maLoSanPham, NhaCungCap ncc, int soLuong, double donGia, double thanhTien, String ghiChu) {
         this.maPhieuNhap = maPhieuNhap;
         this.maLoSanPham = maLoSanPham;
+        this.ncc = ncc;
         this.soLuong = soLuong;
         this.donGia = donGia;
         this.thanhTien = thanhTien;
@@ -41,6 +41,10 @@ public class ChiTietPhieuNhap {
 
     public LoSanPham getMaLoSanPham() {
         return maLoSanPham;
+    }
+
+    public NhaCungCap getNcc() {
+        return ncc;
     }
 
     public int getSoLuong() {
@@ -67,6 +71,10 @@ public class ChiTietPhieuNhap {
         this.maLoSanPham = maLoSanPham;
     }
 
+    public void setNcc(NhaCungCap ncc) {
+        this.ncc = ncc;
+    }
+
     public void setSoLuong(int soLuong) {
         this.soLuong = soLuong;
     }
@@ -85,8 +93,11 @@ public class ChiTietPhieuNhap {
 
     @Override
     public String toString() {
-        return "ChiTietPhieuNhap{" + "maPhieuNhap=" + maPhieuNhap + ", maLoSanPham=" + maLoSanPham + ", soLuong=" + soLuong + ", donGia=" + donGia + ", thanhTien=" + thanhTien + ", ghiChu=" + ghiChu + '}';
+        return "ChiTietPhieuNhap{" + "maPhieuNhap=" + maPhieuNhap + ", maLoSanPham=" + maLoSanPham + ", ncc=" + ncc + ", soLuong=" + soLuong + ", donGia=" + donGia + ", thanhTien=" + thanhTien + ", ghiChu=" + ghiChu + '}';
     }
     
+    
+    
+   
     
 }

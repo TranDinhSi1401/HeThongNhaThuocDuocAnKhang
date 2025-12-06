@@ -5,13 +5,18 @@
 package hethongnhathuocduocankhang.bus;
 
 import hethongnhathuocduocankhang.dao.LoSanPhamDAO;
+import hethongnhathuocduocankhang.dao.NhaCungCapDAO;
+import hethongnhathuocduocankhang.dao.SanPhamCungCapDAO;
+import hethongnhathuocduocankhang.dao.SanPhamDAO;
 import hethongnhathuocduocankhang.entity.LoSanPham;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  *
@@ -43,6 +48,22 @@ public class QuanLyLoBUS {
 //        return dsKQ;
 //    }
     
+        public String tinhTrangThaiLo(LoSanPham lo) {
+        if (lo.isDaHuy()) {
+            return "Đã hủy";
+        }
+
+        long kq = kiemTra(LocalDate.now(), lo.getNgayHetHan());
+
+        if (kq < 0) {
+            return "Hết hạn";
+        } else if (kq >= 0 && kq <= 30) {
+            return "Sắp hết hạn";
+        } else {
+            return "Còn hạn";
+        }
+    }
+
     
     public Map<String, Object> thongKe(ArrayList<LoSanPham> dsLo){
         int daHuy =0, hetHan=0, sapHetHan =0, conHan=0;
@@ -106,5 +127,34 @@ public class QuanLyLoBUS {
         return dsLo;
     }
     
-    
+    public ArrayList<LoSanPham> timKiemLo ( 
+            String maLo, 
+            String maSP, 
+            String tenSP, 
+            String maNCC, 
+            String trangThai){
+        
+        Map<String, Object> ds = thongKe(LoSanPhamDAO.dsLoSanPham());
+        ArrayList<LoSanPham> dsLoDaHuy = (ArrayList<LoSanPham>) ds.get("dsLoDaHuy");
+        ArrayList<LoSanPham> dsLoHetHan = (ArrayList<LoSanPham>) ds.get("dsLoHetHan");
+        ArrayList<LoSanPham> dsLoSapHetHan = (ArrayList<LoSanPham>) ds.get("dsSapHetHan");
+        ArrayList<LoSanPham> dsLoConHan = (ArrayList<LoSanPham>) ds.get("dsLoConHan");
+        ArrayList<LoSanPham> dsLo = LoSanPhamDAO.dsLoSanPham();
+        
+        ArrayList<LoSanPham> dsTraVe = new ArrayList<>();
+        
+        switch(trangThai){
+            case "còn hạn" -> dsTraVe = dsLoConHan;
+            case "sắp hết hạn" -> dsTraVe = dsLoSapHetHan;
+            case "hết hạn" -> dsTraVe = dsLoHetHan;
+            case "đã hủy" -> dsTraVe = dsLoDaHuy;
+            default ->{ dsTraVe = dsLo;
+            }
+        }
+        return (ArrayList<LoSanPham>) dsTraVe.stream()
+                .filter(lo->maLo == null || lo.getMaLoSanPham().contains(maLo))
+                .filter(lo->maSP==null||lo.getSanPham().getMaSP().contains(maSP))
+                .filter(lo->tenSP==null||lo.getSanPham().getTen().contains(tenSP))
+                .collect(Collectors.toList());        
+    }
 }

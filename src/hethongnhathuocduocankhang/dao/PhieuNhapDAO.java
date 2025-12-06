@@ -5,10 +5,14 @@
 package hethongnhathuocduocankhang.dao;
 
 import hethongnhathuocduocankhang.connectDB.ConnectDB;
+import hethongnhathuocduocankhang.entity.NhaCungCap;
+import hethongnhathuocduocankhang.entity.TaiKhoan;
+import hethongnhathuocduocankhang.gui.GiaoDienChinhGUI;
 import java.sql.SQLException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.time.LocalDate;
 
 /**
  *
@@ -34,5 +38,27 @@ public class PhieuNhapDAO {
         } catch (SQLException sQLException) {
         }
         return ma;
+    }
+        public static boolean themPhieuNhap(LocalDate ngayTao, double tongTien, String ghiChu){
+        int n=0;
+        try {
+            TaiKhoan tk = GiaoDienChinhGUI.getTk();
+            ConnectDB.getInstance().connect();
+            Connection con = ConnectDB.getConnection();
+            String sql = "Insert PhieuNhap (maPhieuNhap, ngayTao, maNV, tongTien, ghiChu) " // Tạo khóa chính tự tăng
+                    + "values(?, ?, ?, ?, ?)";
+            PreparedStatement st = con.prepareStatement(sql);
+            ngayTao = LocalDate.now();
+            java.sql.Date nt = java.sql.Date.valueOf(ngayTao);
+            st.setString(1, String.format("PN-%04d", PhieuNhapDAO.getPhieuCuoiCung() +1));//mã Phiếu nhập
+            st.setDate(2, nt);
+            st.setString(3, tk.getNhanVien().getMaNV());
+            st.setDouble(4, tongTien);
+            st.setString(5, ghiChu);
+            n = st.executeUpdate();
+        } catch (SQLException s) {
+            s.printStackTrace();
+        }
+        return n>0;
     }
 }
