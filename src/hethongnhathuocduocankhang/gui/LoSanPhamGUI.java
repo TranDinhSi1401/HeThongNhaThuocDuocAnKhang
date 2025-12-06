@@ -1130,7 +1130,6 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
             LoSanPham lo = new LoSanPham((String) tbl.getValueAt(i, 2), 
                             new SanPham((String) tbl.getValueAt(i, 0)), 
                             (Integer)tbl.getValueAt(i, 7), sx, hh, false);
-            String ghiChu = tbl.getValueAt(i, 10).toString().trim();
             // ghi lô sản phẩm nếu được chọn
             if(check && LoSanPhamDAO.themLoSanPham(lo)){
                 kiemTra++;
@@ -1140,6 +1139,7 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
                 NhaCungCap ncc = NhaCungCapDAO.getNhaCungCapTheoTen(tenNhaCungCap);
                 
                 double giaNhap = Double.parseDouble(tbl.getValueAt(i, 8).toString());
+                String ghiChu = tbl.getValueAt(i, 10)==null ? "":tbl.getValueAt(i, 10).toString().trim();
                 if(ChiTietPhieuNhapDAO.themChiTietPhieuNhap(lo, pn, ncc, giaNhap, tongTien, ghiChu)) continue;
                 else {
                     JOptionPane.showMessageDialog(this, "Ghi chi tiết phiếu đặt thất bại");
