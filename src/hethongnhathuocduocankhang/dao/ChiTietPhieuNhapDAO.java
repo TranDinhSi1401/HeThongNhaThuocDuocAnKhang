@@ -22,16 +22,16 @@ public class ChiTietPhieuNhapDAO {
         try {
             ConnectDB.getInstance().connect();
             Connection con = ConnectDB.getConnection();
-            String sql = "Insert ChiTietPhieuNhap (maPhieuNhap, maLoSanPham, maNCC soLuong, donGia, thanhTien, ghiChu) "
+            String sql = "Insert ChiTietPhieuNhap (maPhieuNhap, maLoSanPham, maNCC, soLuong, donGia, thanhTien, ghiChu) "
                     + "values(?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement st = con.prepareStatement(sql);
             st.setString(1, pn.getMaPhieuNhap());
             st.setString(2, lo.getMaLoSanPham());
             st.setString(3, ncc.getMaNCC());
-            st.setInt(3, lo.getSoLuong());
-            st.setDouble(4, gia);
-            st.setDouble(5, thanhTien);
-            st.setString(6, ghiChu);
+            st.setInt(4, lo.getSoLuong());
+            st.setDouble(5, gia);
+            st.setDouble(6, thanhTien);
+            st.setString(7, ghiChu);
             n = st.executeUpdate();
         } catch (SQLException s) {
             s.printStackTrace();
