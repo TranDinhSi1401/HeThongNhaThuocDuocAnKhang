@@ -445,7 +445,7 @@ public class TraHangGUI extends javax.swing.JPanel {
 
     private void txtMaHoaDonFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtMaHoaDonFocusGained
         // TODO add your handling code here:
-        txtMaHoaDon.setText("HD-010625-0001");
+        txtMaHoaDon.setText("HD-301125-0030");
     }//GEN-LAST:event_txtMaHoaDonFocusGained
 
     private void txtMaHoaDonKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtMaHoaDonKeyPressed
@@ -692,8 +692,9 @@ public class TraHangGUI extends javax.swing.JPanel {
             System.out.println(2);
         }
         
-        long ngayLap = ChronoUnit.DAYS.between(LocalDate.now(), hoaDon.getNgayLapHoaDon());
+        long ngayLap = ChronoUnit.DAYS.between(LocalDate.now(), hoaDon.getNgayLapHoaDon()) * -1;
         if(ngayLap <=30){
+            System.out.println(ngayLap);
             //Them du lieu vao bang cthd
             themDuLieuCTHDVaoBang(listCTHD);
             taoThongTinPhieu(maHoaDon);
