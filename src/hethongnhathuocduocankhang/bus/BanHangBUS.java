@@ -24,13 +24,14 @@ import hethongnhathuocduocankhang.entity.NhanVien;
 import hethongnhathuocduocankhang.entity.SanPham;
 import hethongnhathuocduocankhang.entity.TaiKhoan;
 import hethongnhathuocduocankhang.gui.GiaoDienChinhGUI;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -43,6 +44,8 @@ import javax.swing.table.DefaultTableModel;
  * @author trand
  */
 public class BanHangBUS {
+    private static final String LINE = "=".repeat(120);
+    private static final String SEPARATOR = "-".repeat(120);
     
     public String chuanHoaMaSP(String input) {
         if (input == null) return "";
@@ -179,7 +182,7 @@ public class BanHangBUS {
         return false;
     }
     
-    public void thanhToan(JTable tblCTHD, String maKH, boolean chuyenKhoan, double tongTien) throws Exception{
+    public boolean thanhToan(JTable tblCTHD, String maKH, boolean chuyenKhoan, double tongTien) throws Exception{
         int confirm = JOptionPane.showConfirmDialog(null, "Bạn có chắc muốn thanh toán không?", "Xác nhận", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE
         );
         // Xác nhận thanh toán
@@ -228,6 +231,7 @@ public class BanHangBUS {
             DefaultTableModel model = (DefaultTableModel)tblCTHD.getModel();
             for(int i = 0; i < model.getRowCount(); i++) {
                String maDVT = String.valueOf(model.getValueAt(i, 7));
+               int heSoQuyDoi = DonViTinhDAO.getDonViTinhTheoMaDVT(maDVT).getHeSoQuyDoi();
                int soLuong = Integer.parseInt(model.getValueAt(i, 4).toString());
                double donGia = Double.parseDouble(model.getValueAt(i, 3).toString());
                double giamGia = Double.parseDouble(model.getValueAt(i, 5).toString());
@@ -252,10 +256,10 @@ public class BanHangBUS {
                } 
 
                // Trừ tồn kho và tạo chi tiết xuất lô
-               int soLuongXuat = soLuong;
+               int soLuongXuat = soLuong * heSoQuyDoi;
                ArrayList<LoSanPham> dsLSP = LoSanPhamDAO.getLoSanPhamTheoMaSP(maSP);
                for(LoSanPham lsp : dsLSP) {
-                   int soLuongTon = lsp.getSoLuong();
+                    int soLuongTon = lsp.getSoLuong();
                     if (soLuongXuat <= 0)
                         break;
 
@@ -286,16 +290,21 @@ public class BanHangBUS {
             }
 
             String noiDung = taoNoiDungHoaDon(hd, dsCTHD);
+            JDialog dialog = new JDialog();
+            dialog.setTitle(maHDMoi);
+            dialog.setSize(1000, 600);
+            dialog.setLocationRelativeTo(null);
+            dialog.setModal(true);
 
-            // Hiển thị trong một hộp thoại lớn:
-            JTextArea textArea = new JTextArea(noiDung);
-            textArea.setEditable(false);
-            textArea.setFont(new Font("Monospaced", Font.PLAIN, 13));
-            JScrollPane scroll = new JScrollPane(textArea);
-            scroll.setPreferredSize(new Dimension(600, 500));
+            JTextArea area = new JTextArea(noiDung);
+            area.setEditable(false);
+            area.setFont(new Font("Courier New", Font.PLAIN, 13));
 
-            JOptionPane.showMessageDialog(null, scroll, "Hóa đơn " + hd.getMaHoaDon(), JOptionPane.INFORMATION_MESSAGE);
+            dialog.add(new JScrollPane(area));
+            dialog.setVisible(true);
+            return true;
         }
+        return false;
     }
     
     private String taoMaHoaDonMoi(LocalDate ngay, int soThuTu) {
@@ -320,43 +329,78 @@ public class BanHangBUS {
     }
     
     public static String taoNoiDungHoaDon(HoaDon hd, ArrayList<ChiTietHoaDon> dsCTHD) {
+        int WIDTH = 120;
+        String LINE = "=".repeat(WIDTH);
+        String SEPARATOR = "-".repeat(WIDTH);
+
         StringBuilder sb = new StringBuilder();
         DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+        DecimalFormat df = new DecimalFormat("#,###");
 
-        sb.append("====================================================================\n");
-        sb.append("                         HÓA ĐƠN BÁN HÀNG\n");
-        sb.append("====================================================================\n");
+        
+        sb.append(LINE).append("\n");
+        sb.append(center("HÓA ĐƠN BÁN HÀNG", WIDTH)).append("\n");
+        sb.append(LINE).append("\n");
+
         sb.append(String.format("Mã hóa đơn : %s\n", hd.getMaHoaDon()));
         sb.append(String.format("Ngày lập   : %s\n", hd.getNgayLapHoaDon().format(fmt)));
         sb.append(String.format("Nhân viên  : %s\n", hd.getNhanVien().getMaNV()));
         sb.append(String.format("Khách hàng : %s\n", hd.getKhachHang().getMaKH()));
         sb.append(String.format("Hình thức  : %s\n", hd.isChuyenKhoan() ? "Chuyển khoản" : "Tiền mặt"));
-        sb.append("--------------------------------------------------------------------\n");
-        sb.append(String.format("%-4s %-40s %-6s %-8s %-12s %-10s %-12s\n",
+
+        sb.append("\n").append(SEPARATOR).append("\n");
+
+        // Giảm độ rộng cột cho phù hợp chiều ngang 120 ký tự
+        sb.append(String.format("%-4s %-55s %-8s %-15s %-12s %-10s %-12s\n",
                 "STT", "Sản phẩm", "SL", "ĐVT", "Đơn giá", "Giảm giá", "Thành tiền"));
-        sb.append("--------------------------------------------------------------------\n");
+
+        sb.append(SEPARATOR).append("\n");
 
         int stt = 1;
         double tongTien = 0;
+
         for (ChiTietHoaDon cthd : dsCTHD) {
+
             String maSP = DonViTinhDAO.getMaSanPhamTheoMaDVT(cthd.getDonViTinh().getMaDonViTinh());
             String tenSP = SanPhamDAO.timSPTheoMa(maSP).getTen();
             String tenDVT = DonViTinhDAO.getDonViTinhTheoMaDVT(cthd.getDonViTinh().getMaDonViTinh()).getTenDonVi();
 
+            String giamStr = String.format("%.0f%%", cthd.getGiamGia() * 100);
+
             double thanhTien = cthd.getThanhTien();
             tongTien += thanhTien;
 
-            sb.append(String.format("%-4d %-40s %-6d %-8s %-12.0f %-10.0f%% %-12.0f\n",
+            if (tenSP.length() > 55)
+                tenSP = tenSP.substring(0, 55); // tránh tràn dòng
+
+            sb.append(String.format(
+                    "%-4d %-55s %-8d %-15s %-12s %-10s %-12s\n",
                     stt++, tenSP, cthd.getSoLuong(), tenDVT,
-                    cthd.getDonGia(), cthd.getGiamGia() * 100, thanhTien));
+                    df.format(cthd.getDonGia()), giamStr, df.format(thanhTien)
+            ));
         }
 
-        sb.append("--------------------------------------------------------------------\n");
-        sb.append(String.format("%62s: %.0f VND\n", "TỔNG CỘNG", tongTien));
-        sb.append("====================================================================\n");
-        sb.append("         CẢM ƠN QUÝ KHÁCH, HẸN GẶP LẠI!\n");
-        sb.append("====================================================================\n");
+        sb.append(SEPARATOR).append("\n");
+        String tongCongStr = "TỔNG CỘNG: " + df.format(tongTien) + " VND";
+        sb.append(alignRight(tongCongStr, WIDTH)).append("\n");
+        sb.append(LINE).append("\n");
+
+        sb.append(center("CẢM ƠN QUÝ KHÁCH, HẸN GẶP LẠI!", WIDTH)).append("\n");
+
+        sb.append(LINE).append("\n");
 
         return sb.toString();
     }
+
+    
+    private static String center(String text, int width) {
+        int padSize = (width - text.length()) / 2;
+        return " ".repeat(Math.max(0, padSize)) + text;
+    }
+
+    private static String alignRight(String text, int width) {
+        int padding = width - text.length();
+        if (padding < 0) padding = 0;
+        return " ".repeat(padding) + text;
+    } 
 }

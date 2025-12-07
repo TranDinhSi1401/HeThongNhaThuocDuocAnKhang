@@ -10,13 +10,14 @@ import hethongnhathuocduocankhang.dao.DonViTinhDAO;
 import hethongnhathuocduocankhang.dao.KhachHangDAO;
 import hethongnhathuocduocankhang.entity.DonViTinh;
 import hethongnhathuocduocankhang.entity.KhachHang;
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -33,6 +34,9 @@ import javax.swing.table.TableColumn;
  */
 public class BanHangPane extends javax.swing.JPanel {
     private BanHangBUS bus = new BanHangBUS();
+    private boolean isMerging = false;
+    private Object oldSoLuong = null;
+    private Object oldDonViTinh = null;
     /**
      * Creates new form BanHangGUI
      */
@@ -69,7 +73,8 @@ public class BanHangPane extends javax.swing.JPanel {
             @Override
             public Component getTableCellEditorComponent(JTable table, Object value,
                     boolean isSelected, int row, int column) {
-
+                oldDonViTinh = value;
+                
                 String maSP = table.getValueAt(row, 8).toString();
                 ArrayList<DonViTinh> dsDVT = DonViTinhDAO.getDonViTinhTheoMaSP(maSP);
 
@@ -95,8 +100,22 @@ public class BanHangPane extends javax.swing.JPanel {
 
         
         DefaultTableModel model = (DefaultTableModel)tblCTHD.getModel();
+        tblCTHD.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                int row = tblCTHD.getSelectedRow();
+                int col = tblCTHD.getSelectedColumn();
+                if (col == 4 && row != -1) {
+                    oldSoLuong = tblCTHD.getValueAt(row, 4);
+                }
+            }
+        });
+
+        
         model.addTableModelListener(e -> {
             if (e.getColumn() == 2 || e.getColumn() == 4) {
+                if (isMerging) return;
+                
                 int row = e.getFirstRow();
                 Object dvtObj = model.getValueAt(row, 2);
                 Object slObj  = model.getValueAt(row, 4);
@@ -111,6 +130,20 @@ public class BanHangPane extends javax.swing.JPanel {
                 int soLuong = Integer.parseInt(slObj.toString());
                 String masp = maSPObj.toString();
 
+                for(int i = 0; i < tblCTHD.getRowCount(); i++) {
+                    if(i == row) continue;    
+                    if(model.getValueAt(i, 2).equals(dvtObj) && model.getValueAt(i, 8).equals(maSPObj)) {
+                        int soLuongGop = Integer.parseInt(model.getValueAt(i, 4).toString()) + soLuong;
+                        isMerging = true;
+                        
+                        model.setValueAt(soLuongGop, i, 4);
+                        model.removeRow(row);
+                        
+                        isMerging = false;
+                        return;
+                    }
+                }
+                
                 try {
                     Object[] updatedInfo = bus.thayDoiChiTietHoaDon(masp, soLuong, tenDVT);
                     model.setValueAt(updatedInfo[0], row, 3);
@@ -121,7 +154,13 @@ public class BanHangPane extends javax.swing.JPanel {
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(this, ex.getMessage(), "Error Message", JOptionPane.ERROR_MESSAGE );
                     if(ex.getMessage().trim().equalsIgnoreCase("Không đủ số lượng") || ex.getMessage().trim().equalsIgnoreCase("Số lượng phải lớn hơn bằng 1")) {
-                        model.setValueAt(1, row, 4);
+                        if(e.getColumn() == 4) {
+                            // roll back số lượng
+                             model.setValueAt(oldSoLuong, row, 4);
+                        } else {
+                            // roll back dvt
+                            model.setValueAt(oldDonViTinh, row, 2);
+                        }                     
                     }
                 }
                
@@ -156,13 +195,13 @@ public class BanHangPane extends javax.swing.JPanel {
         pLeftSouth = new javax.swing.JPanel();
         btnXoa = new javax.swing.JButton();
         btnXoaTrang = new javax.swing.JButton();
-        btnThemKH = new javax.swing.JButton();
         pRightSouth = new javax.swing.JPanel();
         btnThanhToan = new javax.swing.JButton();
         pRightCenter = new javax.swing.JPanel();
         pThongTinKH = new javax.swing.JPanel();
         p1 = new javax.swing.JPanel();
         lblSdtKH = new javax.swing.JLabel();
+        btnThemKH = new javax.swing.JButton();
         txtSdtKH = new javax.swing.JTextField();
         p2 = new javax.swing.JPanel();
         lblThongTinKH = new javax.swing.JLabel();
@@ -238,16 +277,6 @@ public class BanHangPane extends javax.swing.JPanel {
         });
         pLeftSouth.add(btnXoaTrang);
 
-        btnThemKH.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btnThemKH.setText("Thêm KH");
-        btnThemKH.setPreferredSize(new java.awt.Dimension(140, 35));
-        btnThemKH.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnThemKHActionPerformed(evt);
-            }
-        });
-        pLeftSouth.add(btnThemKH);
-
         pSouth.add(pLeftSouth, java.awt.BorderLayout.LINE_START);
 
         pRightSouth.setBackground(new java.awt.Color(245, 245, 245));
@@ -274,6 +303,7 @@ public class BanHangPane extends javax.swing.JPanel {
         pRightCenter.setLayout(new java.awt.BorderLayout(0, 10));
 
         pThongTinKH.setBackground(new java.awt.Color(245, 245, 245));
+        pThongTinKH.setPreferredSize(new java.awt.Dimension(100, 210));
         pThongTinKH.setLayout(new javax.swing.BoxLayout(pThongTinKH, javax.swing.BoxLayout.Y_AXIS));
 
         p1.setBackground(new java.awt.Color(245, 245, 245));
@@ -283,6 +313,16 @@ public class BanHangPane extends javax.swing.JPanel {
         lblSdtKH.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         lblSdtKH.setText("SĐT khách hàng:");
         p1.add(lblSdtKH);
+
+        btnThemKH.setText("+");
+        btnThemKH.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnThemKHActionPerformed(evt);
+            }
+        });
+        p1.add(btnThemKH);
+
+        pThongTinKH.add(Box.createVerticalStrut(5));
 
         pThongTinKH.add(p1);
 
@@ -314,6 +354,8 @@ public class BanHangPane extends javax.swing.JPanel {
         lblThongTinKH.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         lblThongTinKH.setText("Thông tin khách hàng:");
         p2.add(lblThongTinKH);
+
+        pThongTinKH.add(Box.createVerticalStrut(10));
 
         pThongTinKH.add(p2);
 
@@ -364,6 +406,7 @@ public class BanHangPane extends javax.swing.JPanel {
         p5.add(lblDiemTichLuy1);
 
         pThongTinKH.add(p5);
+        pThongTinKH.add(Box.createVerticalStrut(10));
 
         pRightCenter.add(pThongTinKH, java.awt.BorderLayout.PAGE_START);
 
@@ -695,7 +738,7 @@ public class BanHangPane extends javax.swing.JPanel {
         
         capNhatTongTien(model);
     }
-    
+      
     private void capNhatGoiYSauKhiTongTienThayDoi(double tongTien) {
         long t = (long)tongTien;
 
@@ -811,7 +854,9 @@ public class BanHangPane extends javax.swing.JPanel {
             String maKH = lblMaKH1.getText().trim();
             boolean chuyenKhoan = radChuyenKhoan.isSelected();
             double tongTien = getTongTien();
-            bus.thanhToan(tblCTHD, maKH, chuyenKhoan, tongTien);
+            if(bus.thanhToan(tblCTHD, maKH, chuyenKhoan, tongTien)) {
+                xoaTrang();
+            }
         } catch(Exception e) {
             JOptionPane.showMessageDialog(this, e.getMessage(), "Error Message", JOptionPane.ERROR_MESSAGE);
         }
@@ -956,7 +1001,7 @@ public class BanHangPane extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_btnThemKHActionPerformed
         
-    private void xoaTrang() {
+    public void xoaTrang() {
         DefaultTableModel model = (DefaultTableModel)tblCTHD.getModel();
         model.setRowCount(0);
 
