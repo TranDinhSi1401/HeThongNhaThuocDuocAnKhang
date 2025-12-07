@@ -179,4 +179,35 @@ public class LoSanPhamDAO {
         }
         return dsLo;
     }
+    public static boolean capNhatSoLuongLo(LoSanPham lo, int slDat){
+        String sql = "Update LoSanPham Set soLuong = ? where maLoSanPham = ?";
+        int n=0;
+        try {
+            ConnectDB.getInstance().connect();
+            Connection con = ConnectDB.getConnection();
+            PreparedStatement st = con.prepareStatement(sql);
+            int soLuongMoi =  lo.getSoLuong()+slDat;
+            st.setString(2, lo.getMaLoSanPham());
+            st.setInt(1, soLuongMoi);
+            n=st.executeUpdate();
+        } catch (SQLException s) {
+            s.printStackTrace();
+        }
+        return n>0;
+    }
+    public static boolean huyLoSanPham(LoSanPham lo){
+        int n =0;
+        String sql = "Update LoSanPham Set daHuy = ? where maLoSanPham =?" ;
+        try {
+            ConnectDB.getInstance().connect();
+            Connection con = ConnectDB.getConnection();
+            PreparedStatement st = con.prepareStatement(sql);
+            st.setBoolean(1, true);
+            st.setString(2, lo.getMaLoSanPham());
+            n =st.executeUpdate();
+        } catch (SQLException s) {
+            s.printStackTrace();
+        }
+        return n>0;
+    }
 }

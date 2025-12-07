@@ -76,24 +76,27 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
         loadDanhSachLoSanPham();
         // kiểm tra trạng thái của các lô hàng
         capNhatSoLo();
-        tblLoSanPham.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
+        //tblLoSanPham.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_OFF);
         tblLoSanPham.getColumnModel().getColumn(0).setPreferredWidth(120);
         tblLoSanPham.getColumnModel().getColumn(1).setPreferredWidth(307);
         tblLoSanPham.getColumnModel().getColumn(2).setPreferredWidth(200);
         tblLoSanPham.getColumnModel().getColumn(3).setPreferredWidth(100);
         tblLoSanPham.getColumnModel().getColumn(4).setPreferredWidth(100);
         
-        tblThemSanPham.getColumnModel().getColumn(0).setPreferredWidth(90);
+        tblThemSanPham.getColumnModel().getColumn(0).setPreferredWidth(80);//0
         tblThemSanPham.getColumnModel().getColumn(1).setPreferredWidth(260);
         tblThemSanPham.getColumnModel().getColumn(2).setPreferredWidth(130);
         tblThemSanPham.getColumnModel().getColumn(3).setPreferredWidth(180);
-        tblThemSanPham.getColumnModel().getColumn(4).setPreferredWidth(60);
-        tblThemSanPham.getColumnModel().getColumn(5).setPreferredWidth(80);
-        tblThemSanPham.getColumnModel().getColumn(6).setPreferredWidth(80);
-        tblThemSanPham.getColumnModel().getColumn(7).setPreferredWidth(70);
+        tblThemSanPham.getColumnModel().getColumn(4).setPreferredWidth(80);//4
+        tblThemSanPham.getColumnModel().getColumn(5).setPreferredWidth(90);
+        tblThemSanPham.getColumnModel().getColumn(6).setPreferredWidth(90);
+        tblThemSanPham.getColumnModel().getColumn(7).setPreferredWidth(90);
         tblThemSanPham.getColumnModel().getColumn(8).setPreferredWidth(90);
-        tblThemSanPham.getColumnModel().getColumn(9).setPreferredWidth(60);
-        tblThemSanPham.getColumnModel().getColumn(10).setPreferredWidth(110);
+        tblThemSanPham.getColumnModel().getColumn(9).setPreferredWidth(80);
+        tblThemSanPham.getColumnModel().getColumn(10).setPreferredWidth(60);
+        tblThemSanPham.getColumnModel().getColumn(11).setPreferredWidth(110);
+
+        
 
         tblThemSanPham.getTableHeader().setReorderingAllowed(false);
         tblLoSanPham.getTableHeader().setReorderingAllowed(false);
@@ -176,10 +179,7 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         tblLoSanPham = new javax.swing.JTable();
         btnLuu = new javax.swing.JButton();
-        btnXoa = new javax.swing.JButton();
-        btnCapNhat = new javax.swing.JButton();
-        btnTach = new javax.swing.JButton();
-        btnGop = new javax.swing.JButton();
+        btnHuyLo = new javax.swing.JButton();
         jPanel11 = new javax.swing.JPanel();
         jPanel8 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
@@ -236,11 +236,11 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Mã sản phẩm", "Tên sản phẩm", "Mã lô", "Nhà cung cấp", "Đơn vị tính", "Ngày sản xuất", "Ngày hết hạn", "Số lượng", "Giá nhập", "Chọn", "Ghi chú"
+                "Mã sản phẩm", "Tên sản phẩm", "Mã lô", "Nhà cung cấp", "Đơn vị tính", "Ngày sản xuất", "Ngày hết hạn", "Số lượng đặt", "Số lượng giao", "Giá nhập", "Chọn", "Ghi chú"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Boolean.class, java.lang.Object.class
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Boolean.class, java.lang.Object.class
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -256,7 +256,7 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
             }
         });
 
-        btnXacNhan.setText("Xác nhận");
+        btnXacNhan.setText("Xác nhận thêm");
         btnXacNhan.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnXacNhanActionPerformed(evt);
@@ -285,7 +285,7 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 1271, Short.MAX_VALUE)
-                    .addGroup(jPanel12Layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel12Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnThemSanPhamTuExcel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -293,7 +293,7 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnXoaSanPham, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnXacNhan, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(btnXacNhan)))
                 .addContainerGap())
         );
         jPanel12Layout.setVerticalGroup(
@@ -515,25 +515,14 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
         ));
         jScrollPane1.setViewportView(tblLoSanPham);
 
-        btnLuu.setText("Lưu");
+        btnLuu.setText("Tải lại");
 
-        btnXoa.setText("Xóa lô");
-        btnXoa.addActionListener(new java.awt.event.ActionListener() {
+        btnHuyLo.setText("Hủy lô");
+        btnHuyLo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnXoaActionPerformed(evt);
+                btnHuyLoActionPerformed(evt);
             }
         });
-
-        btnCapNhat.setText("Cập nhật");
-
-        btnTach.setText("Tách lô");
-        btnTach.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnTachActionPerformed(evt);
-            }
-        });
-
-        btnGop.setText("Gộp lô");
 
         javax.swing.GroupLayout jPanel23Layout = new javax.swing.GroupLayout(jPanel23);
         jPanel23.setLayout(jPanel23Layout);
@@ -545,13 +534,7 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 882, Short.MAX_VALUE)
                     .addGroup(jPanel23Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(btnGop)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnTach)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnCapNhat)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnXoa)
+                        .addComponent(btnHuyLo)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnLuu, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
@@ -562,11 +545,8 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 202, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel23Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(btnTach, javax.swing.GroupLayout.DEFAULT_SIZE, 29, Short.MAX_VALUE)
-                    .addComponent(btnLuu, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnXoa, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnCapNhat, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnGop, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(btnLuu, javax.swing.GroupLayout.DEFAULT_SIZE, 29, Short.MAX_VALUE)
+                    .addComponent(btnHuyLo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -956,13 +936,31 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnXuatExcelActionPerformed
 
-    private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaActionPerformed
+    private void btnHuyLoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnHuyLoActionPerformed
+        DefaultTableModel tbl = (DefaultTableModel) tblLoSanPham.getModel();
+        int x = tblLoSanPham.getSelectedRow();
+        if(tblLoSanPham.getRowCount()==0){
+            JOptionPane.showMessageDialog(this, "Không có lô có thể bán, vui lòng thêm rồi thử lại");
+            return;
+        }    
+        if(x<0){
+            JOptionPane.showMessageDialog(this, "Vui lòng chọn lô cần hủy rồi thử lại");
+            return;
+        }
+        String maLo = tbl.getValueAt(x, 2).toString();
+        int check = JOptionPane.showConfirmDialog(this, "Xác nhận hủy lô "+maLo, "Xác nhận", JOptionPane.YES_NO_OPTION);
+        if(check==JOptionPane.YES_OPTION){
+            LoSanPham loDuocTim =  LoSanPhamDAO.timLoSanPham(maLo);
+            if(!LoSanPhamDAO.huyLoSanPham(loDuocTim)){
+                JOptionPane.showMessageDialog(this, "Hủy lô"+loDuocTim.getMaLoSanPham()+"thất bại");
+                return;
+            }
+            JOptionPane.showMessageDialog(this, "Hủy lô "+loDuocTim.getMaLoSanPham()+" thành công");
+            tbl.setRowCount(0);
+            loadDanhSachLoSanPham();
+        }
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnXoaActionPerformed
-
-    private void btnTachActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTachActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnTachActionPerformed
+    }//GEN-LAST:event_btnHuyLoActionPerformed
 
     private void txtNhaCungCapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNhaCungCapActionPerformed
         // TODO add your handling code here:
@@ -1000,8 +998,9 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
             int soSP = 0;
             int skip=0;
             final int colMaVach = 0;
-            final int colSoLuong = 7;
-            final int colGiaNhap=8;
+            final int colSoLuongDat = 7;
+            final int colSoLuongGiao = 8;
+            final int colGiaNhap=9;
             
             for(Row is:sheet){
                 if(skip<3){
@@ -1041,18 +1040,31 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
                     }rowData.set(colMaVach, maV.getSanPham().getMaSP());
                     
                 }
-                if(colSoLuong<rowData.size()){
-                    Object as = rowData.get(colSoLuong);
-                    double soLuong =-1;
-                    if(as instanceof Double i) soLuong =i;
+                if(colSoLuongDat<rowData.size()){
+                    Object as = rowData.get(colSoLuongDat);
+                    double soLuongDat =-1;
+                    if(as instanceof Double i) soLuongDat =i;
                     else if (as instanceof String s && !s.isBlank()) 
-                            soLuong = Double.parseDouble(s.trim());
-                    if(soLuong <0){
+                            soLuongDat = Double.parseDouble(s.trim());
+                    if(soLuongDat <0){
                         JOptionPane.showMessageDialog(this, "Lỗi tại dòng "+(soSP+2)+
                                 " : Số lượng phải lớn hơn 0.", "Dữ liệu không hợp lệ", JOptionPane.ERROR_MESSAGE);
                         return;
                     }
-                    rowData.set(colSoLuong, (int)soLuong);
+                    rowData.set(colSoLuongDat, (int)soLuongDat);
+                }
+                if(colSoLuongGiao<rowData.size()){
+                    Object as = rowData.get(colSoLuongGiao);
+                    double soLuongGiao =-1;
+                    if(as instanceof Double i) soLuongGiao =i;
+                    else if (as instanceof String s && !s.isBlank()) 
+                            soLuongGiao = Double.parseDouble(s.trim());
+                    if(soLuongGiao <0){
+                        JOptionPane.showMessageDialog(this, "Lỗi tại dòng "+(soSP+2)+
+                                " : Số lượng phải lớn hơn 0.", "Dữ liệu không hợp lệ", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+                    rowData.set(colSoLuongGiao, (int)soLuongGiao);
                 }
                 if (colGiaNhap<rowData.size()){
                     Object as = rowData.get(colGiaNhap);
@@ -1093,67 +1105,62 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
 
     private void btnXacNhanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXacNhanActionPerformed
         DefaultTableModel tbl = (DefaultTableModel) tblThemSanPham.getModel();
-        int kiemTra =0;
-        double tongTien = 0;
-        if (tbl.getRowCount()==0){
-            JOptionPane.showMessageDialog(this, "Chưa có sản phẩm để chọn, Vui lòng chọn \"Thêm từ Excel\" để thêm sản phẩm rồi thử lại");
+        if (tbl.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(this, "Chưa có sản phẩm! Vui lòng thêm từ Excel.");
             return;
         }
-        for(int i=0;i<tbl.getRowCount();i++){
-            boolean check=(Boolean) tbl.getValueAt(i, 9);
-            if(check){
-                int sl = Integer.parseInt(tbl.getValueAt(i, 7).toString());
-                double gia = Double.parseDouble(tbl.getValueAt(i, 8).toString());
-                tongTien+=sl*gia;
+        double tongTien = 0;
+        for (int i = 0; i < tbl.getRowCount(); i++) {
+            boolean check = (boolean) tbl.getValueAt(i, 10);
+            if (check) {
+                int slGiao = Integer.parseInt(tbl.getValueAt(i, 8).toString());
+                double gia = Double.parseDouble(tbl.getValueAt(i, 9).toString());
+                tongTien += slGiao * gia;
             }
         }
-            LocalDate chuyenDD = LocalDate.parse(ngayLap);
-            if(PhieuNhapDAO.themPhieuNhap(chuyenDD, tongTien , "")){
-                JOptionPane.showMessageDialog(this, "Thêm thành công phiếu nhập!");
-            }else {
-                JOptionPane.showMessageDialog(this, "Thêm phiếu đặt thất bại");
-            }
-            PhieuNhap pn = PhieuNhapDAO.getPhieuNhapMoiNhat();
-
-        boolean kiemTraGiaTri = false;
-        for(int a=0;a<tbl.getRowCount();a++){
-            if ((Boolean)tbl.getValueAt(a, 9)) 
-                kiemTraGiaTri = true;
+        LocalDate ngay = LocalDate.parse(ngayLap);
+        if (!PhieuNhapDAO.themPhieuNhap(ngay, tongTien, "")) {
+            JOptionPane.showMessageDialog(this, "Thêm phiếu nhập thất bại!");
+            return;
         }
+        PhieuNhap pn = PhieuNhapDAO.getPhieuNhapMoiNhat();
 
-        for(int i=0;i<tbl.getRowCount();i++){
-            // Thêm lô sản phẩm
-            boolean check = (Boolean) tbl.getValueAt(i, 9);
+        for (int i=0; i<tbl.getRowCount();i++) {
 
+            boolean check = (boolean) tbl.getValueAt(i, 10);
+            if (!check) continue;
+
+            String maSP = tbl.getValueAt(i, 0).toString();
+            String maLo = tbl.getValueAt(i, 2).toString();
+            String tenNcc = tbl.getValueAt(i, 3).toString();
             LocalDate sx = LocalDate.parse(QuanLyLoBUS.chuyenDinhDang(tbl.getValueAt(i, 5).toString()));
-            LocalDate hh = LocalDate.parse(QuanLyLoBUS.chuyenDinhDang(tbl.getValueAt(i, 6).toString()));    
-            LoSanPham lo = new LoSanPham((String) tbl.getValueAt(i, 2), 
-                            new SanPham((String) tbl.getValueAt(i, 0)), 
-                            (Integer)tbl.getValueAt(i, 7), sx, hh, false);
-            // ghi lô sản phẩm nếu được chọn
-            if(check && LoSanPhamDAO.themLoSanPham(lo)){
-                kiemTra++;
-                JOptionPane.showMessageDialog(this, "Lô "+ lo.getMaLoSanPham()+" thêm thành công!");
-                //tbl.removeRow(i); //i--; slLo--;
-                String tenNhaCungCap = tbl.getValueAt(i, 3).toString().trim();
-                NhaCungCap ncc = NhaCungCapDAO.getNhaCungCapTheoTen(tenNhaCungCap);
-                
-                double giaNhap = Double.parseDouble(tbl.getValueAt(i, 8).toString());
-                String ghiChu = tbl.getValueAt(i, 10)==null ? "":tbl.getValueAt(i, 10).toString().trim();
-                if(ChiTietPhieuNhapDAO.themChiTietPhieuNhap(lo, pn, ncc, giaNhap, tongTien, ghiChu)) continue;
-                else {
-                    JOptionPane.showMessageDialog(this, "Ghi chi tiết phiếu đặt thất bại");
-                }
-            }else{
-                if(!check) continue;
-                else JOptionPane.showMessageDialog(this, "Thêm lô "+ lo.getMaLoSanPham() +" thất bại !");
-            }
-            // Thêm chi tiết phiếu nhập cho lô sản phẩm vừa thêm
-            
-        }
+            LocalDate hh = LocalDate.parse(QuanLyLoBUS.chuyenDinhDang(tbl.getValueAt(i, 6).toString()));
+            int slDat = Integer.parseInt(tbl.getValueAt(i, 7).toString());
+            int slGiao = Integer.parseInt(tbl.getValueAt(i, 8).toString());
+            double giaNhap = Double.parseDouble(tbl.getValueAt(i, 9).toString());
+            String ghiChu = tbl.getValueAt(i, 11) == null ? "" : tbl.getValueAt(i, 11).toString();
 
-        DefaultTableModel tb =(DefaultTableModel)tblLoSanPham.getModel();
-        tb.setRowCount(0);
+            LoSanPham loMoi = new LoSanPham(maLo, new SanPham(maSP), slGiao, sx, hh, false);
+            LoSanPham loCu = LoSanPhamDAO.timLoSanPham(maLo);
+
+            if (loCu != null)
+                LoSanPhamDAO.capNhatSoLuongLo(loCu, slGiao);
+            else 
+                LoSanPhamDAO.themLoSanPham(loMoi);
+
+            NhaCungCap ncc = NhaCungCapDAO.getNhaCungCapTheoTen(tenNcc);
+            ChiTietPhieuNhapDAO.themChiTietPhieuNhap(
+                    loMoi,       // lô nhập vào
+                    pn,          // phiếu nhập vừa tạo
+                    ncc,         // nhà cung cấp
+                    giaNhap,     // giá nhập
+                    tongTien,    // tổng tiền
+                    slDat,      // số lượng đặt
+                    ghiChu       // ghi chú
+            );
+        }
+        JOptionPane.showMessageDialog(this, "Thêm phiếu nhập thành công!");
+        ((DefaultTableModel) tblLoSanPham.getModel()).setRowCount(0);
         loadDanhSachLoSanPham();
     }//GEN-LAST:event_btnXacNhanActionPerformed
 
@@ -1199,8 +1206,8 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
         if(tbl.getRowCount()==0){
             JOptionPane.showMessageDialog(this, "Vui lòng thêm sản phầm rồi thử lại");
         }
-        for (int i=0; i< tbl.getRowCount()-1;i++){
-            Boolean sel = (Boolean) tbl.getValueAt(i, 9);
+        for (int i=0; i< tbl.getRowCount();i++){
+            Boolean sel = (Boolean) tbl.getValueAt(i, 10);
             if(sel!=null && sel){
                 a++;
             }
@@ -1306,12 +1313,6 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
                 i.getNgayHetHan(), 
                 cbKhac});
         }
-        
-        
-        
-        
-        
-        
         // TODO add your handling code here:
     }//GEN-LAST:event_btnTimTheoThongTinActionPerformed
 
@@ -1339,16 +1340,13 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnCapNhat;
-    private javax.swing.JButton btnGop;
+    private javax.swing.JButton btnHuyLo;
     private javax.swing.JButton btnInBaoCao;
     private javax.swing.JButton btnLuu;
-    private javax.swing.JButton btnTach;
     private javax.swing.JButton btnThemSanPhamTuExcel;
     private javax.swing.JButton btnTimTheoThongTin;
     private javax.swing.JButton btnUpdate;
     private javax.swing.JButton btnXacNhan;
-    private javax.swing.JButton btnXoa;
     private javax.swing.JButton btnXoaSanPham;
     private javax.swing.JButton btnXuatExcel;
     private javax.swing.JComboBox<String> cmbTrangThai;
@@ -1450,7 +1448,7 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
         int row = tbl.getRowCount();
         boolean duocChon = true;
         for (int i=0;i<row;i++){
-            Boolean value = (Boolean) tbl.getValueAt(i, 9);
+            Boolean value = (Boolean) tbl.getValueAt(i, 10);
             if(value ==null || !value){
                 duocChon=false;
                 break;
@@ -1458,7 +1456,7 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
         }
         boolean newValue = !duocChon;
         for(int i=0;i<row;i++){
-            tbl.setValueAt(newValue, i, 9);
+            tbl.setValueAt(newValue, i, 10);
         }
     }
     public void capNhatSoLo(){
@@ -1473,7 +1471,7 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
     private void xoaSanPhamDaChon() {
         DefaultTableModel tbl = (DefaultTableModel) tblThemSanPham.getModel();
         for(int i=tbl.getRowCount()-1;i>=0;i--){
-            Boolean sel = (Boolean) tbl.getValueAt(i, 9);
+            Boolean sel = (Boolean) tbl.getValueAt(i, 10);
             if(sel!=null && sel){
                 tbl.removeRow(i);
             }
