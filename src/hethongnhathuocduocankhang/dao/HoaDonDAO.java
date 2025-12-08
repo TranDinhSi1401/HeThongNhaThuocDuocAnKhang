@@ -49,7 +49,7 @@ public class HoaDonDAO {
         try {
             ConnectDB.getInstance();
             Connection con = ConnectDB.getConnection();
-            String sql = "SELECT TOP 1 * FROM HoaDon WHERE CAST(ngayLapHoaDon AS DATE) = CAST(GETDATE() AS DATE) ORDER BY ngayLapHoaDon DESC";
+            String sql = "SELECT TOP 1 * FROM HoaDon WHERE CAST(ngayLapHoaDon AS DATE) = CAST(GETDATE() AS DATE) ORDER BY maHoaDon DESC";
             Statement statement = con.createStatement();
             ResultSet rs = statement.executeQuery(sql);
             if (rs.next()) {
@@ -85,7 +85,7 @@ public class HoaDonDAO {
             ConnectDB.getInstance();
             Connection con = ConnectDB.getConnection();
             PreparedStatement ps = con.prepareStatement(
-                    "INSERT INTO HoaDon (maHoaDon, maNV, ngayLapHoaDon, maKH, chuyenKhoan, tongTien) VALUES (?, ?, ?, ?, ?, ?, ?)"
+                    "INSERT INTO HoaDon (maHoaDon, maNV, ngayLapHoaDon, maKH, chuyenKhoan, tongTien) VALUES (?, ?, ?, ?, ?, ?)"
             );
 
             ps.setString(1, hd.getMaHoaDon());
