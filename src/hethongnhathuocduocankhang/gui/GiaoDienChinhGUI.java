@@ -98,7 +98,6 @@ public class GiaoDienChinhGUI extends javax.swing.JFrame {
         URL url = GiaoDienChinhGUI.class.getResource("/resources/images/logo.png");
         Image icon = Toolkit.getDefaultToolkit().createImage(url);
         this.setIconImage(icon);
-        showPanel(new DashBoardQuanLi());
         setTitle("Hệ thống nhà thuốc Dược An Khang");
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setResizable(false);

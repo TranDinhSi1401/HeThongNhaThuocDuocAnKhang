@@ -43,6 +43,7 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
@@ -116,7 +117,7 @@ public class DashBoardQuanLi extends javax.swing.JPanel {
         initPanelThongKeNgay();
 
         veBieuDo(LocalDate.now().getMonthValue(), LocalDate.now().getYear(), "tháng");
-
+        
     }
 
     private void initBieuDo() {
@@ -393,11 +394,11 @@ public class DashBoardQuanLi extends javax.swing.JPanel {
         pnlCardSPSapHetHang.add(scrollPane, BorderLayout.CENTER);
 
         jPanel19.removeAll();
-        jPanel9.setPreferredSize(new Dimension(120, 0));
+        //jPanel19.setPreferredSize(new Dimension(120, 0));
         jPanel19.setLayout(new BorderLayout());
         jPanel19.add(pnlCardSPSapHetHang, BorderLayout.CENTER);
         jPanel19.revalidate();
-        jPanel19.repaint();
+        jPanel19.repaint();      
     }
 
     /**
@@ -762,7 +763,7 @@ public class DashBoardQuanLi extends javax.swing.JPanel {
         setBackground(new java.awt.Color(255, 255, 255));
         setLayout(new java.awt.BorderLayout(10, 10));
 
-        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setBackground(new java.awt.Color(245, 245, 245));
         jPanel1.setPreferredSize(new java.awt.Dimension(808, 220));
         jPanel1.setLayout(new java.awt.BorderLayout(10, 10));
 
@@ -866,6 +867,7 @@ public class DashBoardQuanLi extends javax.swing.JPanel {
 
         jPanel3.add(jPanel7, java.awt.BorderLayout.CENTER);
 
+        jPanel15.setBackground(new java.awt.Color(245, 245, 245));
         jPanel15.setPreferredSize(new java.awt.Dimension(240, 0));
         jPanel15.setLayout(new javax.swing.BoxLayout(jPanel15, javax.swing.BoxLayout.Y_AXIS));
 
@@ -914,6 +916,7 @@ public class DashBoardQuanLi extends javax.swing.JPanel {
         jPanel15.add(jPanel14);
 
         jPanel16.setBackground(new java.awt.Color(245, 245, 245));
+        jPanel16.setPreferredSize(new java.awt.Dimension(19, 32));
         jPanel16.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
         jLabel9.setText("   ");
