@@ -47,7 +47,7 @@ public class HoaDon {
     public HoaDon(String maHD) {
         this.maHoaDon = maHD;
     }
-    
+
     public String getMaHoaDon() {
         return maHoaDon;
     }
@@ -77,25 +77,23 @@ public class HoaDon {
 //           throw new IllegalArgumentException("Hóa đơn không được rỗng");
 //        DateTimeFormatter =
 //    }
-    
 //    Không được rỗng, không trùng, phải theo định dạng HD-[DD][MM][YY]-[XXXX]. 
 //    Với [DD][MM][YY] là ngày tháng năm hiện tại, [X] là số nguyên từ 0–9.
-
-    public void setNhanVien(NhanVien nhanVien){
+    public void setNhanVien(NhanVien nhanVien) {
         if (nhanVien == null) {
             throw new IllegalArgumentException("Nhân viên không được rỗng");
         }
         this.nhanVien = nhanVien;
     }
 
-    public void setNgayLapHoaDon(LocalDateTime ngayLapHoaDon){
+    public void setNgayLapHoaDon(LocalDateTime ngayLapHoaDon) {
         if (ngayLapHoaDon == null) {
             throw new IllegalArgumentException("Ngày lập hóa đơn không được rỗng");
         }
         this.ngayLapHoaDon = ngayLapHoaDon;
     }
 
-    public void setKhachHang(KhachHang khachHang){
+    public void setKhachHang(KhachHang khachHang) {
         if (khachHang == null) {
             throw new IllegalArgumentException("Khách hàng không được rỗng");
         }

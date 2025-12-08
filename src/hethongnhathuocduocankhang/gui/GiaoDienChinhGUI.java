@@ -18,11 +18,13 @@ import javax.swing.JPanel;
  * @author trand
  */
 public class GiaoDienChinhGUI extends javax.swing.JFrame {
-    
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(GiaoDienChinhGUI.class.getName());
     private static TaiKhoan tk = null;
+
     /**
      * Creates new form GiaoDienChinhGUI
+     *
      * @param tk
      */
     public GiaoDienChinhGUI(TaiKhoan tk) {
@@ -32,47 +34,67 @@ public class GiaoDienChinhGUI extends javax.swing.JFrame {
             @Override
             public void selected(int index, int subIndex) {
 
-                if(index == 0 && subIndex == 0) {
-                    showPanel(new DashBoardQuanLi());
+                if (index == 0 && subIndex == 0) {
+                    if (tk.isQuanLy()) {
+                        showPanel(new DashBoardQuanLi());
+                    } else {
+                        showPanel(new DashBoardNhanVien());
+                    }
                 }
-                if(index == 1 && subIndex == 0) {
+                if (index == 1 && subIndex == 0) {
                     showPanel(new BanHangGUI());
                 }
-                if(index == 2) {
-                        switch (subIndex) {
-                            case 1 -> showPanel(new QuanLiKhachHangGUI());
-                            case 2 -> showPanel(new QuanLiSanPhamGUI());
-                            case 3 -> showPanel(new QuanLiNhanVienGUI());
-                            case 4 -> showPanel(new QuanLiHoaDonGUI());
-                            case 5 -> showPanel(new QuanLiKhuyenMaiGUI());
-                            case 6 -> showPanel(new QuanLiNhaCungCapGUI());
-                            case 7 -> showPanel(new QuanLiPhieuDatHangGUI());
-                            case 8 -> showPanel(new QuanLiLichSuCaLamGUI());
-                            case 9 -> showPanel(new QuanLiPhieuTraHangGUI());
-                            default -> {
-                        }    
+                if (index == 2) {
+                    switch (subIndex) {
+                        case 1 ->
+                            showPanel(new QuanLiKhachHangGUI());
+                        case 2 ->
+                            showPanel(new QuanLiSanPhamGUI());
+                        case 3 ->
+                            showPanel(new QuanLiNhanVienGUI());
+                        case 4 ->
+                            showPanel(new QuanLiHoaDonGUI());
+                        case 5 ->
+                            showPanel(new QuanLiKhuyenMaiGUI());
+                        case 6 ->
+                            showPanel(new QuanLiNhaCungCapGUI());
+                        case 7 ->
+                            showPanel(new QuanLiPhieuDatHangGUI());
+                        case 8 ->
+                            showPanel(new QuanLiLichSuCaLamGUI());
+                        case 9 ->
+                            showPanel(new QuanLiPhieuTraHangGUI());
+                        default -> {
                         }
-                } 
-                if(index == 3 && subIndex == 0) {
+                    }
+                }
+                if (index == 3 && subIndex == 0) {
                     showPanel(new TraHangGUI());
-                }                
-                if(index == 4 && subIndex == 0) {
+                }
+                if (index == 4 && subIndex == 0) {
                     showPanel(new LoSanPhamGUI());
-                } 
-                if(index == 7 && subIndex == 0) {
+                }
+                if (index == 7 && subIndex == 0) {
                     showPanel(new DoiQuaGUI());
                 }
-                if(index == 8 && subIndex == 0) {
+                if (index == 8 && subIndex == 0) {
                     dangXuat();
                 }
-                if(index == 5 && subIndex == 0) {
+                if (index == 5 && subIndex == 0) {
                     showPanel(new TraCuuChungGUI());
-                } 
+                }
             }
         });
-        if(tk != null) {
+        if (tk != null) {
             GiaoDienChinhGUI.tk = tk;
         }
+        
+        if (tk.isQuanLy()) {
+            showPanel(new DashBoardQuanLi());
+        } else {
+            showPanel(new DashBoardNhanVien());
+        }
+
         URL url = GiaoDienChinhGUI.class.getResource("/resources/images/logo.png");
         Image icon = Toolkit.getDefaultToolkit().createImage(url);
         this.setIconImage(icon);
@@ -82,18 +104,18 @@ public class GiaoDienChinhGUI extends javax.swing.JFrame {
         setResizable(false);
         setVisible(true);
     }
-    
+
     private void dangXuat() {
         int confirm = JOptionPane.showConfirmDialog(this,
-                        "Bạn có chắc chắn muốn đăng xuất không?",
-                        "Xác nhận đăng xuất",
-                        JOptionPane.YES_NO_OPTION,
-                        JOptionPane.QUESTION_MESSAGE);
+                "Bạn có chắc chắn muốn đăng xuất không?",
+                "Xác nhận đăng xuất",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE);
         if (confirm == JOptionPane.YES_OPTION) {
             this.dispose();
             new DangNhapGUI();
         }
-}
+    }
 
     public static TaiKhoan getTk() {
         return tk;
@@ -103,8 +125,6 @@ public class GiaoDienChinhGUI extends javax.swing.JFrame {
         GiaoDienChinhGUI.tk = tk;
     }
 
-    
-    
     private void showPanel(JPanel p) {
         pCenter.removeAll();
         p.setSize(pCenter.getSize());
@@ -114,7 +134,7 @@ public class GiaoDienChinhGUI extends javax.swing.JFrame {
         pCenter.revalidate();
         pCenter.repaint();
     }
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

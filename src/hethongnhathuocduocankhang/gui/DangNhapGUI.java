@@ -21,10 +21,11 @@ import javax.swing.border.EmptyBorder;
  *
  * @author trand
  */
-public class DangNhapGUI extends javax.swing.JFrame{
-    
+public class DangNhapGUI extends javax.swing.JFrame {
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(DangNhapGUI.class.getName());
     private static boolean isVisible = false;
+
     /**
      * Creates new form DangNhapGUI
      */
@@ -33,14 +34,14 @@ public class DangNhapGUI extends javax.swing.JFrame{
 
         try {
             ConnectDB.getInstance().connect();
-        }catch(SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
-        
+
         URL url = DangNhapGUI.class.getResource("/resources/images/logo.png");
         Image icon = Toolkit.getDefaultToolkit().createImage(url);
         this.setIconImage(icon);
-        
+
         lblQuenMatKhau.setCursor(new Cursor(Cursor.HAND_CURSOR));
         btnCheMatKhau.setCursor(new Cursor(Cursor.HAND_CURSOR));
         txtTaiKhoan.setBorder(new EmptyBorder(5, 10, 5, 10));
@@ -57,10 +58,13 @@ public class DangNhapGUI extends javax.swing.JFrame{
         setResizable(false);
         setLocationRelativeTo(null);
         setVisible(true);
-        
+
         // Mặc định để đỡ phải đăng nhập mỗi lần test
         txtTaiKhoan.setText("NV-0001");
         txtMatKhau.setText("Votienkhoa123@");
+
+//        txtTaiKhoan.setText("NV-0002");
+//        txtMatKhau.setText("Hominhkhang123@");
     }
 
     /**
@@ -179,9 +183,9 @@ public class DangNhapGUI extends javax.swing.JFrame{
                     javax.swing.JOptionPane.WARNING_MESSAGE);
             return;
         }
-        
+
         TaiKhoan tk = TaiKhoanDAO.getTaiKhoanTheoTenDangNhapVaMatKhau(tenDangNhap, matKhau);
-        if (tk != null) {          
+        if (tk != null) {
             new GiaoDienChinhGUI(tk);
             this.dispose();
         } else {
@@ -191,7 +195,7 @@ public class DangNhapGUI extends javax.swing.JFrame{
                     javax.swing.JOptionPane.ERROR_MESSAGE);
         }
     }
-    
+
     private void txtMatKhauActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMatKhauActionPerformed
         dangNhap();
     }//GEN-LAST:event_txtMatKhauActionPerformed
@@ -201,14 +205,14 @@ public class DangNhapGUI extends javax.swing.JFrame{
         if (email != null && !email.trim().isEmpty()) {
             if (TaiKhoanDAO.kiemTraEmailTonTai(email.trim())) {
                 JOptionPane.showMessageDialog(this,
-                    "Một liên kết đặt lại mật khẩu đã được gửi đến " + email,
-                    "Đặt lại mật khẩu",
-                    JOptionPane.INFORMATION_MESSAGE);
+                        "Một liên kết đặt lại mật khẩu đã được gửi đến " + email,
+                        "Đặt lại mật khẩu",
+                        JOptionPane.INFORMATION_MESSAGE);
             } else {
                 JOptionPane.showMessageDialog(this,
-                    "Email không tồn tại trong hệ thống!",
-                    "Lỗi",
-                    JOptionPane.ERROR_MESSAGE);
+                        "Email không tồn tại trong hệ thống!",
+                        "Lỗi",
+                        JOptionPane.ERROR_MESSAGE);
             }
         }
 
@@ -222,6 +226,7 @@ public class DangNhapGUI extends javax.swing.JFrame{
             txtMatKhau.setEchoChar('•');
         }
     }
+
     /**
      * @param args the command line arguments
      */
@@ -246,7 +251,7 @@ public class DangNhapGUI extends javax.swing.JFrame{
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> new DangNhapGUI().setVisible(true));
     }
-    
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCheMatKhau;
     private javax.swing.JButton btnDangNhap;
