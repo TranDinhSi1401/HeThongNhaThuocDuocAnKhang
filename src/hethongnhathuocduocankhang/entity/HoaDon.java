@@ -20,16 +20,14 @@ public class HoaDon {
     private LocalDateTime ngayLapHoaDon;
     private KhachHang khachHang;
     private boolean chuyenKhoan;
-    private boolean trangThai;
     private double tongTien;
 
-    public HoaDon(String maHoaDon, NhanVien nhanVien, LocalDateTime ngayLapHoaDon, KhachHang khachHang, boolean chuyenKhoan, boolean trangThai, double tongTien) {
+    public HoaDon(String maHoaDon, NhanVien nhanVien, LocalDateTime ngayLapHoaDon, KhachHang khachHang, boolean chuyenKhoan, double tongTien) {
         this.maHoaDon = maHoaDon;
         this.nhanVien = nhanVien;
         this.ngayLapHoaDon = ngayLapHoaDon;
         this.khachHang = khachHang;
         this.chuyenKhoan = chuyenKhoan;
-        this.trangThai = trangThai;
         this.tongTien = tongTien;
     }
 
@@ -39,7 +37,6 @@ public class HoaDon {
         this.ngayLapHoaDon = hoaDon.ngayLapHoaDon;
         this.khachHang = hoaDon.khachHang;
         this.chuyenKhoan = hoaDon.chuyenKhoan;
-        this.trangThai = hoaDon.trangThai;
         this.tongTien = hoaDon.tongTien;
     }
 
@@ -69,10 +66,6 @@ public class HoaDon {
 
     public double getTongTien() {
         return tongTien;
-    }
-
-    public boolean isTrangThai() {
-        return trangThai;
     }
 
     public boolean isChuyenKhoan() {
@@ -113,10 +106,6 @@ public class HoaDon {
         this.chuyenKhoan = hinhThucThanhToan;
     }
 
-    public void setTinhTrang(boolean tinhTrang) {
-        this.trangThai = tinhTrang;
-    }
-
     public void setTongTien(double tongTien){
         if (tongTien <= 0) {
             throw new IllegalArgumentException("Tổng tiền phải là số thực lớn hơn 0");
@@ -148,7 +137,7 @@ public class HoaDon {
 
     @Override
     public String toString() {
-        return "HoaDon{" + "maHoaDon=" + maHoaDon + ", nhanVien=" + nhanVien + ", ngayLapHoaDon=" + ngayLapHoaDon + ", khachHang=" + khachHang + ", chuyenKhoan=" + chuyenKhoan + ", trangThai=" + trangThai + ", tongTien=" + tongTien + '}';
+        return "HoaDon{" + "maHoaDon=" + maHoaDon + ", nhanVien=" + nhanVien + ", ngayLapHoaDon=" + ngayLapHoaDon + ", khachHang=" + khachHang + ", chuyenKhoan=" + chuyenKhoan + ", tongTien=" + tongTien + '}';
     }
 
 }

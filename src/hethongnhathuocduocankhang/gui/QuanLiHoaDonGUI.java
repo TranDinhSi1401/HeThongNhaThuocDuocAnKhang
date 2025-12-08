@@ -106,7 +106,6 @@ public class QuanLiHoaDonGUI extends JPanel {
             "Ngày lập",
             "Tổng tiền",
             "Hình thức TT",
-            "Trạng thái"
         };
         Object[][] data = {};
 
@@ -160,11 +159,7 @@ public class QuanLiHoaDonGUI extends JPanel {
         
         // 6. Hình thức TT: Căn giữa
         columnModel.getColumn(6).setPreferredWidth(100);
-        columnModel.getColumn(6).setCellRenderer(centerRenderer);
-        
-        // 7. Trạng thái: Căn giữa
-        columnModel.getColumn(7).setPreferredWidth(110);
-        columnModel.getColumn(7).setCellRenderer(centerRenderer);
+        columnModel.getColumn(6).setCellRenderer(centerRenderer);      
 
         JScrollPane scrollPane = new JScrollPane(table);
         centerPanel.add(scrollPane, BorderLayout.CENTER);
@@ -231,7 +226,6 @@ public class QuanLiHoaDonGUI extends JPanel {
                 hd.getNgayLapHoaDon().format(formatter),
                 String.format("%,.0f VND", hd.getTongTien()),
                 hd.isChuyenKhoan() ? "Chuyển khoản" : "Tiền mặt",
-                hd.isTrangThai() ? "Đã thanh toán" : "Chưa thanh toán"
             };
             model.addRow(row);
         }
