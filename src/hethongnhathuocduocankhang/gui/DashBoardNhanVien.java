@@ -140,7 +140,7 @@ public class DashBoardNhanVien extends javax.swing.JPanel {
 
         lblTenCa = new JLabel("Ca: ...");
         lblGioVaoCa = new JLabel("Bắt đầu: ...");
-        
+
         lblNhanVienTruc = new JLabel("NV: " + lblHoTen.getText());
 
         styleLabelCaLam(lblTenCa);
@@ -246,7 +246,6 @@ public class DashBoardNhanVien extends javax.swing.JPanel {
         gbc.weighty = 1.0;
 
         // --- 1. XỬ LÝ SỐ LIỆU DOANH THU ---
-        // TODO: Thay số cứng bằng dữ liệu thật từ DAO (VD: HoaDonDAO.tinhTongDoanhThuNgay(...))
         LocalDate homNay = LocalDate.now();
         LocalDate homQua = homNay.minusDays(1);
 
@@ -341,9 +340,7 @@ public class DashBoardNhanVien extends javax.swing.JPanel {
         // Tạo bảng
         String[] cols = {"STT", "Mã SP", "Tên sản phẩm"};
         // Dữ liệu mẫu
-        Object[][] data = {
-
-        };
+        Object[][] data = {};
 
         dtmHetHang = new DefaultTableModel(data, cols) {
             @Override
@@ -351,7 +348,7 @@ public class DashBoardNhanVien extends javax.swing.JPanel {
                 return false;
             }
         };
-        
+
         ArrayList<SanPham> dsSPDaHetHang = SanPhamDAO.getSPDaHetHang();
         int stt = 0;
         for (SanPham sp : dsSPDaHetHang) {
@@ -409,7 +406,6 @@ public class DashBoardNhanVien extends javax.swing.JPanel {
 //        }
 //        lblIcon.setFont(new Font("Segoe UI", Font.PLAIN, 18));
 //        pnlHeader.add(lblIcon, BorderLayout.EAST);
-
         JLabel lblValue = new JLabel(value);
         lblValue.setFont(new Font("Segoe UI", Font.BOLD, 26));
         lblValue.setForeground(Color.BLACK);
@@ -458,107 +454,84 @@ public class DashBoardNhanVien extends javax.swing.JPanel {
     }
 
     private JScrollPane initTableHoaDon() {
-    // 1. Cập nhật tên cột
-    String[] columns = {"Mã hóa đơn", "Khách hàng", "PTTT", "Trạng thái", "Tổng tiền"};
-    Object[][] data = {};
+        // 1. Khai báo cột: Chỉ còn 4 cột
+        String[] columns = {"Mã hóa đơn", "Khách hàng", "PTTT", "Tổng tiền"};
+        Object[][] data = {};
 
-    dtmHoaDon = new DefaultTableModel(data, columns) {
-        @Override
-        public boolean isCellEditable(int row, int column) {
-            return false;
+        dtmHoaDon = new DefaultTableModel(data, columns) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+
+        LocalDate homNay = LocalDate.now();
+        ArrayList<HoaDon> dsHDHomNaycuaNV = HoaDonDAO.timHDTheoNgayLap(homNay);
+
+        // Chuẩn bị định dạng tiền tệ
+        NumberFormat currencyFormat = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
+
+        // Lấy thông tin nhân viên hiện tại
+        NhanVien nvHienTai = null;
+        try {
+            String tenDangNhap = GiaoDienChinhGUI.getTk().getTenDangNhap().trim();
+            nvHienTai = NhanVienDAO.getNhanVienTheoMaNV(tenDangNhap);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-    };
 
-    LocalDate homNay = LocalDate.now();
-    ArrayList<HoaDon> dsHDHomNaycuaNV = HoaDonDAO.timHDTheoNgayLap(homNay);
+        if (nvHienTai != null) {
+            for (HoaDon hd : dsHDHomNaycuaNV) {
+                if (hd.getNhanVien().getMaNV().equals(nvHienTai.getMaNV())) {
 
-    // Chuẩn bị định dạng tiền tệ
-    NumberFormat currencyFormat = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
+                    String pttt = hd.isChuyenKhoan() ? "Chuyển khoản" : "Tiền mặt";
+                    String tongTien = currencyFormat.format(hd.getTongTien());
+                    String tenKhachHang = "Khách lẻ";
+                    if (hd.getKhachHang() != null) {
+                        tenKhachHang = hd.getKhachHang().getHoTenDem() + " " + hd.getKhachHang().getTen();
+                    }
 
-    // Lấy thông tin nhân viên hiện tại MỘT LẦN ở ngoài vòng lặp
-    NhanVien nvHienTai = null;
-    try {
-        String tenDangNhap = GiaoDienChinhGUI.getTk().getTenDangNhap().trim();
-        nvHienTai = NhanVienDAO.getNhanVienTheoMaNV(tenDangNhap);
-    } catch (Exception e) {
-        e.printStackTrace();
-    }
-
-    if (nvHienTai != null) {
-        for (HoaDon hd : dsHDHomNaycuaNV) {
-            // So sánh mã nhân viên để đảm bảo chính xác
-            if (hd.getNhanVien().getMaNV().equals(nvHienTai.getMaNV())) {
-                
-                // Xử lý hiển thị Boolean
-                String pttt = hd.isChuyenKhoan() ? "Chuyển khoản" : "Tiền mặt";
-                String trangThai = hd.isTrangThai() ? "Đã thanh toán" : "Chưa thanh toán";
-                String tongTien = currencyFormat.format(hd.getTongTien());
-                String tenKhachHang = "Khách lẻ";
-                if(hd.getKhachHang() != null) {
-                    tenKhachHang = hd.getKhachHang().getHoTenDem() + " " + hd.getKhachHang().getTen();
+                    Object[] row = {
+                        hd.getMaHoaDon(),
+                        tenKhachHang,
+                        pttt,
+                        tongTien
+                    };
+                    dtmHoaDon.addRow(row);
                 }
-
-                Object[] row = {
-                    hd.getMaHoaDon(),
-                    tenKhachHang,
-                    pttt,       // Hiển thị Chuyển khoản
-                    trangThai,  // Hiển thị Trạng thái
-                    tongTien    // Hiển thị Tổng tiền
-                };
-                dtmHoaDon.addRow(row);
             }
+        } else {
+            JOptionPane.showMessageDialog(this, "Không tìm thấy thông tin nhân viên đăng nhập!");
         }
-    } else {
-        JOptionPane.showMessageDialog(this, "Không tìm thấy thông tin nhân viên đăng nhập!");
+
+        tblHoaDon = new JTable(dtmHoaDon);
+        applyTableStyle(tblHoaDon);
+
+        // --- CẤU HÌNH RENDERER ĐÃ SỬA ---
+        // Cột 0: Mã HĐ - Căn trái
+        tblHoaDon.getColumnModel().getColumn(0).setCellRenderer(getLeftRenderer());
+
+        // Cột 1: Khách hàng - Căn trái
+        tblHoaDon.getColumnModel().getColumn(1).setCellRenderer(getLeftRenderer());
+
+        // Cột 2: PTTT - Căn giữa
+        tblHoaDon.getColumnModel().getColumn(2).setCellRenderer(getCenterRenderer());
+
+        // Cột 3: Tổng tiền - Căn phải (Lúc trước là cột 4, giờ chuyển thành cột 3)
+        // Đã xóa phần statusRenderer vì không còn cột Trạng thái
+        tblHoaDon.getColumnModel().getColumn(3).setCellRenderer(getRightRenderer());
+
+        // Thiết lập độ rộng cột
+        tblHoaDon.getColumnModel().getColumn(0).setPreferredWidth(100); // Mã HĐ
+        tblHoaDon.getColumnModel().getColumn(1).setPreferredWidth(150); // Tên KH
+        // Cột 2 (PTTT) và 3 (Tổng tiền) để tự động co giãn hoặc set nếu muốn
+        tblHoaDon.getColumnModel().getColumn(3).setPreferredWidth(100);
+
+        JScrollPane scroll = new JScrollPane(tblHoaDon);
+        scroll.setBorder(BorderFactory.createEmptyBorder());
+        scroll.getViewport().setBackground(Color.WHITE);
+        return scroll;
     }
-
-    tblHoaDon = new JTable(dtmHoaDon);
-    applyTableStyle(tblHoaDon);
-
-    // --- CẤU HÌNH RENDERER (CĂN CHỈNH & MÀU SẮC) ---
-    
-    // Cột 0, 1: Căn trái (Mã, Tên)
-    tblHoaDon.getColumnModel().getColumn(0).setCellRenderer(getLeftRenderer());
-    tblHoaDon.getColumnModel().getColumn(1).setCellRenderer(getLeftRenderer());
-    
-    // Cột 2: Căn giữa (PTTT)
-    tblHoaDon.getColumnModel().getColumn(2).setCellRenderer(getCenterRenderer());
-
-    // Cột 3: Trạng thái (Căn giữa + Tô màu xanh nếu đã thanh toán)
-    DefaultTableCellRenderer statusRenderer = new DefaultTableCellRenderer() {
-        @Override
-        public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-            Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-            
-            String status = (String) value;
-            if ("Đã thanh toán".equals(status)) {
-                c.setForeground(new Color(0, 153, 51)); // Xanh lá đậm
-            } else {
-                c.setForeground(Color.RED); // Màu đỏ nếu chưa thanh toán
-            }
-            
-            if (isSelected) {
-                c.setForeground(table.getSelectionForeground());
-            }
-            return c;
-        }
-    };
-    statusRenderer.setHorizontalAlignment(JLabel.CENTER);
-    tblHoaDon.getColumnModel().getColumn(3).setCellRenderer(statusRenderer);
-
-    // Cột 4: Tổng tiền (Căn phải)
-    tblHoaDon.getColumnModel().getColumn(4).setCellRenderer(getRightRenderer());
-
-    // Thiết lập độ rộng cột (Tùy chọn)
-    tblHoaDon.getColumnModel().getColumn(0).setPreferredWidth(100);
-    tblHoaDon.getColumnModel().getColumn(1).setPreferredWidth(150);
-    tblHoaDon.getColumnModel().getColumn(4).setPreferredWidth(100);
-
-    JScrollPane scroll = new JScrollPane(tblHoaDon);
-    scroll.setBorder(BorderFactory.createEmptyBorder());
-    scroll.getViewport().setBackground(Color.WHITE);
-    return scroll;
-}
 
     private JScrollPane initTableLichLamViec() {
         String[] columns = {"Ngày", "Ca làm việc", "Giờ"};
@@ -613,7 +586,7 @@ public class DashBoardNhanVien extends javax.swing.JPanel {
         center.setHorizontalAlignment(JLabel.CENTER);
         return center;
     }
-    
+
     private DefaultTableCellRenderer getRightRenderer() {
         DefaultTableCellRenderer right = new DefaultTableCellRenderer();
         right.setHorizontalAlignment(JLabel.RIGHT);

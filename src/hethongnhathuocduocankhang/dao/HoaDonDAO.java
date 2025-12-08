@@ -29,7 +29,6 @@ public class HoaDonDAO {
         LocalDateTime ngayLapHD = rs.getTimestamp("ngayLapHoaDon").toLocalDateTime();
         String maKH = rs.getString("maKH");
         boolean chuyenKhoan = rs.getBoolean("chuyenKhoan");
-        boolean trangThai = rs.getBoolean("trangThai");
         double tongTien = rs.getDouble("tongTien");
 
         NhanVien nv = NhanVienDAO.getNhanVienTheoMaNV(maNV);
@@ -42,7 +41,7 @@ public class HoaDonDAO {
             kh = new KhachHang(maKH);
         }
 
-        return new HoaDon(maHoaDon, nv, ngayLapHD, kh, chuyenKhoan, trangThai, tongTien);
+        return new HoaDon(maHoaDon, nv, ngayLapHD, kh, chuyenKhoan, tongTien);
     }
 
     public static HoaDon getHoaDonMoiNhatTrongNgay() {
@@ -86,7 +85,7 @@ public class HoaDonDAO {
             ConnectDB.getInstance();
             Connection con = ConnectDB.getConnection();
             PreparedStatement ps = con.prepareStatement(
-                    "INSERT INTO HoaDon (maHoaDon, maNV, ngayLapHoaDon, maKH, chuyenKhoan, trangThai, tongTien) VALUES (?, ?, ?, ?, ?, ?, ?)"
+                    "INSERT INTO HoaDon (maHoaDon, maNV, ngayLapHoaDon, maKH, chuyenKhoan, tongTien) VALUES (?, ?, ?, ?, ?, ?, ?)"
             );
 
             ps.setString(1, hd.getMaHoaDon());
@@ -94,8 +93,7 @@ public class HoaDonDAO {
             ps.setTimestamp(3, Timestamp.valueOf(hd.getNgayLapHoaDon()));
             ps.setString(4, hd.getKhachHang().getMaKH());
             ps.setBoolean(5, hd.isChuyenKhoan());
-            ps.setBoolean(6, hd.isTrangThai());
-            ps.setDouble(7, hd.getTongTien());
+            ps.setDouble(6, hd.getTongTien());
 
             n = ps.executeUpdate();
         } catch (SQLException e) {

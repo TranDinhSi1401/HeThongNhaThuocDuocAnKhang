@@ -20,16 +20,14 @@ public class HoaDon {
     private LocalDateTime ngayLapHoaDon;
     private KhachHang khachHang;
     private boolean chuyenKhoan;
-    private boolean trangThai;
     private double tongTien;
 
-    public HoaDon(String maHoaDon, NhanVien nhanVien, LocalDateTime ngayLapHoaDon, KhachHang khachHang, boolean chuyenKhoan, boolean trangThai, double tongTien) {
+    public HoaDon(String maHoaDon, NhanVien nhanVien, LocalDateTime ngayLapHoaDon, KhachHang khachHang, boolean chuyenKhoan, double tongTien) {
         this.maHoaDon = maHoaDon;
         this.nhanVien = nhanVien;
         this.ngayLapHoaDon = ngayLapHoaDon;
         this.khachHang = khachHang;
         this.chuyenKhoan = chuyenKhoan;
-        this.trangThai = trangThai;
         this.tongTien = tongTien;
     }
 
@@ -39,7 +37,6 @@ public class HoaDon {
         this.ngayLapHoaDon = hoaDon.ngayLapHoaDon;
         this.khachHang = hoaDon.khachHang;
         this.chuyenKhoan = hoaDon.chuyenKhoan;
-        this.trangThai = hoaDon.trangThai;
         this.tongTien = hoaDon.tongTien;
     }
 
@@ -50,7 +47,7 @@ public class HoaDon {
     public HoaDon(String maHD) {
         this.maHoaDon = maHD;
     }
-    
+
     public String getMaHoaDon() {
         return maHoaDon;
     }
@@ -71,10 +68,6 @@ public class HoaDon {
         return tongTien;
     }
 
-    public boolean isTrangThai() {
-        return trangThai;
-    }
-
     public boolean isChuyenKhoan() {
         return chuyenKhoan;
     }
@@ -84,25 +77,23 @@ public class HoaDon {
 //           throw new IllegalArgumentException("Hóa đơn không được rỗng");
 //        DateTimeFormatter =
 //    }
-    
 //    Không được rỗng, không trùng, phải theo định dạng HD-[DD][MM][YY]-[XXXX]. 
 //    Với [DD][MM][YY] là ngày tháng năm hiện tại, [X] là số nguyên từ 0–9.
-
-    public void setNhanVien(NhanVien nhanVien){
+    public void setNhanVien(NhanVien nhanVien) {
         if (nhanVien == null) {
             throw new IllegalArgumentException("Nhân viên không được rỗng");
         }
         this.nhanVien = nhanVien;
     }
 
-    public void setNgayLapHoaDon(LocalDateTime ngayLapHoaDon){
+    public void setNgayLapHoaDon(LocalDateTime ngayLapHoaDon) {
         if (ngayLapHoaDon == null) {
             throw new IllegalArgumentException("Ngày lập hóa đơn không được rỗng");
         }
         this.ngayLapHoaDon = ngayLapHoaDon;
     }
 
-    public void setKhachHang(KhachHang khachHang){
+    public void setKhachHang(KhachHang khachHang) {
         if (khachHang == null) {
             throw new IllegalArgumentException("Khách hàng không được rỗng");
         }
@@ -113,11 +104,7 @@ public class HoaDon {
         this.chuyenKhoan = hinhThucThanhToan;
     }
 
-    public void setTinhTrang(boolean tinhTrang) {
-        this.trangThai = tinhTrang;
-    }
-
-    public void setTongTien(double tongTien){
+    public void setTongTien(double tongTien) {
         if (tongTien <= 0) {
             throw new IllegalArgumentException("Tổng tiền phải là số thực lớn hơn 0");
         }
@@ -148,7 +135,7 @@ public class HoaDon {
 
     @Override
     public String toString() {
-        return "HoaDon{" + "maHoaDon=" + maHoaDon + ", nhanVien=" + nhanVien + ", ngayLapHoaDon=" + ngayLapHoaDon + ", khachHang=" + khachHang + ", chuyenKhoan=" + chuyenKhoan + ", trangThai=" + trangThai + ", tongTien=" + tongTien + '}';
+        return "HoaDon{" + "maHoaDon=" + maHoaDon + ", nhanVien=" + nhanVien + ", ngayLapHoaDon=" + ngayLapHoaDon + ", khachHang=" + khachHang + ", chuyenKhoan=" + chuyenKhoan + ", tongTien=" + tongTien + '}';
     }
 
 }
