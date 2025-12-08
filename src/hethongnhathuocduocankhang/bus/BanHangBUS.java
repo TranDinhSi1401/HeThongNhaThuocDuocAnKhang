@@ -219,8 +219,7 @@ public class BanHangBUS {
             // Tạo hóa đơn
             String maNV = GiaoDienChinhGUI.getTk().getNhanVien().getMaNV();
             LocalDateTime ngayLapHD = LocalDateTime.now();
-            boolean trangThai = true;
-            HoaDon hd = new HoaDon(maHDMoi, new NhanVien(maNV), ngayLapHD, new KhachHang(maKH), chuyenKhoan, trangThai, tongTien);
+            HoaDon hd = new HoaDon(maHDMoi, new NhanVien(maNV), ngayLapHD, new KhachHang(maKH), chuyenKhoan, tongTien);
 
             if(false == HoaDonDAO.insertHoaDon(hd)) {
                 throw new Exception("Tạo hóa đơn thất bại");

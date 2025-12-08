@@ -19,10 +19,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
@@ -65,7 +69,8 @@ public class BanHangPane extends javax.swing.JPanel {
         group.add(radChuyenKhoan);
         
         TableColumn columnDVT = tblCTHD.getColumnModel().getColumn(2);
-
+        
+        // render cột đơn vị tính theo comboBox
         columnDVT.setCellEditor(new DefaultCellEditor(new JComboBox<String>()) {
 
             private JComboBox<String> currentCombo;
@@ -100,6 +105,7 @@ public class BanHangPane extends javax.swing.JPanel {
 
         
         DefaultTableModel model = (DefaultTableModel)tblCTHD.getModel();
+        // Lấy giá trị cũ trước thay đổi để rollback
         tblCTHD.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
@@ -111,7 +117,7 @@ public class BanHangPane extends javax.swing.JPanel {
             }
         });
 
-        
+        // Sự kiện thay đổi số lượng hoặc đvt
         model.addTableModelListener(e -> {
             if (e.getColumn() == 2 || e.getColumn() == 4) {
                 if (isMerging) return;
@@ -164,6 +170,103 @@ public class BanHangPane extends javax.swing.JPanel {
                     }
                 }
                
+            }
+        });
+        
+        // Sự kiện hỗ trợ tự định dạng số khi nhập
+        DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.getDefault());
+        symbols.setGroupingSeparator(' ');
+        DecimalFormat formatter = new DecimalFormat("#,##0", symbols);
+        
+        txtTienKhachDua.getDocument().addDocumentListener(new DocumentListener() {
+
+            private boolean coDangFormat = false;
+
+            // Lắng nghe khi thêm ký tự
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                if (!coDangFormat) {
+                    formatText();
+                }
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                if (!coDangFormat) {
+                    formatText();
+                }
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+
+            }
+
+            private void formatText() {
+                if (coDangFormat) {
+                    return;
+                }
+
+                // Lấy văn bản thô (chỉ số) dựa trên nội dung hiện tại của ô text
+                String rawText;
+                try {
+                    // Lấy văn bản hiện tại (có thể bao gồm dấu phân cách cũ)
+                    String currentText = txtTienKhachDua.getText();
+                    // Lọc để lấy chuỗi chỉ gồm số
+                    rawText = currentText.replaceAll("[^\\d]", "");
+                } catch (Exception e) {
+                    // Xử lý lỗi nếu việc lấy text thất bại
+                    return;
+                }
+
+                if (rawText.isEmpty()) {
+                    // Không cần định dạng nếu rỗng
+                    return;
+                }
+
+                // Bắt đầu quá trình định dạng
+                coDangFormat = true;
+
+                try {
+                    long value = Long.parseLong(rawText);
+                    String formattedText = formatter.format(value);
+
+                    // CHỈ THỰC HIỆN TÁC VỤ THAY ĐỔI GIAO DIỆN TRÊN EDT
+                    SwingUtilities.invokeLater(() -> {
+                        try {
+                            // Lấy lại vị trí con trỏ và văn bản gốc ngay trong invokeLater()
+                            int caretPosition = txtTienKhachDua.getCaretPosition();
+                            String originalText = txtTienKhachDua.getText();
+
+                            // Cập nhật Text
+                            txtTienKhachDua.setText(formattedText);
+
+                            // Điều chỉnh vị trí con trỏ
+                            int offset = formattedText.length() - originalText.length();
+                            int newCaretPosition = caretPosition + offset;
+
+                            // Giới hạn
+                            if (newCaretPosition < 0) {
+                                newCaretPosition = 0;
+                            }
+                            if (newCaretPosition > formattedText.length()) {
+                                newCaretPosition = formattedText.length();
+                            }
+
+                            txtTienKhachDua.setCaretPosition(newCaretPosition);
+
+                        } catch (Exception ex) {
+                            // Bắt lỗi trong invokeLater
+                        } finally {
+                            // Kết thúc quá trình định dạng, reset cờ
+                            coDangFormat = false;
+                        }
+                    });
+
+                } catch (NumberFormatException ex) {
+                    // Bắt lỗi NumberFormatException (nếu số quá lớn)
+                    coDangFormat = false;
+                }
             }
         });
         
