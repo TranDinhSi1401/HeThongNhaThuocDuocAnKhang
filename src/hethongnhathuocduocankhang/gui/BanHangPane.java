@@ -275,9 +275,11 @@ public class BanHangPane extends javax.swing.JPanel {
         mapKeyToClickButton("F3", radTienMat);
         mapKeyToClickButton("F4", radChuyenKhoan);
         mapKeyToFocus("F5", txtTienKhachDua);
-        mapKeyToClickButton("F6", btnXoa);
-        mapKeyToClickButton("F7", btnXoaTrang);
-        mapKeyToClickButton("F8", btnThanhToan);
+        mapKeyToClickButton("F6", btnThanhToan);
+        mapKeyToClickButton("F7", btnXoa);
+        mapKeyToClickButton("F8", btnXoaTrang);
+        mapKeyToClickButton("F9", btnThemKH);
+        
         
         
         SwingUtilities.invokeLater(() -> {
@@ -361,7 +363,7 @@ public class BanHangPane extends javax.swing.JPanel {
         btnXoa.setBackground(new java.awt.Color(255, 51, 51));
         btnXoa.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnXoa.setForeground(new java.awt.Color(255, 255, 255));
-        btnXoa.setText("Xóa [F6]");
+        btnXoa.setText("Xóa [F7]");
         btnXoa.setPreferredSize(new java.awt.Dimension(100, 35));
         btnXoa.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -371,7 +373,7 @@ public class BanHangPane extends javax.swing.JPanel {
         pLeftSouth.add(btnXoa);
 
         btnXoaTrang.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btnXoaTrang.setText("Xóa trắng [F7]");
+        btnXoaTrang.setText("Xóa trắng [F8]");
         btnXoaTrang.setPreferredSize(new java.awt.Dimension(130, 35));
         btnXoaTrang.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -388,7 +390,7 @@ public class BanHangPane extends javax.swing.JPanel {
         btnThanhToan.setBackground(new java.awt.Color(0, 203, 0));
         btnThanhToan.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnThanhToan.setForeground(new java.awt.Color(255, 255, 255));
-        btnThanhToan.setText("Thanh toán [F8]");
+        btnThanhToan.setText("Thanh toán [F6]");
         btnThanhToan.setPreferredSize(new java.awt.Dimension(260, 35));
         btnThanhToan.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -417,7 +419,7 @@ public class BanHangPane extends javax.swing.JPanel {
         lblSdtKH.setText("SĐT khách hàng:");
         p1.add(lblSdtKH);
 
-        btnThemKH.setText("+");
+        btnThemKH.setText("+ [F9]");
         btnThemKH.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnThemKHActionPerformed(evt);

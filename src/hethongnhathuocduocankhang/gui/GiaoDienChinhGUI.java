@@ -6,6 +6,9 @@ package hethongnhathuocduocankhang.gui;
 
 import hethongnhathuocduocankhang.entity.TaiKhoan;
 import hethongnhathuocduocankhang.menu.MenuEvent;
+import java.awt.Image;
+import java.awt.Toolkit;
+import java.net.URL;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -70,6 +73,9 @@ public class GiaoDienChinhGUI extends javax.swing.JFrame {
         if(tk != null) {
             GiaoDienChinhGUI.tk = tk;
         }
+        URL url = GiaoDienChinhGUI.class.getResource("/resources/images/logo.png");
+        Image icon = Toolkit.getDefaultToolkit().createImage(url);
+        this.setIconImage(icon);
         showPanel(new DashBoardQuanLi());
         setTitle("Hệ thống nhà thuốc Dược An Khang");
         setExtendedState(JFrame.MAXIMIZED_BOTH);
