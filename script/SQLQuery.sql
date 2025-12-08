@@ -307,12 +307,10 @@ CREATE TABLE PhieuNhap (
     maPhieuNhap NVARCHAR(7) NOT NULL,
     ngayTao DATE DEFAULT GETDATE() NOT NULL,
     maNV NVARCHAR(7) NOT NULL,
-    maNCC NVARCHAR(8) NOT NULL,
     tongTien DECIMAL(18, 2) DEFAULT 0,
     ghiChu NVARCHAR(255) NULL,
     CONSTRAINT PK_PhieuNhap PRIMARY KEY (maPhieuNhap),
     CONSTRAINT FK_PhieuNhap_NhanVien FOREIGN KEY (maNV) REFERENCES NhanVien(maNV),
-    CONSTRAINT FK_PhieuNhap_NhaCungCap FOREIGN KEY (maNCC) REFERENCES NhaCungCap(maNCC),
     CONSTRAINT CK_PhieuNhap_Format CHECK (maPhieuNhap LIKE 'PN-[0-9][0-9][0-9][0-9]'),
     CONSTRAINT CK_PhieuNhap_NgayTao CHECK (ngayTao <= GETDATE()),
     CONSTRAINT CK_PhieuNhap_TongTien CHECK (tongTien >= 0)
@@ -322,14 +320,18 @@ GO
 CREATE TABLE ChiTietPhieuNhap (
     maPhieuNhap NVARCHAR(7) NOT NULL,
     maLoSanPham NVARCHAR(50) NOT NULL, 
+    maNCC NVARCHAR(8) NOT NULL,
     soLuong INT NOT NULL,
+    soLuongYeuCau INT NOT NULL,
     donGia DECIMAL(18, 2) NOT NULL,
     thanhTien DECIMAL(18, 2) NOT NULL, 
     ghiChu NVARCHAR(255) NULL,
     CONSTRAINT PK_ChiTietPhieuNhap PRIMARY KEY (maPhieuNhap, maLoSanPham),
     CONSTRAINT FK_CTPN_PhieuNhap FOREIGN KEY (maPhieuNhap) REFERENCES PhieuNhap(maPhieuNhap) ON DELETE CASCADE,
     CONSTRAINT FK_CTPN_LoSanPham FOREIGN KEY (maLoSanPham) REFERENCES LoSanPham(maLoSanPham),
+    CONSTRAINT FK_PhieuNhap_NhaCungCap FOREIGN KEY (maNCC) REFERENCES NhaCungCap(maNCC),
     CONSTRAINT CK_CTPN_SoLuong CHECK (soLuong > 0),
+    CONSTRAINT CK_CTPN_SoLuongYeuCau CHECK (soLuongYeuCau >= 0),
     CONSTRAINT CK_CTPN_DonGia CHECK (donGia >= 0),
     CONSTRAINT CK_CTPN_ThanhTien CHECK (thanhTien >= 0)
 );
@@ -866,7 +868,7 @@ INSERT INTO LoSanPham (maLoSanPham, maSP, soLuong, ngaySanXuat, ngayHetHan) VALU
 ('LO-SP-0020-20250130-2', 'SP-0020', 200, '2025-01-30', '2028-01-30'),
 
 -- SP-0021: Metformin 500mg
-('LO-SP-0021-20240922-1', 'SP-0021', 700, '2024-09-22', '2027-09-22'),
+('LO-SP-0021-20240922-1', 'SP-0021', 0, '2024-09-22', '2027-09-22'),
 
 -- SP-0022: Decolgen Forte
 ('LO-SP-0022-20240405-1', 'SP-0022', 2000, '2024-04-05', '2027-04-05'),
@@ -950,24 +952,28 @@ INSERT INTO LoSanPham (maLoSanPham, maSP, soLuong, ngaySanXuat, ngayHetHan) VALU
 ('LO-SP-0044-20250305-2', 'SP-0044', 1000, '2025-03-05', '2028-03-05'),
 
 -- SP-0045: Enervon-C
-('LO-SP-0045-20240717-1', 'SP-0045', 1000, '2024-07-17', '2026-07-17'),
+('LO-SP-0045-20240717-1', 'SP-0045', 1000, '2024-01-10', '2026-01-10'),
 
 -- SP-0046: Nước muối sinh lý Natri Clorid 0.9%
-('LO-SP-0046-20241001-1', 'SP-0046', 2000, '2024-10-01', '2027-10-01'),
-('LO-SP-0046-20250515-2', 'SP-0046', 1500, '2025-05-15', '2028-05-15'),
+('LO-SP-0046-20241001-1', 'SP-0046', 2000, '2024-01-10', '2026-01-10'),
+('LO-SP-0046-20250515-2', 'SP-0046', 1500, '2024-01-10', '2026-01-10'),
 
 -- SP-0047: Crest 3D White
-('LO-SP-0047-20240801-1', 'SP-0047', 200, '2024-08-01', '2026-08-01'),
+('LO-SP-0047-20240801-1', 'SP-0047', 200, '2024-01-10', '2026-01-10'),
+
+---
+-- Giả sử ngày thống kê là hôm nay (2025-12-05) (cho 3 sản phẩm sau)
+-- Ngày Hết Hạn mới: 2026-01-04 (30 ngày sau 05/12/2025)
 
 -- SP-0048: Strepsils
-('LO-SP-0048-20240920-1', 'SP-0048', 800, '2024-09-20', '2026-09-20'),
-('LO-SP-0048-20250412-2', 'SP-0048', 600, '2025-04-12', '2027-04-12'),
+('LO-SP-0048-20240920-1', 'SP-0048', 800, '2024-09-20', '2026-01-02'),
+('LO-SP-0048-20250412-2', 'SP-0048', 600, '2025-04-12', '2026-01-02'),
 
 -- SP-0049: Viên uống mọc tóc Biotin 10000mcg
-('LO-SP-0049-20240530-1', 'SP-0049', 100, '2024-05-30', '2027-05-30'),
+('LO-SP-0049-20240530-1', 'SP-0049', 100, '2024-05-30', '2026-01-02'),
 
 -- SP-0050: Phosphalugel
-('LO-SP-0050-20240720-1', 'SP-0050', 500, '2024-07-20', '2027-07-20');
+('LO-SP-0050-20240720-1', 'SP-0050', 500, '2024-07-20', '2026-01-02');
 GO
 
 INSERT INTO LoSanPham (maLoSanPham, maSP, soLuong, ngaySanXuat, ngayHetHan, daHuy) VALUES
@@ -1336,7 +1342,7 @@ BEGIN
     END
 
     SET @chuyenKhoan_T6 = CASE WHEN @i_T6 % 5 = 0 THEN 1 ELSE 0 END;
-    SET @trangThai_T6 = CASE WHEN @i_T6 % 50 = 0 THEN 0 ELSE 1 END;
+    SET @trangThai_T6 = 1;
     SET @tongTien_T6 = ROUND((50000 + ((@i_T6 * 317) % 1000000)), -3);
     
     INSERT INTO HoaDon (maHoaDon, maNV, ngayLapHoaDon, maKH, chuyenKhoan, trangThai, tongTien)
@@ -1380,7 +1386,7 @@ BEGIN
     END
 
     SET @chuyenKhoan_T7 = CASE WHEN @i_T7 % 5 = 0 THEN 1 ELSE 0 END;
-    SET @trangThai_T7 = CASE WHEN @i_T7 % 50 = 0 THEN 0 ELSE 1 END;
+    SET @trangThai_T7 = 1;
     SET @tongTien_T7 = ROUND((50000 + ((@i_T7 * 317) % 1000000)), -3);
     
     INSERT INTO HoaDon (maHoaDon, maNV, ngayLapHoaDon, maKH, chuyenKhoan, trangThai, tongTien)
@@ -1424,7 +1430,7 @@ BEGIN
     END
 
     SET @chuyenKhoan_T8 = CASE WHEN @i_T8 % 5 = 0 THEN 1 ELSE 0 END;
-    SET @trangThai_T8 = CASE WHEN @i_T8 % 50 = 0 THEN 0 ELSE 1 END;
+    SET @trangThai_T8 = 1;
     SET @tongTien_T8 = ROUND((50000 + ((@i_T8 * 317) % 1000000)), -3);
     
     INSERT INTO HoaDon (maHoaDon, maNV, ngayLapHoaDon, maKH, chuyenKhoan, trangThai, tongTien)
@@ -1468,7 +1474,7 @@ BEGIN
     END
 
     SET @chuyenKhoan_T9 = CASE WHEN @i_T9 % 5 = 0 THEN 1 ELSE 0 END;
-    SET @trangThai_T9 = CASE WHEN @i_T9 % 50 = 0 THEN 0 ELSE 1 END;
+    SET @trangThai_T9 = 1;
     SET @tongTien_T9 = ROUND((50000 + ((@i_T9 * 317) % 1000000)), -3);
     
     INSERT INTO HoaDon (maHoaDon, maNV, ngayLapHoaDon, maKH, chuyenKhoan, trangThai, tongTien)
@@ -1512,7 +1518,7 @@ BEGIN
     END
 
     SET @chuyenKhoan_T10 = CASE WHEN @i_T10 % 5 = 0 THEN 1 ELSE 0 END;
-    SET @trangThai_T10 = CASE WHEN @i_T10 % 50 = 0 THEN 0 ELSE 1 END;
+    SET @trangThai_T10 = 1;
     SET @tongTien_T10 = ROUND((50000 + ((@i_T10 * 317) % 1000000)), -3);
     
     INSERT INTO HoaDon (maHoaDon, maNV, ngayLapHoaDon, maKH, chuyenKhoan, trangThai, tongTien)
@@ -1558,9 +1564,9 @@ BEGIN
     SET @chuyenKhoan_T11 = CASE WHEN @i_T11 % 5 = 0 THEN 1 ELSE 0 END;
 
     IF @day_T11 <= 13 -- Giả định hôm nay là 13/11
-        SET @trangThai_T11 = CASE WHEN @i_T11 % 50 = 0 THEN 0 ELSE 1 END;
+        SET @trangThai_T11 = 1;
     ELSE
-        SET @trangThai_T11 = CASE WHEN @i_T11 % 2 = 0 THEN 0 ELSE 1 END;
+        SET @trangThai_T11 = 1;
 
     SET @tongTien_T11 = ROUND((50000 + ((@i_T11 * 317) % 1000000)), -3);
     
@@ -1605,7 +1611,7 @@ BEGIN
     END
 
     SET @chuyenKhoan_T12 = CASE WHEN @i_T12 % 5 = 0 THEN 1 ELSE 0 END;
-    SET @trangThai_T12 = CASE WHEN @i_T12 % 2 = 0 THEN 0 ELSE 1 END; -- Tương lai, 50% chưa thanh toán
+    SET @trangThai_T12 = 1;
     SET @tongTien_T12 = ROUND((50000 + ((@i_T12 * 317) % 1000000)), -3);
     
     INSERT INTO HoaDon (maHoaDon, maNV, ngayLapHoaDon, maKH, chuyenKhoan, trangThai, tongTien)
@@ -1616,7 +1622,7 @@ END;
 GO
 
 -- ===================================================================
--- 8. TẠO CHI TIẾT HÓA ĐƠN (CHO 700 HÓA ĐƠN MỚI)
+-- 14. TẠO CHI TIẾT HÓA ĐƠN (CHO 700 HÓA ĐƠN MỚI)
 -- ===================================================================
 
 BEGIN TRANSACTION;
@@ -1964,26 +1970,25 @@ COMMIT TRANSACTION;
 GO
 
 -- 1. TẠO 10 DÒNG DỮ LIỆU CHO BẢNG PHIEU NHAP (Ban đầu tongTien = 0)
-INSERT INTO PhieuNhap (maPhieuNhap, ngayTao, maNV, maNCC, tongTien, ghiChu) VALUES
-('PN-0001', DATEADD(DAY, -9, GETDATE()), 'NV-0001', 'NCC-0001', 0, N'Nhập hàng định kỳ tháng 5'),
-('PN-0002', DATEADD(DAY, -8, GETDATE()), 'NV-0002', 'NCC-0002', 0, N'Nhập thuốc kháng sinh'),
-('PN-0003', DATEADD(DAY, -7, GETDATE()), 'NV-0003', 'NCC-0003', 0, N'Nhập bổ sung vitamin'),
-('PN-0004', DATEADD(DAY, -6, GETDATE()), 'NV-0004', 'NCC-0004', 0, NULL),
-('PN-0005', DATEADD(DAY, -5, GETDATE()), 'NV-0001', 'NCC-0005', 0, N'Hàng nhập khẩu'),
-('PN-0006', DATEADD(DAY, -4, GETDATE()), 'NV-0002', 'NCC-0006', 0, NULL),
-('PN-0007', DATEADD(DAY, -3, GETDATE()), 'NV-0003', 'NCC-0007', 0, N'Nhập thực phẩm chức năng'),
-('PN-0008', DATEADD(DAY, -2, GETDATE()), 'NV-0004', 'NCC-0008', 0, N'Đơn hàng gấp'),
-('PN-0009', DATEADD(DAY, -1, GETDATE()), 'NV-0001', 'NCC-0009', 0, NULL),
-('PN-0010', GETDATE(), 'NV-0002', 'NCC-0010', 0, N'Nhập kho cuối tháng');
+INSERT INTO PhieuNhap (maPhieuNhap, ngayTao, maNV, tongTien, ghiChu) VALUES
+('PN-0001', DATEADD(DAY, -9, GETDATE()), 'NV-0001', 0, N'Nhập hàng định kỳ tháng 5'),
+('PN-0002', DATEADD(DAY, -8, GETDATE()), 'NV-0002', 0, N'Nhập thuốc kháng sinh'),
+('PN-0003', DATEADD(DAY, -7, GETDATE()), 'NV-0003', 0, N'Nhập bổ sung vitamin'),
+('PN-0004', DATEADD(DAY, -6, GETDATE()), 'NV-0004', 0, NULL),
+('PN-0005', DATEADD(DAY, -5, GETDATE()), 'NV-0001', 0, N'Hàng nhập khẩu'),
+('PN-0006', DATEADD(DAY, -4, GETDATE()), 'NV-0002', 0, NULL),
+('PN-0007', DATEADD(DAY, -3, GETDATE()), 'NV-0003', 0, N'Nhập thực phẩm chức năng'),
+('PN-0008', DATEADD(DAY, -2, GETDATE()), 'NV-0004', 0, N'Đơn hàng gấp'),
+('PN-0009', DATEADD(DAY, -1, GETDATE()), 'NV-0001', 0, NULL),
+('PN-0010', GETDATE(), 'NV-0002', 0, N'Nhập kho cuối tháng');
 GO
-
--- 2. TẠO CHI TIẾT PHIẾU NHẬP (Tự động random sản phẩm cho từng phiếu)
--- Sử dụng con trỏ (Cursor) hoặc vòng lặp để chèn dữ liệu cho từng phiếu nhằm đảm bảo số lượng dòng từ 10-15
 
 DECLARE @MaPN NVARCHAR(7);
 DECLARE @SoDongCanTao INT;
+-- Biến tạm để lưu mã nhà cung cấp random cho mỗi phiếu hoặc mỗi dòng
+DECLARE @RandomMaNCC NVARCHAR(8); 
 
--- Khai báo con trỏ duyệt qua 10 mã phiếu nhập vừa tạo
+-- Khai báo con trỏ duyệt qua các mã phiếu nhập vừa tạo
 DECLARE pn_cursor CURSOR FOR 
 SELECT maPhieuNhap FROM PhieuNhap;
 
@@ -1992,26 +1997,46 @@ FETCH NEXT FROM pn_cursor INTO @MaPN;
 
 WHILE @@FETCH_STATUS = 0
 BEGIN
-    -- Random số dòng chi tiết từ 10 đến 15
-    -- Công thức: FLOOR(RAND() * (MAX - MIN + 1)) + MIN -> FLOOR(RAND() * 6) + 10
+    -- 1. Random số dòng chi tiết từ 10 đến 15 cho phiếu này
     SET @SoDongCanTao = FLOOR(RAND() * 6) + 10; 
 
-    -- Insert dữ liệu vào ChiTietPhieuNhap
-    -- Lấy ngẫu nhiên các lô sản phẩm từ bảng LoSanPham
-    INSERT INTO ChiTietPhieuNhap (maPhieuNhap, maLoSanPham, soLuong, donGia, thanhTien, ghiChu)
+    -- 2. Insert dữ liệu vào ChiTietPhieuNhap
+    -- Đã thêm cột soLuongYeuCau vào danh sách INSERT và SELECT
+    INSERT INTO ChiTietPhieuNhap (
+        maPhieuNhap, 
+        maLoSanPham, 
+        maNCC, 
+        soLuong, 
+        soLuongYeuCau, -- <--- Cột mới thêm
+        donGia, 
+        thanhTien, 
+        ghiChu
+    )
     SELECT TOP (@SoDongCanTao)
-        @MaPN,                         -- Mã phiếu nhập hiện tại trong vòng lặp
-        LSP.maLoSanPham,               -- Mã lô lấy từ bảng LoSanPham
-        ABS(CHECKSUM(NEWID()) % 100) + 10, -- Random số lượng nhập từ 10 đến 109
-        ABS(CHECKSUM(NEWID()) % 500000) + 10000, -- Random đơn giá nhập từ 10k đến 500k
-        0, -- Tạm thời để 0, sẽ tính toán ở bước sau (hoặc tính ngay trong câu lệnh select)
-        NULL
+        @MaPN,                              -- Mã phiếu nhập
+        LSP.maLoSanPham,                    -- Mã lô sản phẩm
+        
+        -- Lấy ngẫu nhiên 1 mã NCC từ bảng NhaCungCap cho dòng này
+        (SELECT TOP 1 maNCC FROM NhaCungCap ORDER BY NEWID()), 
+        
+        ABS(CHECKSUM(NEWID()) % 100) + 10,  -- soLuong (Thực nhập): 10 - 109
+        ABS(CHECKSUM(NEWID()) % 100) + 10,  -- soLuongYeuCau (Yêu cầu): 10 - 109
+        
+        ABS(CHECKSUM(NEWID()) % 500000) + 10000, -- Đơn giá: 10k - 510k
+        0,                                  -- Thành tiền: Tạm để 0, sẽ update sau
+        NULL                                -- Ghi chú
     FROM LoSanPham LSP
-    ORDER BY NEWID(); -- Sắp xếp ngẫu nhiên để lấy các lô khác nhau
+    ORDER BY NEWID(); -- Random lô sản phẩm để mỗi phiếu có các mặt hàng khác nhau
 
-    -- Cập nhật lại cột ThanhTien cho các dòng vừa thêm (ThanhTien = SoLuong * DonGia)
+    -- 3. Cập nhật lại cột ThanhTien = SoLuong * DonGia
+    -- Lưu ý: Thành tiền thường tính trên số lượng thực nhập (soLuong) chứ không phải yêu cầu
     UPDATE ChiTietPhieuNhap
     SET thanhTien = soLuong * donGia
+    WHERE maPhieuNhap = @MaPN;
+
+    -- 4. Cập nhật lại TongTien cho bảng PhieuNhap (Sum thành tiền từ chi tiết)
+    UPDATE PhieuNhap
+    SET tongTien = (SELECT SUM(thanhTien) FROM ChiTietPhieuNhap WHERE maPhieuNhap = @MaPN)
     WHERE maPhieuNhap = @MaPN;
 
     FETCH NEXT FROM pn_cursor INTO @MaPN;
@@ -2019,7 +2044,6 @@ END;
 
 CLOSE pn_cursor;
 DEALLOCATE pn_cursor;
-GO
 
 -- 3. CẬP NHẬT TỔNG TIỀN CHO BẢNG PHIEU NHAP
 -- Tính tổng thành tiền từ bảng chi tiết và update ngược lại bảng cha
@@ -2033,3 +2057,77 @@ GO
 
 PRINT N'>>> TẤT CẢ DỮ LIỆU ĐÃ ĐƯỢC TẠO THÀNH CÔNG <<<';
 GO
+
+--select * 
+--from SanPham sp join LoSanPham lsp
+--on sp.maSP = lsp.maSP
+
+--select sp.maSP, sp.ten, sp.moTa, sp.thanhPhan, sp.loaiSanPham, sp.tonToiThieu, sp.tonToiDa, sp.daXoa, soLuong = sum(lsp.soLuong)
+--from SanPham sp join LoSanPham lsp
+--on sp.maSP = lsp.maSP
+--where soLuong <= sp.tonToiThieu
+--group by sp.maSP, sp.ten, sp.moTa, sp.thanhPhan, sp.loaiSanPham, sp.tonToiThieu, sp.tonToiDa, sp.daXoa
+
+
+--select sp.maSP, sp.ten, sp.moTa, sp.thanhPhan, sp.loaiSanPham, sp.tonToiThieu, sp.tonToiDa, sp.daXoa, dvt.tenDonVi, soLuong = sum(lsp.soLuong)
+--from SanPham sp join LoSanPham lsp
+--on sp.maSP = lsp.maSP join DonViTinh dvt
+--on sp.maSP = dvt.maSP
+--where soLuong <= sp.tonToiDa
+--group by sp.maSP, sp.ten, sp.moTa, sp.thanhPhan, sp.loaiSanPham, sp.tonToiThieu, sp.tonToiDa, sp.daXoa, dvt.tenDonVi
+
+
+--select sp.maSP, sp.ten, sp.moTa, sp.thanhPhan, sp.loaiSanPham, sp.tonToiThieu, sp.tonToiDa, sp.daXoa, dvt.tenDonVi
+--from SanPham sp join DonViTinh dvt
+--on sp.maSP = dvt.maSP
+--where dvt.donViTinhCoBan = '1'
+
+
+--select *
+--from SanPham sp join DonViTinh dvt
+--on sp.maSP = dvt.maSP
+--where dvt.donViTinhCoBan = '1'
+
+
+
+--select sp.maSP, sp.ten, sp.moTa, sp.thanhPhan, sp.loaiSanPham, sp.tonToiThieu, sp.tonToiDa, sp.daXoa, dvt.tenDonVi, soLuong = sum(lsp.soLuong)
+--from SanPham sp join LoSanPham lsp
+--on sp.maSP = lsp.maSP join DonViTinh dvt
+--on sp.maSP = dvt.maSP
+--group by sp.maSP, sp.ten, sp.moTa, sp.thanhPhan, sp.loaiSanPham, sp.tonToiThieu, sp.tonToiDa, sp.daXoa, dvt.tenDonVi
+--order by sp.maSP
+
+
+
+--select sp.maSP, sp.ten, sp.moTa, sp.thanhPhan, sp.loaiSanPham, sp.tonToiThieu, sp.tonToiDa, sp.daXoa, dvt.tenDonVi, soLuong = sum(lsp.soLuong)
+--from SanPham sp join LoSanPham lsp
+--on sp.maSP = lsp.maSP join DonViTinh dvt
+--on sp.maSP = dvt.maSP
+--where soLuong <= sp.tonToiDa and dvt.donViTinhCoBan = '1'
+--group by sp.maSP, sp.ten, sp.moTa, sp.thanhPhan, sp.loaiSanPham, sp.tonToiThieu, sp.tonToiDa, sp.daXoa, dvt.tenDonVi
+--order by sp.maSP
+
+--select sp.maSP, sp.ten, sp.moTa, sp.thanhPhan, sp.loaiSanPham, sp.tonToiThieu, sp.tonToiDa, sp.daXoa, dvt.tenDonVi, soLuong = sum(lsp.soLuong)
+--from SanPham sp join LoSanPham lsp
+--on sp.maSP = lsp.maSP join DonViTinh dvt
+--on sp.maSP = dvt.maSP
+--where dvt.donViTinhCoBan = '1'
+--group by sp.maSP, sp.ten, sp.moTa, sp.thanhPhan, sp.loaiSanPham, sp.tonToiThieu, sp.tonToiDa, sp.daXoa, dvt.tenDonVi
+--having SUM(lsp.soLuong) <= sp.tonToiDa
+--order by sp.maSP
+
+--select *
+--from LoSanPham
+
+--select sp.maSP, sp.ten, soLuong = sum(soLuong)
+--from LoSanPham lsp join SanPham sp
+--on lsp.maSP = sp.maSP
+--group by sp.maSP, sp.ten
+
+--use [DuocAnKhang]
+
+--select sp.maSP, sp.ten, sp.moTa, sp.thanhPhan, sp.loaiSanPham, sp.tonToiThieu, sp.tonToiDa, sp.daXoa, soLuong = sum(soLuong)
+--from LoSanPham lsp join SanPham sp
+--on lsp.maSP = sp.maSP
+--group by sp.maSP, sp.ten, sp.moTa, sp.thanhPhan, sp.loaiSanPham, sp.tonToiThieu, sp.tonToiDa, sp.daXoa
+--having sum(soLuong) = 0
