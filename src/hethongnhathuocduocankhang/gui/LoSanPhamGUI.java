@@ -5,7 +5,6 @@
 package hethongnhathuocduocankhang.gui;
 
 import hethongnhathuocduocankhang.bus.QuanLyLoBUS;
-import hethongnhathuocduocankhang.dao.ChiTietPhieuDatDAO;
 import hethongnhathuocduocankhang.dao.ChiTietPhieuNhapDAO;
 import hethongnhathuocduocankhang.dao.DonViTinhDAO;
 import hethongnhathuocduocankhang.dao.LoSanPhamDAO;
@@ -14,26 +13,29 @@ import hethongnhathuocduocankhang.dao.SanPhamCungCapDAO;
 import hethongnhathuocduocankhang.dao.MaVachSanPhamDAO;
 import hethongnhathuocduocankhang.dao.PhieuNhapDAO;
 import hethongnhathuocduocankhang.dao.SanPhamDAO;
+import hethongnhathuocduocankhang.entity.ChiTietPhieuNhap;
 import hethongnhathuocduocankhang.entity.DonViTinh;
 import hethongnhathuocduocankhang.entity.LoSanPham;
 import hethongnhathuocduocankhang.entity.MaVachSanPham;
 import hethongnhathuocduocankhang.entity.NhaCungCap;
 import hethongnhathuocduocankhang.entity.PhieuNhap;
 import hethongnhathuocduocankhang.entity.SanPham;
-import java.awt.event.ActionEvent;
 import java.awt.event.FocusEvent;
 import org.apache.poi.ss.usermodel.DateUtil;
 import java.io.File;
 import java.io.FileInputStream;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
@@ -256,6 +258,7 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
         });
         jScrollPane3.setViewportView(tblThemSanPham);
 
+        btnThemSanPhamTuExcel.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         btnThemSanPhamTuExcel.setText("Thêm từ Excel");
         btnThemSanPhamTuExcel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -263,13 +266,15 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
             }
         });
 
-        btnXacNhan.setText("Xác nhận thêm");
+        btnXacNhan.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        btnXacNhan.setText("Thêm lô");
         btnXacNhan.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnXacNhanActionPerformed(evt);
             }
         });
 
+        btnXoaSanPham.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         btnXoaSanPham.setText("Xóa");
         btnXoaSanPham.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -277,6 +282,7 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
             }
         });
 
+        jButton1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jButton1.setText("Chọn tất cả");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -300,7 +306,7 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(btnXoaSanPham, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(btnXacNhan)))
+                        .addComponent(btnXacNhan, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanel12Layout.setVerticalGroup(
@@ -1107,29 +1113,73 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
 
     private void btnXacNhanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXacNhanActionPerformed
         DefaultTableModel tbl = (DefaultTableModel) tblThemSanPham.getModel();
+    
+        int kiemTra = 0;
+        for (int i=0; i<tbl.getRowCount(); i++){
+            Boolean chon = (Boolean) tbl.getValueAt(i, 10);
+            if(chon != null && chon == true) kiemTra++;
+        }
         if (tbl.getRowCount() == 0) {
             JOptionPane.showMessageDialog(this, "Chưa có sản phẩm! Vui lòng thêm từ Excel.");
             return;
         }
+        if(kiemTra == 0){
+            JOptionPane.showMessageDialog(this, "Bạn chưa chọn lô cần thêm, vui lòng chọn lô cần thêm rồi thử lại sau");
+            return;
+        }
         double tongTien = 0;
         for (int i = 0; i < tbl.getRowCount(); i++) {
-            boolean check = (boolean) tbl.getValueAt(i, 10);
+            boolean check = (Boolean) tbl.getValueAt(i, 10);
             if (check) {
                 int slGiao = Integer.parseInt(tbl.getValueAt(i, 8).toString());
                 double gia = Double.parseDouble(tbl.getValueAt(i, 9).toString());
-                tongTien += slGiao * gia;
+                tongTien += (double) slGiao * gia;
             }
         }
-        LocalDate ngay = LocalDate.parse(ngayLap);
-        if (!PhieuNhapDAO.themPhieuNhap(ngay, tongTien, "")) {
+        JTextArea ghiChuPhieuNhap = new JTextArea();
+        JScrollPane cuon = new JScrollPane(ghiChuPhieuNhap);
+        int nhap = JOptionPane.showConfirmDialog(null, cuon, "Nhập ghi chú nếu có", JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+        if(nhap != JOptionPane.OK_OPTION) return; 
+        String ghiChuPN = ghiChuPhieuNhap.getText();
+        LocalDate ngay = LocalDate.parse(ngayLap); 
+        if(!PhieuNhapDAO.themPhieuNhap(ngay, tongTien, ghiChuPN)) {
             JOptionPane.showMessageDialog(this, "Thêm phiếu nhập thất bại!");
             return;
         }
         PhieuNhap pn = PhieuNhapDAO.getPhieuNhapMoiNhat();
-
+        boolean coLoiBoSung = false;
         for (int i=0; i<tbl.getRowCount();i++) {
-
-            boolean check = (boolean) tbl.getValueAt(i, 10);
+            boolean check = (Boolean) tbl.getValueAt(i, 10);
+            if (!check) continue;
+            String maLo = tbl.getValueAt(i, 2).toString();
+            int slGiao = Integer.parseInt(tbl.getValueAt(i, 8).toString());
+            LoSanPham loCu = LoSanPhamDAO.timLoSanPham(maLo);
+            if (loCu != null){
+                
+                ChiTietPhieuNhap ctpn = ChiTietPhieuNhapDAO.getChiTietPhieuNhap(loCu.getMaLoSanPham());
+                int soLuongSauBoSung = loCu.getSoLuong() + slGiao;
+                
+                System.out.println(ctpn+"\n"+soLuongSauBoSung);
+                
+                if(soLuongSauBoSung > ctpn.getSoLuongYeuCau()){ 
+                    
+                    JOptionPane.showMessageDialog(this, 
+                        "Lô "+ loCu.getMaLoSanPham() + 
+                        " bị từ chối vì tổng số lượng (" + soLuongSauBoSung + 
+                        ") đã vượt quá số lượng đặt ban đầu (" + ctpn.getSoLuongYeuCau() + ")",
+                        "Lỗi bổ sung lô", JOptionPane.ERROR_MESSAGE);
+                    coLoiBoSung = true; 
+                    break;
+                }
+            }
+        }
+        if (coLoiBoSung) {
+            PhieuNhapDAO.xoaPhieuNhap(pn); // Xóa phiếu nhập đã tạo
+            return; 
+        }
+        ArrayList<Integer> dsIndex = new ArrayList<>();
+        for (int i=0; i<tbl.getRowCount();i++) {
+            boolean check = (Boolean) tbl.getValueAt(i, 10);
             if (!check) continue;
 
             String maSP = tbl.getValueAt(i, 0).toString();
@@ -1137,6 +1187,7 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
             String tenNcc = tbl.getValueAt(i, 3).toString();
             LocalDate sx = LocalDate.parse(QuanLyLoBUS.chuyenDinhDang(tbl.getValueAt(i, 5).toString()));
             LocalDate hh = LocalDate.parse(QuanLyLoBUS.chuyenDinhDang(tbl.getValueAt(i, 6).toString()));
+
             int slDat = Integer.parseInt(tbl.getValueAt(i, 7).toString());
             int slGiao = Integer.parseInt(tbl.getValueAt(i, 8).toString());
             double giaNhap = Double.parseDouble(tbl.getValueAt(i, 9).toString());
@@ -1144,26 +1195,31 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
 
             LoSanPham loMoi = new LoSanPham(maLo, new SanPham(maSP), slGiao, sx, hh, false);
             LoSanPham loCu = LoSanPhamDAO.timLoSanPham(maLo);
-
-            if (loCu != null)
-                LoSanPhamDAO.capNhatSoLuongLo(loCu, slGiao);
-            else 
-                LoSanPhamDAO.themLoSanPham(loMoi);
-
             NhaCungCap ncc = NhaCungCapDAO.getNhaCungCapTheoTen(tenNcc);
+
+            if (loCu != null){
+                LoSanPhamDAO.capNhatSoLuongLo(loCu, slGiao); 
+            } else {
+                LoSanPhamDAO.themLoSanPham(loMoi); 
+            }
+
             ChiTietPhieuNhapDAO.themChiTietPhieuNhap(
-                    loMoi,       // lô nhập vào
-                    pn,          // phiếu nhập vừa tạo
-                    ncc,         // nhà cung cấp
-                    giaNhap,     // giá nhập
-                    tongTien,    // tổng tiền
-                    slDat,      // số lượng đặt
-                    ghiChu       // ghi chú
+                loMoi,       
+                pn,          
+                ncc,         
+                giaNhap,     
+                tongTien,    
+                slDat,       
+                ghiChu       
             );
-        }
-        JOptionPane.showMessageDialog(this, "Thêm phiếu nhập thành công!");
-        ((DefaultTableModel) tblLoSanPham.getModel()).setRowCount(0);
-        loadDanhSachLoSanPham();
+            dsIndex.add(i);
+    }
+    
+    // 6. HOÀN TẤT VÀ TẢI LẠI
+    JOptionPane.showMessageDialog(this, "Thêm lô sản phẩm thành công!");
+    ((DefaultTableModel) tblLoSanPham.getModel()).setRowCount(0);
+    loadDanhSachLoSanPham();
+    xoaLoVuaThem(dsIndex);
     }//GEN-LAST:event_btnXacNhanActionPerformed
 
     private void txtTimKiemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTimKiemActionPerformed
@@ -1207,6 +1263,7 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
         DefaultTableModel tbl = (DefaultTableModel) tblThemSanPham.getModel(); 
         if(tbl.getRowCount()==0){
             JOptionPane.showMessageDialog(this, "Vui lòng thêm sản phầm rồi thử lại");
+            return;
         }
         for (int i=0; i< tbl.getRowCount();i++){
             Boolean sel = (Boolean) tbl.getValueAt(i, 10);
@@ -1485,5 +1542,12 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
 
     private void reLoadTheoDoiVaCanhBao() {
         capNhatSoLo();
+    }
+    private void xoaLoVuaThem(ArrayList<Integer> ds){
+        DefaultTableModel tbl = (DefaultTableModel) tblThemSanPham.getModel();
+        ds.sort(Comparator.reverseOrder());
+        for(Integer i:ds){
+            tbl.removeRow(i);
+        }
     }
 }

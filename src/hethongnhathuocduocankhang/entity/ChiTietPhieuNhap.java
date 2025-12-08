@@ -15,7 +15,7 @@ public class ChiTietPhieuNhap {
     private int soLuong;
     private double donGia;
     private double thanhTien;
-    private boolean trangThai;
+    private int soLuongYeuCau;
     private String ghiChu;
 
     public ChiTietPhieuNhap() {
@@ -26,18 +26,15 @@ public class ChiTietPhieuNhap {
         this.maLoSanPham = maLoSanPham;
     }
 
-    public ChiTietPhieuNhap(PhieuNhap maPhieuNhap, LoSanPham maLoSanPham, NhaCungCap ncc, int soLuong, double donGia, double thanhTien, boolean trangThai, String ghiChu) {
+    public ChiTietPhieuNhap(PhieuNhap maPhieuNhap, LoSanPham maLoSanPham, NhaCungCap ncc, int soLuong, double donGia, double thanhTien, int soLuongYeuCau, String ghiChu) {
         this.maPhieuNhap = maPhieuNhap;
-        this.maLoSanPham = maLoSanPham;
         this.ncc = ncc;
         this.soLuong = soLuong;
         this.donGia = donGia;
         this.thanhTien = thanhTien;
-        this.trangThai = trangThai;
+        this.soLuongYeuCau = soLuongYeuCau;
         this.ghiChu = ghiChu;
     }
-
-    
 
     public PhieuNhap getMaPhieuNhap() {
         return maPhieuNhap;
@@ -95,24 +92,16 @@ public class ChiTietPhieuNhap {
         this.ghiChu = ghiChu;
     }
 
-    public boolean isTrangThai() {
-        return trangThai;
+    public int getSoLuongYeuCau() {
+        return soLuongYeuCau;
     }
 
-    public void setTrangThai(boolean trangThai) {
-        this.trangThai = trangThai;
+    public void setSoLuongYeuCau(int soLuongYeuCau) {
+        this.soLuongYeuCau = soLuongYeuCau;
     }
-    
-    
+
     @Override
     public String toString() {
-        return "ChiTietPhieuNhap{" + "maPhieuNhap=" + maPhieuNhap + ", maLoSanPham=" + maLoSanPham + ", ncc=" + ncc + ", soLuong=" + soLuong + ", donGia=" + donGia + ", thanhTien=" + thanhTien + ", trangThai=" + trangThai + ", ghiChu=" + ghiChu + '}';
+        return "ChiTietPhieuNhap{" + "maPhieuNhap=" + maPhieuNhap + ", maLoSanPham=" + maLoSanPham + ", ncc=" + ncc + ", soLuong=" + soLuong + ", donGia=" + donGia + ", thanhTien=" + thanhTien + ", soLuongYeuCau=" + soLuongYeuCau + ", ghiChu=" + ghiChu + '}';
     }
-
-
-    
-    
-    
-   
-    
 }

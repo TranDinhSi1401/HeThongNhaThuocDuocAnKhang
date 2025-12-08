@@ -86,5 +86,19 @@ public class PhieuNhapDAO {
             }
             return pn;
         }
-     
+    public static boolean xoaPhieuNhap(PhieuNhap pn){
+        int n=0;
+        String sql ="Delete PhieuNhap where maphieuNhap = ?";
+        try {
+            ConnectDB.getInstance().connect();
+            Connection con = ConnectDB.getConnection();
+            PreparedStatement st= con.prepareStatement(sql);
+            st.setString(1, pn.getMaPhieuNhap());
+            n=st.executeUpdate();
+            
+        } catch (SQLException s) {
+            s.printStackTrace();
+        }return n>0;
+        
+    }
 }
