@@ -29,10 +29,10 @@ public class SanPhamDAO {
                 LoaiSanPhamEnum loaiSanPham = LoaiSanPhamEnum.valueOf(rs.getString("loaiSanPham"));
                 int tonToiThieu = rs.getInt("tonToiThieu");
                 int tonToiDa = rs.getInt("tonToiDa");
-                //boolean daXoa = rs.getBoolean("daXoa");
-
-                SanPham sp = new SanPham(maSP, tenSP, moTa, thanhPhan, loaiSanPham, tonToiThieu, tonToiDa);
-                //SanPham sp = new SanPham(maSP, tenSP, moTa, thanhPhan, loaiSanPham, tonToiThieu, tonToiDa, daXoa);
+                boolean daXoa = rs.getBoolean("daXoa");
+                
+                //SanPham sp = new SanPham(maSP, tenSP, moTa, thanhPhan, loaiSanPham, tonToiThieu, tonToiDa);
+                SanPham sp = new SanPham(maSP, tenSP, moTa, thanhPhan, loaiSanPham, tonToiThieu, tonToiDa, daXoa);
                 dsSP.add(sp);
             }
 

@@ -46,6 +46,11 @@ public class LoSanPham {
     public LoSanPham(String maLo) {
         setMaLoSanPham(maLo);
     }
+
+    public LoSanPham() {
+    }
+    
+    
    
     // 6. Copy constructor - CẬP NHẬT THÊM isDaHuy
     public LoSanPham(LoSanPham lo) {
