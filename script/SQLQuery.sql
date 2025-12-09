@@ -232,8 +232,7 @@ CREATE TABLE HoaDon (
     maNV NVARCHAR(7) NOT NULL,
     ngayLapHoaDon DATETIME2 NOT NULL CONSTRAINT DF_HoaDon_NgayLap DEFAULT GETDATE(),
     maKH NVARCHAR(8) NOT NULL,
-    chuyenKhoan BIT NOT NULL CONSTRAINT DF_HoaDon_ChuyenKhoan DEFAULT 0, 
-    trangThai BIT NOT NULL CONSTRAINT DF_HoaDon_TrangThai DEFAULT 0, 
+    chuyenKhoan BIT NOT NULL CONSTRAINT DF_HoaDon_ChuyenKhoan DEFAULT 0,  
     tongTien DECIMAL(18, 2) NOT NULL,
     CONSTRAINT FK_HoaDon_NhanVien FOREIGN KEY (maNV) REFERENCES NhanVien(maNV),
     CONSTRAINT FK_HoaDon_KhachHang FOREIGN KEY (maKH) REFERENCES KhachHang(maKH),
@@ -331,7 +330,7 @@ CREATE TABLE ChiTietPhieuNhap (
     CONSTRAINT FK_CTPN_LoSanPham FOREIGN KEY (maLoSanPham) REFERENCES LoSanPham(maLoSanPham),
     CONSTRAINT FK_PhieuNhap_NhaCungCap FOREIGN KEY (maNCC) REFERENCES NhaCungCap(maNCC),
     CONSTRAINT CK_CTPN_SoLuong CHECK (soLuong > 0),
-    CONSTRAINT CK_CTPN_SoLuongYeuCau CHECK (soLuongYeuCau >= 0),
+    CONSTRAINT CK_CTPN_SoLuongYeuCau CHECK (soLuongYeuCau > 0),
     CONSTRAINT CK_CTPN_DonGia CHECK (donGia >= 0),
     CONSTRAINT CK_CTPN_ThanhTien CHECK (thanhTien >= 0)
 );
@@ -1303,7 +1302,7 @@ INSERT INTO LichSuCaLam (maNV, maCa, ngayLamViec, thoiGianVaoCa, thoiGianRaCa, g
 GO
 
 -- ===================================================================
--- 13. Bảng HoaDon
+-- 13. Bảng HoaDon (Đã cập nhật theo cấu trúc mới: Bỏ cột TrangThai)
 -- ===================================================================
 SET NOCOUNT ON;
 GO
@@ -1318,12 +1317,12 @@ DECLARE @maNV_T6 NVARCHAR(7);
 DECLARE @maKH_T6 NVARCHAR(8);
 DECLARE @ngayLap_T6 DATETIME2;
 DECLARE @chuyenKhoan_T6 BIT;
-DECLARE @trangThai_T6 BIT;
+-- Đã xóa @trangThai_T6
 DECLARE @tongTien_T6 DECIMAL(18, 2);
 DECLARE @day_T6 INT, @hour_T6 INT, @minute_T6 INT;
 DECLARE @kh_id_T6 INT, @nv_id_T6 INT;
 
-WHILE (@i_T6 <= 100) -- Đã giảm từ 200
+WHILE (@i_T6 <= 100)
 BEGIN
     SET @day_T6 = ((@i_T6 - 1) % 30) + 1;
     SET @hour_T6 = 7 + ((@i_T6 - 1) % 15);
@@ -1333,20 +1332,21 @@ BEGIN
     SET @nv_id_T6 = ((@i_T6 - 1) % 4) + 1;
     SET @maNV_T6 = 'NV-000' + CAST(@nv_id_T6 AS NVARCHAR(1));
 
-    IF @i_T6 <= 60 -- 60% của 100
+    IF @i_T6 <= 60 
         SET @maKH_T6 = 'KH-00000';
     ELSE 
     BEGIN
-        SET @kh_id_T6 = ((@i_T6 - 61) % 50) + 1; -- 40 HĐ còn lại
+        SET @kh_id_T6 = ((@i_T6 - 61) % 50) + 1;
         SET @maKH_T6 = 'KH-' + RIGHT('00000' + CAST(@kh_id_T6 AS NVARCHAR(2)), 5);
     END
 
     SET @chuyenKhoan_T6 = CASE WHEN @i_T6 % 5 = 0 THEN 1 ELSE 0 END;
-    SET @trangThai_T6 = 1;
+    -- Đã xóa dòng SET @trangThai_T6
     SET @tongTien_T6 = ROUND((50000 + ((@i_T6 * 317) % 1000000)), -3);
     
-    INSERT INTO HoaDon (maHoaDon, maNV, ngayLapHoaDon, maKH, chuyenKhoan, trangThai, tongTien)
-    VALUES (@maHoaDon_T6, @maNV_T6, @ngayLap_T6, @maKH_T6, @chuyenKhoan_T6, @trangThai_T6, @tongTien_T6);
+    -- Insert không có cột trangThai
+    INSERT INTO HoaDon (maHoaDon, maNV, ngayLapHoaDon, maKH, chuyenKhoan, tongTien)
+    VALUES (@maHoaDon_T6, @maNV_T6, @ngayLap_T6, @maKH_T6, @chuyenKhoan_T6, @tongTien_T6);
 
     SET @i_T6 = @i_T6 + 1;
 END;
@@ -1362,12 +1362,11 @@ DECLARE @maNV_T7 NVARCHAR(7);
 DECLARE @maKH_T7 NVARCHAR(8);
 DECLARE @ngayLap_T7 DATETIME2;
 DECLARE @chuyenKhoan_T7 BIT;
-DECLARE @trangThai_T7 BIT;
 DECLARE @tongTien_T7 DECIMAL(18, 2);
 DECLARE @day_T7 INT, @hour_T7 INT, @minute_T7 INT;
 DECLARE @kh_id_T7 INT, @nv_id_T7 INT;
 
-WHILE (@i_T7 <= 100) -- Đã giảm từ 200
+WHILE (@i_T7 <= 100)
 BEGIN
     SET @day_T7 = ((@i_T7 - 1) % 31) + 1;
     SET @hour_T7 = 7 + ((@i_T7 - 1) % 15);
@@ -1377,7 +1376,7 @@ BEGIN
     SET @nv_id_T7 = ((@i_T7 - 1) % 4) + 1;
     SET @maNV_T7 = 'NV-000' + CAST(@nv_id_T7 AS NVARCHAR(1));
 
-    IF @i_T7 <= 60 -- 60% của 100
+    IF @i_T7 <= 60
         SET @maKH_T7 = 'KH-00000';
     ELSE 
     BEGIN
@@ -1386,11 +1385,10 @@ BEGIN
     END
 
     SET @chuyenKhoan_T7 = CASE WHEN @i_T7 % 5 = 0 THEN 1 ELSE 0 END;
-    SET @trangThai_T7 = 1;
     SET @tongTien_T7 = ROUND((50000 + ((@i_T7 * 317) % 1000000)), -3);
     
-    INSERT INTO HoaDon (maHoaDon, maNV, ngayLapHoaDon, maKH, chuyenKhoan, trangThai, tongTien)
-    VALUES (@maHoaDon_T7, @maNV_T7, @ngayLap_T7, @maKH_T7, @chuyenKhoan_T7, @trangThai_T7, @tongTien_T7);
+    INSERT INTO HoaDon (maHoaDon, maNV, ngayLapHoaDon, maKH, chuyenKhoan, tongTien)
+    VALUES (@maHoaDon_T7, @maNV_T7, @ngayLap_T7, @maKH_T7, @chuyenKhoan_T7, @tongTien_T7);
 
     SET @i_T7 = @i_T7 + 1;
 END;
@@ -1406,12 +1404,11 @@ DECLARE @maNV_T8 NVARCHAR(7);
 DECLARE @maKH_T8 NVARCHAR(8);
 DECLARE @ngayLap_T8 DATETIME2;
 DECLARE @chuyenKhoan_T8 BIT;
-DECLARE @trangThai_T8 BIT;
 DECLARE @tongTien_T8 DECIMAL(18, 2);
 DECLARE @day_T8 INT, @hour_T8 INT, @minute_T8 INT;
 DECLARE @kh_id_T8 INT, @nv_id_T8 INT;
 
-WHILE (@i_T8 <= 100) -- Đã giảm từ 200
+WHILE (@i_T8 <= 100)
 BEGIN
     SET @day_T8 = ((@i_T8 - 1) % 31) + 1;
     SET @hour_T8 = 7 + ((@i_T8 - 1) % 15);
@@ -1421,7 +1418,7 @@ BEGIN
     SET @nv_id_T8 = ((@i_T8 - 1) % 4) + 1;
     SET @maNV_T8 = 'NV-000' + CAST(@nv_id_T8 AS NVARCHAR(1));
 
-    IF @i_T8 <= 60 -- 60% của 100
+    IF @i_T8 <= 60 
         SET @maKH_T8 = 'KH-00000';
     ELSE 
     BEGIN
@@ -1430,11 +1427,10 @@ BEGIN
     END
 
     SET @chuyenKhoan_T8 = CASE WHEN @i_T8 % 5 = 0 THEN 1 ELSE 0 END;
-    SET @trangThai_T8 = 1;
     SET @tongTien_T8 = ROUND((50000 + ((@i_T8 * 317) % 1000000)), -3);
     
-    INSERT INTO HoaDon (maHoaDon, maNV, ngayLapHoaDon, maKH, chuyenKhoan, trangThai, tongTien)
-    VALUES (@maHoaDon_T8, @maNV_T8, @ngayLap_T8, @maKH_T8, @chuyenKhoan_T8, @trangThai_T8, @tongTien_T8);
+    INSERT INTO HoaDon (maHoaDon, maNV, ngayLapHoaDon, maKH, chuyenKhoan, tongTien)
+    VALUES (@maHoaDon_T8, @maNV_T8, @ngayLap_T8, @maKH_T8, @chuyenKhoan_T8, @tongTien_T8);
 
     SET @i_T8 = @i_T8 + 1;
 END;
@@ -1450,12 +1446,11 @@ DECLARE @maNV_T9 NVARCHAR(7);
 DECLARE @maKH_T9 NVARCHAR(8);
 DECLARE @ngayLap_T9 DATETIME2;
 DECLARE @chuyenKhoan_T9 BIT;
-DECLARE @trangThai_T9 BIT;
 DECLARE @tongTien_T9 DECIMAL(18, 2);
 DECLARE @day_T9 INT, @hour_T9 INT, @minute_T9 INT;
 DECLARE @kh_id_T9 INT, @nv_id_T9 INT;
 
-WHILE (@i_T9 <= 100) -- Đã giảm từ 200
+WHILE (@i_T9 <= 100)
 BEGIN
     SET @day_T9 = ((@i_T9 - 1) % 30) + 1;
     SET @hour_T9 = 7 + ((@i_T9 - 1) % 15);
@@ -1465,7 +1460,7 @@ BEGIN
     SET @nv_id_T9 = ((@i_T9 - 1) % 4) + 1;
     SET @maNV_T9 = 'NV-000' + CAST(@nv_id_T9 AS NVARCHAR(1));
 
-    IF @i_T9 <= 60 -- 60% của 100
+    IF @i_T9 <= 60
         SET @maKH_T9 = 'KH-00000';
     ELSE 
     BEGIN
@@ -1474,11 +1469,10 @@ BEGIN
     END
 
     SET @chuyenKhoan_T9 = CASE WHEN @i_T9 % 5 = 0 THEN 1 ELSE 0 END;
-    SET @trangThai_T9 = 1;
     SET @tongTien_T9 = ROUND((50000 + ((@i_T9 * 317) % 1000000)), -3);
     
-    INSERT INTO HoaDon (maHoaDon, maNV, ngayLapHoaDon, maKH, chuyenKhoan, trangThai, tongTien)
-    VALUES (@maHoaDon_T9, @maNV_T9, @ngayLap_T9, @maKH_T9, @chuyenKhoan_T9, @trangThai_T9, @tongTien_T9);
+    INSERT INTO HoaDon (maHoaDon, maNV, ngayLapHoaDon, maKH, chuyenKhoan, tongTien)
+    VALUES (@maHoaDon_T9, @maNV_T9, @ngayLap_T9, @maKH_T9, @chuyenKhoan_T9, @tongTien_T9);
 
     SET @i_T9 = @i_T9 + 1;
 END;
@@ -1494,12 +1488,11 @@ DECLARE @maNV_T10 NVARCHAR(7);
 DECLARE @maKH_T10 NVARCHAR(8);
 DECLARE @ngayLap_T10 DATETIME2;
 DECLARE @chuyenKhoan_T10 BIT;
-DECLARE @trangThai_T10 BIT;
 DECLARE @tongTien_T10 DECIMAL(18, 2);
 DECLARE @day_T10 INT, @hour_T10 INT, @minute_T10 INT;
 DECLARE @kh_id_T10 INT, @nv_id_T10 INT;
 
-WHILE (@i_T10 <= 100) -- Đã giảm từ 200
+WHILE (@i_T10 <= 100)
 BEGIN
     SET @day_T10 = ((@i_T10 - 1) % 31) + 1;
     SET @hour_T10 = 7 + ((@i_T10 - 1) % 15);
@@ -1509,7 +1502,7 @@ BEGIN
     SET @nv_id_T10 = ((@i_T10 - 1) % 4) + 1;
     SET @maNV_T10 = 'NV-000' + CAST(@nv_id_T10 AS NVARCHAR(1));
 
-    IF @i_T10 <= 60 -- 60% của 100
+    IF @i_T10 <= 60
         SET @maKH_T10 = 'KH-00000';
     ELSE 
     BEGIN
@@ -1518,11 +1511,10 @@ BEGIN
     END
 
     SET @chuyenKhoan_T10 = CASE WHEN @i_T10 % 5 = 0 THEN 1 ELSE 0 END;
-    SET @trangThai_T10 = 1;
     SET @tongTien_T10 = ROUND((50000 + ((@i_T10 * 317) % 1000000)), -3);
     
-    INSERT INTO HoaDon (maHoaDon, maNV, ngayLapHoaDon, maKH, chuyenKhoan, trangThai, tongTien)
-    VALUES (@maHoaDon_T10, @maNV_T10, @ngayLap_T10, @maKH_T10, @chuyenKhoan_T10, @trangThai_T10, @tongTien_T10);
+    INSERT INTO HoaDon (maHoaDon, maNV, ngayLapHoaDon, maKH, chuyenKhoan, tongTien)
+    VALUES (@maHoaDon_T10, @maNV_T10, @ngayLap_T10, @maKH_T10, @chuyenKhoan_T10, @tongTien_T10);
 
     SET @i_T10 = @i_T10 + 1;
 END;
@@ -1538,12 +1530,11 @@ DECLARE @maNV_T11 NVARCHAR(7);
 DECLARE @maKH_T11 NVARCHAR(8);
 DECLARE @ngayLap_T11 DATETIME2;
 DECLARE @chuyenKhoan_T11 BIT;
-DECLARE @trangThai_T11 BIT;
 DECLARE @tongTien_T11 DECIMAL(18, 2);
 DECLARE @day_T11 INT, @hour_T11 INT, @minute_T11 INT;
 DECLARE @kh_id_T11 INT, @nv_id_T11 INT;
 
-WHILE (@i_T11 <= 100) -- Đã giảm từ 200
+WHILE (@i_T11 <= 100)
 BEGIN
     SET @day_T11 = ((@i_T11 - 1) % 30) + 1;
     SET @hour_T11 = 7 + ((@i_T11 - 1) % 15);
@@ -1553,7 +1544,7 @@ BEGIN
     SET @nv_id_T11 = ((@i_T11 - 1) % 4) + 1;
     SET @maNV_T11 = 'NV-000' + CAST(@nv_id_T11 AS NVARCHAR(1));
 
-    IF @i_T11 <= 60 -- 60% của 100
+    IF @i_T11 <= 60
         SET @maKH_T11 = 'KH-00000';
     ELSE 
     BEGIN
@@ -1562,16 +1553,13 @@ BEGIN
     END
 
     SET @chuyenKhoan_T11 = CASE WHEN @i_T11 % 5 = 0 THEN 1 ELSE 0 END;
-
-    IF @day_T11 <= 13 -- Giả định hôm nay là 13/11
-        SET @trangThai_T11 = 1;
-    ELSE
-        SET @trangThai_T11 = 1;
+    
+    -- Đã xóa logic IF @day_T11 <= 13 liên quan đến status
 
     SET @tongTien_T11 = ROUND((50000 + ((@i_T11 * 317) % 1000000)), -3);
     
-    INSERT INTO HoaDon (maHoaDon, maNV, ngayLapHoaDon, maKH, chuyenKhoan, trangThai, tongTien)
-    VALUES (@maHoaDon_T11, @maNV_T11, @ngayLap_T11, @maKH_T11, @chuyenKhoan_T11, @trangThai_T11, @tongTien_T11);
+    INSERT INTO HoaDon (maHoaDon, maNV, ngayLapHoaDon, maKH, chuyenKhoan, tongTien)
+    VALUES (@maHoaDon_T11, @maNV_T11, @ngayLap_T11, @maKH_T11, @chuyenKhoan_T11, @tongTien_T11);
 
     SET @i_T11 = @i_T11 + 1;
 END;
@@ -1587,12 +1575,11 @@ DECLARE @maNV_T12 NVARCHAR(7);
 DECLARE @maKH_T12 NVARCHAR(8);
 DECLARE @ngayLap_T12 DATETIME2;
 DECLARE @chuyenKhoan_T12 BIT;
-DECLARE @trangThai_T12 BIT;
 DECLARE @tongTien_T12 DECIMAL(18, 2);
 DECLARE @day_T12 INT, @hour_T12 INT, @minute_T12 INT;
 DECLARE @kh_id_T12 INT, @nv_id_T12 INT;
 
-WHILE (@i_T12 <= 100) -- Đã giảm từ 200
+WHILE (@i_T12 <= 100)
 BEGIN
     SET @day_T12 = ((@i_T12 - 1) % 31) + 1;
     SET @hour_T12 = 7 + ((@i_T12 - 1) % 15);
@@ -1602,7 +1589,7 @@ BEGIN
     SET @nv_id_T12 = ((@i_T12 - 1) % 4) + 1;
     SET @maNV_T12 = 'NV-000' + CAST(@nv_id_T12 AS NVARCHAR(1));
 
-    IF @i_T12 <= 60 -- 60% của 100
+    IF @i_T12 <= 60 
         SET @maKH_T12 = 'KH-00000';
     ELSE 
     BEGIN
@@ -1611,11 +1598,10 @@ BEGIN
     END
 
     SET @chuyenKhoan_T12 = CASE WHEN @i_T12 % 5 = 0 THEN 1 ELSE 0 END;
-    SET @trangThai_T12 = 1;
     SET @tongTien_T12 = ROUND((50000 + ((@i_T12 * 317) % 1000000)), -3);
     
-    INSERT INTO HoaDon (maHoaDon, maNV, ngayLapHoaDon, maKH, chuyenKhoan, trangThai, tongTien)
-    VALUES (@maHoaDon_T12, @maNV_T12, @ngayLap_T12, @maKH_T12, @chuyenKhoan_T12, @trangThai_T12, @tongTien_T12);
+    INSERT INTO HoaDon (maHoaDon, maNV, ngayLapHoaDon, maKH, chuyenKhoan, tongTien)
+    VALUES (@maHoaDon_T12, @maNV_T12, @ngayLap_T12, @maKH_T12, @chuyenKhoan_T12, @tongTien_T12);
 
     SET @i_T12 = @i_T12 + 1;
 END;
