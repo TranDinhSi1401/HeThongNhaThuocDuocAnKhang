@@ -29,7 +29,6 @@ public class HoaDonDAO {
         LocalDateTime ngayLapHD = rs.getTimestamp("ngayLapHoaDon").toLocalDateTime();
         String maKH = rs.getString("maKH");
         boolean chuyenKhoan = rs.getBoolean("chuyenKhoan");
-        boolean trangThai = rs.getBoolean("trangThai");
         double tongTien = rs.getDouble("tongTien");
 
         NhanVien nv = NhanVienDAO.getNhanVienTheoMaNV(maNV);
@@ -42,7 +41,7 @@ public class HoaDonDAO {
             kh = new KhachHang(maKH);
         }
 
-        return new HoaDon(maHoaDon, nv, ngayLapHD, kh, chuyenKhoan, trangThai, tongTien);
+        return new HoaDon(maHoaDon, nv, ngayLapHD, kh, chuyenKhoan, tongTien);
     }
 
     public static HoaDon getHoaDonMoiNhatTrongNgay() {
@@ -50,7 +49,7 @@ public class HoaDonDAO {
         try {
             ConnectDB.getInstance();
             Connection con = ConnectDB.getConnection();
-            String sql = "SELECT TOP 1 * FROM HoaDon WHERE CAST(ngayLapHoaDon AS DATE) = CAST(GETDATE() AS DATE) ORDER BY ngayLapHoaDon DESC";
+            String sql = "SELECT TOP 1 * FROM HoaDon WHERE CAST(ngayLapHoaDon AS DATE) = CAST(GETDATE() AS DATE) ORDER BY maHoaDon DESC";
             Statement statement = con.createStatement();
             ResultSet rs = statement.executeQuery(sql);
             if (rs.next()) {
@@ -86,7 +85,7 @@ public class HoaDonDAO {
             ConnectDB.getInstance();
             Connection con = ConnectDB.getConnection();
             PreparedStatement ps = con.prepareStatement(
-                    "INSERT INTO HoaDon (maHoaDon, maNV, ngayLapHoaDon, maKH, chuyenKhoan, trangThai, tongTien) VALUES (?, ?, ?, ?, ?, ?, ?)"
+                    "INSERT INTO HoaDon (maHoaDon, maNV, ngayLapHoaDon, maKH, chuyenKhoan, tongTien) VALUES (?, ?, ?, ?, ?, ?)"
             );
 
             ps.setString(1, hd.getMaHoaDon());
@@ -94,8 +93,7 @@ public class HoaDonDAO {
             ps.setTimestamp(3, Timestamp.valueOf(hd.getNgayLapHoaDon()));
             ps.setString(4, hd.getKhachHang().getMaKH());
             ps.setBoolean(5, hd.isChuyenKhoan());
-            ps.setBoolean(6, hd.isTrangThai());
-            ps.setDouble(7, hd.getTongTien());
+            ps.setDouble(6, hd.getTongTien());
 
             n = ps.executeUpdate();
         } catch (SQLException e) {
@@ -308,5 +306,24 @@ public class HoaDonDAO {
             e.printStackTrace();
         }
         return maCuoiCung;
+    }
+
+    public static int getSoPTH(String maHoaDon) {
+        int soPTH = 0;
+        try {
+            ConnectDB.getInstance().connect();
+            Connection con = ConnectDB.getConnection();
+            String sql = "select hd.maHoaDon, count(pth.maPhieuTraHang) as tongPhieuTra from HoaDon hd join PhieuTraHang pth on hd.maHoaDon = pth.maHoaDon where hd.maHoaDon = ? group by hd.maHoaDon";
+            PreparedStatement stmt = con.prepareStatement(sql);
+            stmt.setString(1, maHoaDon);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                soPTH = rs.getInt(2);
+            }
+        } catch (SQLException | NumberFormatException e) {
+            e.printStackTrace();
+        }
+        return soPTH;
     }
 }
