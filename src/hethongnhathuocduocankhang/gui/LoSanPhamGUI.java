@@ -31,11 +31,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
+import java.util.concurrent.ExecutionException;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
+import javax.swing.SwingWorker;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
@@ -83,6 +85,7 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
             }
         });
         // tải dữ liệu của các lô hàng đang có vào bảng
+        //loadTuPlashScreening();
         loadDanhSachLoSanPham();
         // kiểm tra trạng thái của các lô hàng
         capNhatSoLo();
@@ -1483,24 +1486,66 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
     // End of variables declaration//GEN-END:variables
 
     private void loadDanhSachLoSanPham() {
-        if(LoSanPhamDAO.dsLoSanPham()==null){
-                    JOptionPane.showMessageDialog(this, "Không tồn tại lô sản phẩm");
-                    return;
-                }
-        DefaultTableModel tbl = (DefaultTableModel) tblLoSanPham.getModel();
-        for (LoSanPham lo: LoSanPhamDAO.dsLoSanPham()){
-            if(!lo.isDaHuy()){
-                DonViTinh donVi = DonViTinhDAO.getMotDonViTinhTheoMaSP(lo.getSanPham().getMaSP());
-                Object[] row = new Object[] {lo.getSanPham().getMaSP(),
+        List<LoSanPham> dsLo = LoSanPhamDAO.dsLoSanPham();
+        if(dsLo==null){
+            JOptionPane.showMessageDialog(this, "Không tồn tại lô sản phẩm");
+            return;
+        }        
+        SwingWorker<List<Object[]>, Void> worker = new SwingWorker<>() {
+            @Override
+            protected List<Object[]> doInBackground() throws Exception {
+                List<Object[]> data = new ArrayList<>();
+                for(LoSanPham lo:dsLo){
+                    if(!lo.isDaHuy()){
+                        DonViTinh donVi = DonViTinhDAO.getMotDonViTinhTheoMaSP(lo.getSanPham().getMaSP());
+                        Object[] row = new Object[] {lo.getSanPham().getMaSP(),
                                                 SanPhamDAO.timSPTheoMa(lo.getSanPham().getMaSP()).getTen(),
                                                 lo.getMaLoSanPham(), 
                                                 donVi.getTenDonVi(),  
                                                 lo.getSoLuong()};
-                    tbl.addRow(row);
+                        data.add(row);
+                    }
+                }
+                return data;
             }
-        
-        }                   
+
+            @Override
+            protected void done() {
+                try {
+                    List<Object[]> rows = get();
+                    DefaultTableModel tbl = (DefaultTableModel) tblLoSanPham.getModel();
+                    tbl.setRowCount(0);
+                    if(rows == null || rows.isEmpty()){
+                        JOptionPane.showMessageDialog(null, "Không tồn tại lô sản phầm");
+                    }else{
+                        for(Object[] i : rows){
+                            tbl.addRow(i);
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                } 
+            }      
+        };        
+        worker.execute();
+
     }
+//    private void loadTuPlashScreening(){
+//        DefaultTableModel tbl = (DefaultTableModel) tblLoSanPham.getModel();
+//        List<LoSanPham> dsLo = hethongnhathuocduocankhang.HeThongNhaThuocDuocAnKhang.dsLo;
+//        for (LoSanPham lo: dsLo){
+//        if(!lo.isDaHuy()){
+//        DonViTinh donVi = DonViTinhDAO.getMotDonViTinhTheoMaSP(lo.getSanPham().getMaSP());
+//        Object[] row = new Object[] {lo.getSanPham().getMaSP(),
+//                        SanPhamDAO.timSPTheoMa(lo.getSanPham().getMaSP()).getTen(),
+//                        lo.getMaLoSanPham(), 
+//                        donVi.getTenDonVi(),  
+//                        lo.getSoLuong()};
+//                        tbl.addRow(row);
+//                }
+//        }
+//    }
+        
     private void chonTatCa(){
         DefaultTableModel tbl = (DefaultTableModel) tblThemSanPham.getModel();
         int row = tbl.getRowCount();
