@@ -330,6 +330,7 @@ CREATE TABLE ChiTietPhieuNhap (
     CONSTRAINT FK_CTPN_LoSanPham FOREIGN KEY (maLoSanPham) REFERENCES LoSanPham(maLoSanPham),
     CONSTRAINT FK_PhieuNhap_NhaCungCap FOREIGN KEY (maNCC) REFERENCES NhaCungCap(maNCC),
     CONSTRAINT CK_CTPN_SoLuong CHECK (soLuong > 0),
+    CONSTRAINT CK_CTPN_SoLuongYeuCau CHECK (soLuongYeuCau >= 0),
     CONSTRAINT CK_CTPN_SoLuongYeuCau CHECK (soLuongYeuCau > 0),
     CONSTRAINT CK_CTPN_DonGia CHECK (donGia >= 0),
     CONSTRAINT CK_CTPN_ThanhTien CHECK (thanhTien >= 0)
@@ -1341,6 +1342,7 @@ BEGIN
     END
 
     SET @chuyenKhoan_T6 = CASE WHEN @i_T6 % 5 = 0 THEN 1 ELSE 0 END;
+    SET @trangThai_T6 = 1;
     -- Đã xóa dòng SET @trangThai_T6
     SET @tongTien_T6 = ROUND((50000 + ((@i_T6 * 317) % 1000000)), -3);
     
@@ -1385,6 +1387,7 @@ BEGIN
     END
 
     SET @chuyenKhoan_T7 = CASE WHEN @i_T7 % 5 = 0 THEN 1 ELSE 0 END;
+    SET @trangThai_T7 = 1;
     SET @tongTien_T7 = ROUND((50000 + ((@i_T7 * 317) % 1000000)), -3);
     
     INSERT INTO HoaDon (maHoaDon, maNV, ngayLapHoaDon, maKH, chuyenKhoan, tongTien)
@@ -1427,6 +1430,7 @@ BEGIN
     END
 
     SET @chuyenKhoan_T8 = CASE WHEN @i_T8 % 5 = 0 THEN 1 ELSE 0 END;
+    SET @trangThai_T8 = 1;
     SET @tongTien_T8 = ROUND((50000 + ((@i_T8 * 317) % 1000000)), -3);
     
     INSERT INTO HoaDon (maHoaDon, maNV, ngayLapHoaDon, maKH, chuyenKhoan, tongTien)
@@ -1469,6 +1473,7 @@ BEGIN
     END
 
     SET @chuyenKhoan_T9 = CASE WHEN @i_T9 % 5 = 0 THEN 1 ELSE 0 END;
+    SET @trangThai_T9 = 1;
     SET @tongTien_T9 = ROUND((50000 + ((@i_T9 * 317) % 1000000)), -3);
     
     INSERT INTO HoaDon (maHoaDon, maNV, ngayLapHoaDon, maKH, chuyenKhoan, tongTien)
@@ -1511,6 +1516,7 @@ BEGIN
     END
 
     SET @chuyenKhoan_T10 = CASE WHEN @i_T10 % 5 = 0 THEN 1 ELSE 0 END;
+    SET @trangThai_T10 = 1;
     SET @tongTien_T10 = ROUND((50000 + ((@i_T10 * 317) % 1000000)), -3);
     
     INSERT INTO HoaDon (maHoaDon, maNV, ngayLapHoaDon, maKH, chuyenKhoan, tongTien)
@@ -1553,6 +1559,11 @@ BEGIN
     END
 
     SET @chuyenKhoan_T11 = CASE WHEN @i_T11 % 5 = 0 THEN 1 ELSE 0 END;
+
+    IF @day_T11 <= 13 -- Giả định hôm nay là 13/11
+        SET @trangThai_T11 = 1;
+    ELSE
+        SET @trangThai_T11 = 1;
     
     -- Đã xóa logic IF @day_T11 <= 13 liên quan đến status
 
@@ -1598,6 +1609,7 @@ BEGIN
     END
 
     SET @chuyenKhoan_T12 = CASE WHEN @i_T12 % 5 = 0 THEN 1 ELSE 0 END;
+    SET @trangThai_T12 = 1;
     SET @tongTien_T12 = ROUND((50000 + ((@i_T12 * 317) % 1000000)), -3);
     
     INSERT INTO HoaDon (maHoaDon, maNV, ngayLapHoaDon, maKH, chuyenKhoan, tongTien)

@@ -307,4 +307,23 @@ public class HoaDonDAO {
         }
         return maCuoiCung;
     }
+
+    public static int getSoPTH(String maHoaDon) {
+        int soPTH = 0;
+        try {
+            ConnectDB.getInstance().connect();
+            Connection con = ConnectDB.getConnection();
+            String sql = "select hd.maHoaDon, count(pth.maPhieuTraHang) as tongPhieuTra from HoaDon hd join PhieuTraHang pth on hd.maHoaDon = pth.maHoaDon where hd.maHoaDon = ? group by hd.maHoaDon";
+            PreparedStatement stmt = con.prepareStatement(sql);
+            stmt.setString(1, maHoaDon);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                soPTH = rs.getInt(2);
+            }
+        } catch (SQLException | NumberFormatException e) {
+            e.printStackTrace();
+        }
+        return soPTH;
+    }
 }

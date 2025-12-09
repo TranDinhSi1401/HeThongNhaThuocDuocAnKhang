@@ -14,7 +14,6 @@ public class PhieuNhap {
     private String maPhieuNhap;
     private LocalDate ngayTao;
     private NhanVien nv;
-    private NhaCungCap ncc;
     private double tongTien;
     private String ghiChu;
 
@@ -25,11 +24,10 @@ public class PhieuNhap {
         this.maPhieuNhap = maPhieuNhap;
     }
 
-    public PhieuNhap(String maPhieuNhap, LocalDate ngayTao, NhanVien nv, NhaCungCap ncc, double tongTien, String ghiChu) {
+    public PhieuNhap(String maPhieuNhap, LocalDate ngayTao, NhanVien nv, double tongTien, String ghiChu) {
         this.maPhieuNhap = maPhieuNhap;
         this.ngayTao = ngayTao;
         this.nv = nv;
-        this.ncc = ncc;
         this.tongTien = tongTien;
         this.ghiChu = ghiChu;
     }
@@ -44,10 +42,6 @@ public class PhieuNhap {
 
     public NhanVien getNv() {
         return nv;
-    }
-
-    public NhaCungCap getNcc() {
-        return ncc;
     }
 
     public double getTongTien() {
@@ -70,9 +64,6 @@ public class PhieuNhap {
         this.nv = nv;
     }
 
-    public void setNcc(NhaCungCap ncc) {
-        this.ncc = ncc;
-    }
 
     public void setTongTien(double tongTien) {
         this.tongTien = tongTien;
@@ -84,8 +75,10 @@ public class PhieuNhap {
 
     @Override
     public String toString() {
-        return "PhieuNhap{" + "maPhieuNhap=" + maPhieuNhap + ", ngayTao=" + ngayTao + ", nv=" + nv + ", ncc=" + ncc + ", tongTien=" + tongTien + ", ghiChu=" + ghiChu + '}';
+        return "PhieuNhap{" + "maPhieuNhap=" + maPhieuNhap + ", ngayTao=" + ngayTao + ", nv=" + nv + ", tongTien=" + tongTien + ", ghiChu=" + ghiChu + '}';
     }
+
+    
     
     
 }

@@ -21,6 +21,7 @@ import hethongnhathuocduocankhang.entity.TruongHopDoiTraEnum;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.KeyboardFocusManager;
+import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
@@ -29,11 +30,18 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.AbstractAction;
+import javax.swing.AbstractButton;
+import javax.swing.ActionMap;
 import javax.swing.DefaultCellEditor;
+import javax.swing.InputMap;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableColumn;
@@ -49,6 +57,15 @@ public class TraHangGUI extends javax.swing.JPanel {
      */
     public TraHangGUI() {
         initComponents();
+        
+        mapKeyToFocus("F3", txtNhapMaHoaDon);
+        mapKeyToClickButton("F7", btnChonTatCa);
+        mapKeyToClickButton("F8", btnBoChonTatCa);
+        mapKeyToClickButton("F4", btnXacNhan);
+        
+        mapKeyToClickButton("F9", btnXoaDong);
+        mapKeyToClickButton("F10", btnXoaRong);
+        mapKeyToClickButton("F6", btnTaoPhieu);
     }
 
     /**
@@ -70,15 +87,15 @@ public class TraHangGUI extends javax.swing.JPanel {
         jPanel14 = new javax.swing.JPanel();
         jPanel25 = new javax.swing.JPanel();
         jPanel27 = new javax.swing.JPanel();
-        txtMaHoaDon = new javax.swing.JTextField();
-        jButton7 = new javax.swing.JButton();
+        txtNhapMaHoaDon = new javax.swing.JTextField();
+        btnTimKiem = new javax.swing.JButton();
         jPanel30 = new javax.swing.JPanel();
-        jButton2 = new javax.swing.JButton();
-        jButton8 = new javax.swing.JButton();
+        btnChonTatCa = new javax.swing.JButton();
+        btnBoChonTatCa = new javax.swing.JButton();
         jPanel23 = new javax.swing.JPanel();
         jPanel12 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        btnXacNhan = new javax.swing.JButton();
         jPanel16 = new javax.swing.JPanel();
         jPanel10 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -91,10 +108,10 @@ public class TraHangGUI extends javax.swing.JPanel {
         jLabel5 = new javax.swing.JLabel();
         txtTongThanhTien = new javax.swing.JTextField();
         jPanel22 = new javax.swing.JPanel();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        btnXoaDong = new javax.swing.JButton();
+        btnXoaRong = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
-        jButton5 = new javax.swing.JButton();
+        btnTaoPhieu = new javax.swing.JButton();
         jPanel17 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         jPanel6 = new javax.swing.JPanel();
@@ -117,6 +134,11 @@ public class TraHangGUI extends javax.swing.JPanel {
 
         setLayout(new java.awt.GridLayout(1, 0));
 
+        jPanel8.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jPanel8KeyPressed(evt);
+            }
+        });
         jPanel8.setLayout(new java.awt.BorderLayout());
 
         jPanel9.setLayout(new javax.swing.BoxLayout(jPanel9, javax.swing.BoxLayout.Y_AXIS));
@@ -133,32 +155,35 @@ public class TraHangGUI extends javax.swing.JPanel {
         jPanel25.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
         jPanel25.add(jPanel27);
 
-        txtMaHoaDon.setText("Nhập mã hóa đơn");
-        txtMaHoaDon.setPreferredSize(new java.awt.Dimension(400, 22));
-        txtMaHoaDon.addFocusListener(new java.awt.event.FocusAdapter() {
+        txtNhapMaHoaDon.setText("Nhập mã hóa đơn [F3]");
+        txtNhapMaHoaDon.setPreferredSize(new java.awt.Dimension(400, 22));
+        txtNhapMaHoaDon.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
-                txtMaHoaDonFocusGained(evt);
+                txtNhapMaHoaDonFocusGained(evt);
             }
         });
-        txtMaHoaDon.addActionListener(new java.awt.event.ActionListener() {
+        txtNhapMaHoaDon.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtMaHoaDonActionPerformed(evt);
+                txtNhapMaHoaDonActionPerformed(evt);
             }
         });
-        txtMaHoaDon.addKeyListener(new java.awt.event.KeyAdapter() {
+        txtNhapMaHoaDon.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
-                txtMaHoaDonKeyPressed(evt);
+                txtNhapMaHoaDonKeyPressed(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtNhapMaHoaDonKeyTyped(evt);
             }
         });
-        jPanel25.add(txtMaHoaDon);
+        jPanel25.add(txtNhapMaHoaDon);
 
-        jButton7.setText("Tìm kiếm");
-        jButton7.addActionListener(new java.awt.event.ActionListener() {
+        btnTimKiem.setText("Tìm kiếm");
+        btnTimKiem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton7ActionPerformed(evt);
+                btnTimKiemActionPerformed(evt);
             }
         });
-        jPanel25.add(jButton7);
+        jPanel25.add(btnTimKiem);
 
         jPanel14.add(jPanel25);
 
@@ -166,21 +191,21 @@ public class TraHangGUI extends javax.swing.JPanel {
 
         jPanel30.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
 
-        jButton2.setText("Bỏ đánh dấu tất cả");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        btnChonTatCa.setText("Chọn tất cả [F7]");
+        btnChonTatCa.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                btnChonTatCaActionPerformed(evt);
             }
         });
-        jPanel30.add(jButton2);
+        jPanel30.add(btnChonTatCa);
 
-        jButton8.setText("Đánh dấu tất cả");
-        jButton8.addActionListener(new java.awt.event.ActionListener() {
+        btnBoChonTatCa.setText("Bỏ chọn tất cả [F8]");
+        btnBoChonTatCa.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton8ActionPerformed(evt);
+                btnBoChonTatCaActionPerformed(evt);
             }
         });
-        jPanel30.add(jButton8);
+        jPanel30.add(btnBoChonTatCa);
 
         jPanel23.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
         jPanel23.add(jPanel12);
@@ -190,18 +215,18 @@ public class TraHangGUI extends javax.swing.JPanel {
 
         jPanel30.add(jPanel23);
 
-        jButton1.setText("Xác nhận chọn");
-        jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
+        btnXacNhan.setText("Xác nhận [F4]");
+        btnXacNhan.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jButton1MouseClicked(evt);
+                btnXacNhanMouseClicked(evt);
             }
         });
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnXacNhan.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnXacNhanActionPerformed(evt);
             }
         });
-        jPanel30.add(jButton1);
+        jPanel30.add(btnXacNhan);
         jPanel30.add(jPanel16);
 
         jPanel11.add(jPanel30);
@@ -281,30 +306,30 @@ public class TraHangGUI extends javax.swing.JPanel {
         jPanel1.add(jPanel31);
         jPanel1.add(jPanel22);
 
-        jButton3.setText("Xóa dòng");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        btnXoaDong.setText("Xóa dòng [F9]");
+        btnXoaDong.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                btnXoaDongActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton3);
+        jPanel1.add(btnXoaDong);
 
-        jButton4.setText("Xóa rỗng");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        btnXoaRong.setText("Xóa rỗng [F10]");
+        btnXoaRong.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                btnXoaRongActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton4);
+        jPanel1.add(btnXoaRong);
         jPanel1.add(jPanel2);
 
-        jButton5.setText("Tạo phiếu");
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
+        btnTaoPhieu.setText("Tạo phiếu [F6]");
+        btnTaoPhieu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
+                btnTaoPhieuActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton5);
+        jPanel1.add(btnTaoPhieu);
         jPanel1.add(jPanel17);
 
         jPanel20.add(jPanel1);
@@ -425,15 +450,15 @@ public class TraHangGUI extends javax.swing.JPanel {
         add(jTabbedPane1);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtMaHoaDonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMaHoaDonActionPerformed
+    private void txtNhapMaHoaDonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNhapMaHoaDonActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtMaHoaDonActionPerformed
+    }//GEN-LAST:event_txtNhapMaHoaDonActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void btnXoaDongActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaDongActionPerformed
         // TODO add your handling code here:
         DefaultTableModel dtm = (DefaultTableModel) tblTraHang.getModel();
         dtm.removeRow(tblTraHang.getSelectedRow());
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_btnXoaDongActionPerformed
 
     private void txtMaHoaDonTrongPhieuTraHangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMaHoaDonTrongPhieuTraHangActionPerformed
         // TODO add your handling code here:
@@ -443,33 +468,33 @@ public class TraHangGUI extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_jXDatePicker1ActionPerformed
 
-    private void txtMaHoaDonFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtMaHoaDonFocusGained
+    private void txtNhapMaHoaDonFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtNhapMaHoaDonFocusGained
         // TODO add your handling code here:
-        txtMaHoaDon.setText("HD-251025-0001");
-    }//GEN-LAST:event_txtMaHoaDonFocusGained
+        txtNhapMaHoaDon.setText("HD-101125-0010");
+    }//GEN-LAST:event_txtNhapMaHoaDonFocusGained
 
-    private void txtMaHoaDonKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtMaHoaDonKeyPressed
+    private void txtNhapMaHoaDonKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNhapMaHoaDonKeyPressed
         // TODO add your handling code here:
         if(evt.getKeyCode() == KeyEvent.VK_ENTER){
-            String maHoaDon = txtMaHoaDon.getText();
+            String maHoaDon = txtNhapMaHoaDon.getText();
             addHoaDon(maHoaDon);
         }
-    }//GEN-LAST:event_txtMaHoaDonKeyPressed
+    }//GEN-LAST:event_txtNhapMaHoaDonKeyPressed
 
-    private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
+    private void btnXacNhanMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnXacNhanMouseClicked
         // TODO add your handling code here:
 
         
-    }//GEN-LAST:event_jButton1MouseClicked
+    }//GEN-LAST:event_btnXacNhanMouseClicked
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+    private void btnXoaRongActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaRongActionPerformed
         // TODO add your handling code here:
         DefaultTableModel dtm = (DefaultTableModel) tblTraHang.getModel();
         dtm.setRowCount(0);
         txtTongThanhTien.setText("");
-    }//GEN-LAST:event_jButton4ActionPerformed
+    }//GEN-LAST:event_btnXoaRongActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnXacNhanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXacNhanActionPerformed
         // TODO add your handling code here:
         try {
         jTextField3.setText(NhanVienDAO.getNhanVienTheoMaNV(GiaoDienChinhGUI.getTk().getTenDangNhap()).getHoTenDem() +" "+ NhanVienDAO.getNhanVienTheoMaNV(GiaoDienChinhGUI.getTk().getTenDangNhap()).getTen());
@@ -480,7 +505,7 @@ public class TraHangGUI extends javax.swing.JPanel {
         
         int soLuongChonHienTai = 0;
         for(int i=0;i<dtmCTHD.getRowCount();i++){
-            if(dtmCTHD.getValueAt(i, 8)==Boolean.TRUE){
+            if(dtmCTHD.getValueAt(i, 8)==Boolean.TRUE && Integer.parseInt(dtmCTHD.getValueAt(i, 3).toString()) > 0){
                 soLuongChonHienTai++;
             }
         }
@@ -492,9 +517,16 @@ public class TraHangGUI extends javax.swing.JPanel {
         
         int count=0;
         for(int i=0; i<dtmCTHD.getRowCount(); i++){
-            if(dtmCTHD.getValueAt(i, 8) == Boolean.TRUE){
-                themDongBangPhieuTraHang(dtmCTHD.getValueAt(i, 1).toString());
-                count++;
+            System.out.println(1);
+            if(dtmCTHD.getValueAt(i, 8)==Boolean.TRUE && Integer.parseInt(dtmCTHD.getValueAt(i, 3).toString()) > 0){
+                if(HoaDonDAO.getSoPTH(txtNhapMaHoaDon.getText())>0){
+                    themDongBangPhieuTraHangDaTungTraRoi(dtmCTHD.getValueAt(i, 1).toString());
+                    count++;
+                }
+                else if(HoaDonDAO.getSoPTH(txtNhapMaHoaDon.getText())==0){
+                    themDongBangPhieuTraHang(dtmCTHD.getValueAt(i, 1).toString());
+                    count++;
+                }
             }
         }
         capNhatTongTienTra();
@@ -503,11 +535,11 @@ public class TraHangGUI extends javax.swing.JPanel {
         }
         else{
             JOptionPane.showMessageDialog(null, "Vui lòng chọn sản phẩm muốn trả");
-        }
+        } 
         
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btnXacNhanActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void btnBoChonTatCaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBoChonTatCaActionPerformed
         // TODO add your handling code here:
                 DefaultTableModel dtmTraHang = (DefaultTableModel) tblTraHang.getModel();
         dtmTraHang.setRowCount(0);
@@ -518,9 +550,9 @@ public class TraHangGUI extends javax.swing.JPanel {
                 dtmCTHD.setValueAt(Boolean.FALSE, i, 8);
             }
         }
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_btnBoChonTatCaActionPerformed
 
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+    private void btnTaoPhieuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTaoPhieuActionPerformed
         // TODO add your handling code here:
         int chon = JOptionPane.showConfirmDialog(null, "Xác nhận tạo phiếu trả?", "Xác nhận", JOptionPane.YES_NO_OPTION);
         if(chon == JOptionPane.YES_OPTION){
@@ -541,22 +573,24 @@ public class TraHangGUI extends javax.swing.JPanel {
         
         
         
-    }//GEN-LAST:event_jButton5ActionPerformed
+    }//GEN-LAST:event_btnTaoPhieuActionPerformed
 
-    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+    private void btnTimKiemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTimKiemActionPerformed
         // TODO add your handling code here:
-        String maHoaDon = txtMaHoaDon.getText();
+        String maHoaDon = txtNhapMaHoaDon.getText();
+        
+        
         addHoaDon(maHoaDon);
-    }//GEN-LAST:event_jButton7ActionPerformed
+    }//GEN-LAST:event_btnTimKiemActionPerformed
 
-    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
+    private void btnChonTatCaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnChonTatCaActionPerformed
         // TODO add your handling code here:
         DefaultTableModel dtmCTHD = (DefaultTableModel) tblCTHD.getModel();
 
         for(int i=0;i<dtmCTHD.getRowCount();i++){
             dtmCTHD.setValueAt(Boolean.TRUE,i, 8);
         }
-    }//GEN-LAST:event_jButton8ActionPerformed
+    }//GEN-LAST:event_btnChonTatCaActionPerformed
 
     private void tblTraHangPropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_tblTraHangPropertyChange
         // TODO add your handling code here:
@@ -572,29 +606,29 @@ public class TraHangGUI extends javax.swing.JPanel {
             }
             else{
                 int stt = selectRow+1;
-                JOptionPane.showMessageDialog(null, "Yêu cầu kiểm tra lại tại STT: "+stt +"\n"
+                JOptionPane.showMessageDialog(null, "Yêu cầu kiểm tra lại tại STT "+stt +"\n"
                         + "- Số lượng trả bé hơn hoặc bằng số lượng mua\n"
                         + "- Số lượng trả lớn hơn 0 ");
             }
 
             if(dtm.getValueAt(selectRow, 7) == Boolean.TRUE){
-                    dtm.setValueAt("100% giá trị", selectRow, 8);
+                    dtm.setValueAt("100%", selectRow, 8);
                     Object thanhTien = dtm.getValueAt(selectRow, 5);
                     dtm.setValueAt(thanhTien, selectRow, 9);
             }
             else if(dtm.getValueAt(selectRow, 7) == Boolean.FALSE){
                 if(dtm.getValueAt(selectRow, 6).equals(TruongHopDoiTraEnum.HANG_LOI_DO_NHA_SAN_XUAT.getTruongHopDoiTra())){
-                    dtm.setValueAt("100% giá trị", selectRow, 8);
+                    dtm.setValueAt("100%", selectRow, 8);
                     Object thanhTien = dtm.getValueAt(selectRow, 5);
                     dtm.setValueAt(thanhTien, selectRow, 9);
                 }
                 else if(dtm.getValueAt(selectRow, 6).equals(TruongHopDoiTraEnum.DI_UNG_MAN_CAM.getTruongHopDoiTra())){
-                    dtm.setValueAt("70% giá trị", selectRow, 8);
+                    dtm.setValueAt("70%", selectRow, 8);
                     String thanhTien = dinhDangTien(boDinhDangTien(dtm.getValueAt(selectRow, 5).toString())*0.7);
                     dtm.setValueAt(thanhTien, selectRow, 9);
                 }
                 else if(dtm.getValueAt(selectRow, 6).equals(TruongHopDoiTraEnum.NHU_CAU_KHACH_HANG.getTruongHopDoiTra()) ){
-                    dtm.setValueAt("Miễn hoàn trả", selectRow, 8);
+                    dtm.setValueAt("Miễn trả hàng", selectRow, 8);
                     dtm.setValueAt(0, selectRow, 9);
                 }
             }
@@ -606,17 +640,26 @@ public class TraHangGUI extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField3ActionPerformed
 
+    private void txtNhapMaHoaDonKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNhapMaHoaDonKeyTyped
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_txtNhapMaHoaDonKeyTyped
+
+    private void jPanel8KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jPanel8KeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jPanel8KeyPressed
+
     
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton7;
-    private javax.swing.JButton jButton8;
+    private javax.swing.JButton btnBoChonTatCa;
+    private javax.swing.JButton btnChonTatCa;
+    private javax.swing.JButton btnTaoPhieu;
+    private javax.swing.JButton btnTimKiem;
+    private javax.swing.JButton btnXacNhan;
+    private javax.swing.JButton btnXoaDong;
+    private javax.swing.JButton btnXoaRong;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -660,19 +703,33 @@ public class TraHangGUI extends javax.swing.JPanel {
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JTable tblCTHD;
     private javax.swing.JTable tblTraHang;
-    private javax.swing.JTextField txtMaHoaDon;
     private javax.swing.JTextField txtMaHoaDonTrongPhieuTraHang;
     private javax.swing.JTextField txtMaPhieuTraHang;
+    private javax.swing.JTextField txtNhapMaHoaDon;
     private javax.swing.JTextField txtTongThanhTien;
     // End of variables declaration//GEN-END:variables
-
+    
+    //Thêm hóa đơn vào "Tìm hóa đơn"
     private void addHoaDon(String maHoaDon) {
+        // hóa đơn có pth không? 
+        boolean coPTH = HoaDonDAO.getSoPTH(maHoaDon) > 0;
+        System.out.println(HoaDonDAO.getSoPTH(maHoaDon));
+        //
         List<ChiTietHoaDon> listCTHD;
         HoaDon hoaDon = HoaDonDAO.getHoaDonTheoMaHD(maHoaDon);
-        listCTHD = ChiTietHoaDonDAO.getChiTietHoaDonTheoMaHD(hoaDon);
         
-        long ngayLap = ChronoUnit.DAYS.between(LocalDate.now(), hoaDon.getNgayLapHoaDon());
+        if(coPTH){
+            listCTHD = ChiTietHoaDonDAO.getChiTietHoaDonDaTruPTHTheoMaHD(hoaDon);
+            System.out.println(1);
+        }
+        else{
+            listCTHD = ChiTietHoaDonDAO.getChiTietHoaDonTheoMaHD(hoaDon);
+            System.out.println(2);
+        }
+        
+        long ngayLap = ChronoUnit.DAYS.between(LocalDate.now(), hoaDon.getNgayLapHoaDon()) * -1;
         if(ngayLap <=30){
+            System.out.println(ngayLap);
             //Them du lieu vao bang cthd
             themDuLieuCTHDVaoBang(listCTHD);
             taoThongTinPhieu(maHoaDon);
@@ -680,8 +737,6 @@ public class TraHangGUI extends javax.swing.JPanel {
         else{
             JOptionPane.showMessageDialog(null, "Hóa đơn đã lập hơn 30 ngày, theo nguyên tắc không thể trả hàng!");
         }
-        
-        
     }
     
     private void themDuLieuCTHDVaoBang(List<ChiTietHoaDon> listCTHD) {
@@ -697,21 +752,25 @@ public class TraHangGUI extends javax.swing.JPanel {
             String donViTinh = cthd.getDonViTinh().getTenDonVi();
             double donGia = cthd.getDonGia();
             double giamGia = cthd.getGiamGia();
-            double thanhTien = cthd.getThanhTien();
+            double thanhTien = cthd.getThanhTien()>=0? cthd.getThanhTien():0;
             boolean chon = Boolean.FALSE;
             row[0] = stt;
             row[1] = maCTHD;
             row[2] = tenSanPham;
-            row[3] = soLuong;
+            row[3] = soLuong<0?0:soLuong;
             row[4] = donViTinh;
             row[5] = dinhDangTien(donGia) ;
             row[6] = dinhDangTien(giamGia) ;
             row[7] = dinhDangTien(thanhTien);
             row[8] = chon;
+            if(soLuong<=0){
+                row[2] = "(Không nhận trả hàng nữa!) " + tenSanPham;
+            }
             bangCTHD.addRow(row);
         } 
     }
 
+    //Thêm dữ liệu vào "phiếu trả hàng"
     private void themDongBangPhieuTraHang(String maCTHD) {
         ChiTietHoaDon cthd = ChiTietHoaDonDAO.getChiTietHoaDonTheoMaCTHD(maCTHD);
         DefaultTableModel dtm = (DefaultTableModel) tblTraHang.getModel();
@@ -746,6 +805,38 @@ public class TraHangGUI extends javax.swing.JPanel {
         
     }
     
+    private void themDongBangPhieuTraHangDaTungTraRoi(String maCTHD) {
+        ChiTietHoaDon cthd = ChiTietHoaDonDAO.getChiTietHoaDonDaTungTraRoiTheoMaCTHD(maCTHD);
+        DefaultTableModel dtm = (DefaultTableModel) tblTraHang.getModel();
+        Object[] rowData = new Object[11];
+        
+        int stt = dtm.getRowCount() + 1;
+        String tenSanPham = cthd.getDonViTinh().getSanPham().getTen();
+        int soLuong = cthd.getSoLuong();
+        double donGia = cthd.getDonGia();
+        double giamGia = cthd.getGiamGia();
+        double thanhTien = cthd.getThanhTien();
+        String lyDoTra = TruongHopDoiTraEnum.HANG_LOI_DO_NHA_SAN_XUAT.getTruongHopDoiTra();
+        boolean sanPhamNguyenVen = Boolean.TRUE;
+        String giaTriHoanTra = null;
+        double thanhTienHoanTra = 0;
+        
+        rowData[0] = stt;
+        rowData[1] = tenSanPham;
+        rowData[2] = soLuong;
+        rowData[3] = dinhDangTien(donGia);
+        rowData[4] = dinhDangTien(giamGia);
+        rowData[5] = dinhDangTien(thanhTien) ;
+        rowData[6] = lyDoTra;
+        rowData[7] = sanPhamNguyenVen;
+        rowData[8] = giaTriHoanTra;
+        rowData[9] = dinhDangTien(thanhTienHoanTra);
+        rowData[10] = maCTHD;
+        dtm.addRow(rowData);        
+        taoLyDo();
+        
+    }
+    
     public double boDinhDangTien(String formatted) {
         // Bước 1: Loại bỏ "VNĐ" và khoảng trắng
         String cleaned = formatted.replace("VNĐ", "").trim();
@@ -756,8 +847,7 @@ public class TraHangGUI extends javax.swing.JPanel {
         // Bước 3: Chuyển thành double
         return Double.parseDouble(cleaned);
     }
-
-
+    
     private void taoThongTinPhieu(String maHoaDon) {
         txtMaHoaDonTrongPhieuTraHang.setText(maHoaDon);
         int ngay = LocalDate.now().getDayOfMonth();
@@ -767,13 +857,7 @@ public class TraHangGUI extends javax.swing.JPanel {
         
         String maPhieuTraHang = phatSinhMaPhieuTraHang();
         txtMaPhieuTraHang.setText(maPhieuTraHang);
-        
-        
-        
-        
-        
     }
-    
     
     private void taoLyDo(){
         JComboBox<String> cbbLyDo = new JComboBox<>();
@@ -805,47 +889,6 @@ public class TraHangGUI extends javax.swing.JPanel {
         
         return maPhieuTraHang;
     }
-    
-//    public static String taoNoiDungHoaDon(HoaDon hd, ArrayList<ChiTietHoaDon> dsCTHD) {
-//        StringBuilder sb = new StringBuilder();
-//        DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
-//
-//        sb.append("====================================================================\n");
-//        sb.append("                         HÓA ĐƠN BÁN HÀNG\n");
-//        sb.append("====================================================================\n");
-//        sb.append(String.format("Mã hóa đơn : %s\n", hd.getMaHoaDon()));
-//        sb.append(String.format("Ngày lập   : %s\n", hd.getNgayLapHoaDon().format(fmt)));
-//        sb.append(String.format("Nhân viên  : %s\n", hd.getNhanVien().getMaNV()));
-//        sb.append(String.format("Khách hàng : %s\n", hd.getKhachHang().getMaKH()));
-//        sb.append(String.format("Hình thức  : %s\n", hd.isChuyenKhoan() ? "Chuyển khoản" : "Tiền mặt"));
-//        sb.append("--------------------------------------------------------------------\n");
-//        sb.append(String.format("%-4s %-40s %-6s %-8s %-12s %-10s %-12s\n",
-//                "STT", "Sản phẩm", "SL", "ĐVT", "Đơn giá", "Giảm giá", "Thành tiền"));
-//        sb.append("--------------------------------------------------------------------\n");
-//
-//        int stt = 1;
-//        double tongTien = 0;
-//        for (ChiTietHoaDon cthd : dsCTHD) {
-//            String maSP = DonViTinhDAO.getMaSanPhamTheoMaDVT(cthd.getDonViTinh().getMaDonViTinh());
-//            String tenSP = SanPhamDAO.timSPTheoMa(maSP).getTen();
-//            String tenDVT = DonViTinhDAO.getDonViTinhTheoMaDVT(cthd.getDonViTinh().getMaDonViTinh()).getTenDonVi();
-//
-//            double thanhTien = cthd.getThanhTien();
-//            tongTien += thanhTien;
-//
-//            sb.append(String.format("%-4d %-40s %-6d %-8s %-12.0f %-10.0f%% %-12.0f\n",
-//                    stt++, tenSP, cthd.getSoLuong(), tenDVT,
-//                    cthd.getDonGia(), cthd.getGiamGia() * 100, thanhTien));
-//        }
-//
-//        sb.append("--------------------------------------------------------------------\n");
-//        sb.append(String.format("%62s: %.0f VND\n", "TỔNG CỘNG", tongTien));
-//        sb.append("====================================================================\n");
-//        sb.append("         CẢM ƠN QUÝ KHÁCH, HẸN GẶP LẠI!\n");
-//        sb.append("====================================================================\n");
-//
-//        return sb.toString();
-//    }
 
     private List<ChiTietPhieuTraHang> getListCTPTH(PhieuTraHang pth) {
         
@@ -879,6 +922,8 @@ public class TraHangGUI extends javax.swing.JPanel {
                 
                 int soLuong = Integer.parseInt(dtm.getValueAt(i, 2).toString());
                 String giaTriHoanTra = dtm.getValueAt(i, 8).toString();
+                
+                
                 double thanhTienHoanTra = boDinhDangTien(dtm.getValueAt(i, 9).toString());
                 
                 ChiTietPhieuTraHang ctpth = new ChiTietPhieuTraHang();
@@ -971,29 +1016,8 @@ public class TraHangGUI extends javax.swing.JPanel {
         scroll.setPreferredSize(new Dimension(600, 500));
         JOptionPane.showMessageDialog(null, scroll, "Phiếu trả hàng" + pth.getMaPhieuTraHang(), JOptionPane.INFORMATION_MESSAGE);
     }
-
-    private String dinhDangTien(double thanhTien) {
-        DecimalFormat formatter = new DecimalFormat("#,###");
-        return formatter.format(thanhTien) + " VNĐ";
-    }
-
-    private void xoaRongTatCa() {
-        DefaultTableModel dtmCTHD = (DefaultTableModel) tblCTHD.getModel();
-        dtmCTHD.setRowCount(0);
-        txtMaHoaDon.setText("Nhập mã hóa đơn");
-        jLabel6.setText("Số lượng đã chọn: 0");
-        
-        DefaultTableModel dtmTraHang = (DefaultTableModel) tblTraHang.getModel();
-        dtmTraHang.setRowCount(0);
-        txtMaPhieuTraHang.setText("");
-        jTextField3.setText("");
-        jTextField5.setText("");
-        txtMaHoaDonTrongPhieuTraHang.setText("");
-        txtTongThanhTien.setText("");
-        
-    }
-
-    private void luuPhieuVaoCSDL(PhieuTraHang pth, List<ChiTietPhieuTraHang> list) {
+    
+        private void luuPhieuVaoCSDL(PhieuTraHang pth, List<ChiTietPhieuTraHang> list) {
         PhieuTraHangDAO.themPhieuTra(pth);
         for(ChiTietPhieuTraHang ctpth : list){
             ChiTietPhieuTraDAO.insertChiTietPhieuTra(ctpth);
@@ -1006,10 +1030,10 @@ public class TraHangGUI extends javax.swing.JPanel {
         for(int i=0; i<tblTraHang.getRowCount(); i++){
             int soLuong = Integer.parseInt(dtm.getValueAt(i, 2).toString()) ;
             String maCTHD = dtm.getValueAt(i, 10).toString();
-            if(soLuong <= ChiTietHoaDonDAO.getChiTietHoaDonTheoMaCTHD(maCTHD).getSoLuong()){
-                double donGia = boDinhDangTien(dtm.getValueAt(i, 3).toString()) ;
+            if(soLuong <= ChiTietHoaDonDAO.getChiTietHoaDonDaTungTraRoiTheoMaCTHD(maCTHD).getSoLuong()){
+                double donGia = boDinhDangTien(dtm.getValueAt(i, 3).toString());
                 double khuyenMai = boDinhDangTien(dtm.getValueAt(i, 4).toString());
-                dtm.setValueAt(dinhDangTien(soLuong*donGia-khuyenMai), i, 5);
+                dtm.setValueAt(dinhDangTien(soLuong*(donGia-khuyenMai)), i, 5);
             }
             else{
                 int stt = i+1;
@@ -1043,4 +1067,56 @@ public class TraHangGUI extends javax.swing.JPanel {
         }
         capNhatTongThanhTien(); 
     }
+
+    //CRUD, hiệu chỉnh
+    private String dinhDangTien(double thanhTien) {
+        DecimalFormat formatter = new DecimalFormat("#,###");
+        return formatter.format(thanhTien) + " VNĐ";
+    }
+
+    private void xoaRongTatCa() {
+        DefaultTableModel dtmCTHD = (DefaultTableModel) tblCTHD.getModel();
+        dtmCTHD.setRowCount(0);
+        txtNhapMaHoaDon.setText("Nhập mã hóa đơn");
+        jLabel6.setText("Số lượng đã chọn: 0");
+        
+        DefaultTableModel dtmTraHang = (DefaultTableModel) tblTraHang.getModel();
+        dtmTraHang.setRowCount(0);
+        txtMaPhieuTraHang.setText("");
+        jTextField3.setText("");
+        jTextField5.setText("");
+        txtMaHoaDonTrongPhieuTraHang.setText("");
+        txtTongThanhTien.setText("");
+        
+    }
+        
+    private void mapKeyToFocus(String key, JComponent component) {
+        InputMap im = component.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        ActionMap am = component.getActionMap();
+
+        im.put(KeyStroke.getKeyStroke(key), "focus_" + key);
+        am.put("focus_" + key, new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                component.requestFocus();
+                if (component instanceof JTextField jTextField) {
+                    jTextField.selectAll();
+                }
+            }
+        });
+    }
+    
+    private void mapKeyToClickButton(String key, AbstractButton button) {
+        InputMap im = button.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        ActionMap am = button.getActionMap();
+
+        im.put(KeyStroke.getKeyStroke(key), "click_" + key);
+        am.put("click_" + key, new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                button.doClick(); // kích hoạt sự kiện button
+            }
+        });
+    }
+    
 }
