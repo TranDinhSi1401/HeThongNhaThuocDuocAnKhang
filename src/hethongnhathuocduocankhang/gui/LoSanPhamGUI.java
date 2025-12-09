@@ -968,7 +968,7 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
             }
             JOptionPane.showMessageDialog(this, "Hủy lô "+loDuocTim.getMaLoSanPham()+" thành công");
             tbl.setRowCount(0);
-            loadDanhSachLoSanPham();
+            loadLaiDanhSachLo();
         }
         // TODO add your handling code here:
     }//GEN-LAST:event_btnHuyLoActionPerformed
@@ -1160,10 +1160,7 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
             if (loCu != null){
                 
                 ChiTietPhieuNhap ctpn = ChiTietPhieuNhapDAO.getChiTietPhieuNhap(loCu.getMaLoSanPham());
-                int soLuongSauBoSung = loCu.getSoLuong() + slGiao;
-                
-                System.out.println(ctpn+"\n"+soLuongSauBoSung);
-                
+                int soLuongSauBoSung = loCu.getSoLuong() + slGiao;                
                 if(soLuongSauBoSung > ctpn.getSoLuongYeuCau()){ 
                     
                     JOptionPane.showMessageDialog(this, 
@@ -1221,7 +1218,7 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
     // 6. HOÀN TẤT VÀ TẢI LẠI
     JOptionPane.showMessageDialog(this, "Thêm lô sản phẩm thành công!");
     ((DefaultTableModel) tblLoSanPham.getModel()).setRowCount(0);
-    loadDanhSachLoSanPham();
+    loadLaiDanhSachLo();
     xoaLoVuaThem(dsIndex);
     }//GEN-LAST:event_btnXacNhanActionPerformed
 
@@ -1301,7 +1298,7 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
         DefaultTableModel tbl = (DefaultTableModel) tblLoSanPham.getModel();
         if(ds.size()>tbl.getRowCount()){
             tbl.setRowCount(0);
-            loadDanhSachLoSanPham();
+            loadLaiDanhSachLo();
         }
             
     }//GEN-LAST:event_jButton2ActionPerformed
@@ -1352,30 +1349,68 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
     }//GEN-LAST:event_txtTenSPActionPerformed
 
     private void btnTimTheoThongTinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTimTheoThongTinActionPerformed
-        String maLoTimKiem = txtMaLoSP.getText().isBlank() ? null : txtMaLo.getText().trim();
+        String maLoTimKiem = txtMaLoSP.getText().isBlank() ? null : txtMaLoSP.getText().trim(); 
         String maSanPham = txtMaSP.getText().isBlank() ? null : txtMaSP.getText().trim();
-        String tenSanPham = txtTenSP.getText().isBlank() ? null : txtTenSanPham.getText().trim();
-        String cbTrangThai = cmbTrangThai.getSelectedItem().toString().trim();
-        String cbKhac = comboboxKhac.getSelectedIndex()==0 ? null : comboboxKhac.getSelectedItem().toString();
-        String txtTTThem = txtThongTinThem.getText().isBlank() ? null : txtThongTinThem.getText().toString().trim();
-        
-        ArrayList<LoSanPham> dsLo = LoSanPhamDAO.dsLoSanPham();
+        String tenSanPham = txtTenSP.getText().isBlank() ? null : txtTenSP.getText().trim();
+        String trangThai = cmbTrangThai.getSelectedItem().toString().trim();
+
+        String loaiThongTinThem = comboboxKhac.getSelectedIndex() == 0 ? null : comboboxKhac.getSelectedItem().toString().trim();
+        String giaTriThongTinThem = txtThongTinThem.getText().isBlank() ? null : txtThongTinThem.getText().trim();
+
         DefaultTableModel tbl = (DefaultTableModel) tblKetQua.getModel();
         QuanLyLoBUS busLo = new QuanLyLoBUS();
+        ArrayList<LoSanPham> dsKetQua = busLo.timKiemLoVoiNhieuDieuKien(
+            maLoTimKiem, 
+            maSanPham, 
+            tenSanPham, 
+            trangThai,
+            loaiThongTinThem, 
+            giaTriThongTinThem
+        );
 
-        //if(cbKhac.trim()=="Nhà cung cấp")
-            ArrayList<LoSanPham> dsLoSanPham = busLo.timKiemLo(maLoTimKiem, maSanPham, tenSanPham, txtTTThem , cbTrangThai);
-        
-        for(LoSanPham i : dsLoSanPham){
-            tbl.addRow(new Object[]{i.getSanPham().getMaSP(), 
-                i.getSanPham().getTen(), 
-                i.getMaLoSanPham(), 
-                txtTTThem, 
-                i.getNgaySanXuat(), 
-                i.getNgayHetHan(), 
-                cbKhac});
+        tbl.setRowCount(0);
+
+        if (dsKetQua.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Không tìm thấy lô sản phẩm nào khớp với tiêu chí.", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
+            return;
         }
-        // TODO add your handling code here:
+        SwingWorker<Void, Object[]>worker = new SwingWorker<>() {
+            @Override
+            protected Void doInBackground() throws Exception {
+                QuanLyLoBUS busLo = new QuanLyLoBUS();
+                for(LoSanPham lo : dsKetQua){
+                    NhaCungCap ncc = NhaCungCapDAO.timNCCTheoMa(SanPhamCungCapDAO.getSanPhamCungCap(lo.getSanPham().getMaSP()).getNhaCungCap().getMaNCC());
+                    String trangThaiHienTai = busLo.tinhTrangThaiLo(lo);
+                    Object[] as = new Object[]{
+                        lo.getSanPham().getMaSP(), 
+                        SanPhamDAO.timSPTheoMa(lo.getSanPham().getMaSP()).getTen(), 
+                        lo.getMaLoSanPham(), 
+                        ncc.getTenNCC(), 
+                        lo.getNgaySanXuat(), 
+                        lo.getNgayHetHan(), 
+                        trangThaiHienTai 
+                    };
+                    publish(as);
+                }
+                return  null;
+            }
+
+            @Override
+            protected void process(List<Object[]> chunks) {
+                DefaultTableModel tblMoi = (DefaultTableModel) tblKetQua.getModel();
+                for(Object[] i:chunks){
+                    tblMoi.addRow(i);
+                }
+            }
+            
+            @Override
+            protected void done() {
+                tblKetQua.revalidate();
+                tblKetQua.repaint();
+            }
+        };
+        worker.execute();
+        
     }//GEN-LAST:event_btnTimTheoThongTinActionPerformed
 
     private void txtThongTinThemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtThongTinThemActionPerformed
@@ -1491,9 +1526,9 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "Không tồn tại lô sản phẩm");
             return;
         }        
-        SwingWorker<List<Object[]>, Void> worker = new SwingWorker<>() {
+        SwingWorker<Void, Object[]> worker = new SwingWorker<>() {
             @Override
-            protected List<Object[]> doInBackground() throws Exception {
+            protected Void doInBackground() throws Exception {
                 List<Object[]> data = new ArrayList<>();
                 for(LoSanPham lo:dsLo){
                     if(!lo.isDaHuy()){
@@ -1503,48 +1538,42 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
                                                 lo.getMaLoSanPham(), 
                                                 donVi.getTenDonVi(),  
                                                 lo.getSoLuong()};
-                        data.add(row);
+                        publish(row);
                     }
                 }
-                return data;
+                return null;
             }
-
+            @Override
+            protected void process(List<Object[]> chunks) {
+                DefaultTableModel tblMoi = (DefaultTableModel) tblLoSanPham.getModel();
+                for(Object[] i:chunks){
+                    tblMoi.addRow(i);
+                }
+            }
+            
             @Override
             protected void done() {
-                try {
-                    List<Object[]> rows = get();
-                    DefaultTableModel tbl = (DefaultTableModel) tblLoSanPham.getModel();
-                    tbl.setRowCount(0);
-                    if(rows == null || rows.isEmpty()){
-                        JOptionPane.showMessageDialog(null, "Không tồn tại lô sản phầm");
-                    }else{
-                        for(Object[] i : rows){
-                            tbl.addRow(i);
-                        }
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                } 
-            }      
+                tblLoSanPham.revalidate();
+                tblLoSanPham.repaint();
+            }
         };        
         worker.execute();
-
     }
-//    private void loadTuPlashScreening(){
-//        DefaultTableModel tbl = (DefaultTableModel) tblLoSanPham.getModel();
-//        List<LoSanPham> dsLo = hethongnhathuocduocankhang.HeThongNhaThuocDuocAnKhang.dsLo;
-//        for (LoSanPham lo: dsLo){
-//        if(!lo.isDaHuy()){
-//        DonViTinh donVi = DonViTinhDAO.getMotDonViTinhTheoMaSP(lo.getSanPham().getMaSP());
-//        Object[] row = new Object[] {lo.getSanPham().getMaSP(),
-//                        SanPhamDAO.timSPTheoMa(lo.getSanPham().getMaSP()).getTen(),
-//                        lo.getMaLoSanPham(), 
-//                        donVi.getTenDonVi(),  
-//                        lo.getSoLuong()};
-//                        tbl.addRow(row);
-//                }
-//        }
-//    }
+    private void loadLaiDanhSachLo(){
+        DefaultTableModel tbl = (DefaultTableModel) tblLoSanPham.getModel();
+        List<LoSanPham> dsLo = LoSanPhamDAO.dsLoSanPham();
+        for (LoSanPham lo: dsLo){
+        if(!lo.isDaHuy()){
+        DonViTinh donVi = DonViTinhDAO.getMotDonViTinhTheoMaSP(lo.getSanPham().getMaSP());
+        Object[] row = new Object[] {lo.getSanPham().getMaSP(),
+                        SanPhamDAO.timSPTheoMa(lo.getSanPham().getMaSP()).getTen(),
+                        lo.getMaLoSanPham(), 
+                        donVi.getTenDonVi(),  
+                        lo.getSoLuong()};
+                        tbl.addRow(row);
+                }
+        }
+    }
         
     private void chonTatCa(){
         DefaultTableModel tbl = (DefaultTableModel) tblThemSanPham.getModel();

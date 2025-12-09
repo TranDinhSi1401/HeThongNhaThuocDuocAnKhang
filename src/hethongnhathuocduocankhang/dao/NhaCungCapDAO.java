@@ -249,4 +249,6 @@ public class NhaCungCapDAO {
         }
         return ncc;
     }
+
+
 }
