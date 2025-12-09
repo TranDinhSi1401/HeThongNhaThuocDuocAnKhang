@@ -4,6 +4,7 @@
  */
 package hethongnhathuocduocankhang;
 
+
 import hethongnhathuocduocankhang.connectDB.ConnectDB;
 import hethongnhathuocduocankhang.dao.KhachHangDAO;
 import hethongnhathuocduocankhang.dao.NhanVienDAO;
@@ -26,6 +27,8 @@ public class HeThongNhaThuocDuocAnKhang {
     public static void main(String[] args) {
         java.awt.EventQueue.invokeLater(() -> {
             SplashScreen ss = new SplashScreen(0);
+            //FlatRobotoFont.install();
+            //FlatLightLaf.setup();
 
             SwingWorker<Void, Void> worker = new SwingWorker<>() {
                 @Override
