@@ -73,14 +73,9 @@ public class GiaoDienChinhGUI extends javax.swing.JFrame {
                 }
                 if (index == 4 && subIndex == 0) {
                     showPanel(new LoSanPhamGUI());
-<<<<<<< HEAD
-                }
-                if (index == 7 && subIndex == 0) {
-=======
                 } 
                 
                 if(index == 7 && subIndex == 0) {
->>>>>>> 9f0faeb (Thêm tiêu chí khoảng ngày)
                     showPanel(new DoiQuaGUI());
                 }
                 if (index == 8 && subIndex == 0) {
