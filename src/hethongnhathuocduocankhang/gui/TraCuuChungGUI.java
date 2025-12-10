@@ -50,9 +50,9 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         jRadioButton4 = new javax.swing.JRadioButton();
         jPanel9 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
+        jToggleButton1 = new javax.swing.JToggleButton();
         jLabel1 = new javax.swing.JLabel();
         jCheckBox2 = new javax.swing.JCheckBox();
-        jToggleButton1 = new javax.swing.JToggleButton();
         jPanel8 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTable2 = new javax.swing.JTable();
@@ -68,6 +68,7 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         jXDatePicker1 = new org.jdesktop.swingx.JXDatePicker();
         jPanel85 = new javax.swing.JPanel();
         jXDatePicker2 = new org.jdesktop.swingx.JXDatePicker();
+        jXDatePicker7 = new org.jdesktop.swingx.JXDatePicker();
         jPanel83 = new javax.swing.JPanel();
         jCheckBox59 = new javax.swing.JCheckBox();
         jCheckBox67 = new javax.swing.JCheckBox();
@@ -75,11 +76,11 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         jRadioButton8 = new javax.swing.JRadioButton();
         jPanel18 = new javax.swing.JPanel();
         jPanel19 = new javax.swing.JPanel();
+        jToggleButton2 = new javax.swing.JToggleButton();
         jLabel2 = new javax.swing.JLabel();
         jCheckBox21 = new javax.swing.JCheckBox();
         jCheckBox22 = new javax.swing.JCheckBox();
         jCheckBox29 = new javax.swing.JCheckBox();
-        jToggleButton2 = new javax.swing.JToggleButton();
         jPanel20 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         jTable3 = new javax.swing.JTable();
@@ -103,10 +104,10 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         jButton6 = new javax.swing.JButton();
         jPanel28 = new javax.swing.JPanel();
         jPanel29 = new javax.swing.JPanel();
+        jToggleButton3 = new javax.swing.JToggleButton();
         jLabel3 = new javax.swing.JLabel();
         jCheckBox32 = new javax.swing.JCheckBox();
         jCheckBox28 = new javax.swing.JCheckBox();
-        jToggleButton3 = new javax.swing.JToggleButton();
         jPanel30 = new javax.swing.JPanel();
         jScrollPane4 = new javax.swing.JScrollPane();
         jTable4 = new javax.swing.JTable();
@@ -119,9 +120,9 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         jPanel35 = new javax.swing.JPanel();
         jPanel38 = new javax.swing.JPanel();
         jPanel39 = new javax.swing.JPanel();
+        jToggleButton4 = new javax.swing.JToggleButton();
         jLabel4 = new javax.swing.JLabel();
         jCheckBox43 = new javax.swing.JCheckBox();
-        jToggleButton4 = new javax.swing.JToggleButton();
         jPanel40 = new javax.swing.JPanel();
         jScrollPane5 = new javax.swing.JScrollPane();
         jTable5 = new javax.swing.JTable();
@@ -137,6 +138,7 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         jXDatePicker3 = new org.jdesktop.swingx.JXDatePicker();
         jPanel86 = new javax.swing.JPanel();
         jXDatePicker4 = new org.jdesktop.swingx.JXDatePicker();
+        jXDatePicker8 = new org.jdesktop.swingx.JXDatePicker();
         jPanel84 = new javax.swing.JPanel();
         jCheckBox78 = new javax.swing.JCheckBox();
         jCheckBox89 = new javax.swing.JCheckBox();
@@ -150,12 +152,12 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         jButton3 = new javax.swing.JButton();
         jPanel48 = new javax.swing.JPanel();
         jPanel49 = new javax.swing.JPanel();
+        jToggleButton5 = new javax.swing.JToggleButton();
         jLabel5 = new javax.swing.JLabel();
         jCheckBox54 = new javax.swing.JCheckBox();
         jCheckBox14 = new javax.swing.JCheckBox();
         jCheckBox15 = new javax.swing.JCheckBox();
         jCheckBox20 = new javax.swing.JCheckBox();
-        jToggleButton5 = new javax.swing.JToggleButton();
         jPanel50 = new javax.swing.JPanel();
         jScrollPane6 = new javax.swing.JScrollPane();
         jTable6 = new javax.swing.JTable();
@@ -170,6 +172,7 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         jXDatePicker5 = new org.jdesktop.swingx.JXDatePicker();
         jPanel88 = new javax.swing.JPanel();
         jXDatePicker6 = new org.jdesktop.swingx.JXDatePicker();
+        jXDatePicker9 = new org.jdesktop.swingx.JXDatePicker();
         jPanel89 = new javax.swing.JPanel();
         jCheckBox90 = new javax.swing.JCheckBox();
         jCheckBox91 = new javax.swing.JCheckBox();
@@ -177,10 +180,10 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         jRadioButton10 = new javax.swing.JRadioButton();
         jPanel58 = new javax.swing.JPanel();
         jPanel59 = new javax.swing.JPanel();
+        jToggleButton6 = new javax.swing.JToggleButton();
         jLabel6 = new javax.swing.JLabel();
         jCheckBox66 = new javax.swing.JCheckBox();
         jCheckBox18 = new javax.swing.JCheckBox();
-        jToggleButton6 = new javax.swing.JToggleButton();
         jPanel60 = new javax.swing.JPanel();
         jScrollPane7 = new javax.swing.JScrollPane();
         jTable7 = new javax.swing.JTable();
@@ -203,10 +206,10 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         jButton4 = new javax.swing.JButton();
         jPanel68 = new javax.swing.JPanel();
         jPanel69 = new javax.swing.JPanel();
+        jToggleButton7 = new javax.swing.JToggleButton();
         jLabel7 = new javax.swing.JLabel();
         jCheckBox76 = new javax.swing.JCheckBox();
         jCheckBox23 = new javax.swing.JCheckBox();
-        jToggleButton7 = new javax.swing.JToggleButton();
         jPanel70 = new javax.swing.JPanel();
         jScrollPane8 = new javax.swing.JScrollPane();
         jTable8 = new javax.swing.JTable();
@@ -232,10 +235,10 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         jButton16 = new javax.swing.JButton();
         jPanel78 = new javax.swing.JPanel();
         jPanel79 = new javax.swing.JPanel();
+        jToggleButton8 = new javax.swing.JToggleButton();
         jLabel8 = new javax.swing.JLabel();
         jCheckBox70 = new javax.swing.JCheckBox();
         jCheckBox27 = new javax.swing.JCheckBox();
-        jToggleButton8 = new javax.swing.JToggleButton();
         jPanel80 = new javax.swing.JPanel();
         jScrollPane9 = new javax.swing.JScrollPane();
         jTable9 = new javax.swing.JTable();
@@ -430,6 +433,9 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         jPanel3.setPreferredSize(new java.awt.Dimension(278, 40));
         jPanel3.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
+        jToggleButton1.setText("Sắp xếp tăng");
+        jPanel3.add(jToggleButton1);
+
         jLabel1.setText("Sắp xếp theo:");
         jPanel3.add(jLabel1);
 
@@ -441,32 +447,13 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         });
         jPanel3.add(jCheckBox2);
 
-        jToggleButton1.setText("Sắp xếp tăng");
-        jPanel3.add(jToggleButton1);
-
         jPanel9.add(jPanel3, java.awt.BorderLayout.PAGE_START);
 
         jPanel8.setLayout(new javax.swing.BoxLayout(jPanel8, javax.swing.BoxLayout.LINE_AXIS));
 
         jTable2.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null}
+
             },
             new String [] {
                 "Title 1", "Title 2", "Title 3", "Title 4", "Title 5", "Title 6", "Title 7", "Title 8", "Title 9", "Title 10", "Title 11"
@@ -544,6 +531,7 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         jPanel85.setBorder(javax.swing.BorderFactory.createTitledBorder("Theo khoảng"));
         jPanel85.setLayout(new javax.swing.BoxLayout(jPanel85, javax.swing.BoxLayout.Y_AXIS));
         jPanel85.add(jXDatePicker2);
+        jPanel85.add(jXDatePicker7);
 
         jPanel81.add(jPanel85);
 
@@ -592,7 +580,7 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
                 .addComponent(jCheckBox67, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton17)
-                .addContainerGap(337, Short.MAX_VALUE))
+                .addContainerGap(313, Short.MAX_VALUE))
         );
 
         jPanel81.add(jPanel83);
@@ -605,6 +593,9 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
 
         jPanel19.setPreferredSize(new java.awt.Dimension(278, 40));
         jPanel19.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+
+        jToggleButton2.setText("Sắp xếp tăng");
+        jPanel19.add(jToggleButton2);
 
         jLabel2.setText("Sắp xếp theo:");
         jPanel19.add(jLabel2);
@@ -628,32 +619,13 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         jCheckBox29.setText("Trạng thái");
         jPanel19.add(jCheckBox29);
 
-        jToggleButton2.setText("Sắp xếp tăng");
-        jPanel19.add(jToggleButton2);
-
         jPanel18.add(jPanel19, java.awt.BorderLayout.PAGE_START);
 
         jPanel20.setLayout(new javax.swing.BoxLayout(jPanel20, javax.swing.BoxLayout.LINE_AXIS));
 
         jTable3.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null}
+
             },
             new String [] {
                 "Title 1", "Title 2", "Title 3", "Title 4", "Title 5", "Title 6", "Title 7", "Title 8", "Title 9", "Title 10", "Title 11"
@@ -806,6 +778,9 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         jPanel29.setPreferredSize(new java.awt.Dimension(278, 40));
         jPanel29.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
+        jToggleButton3.setText("Sắp xếp tăng");
+        jPanel29.add(jToggleButton3);
+
         jLabel3.setText("Sắp xếp theo:");
         jPanel29.add(jLabel3);
 
@@ -820,32 +795,13 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         jCheckBox28.setText("Trạng thái");
         jPanel29.add(jCheckBox28);
 
-        jToggleButton3.setText("Sắp xếp tăng");
-        jPanel29.add(jToggleButton3);
-
         jPanel28.add(jPanel29, java.awt.BorderLayout.PAGE_START);
 
         jPanel30.setLayout(new javax.swing.BoxLayout(jPanel30, javax.swing.BoxLayout.LINE_AXIS));
 
         jTable4.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null}
+
             },
             new String [] {
                 "Title 1", "Title 2", "Title 3", "Title 4", "Title 5", "Title 6", "Title 7", "Title 8", "Title 9", "Title 10", "Title 11"
@@ -915,6 +871,9 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         jPanel39.setPreferredSize(new java.awt.Dimension(278, 40));
         jPanel39.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
+        jToggleButton4.setText("Sắp xếp tăng");
+        jPanel39.add(jToggleButton4);
+
         jLabel4.setText("Sắp xếp theo:");
         jPanel39.add(jLabel4);
 
@@ -926,32 +885,13 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         });
         jPanel39.add(jCheckBox43);
 
-        jToggleButton4.setText("Sắp xếp tăng");
-        jPanel39.add(jToggleButton4);
-
         jPanel38.add(jPanel39, java.awt.BorderLayout.PAGE_START);
 
         jPanel40.setLayout(new javax.swing.BoxLayout(jPanel40, javax.swing.BoxLayout.LINE_AXIS));
 
         jTable5.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null}
+
             },
             new String [] {
                 "Title 1", "Title 2", "Title 3", "Title 4", "Title 5", "Title 6", "Title 7", "Title 8", "Title 9", "Title 10", "Title 11"
@@ -1026,6 +966,7 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         jPanel86.setBorder(javax.swing.BorderFactory.createTitledBorder("Theo khoảng"));
         jPanel86.setLayout(new javax.swing.BoxLayout(jPanel86, javax.swing.BoxLayout.Y_AXIS));
         jPanel86.add(jXDatePicker4);
+        jPanel86.add(jXDatePicker8);
 
         jPanel82.add(jPanel86);
 
@@ -1074,7 +1015,7 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
                 .addComponent(jCheckBox89, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton18)
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         jPanel82.add(jPanel84);
@@ -1118,6 +1059,9 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         jPanel49.setPreferredSize(new java.awt.Dimension(278, 40));
         jPanel49.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
+        jToggleButton5.setText("Sắp xếp tăng");
+        jPanel49.add(jToggleButton5);
+
         jLabel5.setText("Sắp xếp theo:");
         jPanel49.add(jLabel5);
 
@@ -1138,32 +1082,13 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         jCheckBox20.setText("Trạng thái");
         jPanel49.add(jCheckBox20);
 
-        jToggleButton5.setText("Sắp xếp tăng");
-        jPanel49.add(jToggleButton5);
-
         jPanel48.add(jPanel49, java.awt.BorderLayout.PAGE_START);
 
         jPanel50.setLayout(new javax.swing.BoxLayout(jPanel50, javax.swing.BoxLayout.LINE_AXIS));
 
         jTable6.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null}
+
             },
             new String [] {
                 "Title 1", "Title 2", "Title 3", "Title 4", "Title 5", "Title 6", "Title 7", "Title 8", "Title 9", "Title 10", "Title 11"
@@ -1236,6 +1161,7 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         jPanel88.setBorder(javax.swing.BorderFactory.createTitledBorder("Theo khoảng"));
         jPanel88.setLayout(new javax.swing.BoxLayout(jPanel88, javax.swing.BoxLayout.Y_AXIS));
         jPanel88.add(jXDatePicker6);
+        jPanel88.add(jXDatePicker9);
 
         jPanel55.add(jPanel88);
 
@@ -1296,6 +1222,9 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         jPanel59.setPreferredSize(new java.awt.Dimension(278, 40));
         jPanel59.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
+        jToggleButton6.setText("Sắp xếp tăng");
+        jPanel59.add(jToggleButton6);
+
         jLabel6.setText("Sắp xếp theo:");
         jPanel59.add(jLabel6);
 
@@ -1310,32 +1239,13 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         jCheckBox18.setText("Trạng thái");
         jPanel59.add(jCheckBox18);
 
-        jToggleButton6.setText("Sắp xếp tăng");
-        jPanel59.add(jToggleButton6);
-
         jPanel58.add(jPanel59, java.awt.BorderLayout.PAGE_START);
 
         jPanel60.setLayout(new javax.swing.BoxLayout(jPanel60, javax.swing.BoxLayout.LINE_AXIS));
 
         jTable7.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null}
+
             },
             new String [] {
                 "Title 1", "Title 2", "Title 3", "Title 4", "Title 5", "Title 6", "Title 7", "Title 8", "Title 9", "Title 10", "Title 11"
@@ -1459,6 +1369,9 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         jPanel69.setPreferredSize(new java.awt.Dimension(278, 40));
         jPanel69.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
+        jToggleButton7.setText("Sắp xếp tăng");
+        jPanel69.add(jToggleButton7);
+
         jLabel7.setText("Sắp xếp theo:");
         jPanel69.add(jLabel7);
 
@@ -1473,32 +1386,13 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         jCheckBox23.setText("Trạng thái");
         jPanel69.add(jCheckBox23);
 
-        jToggleButton7.setText("Sắp xếp tăng");
-        jPanel69.add(jToggleButton7);
-
         jPanel68.add(jPanel69, java.awt.BorderLayout.PAGE_START);
 
         jPanel70.setLayout(new javax.swing.BoxLayout(jPanel70, javax.swing.BoxLayout.LINE_AXIS));
 
         jTable8.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null}
+
             },
             new String [] {
                 "Title 1", "Title 2", "Title 3", "Title 4", "Title 5", "Title 6", "Title 7", "Title 8", "Title 9", "Title 10", "Title 11"
@@ -1612,7 +1506,7 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
                 .addComponent(jCheckBox81)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton15)
-                .addContainerGap(108, Short.MAX_VALUE))
+                .addContainerGap(124, Short.MAX_VALUE))
         );
 
         jPanel75.add(jPanel76);
@@ -1681,7 +1575,7 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
                 .addComponent(jCheckBox86)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton16)
-                .addContainerGap(108, Short.MAX_VALUE))
+                .addContainerGap(93, Short.MAX_VALUE))
         );
 
         jPanel75.add(jPanel77);
@@ -1692,6 +1586,9 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
 
         jPanel79.setPreferredSize(new java.awt.Dimension(278, 40));
         jPanel79.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+
+        jToggleButton8.setText("Sắp xếp tăng");
+        jPanel79.add(jToggleButton8);
 
         jLabel8.setText("Sắp xếp theo:");
         jPanel79.add(jLabel8);
@@ -1707,32 +1604,13 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         jCheckBox27.setText("Trạng thái");
         jPanel79.add(jCheckBox27);
 
-        jToggleButton8.setText("Sắp xếp tăng");
-        jPanel79.add(jToggleButton8);
-
         jPanel78.add(jPanel79, java.awt.BorderLayout.PAGE_START);
 
         jPanel80.setLayout(new javax.swing.BoxLayout(jPanel80, javax.swing.BoxLayout.LINE_AXIS));
 
         jTable9.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null},
-                {null, null, null, null, null, null, null, null, null, null, null}
+
             },
             new String [] {
                 "Title 1", "Title 2", "Title 3", "Title 4", "Title 5", "Title 6", "Title 7", "Title 8", "Title 9", "Title 10", "Title 11"
@@ -2181,5 +2059,8 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
     private org.jdesktop.swingx.JXDatePicker jXDatePicker4;
     private org.jdesktop.swingx.JXDatePicker jXDatePicker5;
     private org.jdesktop.swingx.JXDatePicker jXDatePicker6;
+    private org.jdesktop.swingx.JXDatePicker jXDatePicker7;
+    private org.jdesktop.swingx.JXDatePicker jXDatePicker8;
+    private org.jdesktop.swingx.JXDatePicker jXDatePicker9;
     // End of variables declaration//GEN-END:variables
 }

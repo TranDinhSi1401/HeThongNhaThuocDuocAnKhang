@@ -39,6 +39,7 @@ public class Menu extends JComponent{
         {"Thống kê"},
         {"Đổi quà"},
         {"Đăng xuất"}
+            
     };
     
     public Menu() {
