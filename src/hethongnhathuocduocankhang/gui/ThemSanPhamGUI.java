@@ -1,4 +1,4 @@
- /*
+/*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
@@ -6,6 +6,7 @@ package hethongnhathuocduocankhang.gui;
 
 import hethongnhathuocduocankhang.entity.LoaiSanPhamEnum;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
@@ -516,6 +517,7 @@ public class ThemSanPhamGUI extends JPanel {
         tblKMChon.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         tableKQTimKiemNCC.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         tableKQTimKiemKM.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+
     }
 
     // ==========================================================================

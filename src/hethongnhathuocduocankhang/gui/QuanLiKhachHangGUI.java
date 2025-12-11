@@ -294,7 +294,6 @@ public class QuanLiKhachHangGUI extends JPanel {
 
     //HÀM XỬ LÝ NÚT THÊM
     private void xuLyThem() {
-        System.out.println(ChiTietHoaDonDAO.getChiTietHoaDonTheoMaCTHD("CTHD-251025-0001"));
         ThemKhachHangGUI pnlThemKH = new ThemKhachHangGUI();
         JDialog dialog = new JDialog();
         dialog.setTitle("Thêm khách hàng mới");

@@ -6,6 +6,7 @@ package hethongnhathuocduocankhang.gui;
 
 import hethongnhathuocduocankhang.bus.SanPhamBUS;
 import java.awt.*;
+import java.awt.event.ActionEvent;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -38,10 +39,14 @@ public class QuanLiSanPhamGUI extends JPanel {
         pnlNorthLeft.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 0));
         pnlNorthLeft.setBorder(new EmptyBorder(0, 0, 10, 0));
 
-        btnThem = new JButton("Thêm");
-        btnXoa = new JButton("Xóa");
-        btnSua = new JButton("Sửa");
-
+        btnThem = new JButton("Thêm - F6");
+        btnXoa = new JButton("Xóa - Del");
+        btnSua = new JButton("Sửa - F2");
+        
+        mapKeyToClickButton("F6", btnThem);
+        mapKeyToClickButton("DELETE", btnXoa);
+        mapKeyToClickButton("F2", btnSua);
+        
         // Trang trí nút bấm
         setupTopButton(btnThem, new Color(50, 150, 250)); // Xanh dương
         setupTopButton(btnXoa, new Color(250, 100, 100)); // Đỏ
@@ -184,8 +189,37 @@ public class QuanLiSanPhamGUI extends JPanel {
         pnlSouth.add(lblSoDongChon);
 
         this.add(pnlSouth, BorderLayout.SOUTH);
-        
+
         SanPhamBUS spBUS = new SanPhamBUS(this);
+    }
+
+    private void mapKeyToFocus(String key, JComponent component) {
+        InputMap im = component.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        ActionMap am = component.getActionMap();
+
+        im.put(KeyStroke.getKeyStroke(key), "focus_" + key);
+        am.put("focus_" + key, new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                component.requestFocus();
+                if (component instanceof JTextField jTextField) {
+                    jTextField.selectAll();
+                }
+            }
+        });
+    }
+
+    private void mapKeyToClickButton(String key, AbstractButton button) {
+        InputMap im = button.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        ActionMap am = button.getActionMap();
+
+        im.put(KeyStroke.getKeyStroke(key), "click_" + key);
+        am.put("click_" + key, new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                button.doClick(); // kích hoạt sự kiện button
+            }
+        });
     }
 
     /**
