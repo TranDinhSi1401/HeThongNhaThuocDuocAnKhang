@@ -69,11 +69,6 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         jPanel85 = new javax.swing.JPanel();
         jXDatePicker2 = new org.jdesktop.swingx.JXDatePicker();
         jXDatePicker7 = new org.jdesktop.swingx.JXDatePicker();
-        jPanel83 = new javax.swing.JPanel();
-        jCheckBox59 = new javax.swing.JCheckBox();
-        jCheckBox67 = new javax.swing.JCheckBox();
-        jButton17 = new javax.swing.JButton();
-        jRadioButton8 = new javax.swing.JRadioButton();
         jPanel18 = new javax.swing.JPanel();
         jPanel19 = new javax.swing.JPanel();
         jToggleButton2 = new javax.swing.JToggleButton();
@@ -433,7 +428,7 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         jPanel3.setPreferredSize(new java.awt.Dimension(278, 40));
         jPanel3.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
-        jToggleButton1.setText("Sắp xếp tăng");
+        jToggleButton1.setText("Tìm [F3]");
         jPanel3.add(jToggleButton1);
 
         jLabel1.setText("Sắp xếp theo:");
@@ -535,56 +530,6 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
 
         jPanel81.add(jPanel85);
 
-        jPanel83.setBorder(javax.swing.BorderFactory.createTitledBorder("Trạng thái\n"));
-        jPanel83.setMaximumSize(new java.awt.Dimension(500, 32767));
-
-        jCheckBox59.setText("Đã hoàn thành");
-        jCheckBox59.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBox59ActionPerformed(evt);
-            }
-        });
-
-        jCheckBox67.setText("Chưa hoàn thành");
-        jCheckBox67.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBox67ActionPerformed(evt);
-            }
-        });
-
-        jButton17.setText("Làm mới");
-
-        jRadioButton8.setText("Tất cả");
-
-        javax.swing.GroupLayout jPanel83Layout = new javax.swing.GroupLayout(jPanel83);
-        jPanel83.setLayout(jPanel83Layout);
-        jPanel83Layout.setHorizontalGroup(
-            jPanel83Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel83Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel83Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jCheckBox59)
-                    .addComponent(jCheckBox67)
-                    .addComponent(jButton17)
-                    .addComponent(jRadioButton8))
-                .addContainerGap(41, Short.MAX_VALUE))
-        );
-        jPanel83Layout.setVerticalGroup(
-            jPanel83Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel83Layout.createSequentialGroup()
-                .addGap(0, 0, 0)
-                .addComponent(jRadioButton8)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jCheckBox59)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jCheckBox67, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton17)
-                .addContainerGap(313, Short.MAX_VALUE))
-        );
-
-        jPanel81.add(jPanel83);
-
         jPanel15.add(jPanel81);
 
         jPanel14.add(jPanel15, java.awt.BorderLayout.LINE_START);
@@ -594,7 +539,7 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         jPanel19.setPreferredSize(new java.awt.Dimension(278, 40));
         jPanel19.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
-        jToggleButton2.setText("Sắp xếp tăng");
+        jToggleButton2.setText("Tìm [F3]");
         jPanel19.add(jToggleButton2);
 
         jLabel2.setText("Sắp xếp theo:");
@@ -778,7 +723,7 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         jPanel29.setPreferredSize(new java.awt.Dimension(278, 40));
         jPanel29.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
-        jToggleButton3.setText("Sắp xếp tăng");
+        jToggleButton3.setText("Tìm [F3]");
         jPanel29.add(jToggleButton3);
 
         jLabel3.setText("Sắp xếp theo:");
@@ -871,7 +816,7 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         jPanel39.setPreferredSize(new java.awt.Dimension(278, 40));
         jPanel39.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
-        jToggleButton4.setText("Sắp xếp tăng");
+        jToggleButton4.setText("Tìm [F3]");
         jPanel39.add(jToggleButton4);
 
         jLabel4.setText("Sắp xếp theo:");
@@ -1059,7 +1004,7 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         jPanel49.setPreferredSize(new java.awt.Dimension(278, 40));
         jPanel49.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
-        jToggleButton5.setText("Sắp xếp tăng");
+        jToggleButton5.setText("Tìm [F3]");
         jPanel49.add(jToggleButton5);
 
         jLabel5.setText("Sắp xếp theo:");
@@ -1112,7 +1057,7 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         jPanel52.setMinimumSize(new java.awt.Dimension(242, 50));
         jPanel52.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
-        jComboBox6.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Mã nhà cung cấp", "Tên nhà cung cấp", "..." }));
+        jComboBox6.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ngày trả", "..." }));
         jComboBox6.setMinimumSize(new java.awt.Dimension(163, 22));
         jComboBox6.setPreferredSize(new java.awt.Dimension(170, 22));
         jComboBox6.addActionListener(new java.awt.event.ActionListener() {
@@ -1222,7 +1167,7 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         jPanel59.setPreferredSize(new java.awt.Dimension(278, 40));
         jPanel59.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
-        jToggleButton6.setText("Sắp xếp tăng");
+        jToggleButton6.setText("Tìm [F3]");
         jPanel59.add(jToggleButton6);
 
         jLabel6.setText("Sắp xếp theo:");
@@ -1369,7 +1314,7 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         jPanel69.setPreferredSize(new java.awt.Dimension(278, 40));
         jPanel69.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
-        jToggleButton7.setText("Sắp xếp tăng");
+        jToggleButton7.setText("Tìm [F3]");
         jPanel69.add(jToggleButton7);
 
         jLabel7.setText("Sắp xếp theo:");
@@ -1416,7 +1361,7 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         jPanel72.setMinimumSize(new java.awt.Dimension(242, 50));
         jPanel72.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
-        jComboBox8.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Mã nhà cung cấp", "Tên nhà cung cấp", "..." }));
+        jComboBox8.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ngày nhập", "..." }));
         jComboBox8.setMinimumSize(new java.awt.Dimension(163, 22));
         jComboBox8.setPreferredSize(new java.awt.Dimension(170, 22));
         jComboBox8.addActionListener(new java.awt.event.ActionListener() {
@@ -1587,7 +1532,7 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         jPanel79.setPreferredSize(new java.awt.Dimension(278, 40));
         jPanel79.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
-        jToggleButton8.setText("Sắp xếp tăng");
+        jToggleButton8.setText("Tìm [F3]");
         jPanel79.add(jToggleButton8);
 
         jLabel8.setText("Sắp xếp theo:");
@@ -1627,7 +1572,7 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
 
         jPanel71.add(jPanel74, java.awt.BorderLayout.CENTER);
 
-        jTabbedPane1.addTab("Phiếu đặt", jPanel71);
+        jTabbedPane1.addTab("Phiếu nhập", jPanel71);
 
         add(jTabbedPane1);
     }// </editor-fold>//GEN-END:initComponents
@@ -1808,14 +1753,6 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_jCheckBox13ActionPerformed
 
-    private void jCheckBox59ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox59ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jCheckBox59ActionPerformed
-
-    private void jCheckBox67ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox67ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jCheckBox67ActionPerformed
-
     private void jCheckBox78ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox78ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jCheckBox78ActionPerformed
@@ -1850,7 +1787,6 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
     private javax.swing.JButton jButton13;
     private javax.swing.JButton jButton15;
     private javax.swing.JButton jButton16;
-    private javax.swing.JButton jButton17;
     private javax.swing.JButton jButton18;
     private javax.swing.JButton jButton19;
     private javax.swing.JButton jButton2;
@@ -1886,10 +1822,8 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
     private javax.swing.JCheckBox jCheckBox43;
     private javax.swing.JCheckBox jCheckBox5;
     private javax.swing.JCheckBox jCheckBox54;
-    private javax.swing.JCheckBox jCheckBox59;
     private javax.swing.JCheckBox jCheckBox6;
     private javax.swing.JCheckBox jCheckBox66;
-    private javax.swing.JCheckBox jCheckBox67;
     private javax.swing.JCheckBox jCheckBox68;
     private javax.swing.JCheckBox jCheckBox69;
     private javax.swing.JCheckBox jCheckBox7;
@@ -1999,7 +1933,6 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel80;
     private javax.swing.JPanel jPanel81;
     private javax.swing.JPanel jPanel82;
-    private javax.swing.JPanel jPanel83;
     private javax.swing.JPanel jPanel84;
     private javax.swing.JPanel jPanel85;
     private javax.swing.JPanel jPanel86;
@@ -2018,7 +1951,6 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
     private javax.swing.JRadioButton jRadioButton5;
     private javax.swing.JRadioButton jRadioButton6;
     private javax.swing.JRadioButton jRadioButton7;
-    private javax.swing.JRadioButton jRadioButton8;
     private javax.swing.JRadioButton jRadioButton9;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;

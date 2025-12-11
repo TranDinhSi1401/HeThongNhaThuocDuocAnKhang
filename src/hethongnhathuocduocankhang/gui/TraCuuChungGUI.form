@@ -350,7 +350,7 @@
                       <SubComponents>
                         <Component class="javax.swing.JToggleButton" name="jToggleButton1">
                           <Properties>
-                            <Property name="text" type="java.lang.String" value="S&#x1eaf;p x&#x1ebf;p t&#x103;ng"/>
+                            <Property name="text" type="java.lang.String" value="T&#xec;m [F3]"/>
                           </Properties>
                         </Component>
                         <Component class="javax.swing.JLabel" name="jLabel1">
@@ -638,78 +638,6 @@
                             </Component>
                           </SubComponents>
                         </Container>
-                        <Container class="javax.swing.JPanel" name="jPanel83">
-                          <Properties>
-                            <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-                              <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-                                <TitledBorder title="Tr&#x1ea1;ng th&#xe1;i&#xa;"/>
-                              </Border>
-                            </Property>
-                            <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                              <Dimension value="[500, 32767]"/>
-                            </Property>
-                          </Properties>
-
-                          <Layout>
-                            <DimensionLayout dim="0">
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <EmptySpace max="-2" attributes="0"/>
-                                      <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="jCheckBox59" alignment="0" min="-2" max="-2" attributes="0"/>
-                                          <Component id="jCheckBox67" alignment="0" min="-2" max="-2" attributes="0"/>
-                                          <Component id="jButton17" alignment="0" min="-2" max="-2" attributes="0"/>
-                                          <Component id="jRadioButton8" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      </Group>
-                                      <EmptySpace pref="41" max="32767" attributes="0"/>
-                                  </Group>
-                              </Group>
-                            </DimensionLayout>
-                            <DimensionLayout dim="1">
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
-                                      <Component id="jRadioButton8" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="jCheckBox59" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="jCheckBox67" min="-2" pref="20" max="-2" attributes="0"/>
-                                      <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="jButton17" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace pref="313" max="32767" attributes="0"/>
-                                  </Group>
-                              </Group>
-                            </DimensionLayout>
-                          </Layout>
-                          <SubComponents>
-                            <Component class="javax.swing.JCheckBox" name="jCheckBox59">
-                              <Properties>
-                                <Property name="text" type="java.lang.String" value="&#x110;&#xe3; ho&#xe0;n th&#xe0;nh"/>
-                              </Properties>
-                              <Events>
-                                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jCheckBox59ActionPerformed"/>
-                              </Events>
-                            </Component>
-                            <Component class="javax.swing.JCheckBox" name="jCheckBox67">
-                              <Properties>
-                                <Property name="text" type="java.lang.String" value="Ch&#x1b0;a ho&#xe0;n th&#xe0;nh"/>
-                              </Properties>
-                              <Events>
-                                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jCheckBox67ActionPerformed"/>
-                              </Events>
-                            </Component>
-                            <Component class="javax.swing.JButton" name="jButton17">
-                              <Properties>
-                                <Property name="text" type="java.lang.String" value="L&#xe0;m m&#x1edb;i"/>
-                              </Properties>
-                            </Component>
-                            <Component class="javax.swing.JRadioButton" name="jRadioButton8">
-                              <Properties>
-                                <Property name="text" type="java.lang.String" value="T&#x1ea5;t c&#x1ea3;"/>
-                              </Properties>
-                            </Component>
-                          </SubComponents>
-                        </Container>
                       </SubComponents>
                     </Container>
                   </SubComponents>
@@ -741,7 +669,7 @@
                       <SubComponents>
                         <Component class="javax.swing.JToggleButton" name="jToggleButton2">
                           <Properties>
-                            <Property name="text" type="java.lang.String" value="S&#x1eaf;p x&#x1ebf;p t&#x103;ng"/>
+                            <Property name="text" type="java.lang.String" value="T&#xec;m [F3]"/>
                           </Properties>
                         </Component>
                         <Component class="javax.swing.JLabel" name="jLabel2">
@@ -1145,7 +1073,7 @@
                       <SubComponents>
                         <Component class="javax.swing.JToggleButton" name="jToggleButton3">
                           <Properties>
-                            <Property name="text" type="java.lang.String" value="S&#x1eaf;p x&#x1ebf;p t&#x103;ng"/>
+                            <Property name="text" type="java.lang.String" value="T&#xec;m [F3]"/>
                           </Properties>
                         </Component>
                         <Component class="javax.swing.JLabel" name="jLabel3">
@@ -1418,7 +1346,7 @@
                       <SubComponents>
                         <Component class="javax.swing.JToggleButton" name="jToggleButton4">
                           <Properties>
-                            <Property name="text" type="java.lang.String" value="S&#x1eaf;p x&#x1ebf;p t&#x103;ng"/>
+                            <Property name="text" type="java.lang.String" value="T&#xec;m [F3]"/>
                           </Properties>
                         </Component>
                         <Component class="javax.swing.JLabel" name="jLabel4">
@@ -1850,7 +1778,7 @@
                       <SubComponents>
                         <Component class="javax.swing.JToggleButton" name="jToggleButton5">
                           <Properties>
-                            <Property name="text" type="java.lang.String" value="S&#x1eaf;p x&#x1ebf;p t&#x103;ng"/>
+                            <Property name="text" type="java.lang.String" value="T&#xec;m [F3]"/>
                           </Properties>
                         </Component>
                         <Component class="javax.swing.JLabel" name="jLabel5">
@@ -2021,10 +1949,9 @@
                 <Component class="javax.swing.JComboBox" name="jComboBox6">
                   <Properties>
                     <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                      <StringArray count="3">
-                        <StringItem index="0" value="M&#xe3; nh&#xe0; cung c&#x1ea5;p"/>
-                        <StringItem index="1" value="T&#xea;n nh&#xe0; cung c&#x1ea5;p"/>
-                        <StringItem index="2" value="..."/>
+                      <StringArray count="2">
+                        <StringItem index="0" value="Ng&#xe0;y tr&#x1ea3;"/>
+                        <StringItem index="1" value="..."/>
                       </StringArray>
                     </Property>
                     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -2243,7 +2170,7 @@
                       <SubComponents>
                         <Component class="javax.swing.JToggleButton" name="jToggleButton6">
                           <Properties>
-                            <Property name="text" type="java.lang.String" value="S&#x1eaf;p x&#x1ebf;p t&#x103;ng"/>
+                            <Property name="text" type="java.lang.String" value="T&#xec;m [F3]"/>
                           </Properties>
                         </Component>
                         <Component class="javax.swing.JLabel" name="jLabel6">
@@ -2609,7 +2536,7 @@
                       <SubComponents>
                         <Component class="javax.swing.JToggleButton" name="jToggleButton7">
                           <Properties>
-                            <Property name="text" type="java.lang.String" value="S&#x1eaf;p x&#x1ebf;p t&#x103;ng"/>
+                            <Property name="text" type="java.lang.String" value="T&#xec;m [F3]"/>
                           </Properties>
                         </Component>
                         <Component class="javax.swing.JLabel" name="jLabel7">
@@ -2743,8 +2670,8 @@
         <Container class="javax.swing.JPanel" name="jPanel71">
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-              <JTabbedPaneConstraints tabName="Phi&#x1ebf;u &#x111;&#x1eb7;t">
-                <Property name="tabTitle" type="java.lang.String" value="Phi&#x1ebf;u &#x111;&#x1eb7;t"/>
+              <JTabbedPaneConstraints tabName="Phi&#x1ebf;u nh&#x1ead;p">
+                <Property name="tabTitle" type="java.lang.String" value="Phi&#x1ebf;u nh&#x1ead;p"/>
               </JTabbedPaneConstraints>
             </Constraint>
           </Constraints>
@@ -2770,10 +2697,9 @@
                 <Component class="javax.swing.JComboBox" name="jComboBox8">
                   <Properties>
                     <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                      <StringArray count="3">
-                        <StringItem index="0" value="M&#xe3; nh&#xe0; cung c&#x1ea5;p"/>
-                        <StringItem index="1" value="T&#xea;n nh&#xe0; cung c&#x1ea5;p"/>
-                        <StringItem index="2" value="..."/>
+                      <StringArray count="2">
+                        <StringItem index="0" value="Ng&#xe0;y nh&#x1ead;p"/>
+                        <StringItem index="1" value="..."/>
                       </StringArray>
                     </Property>
                     <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
@@ -3055,7 +2981,7 @@
                       <SubComponents>
                         <Component class="javax.swing.JToggleButton" name="jToggleButton8">
                           <Properties>
-                            <Property name="text" type="java.lang.String" value="S&#x1eaf;p x&#x1ebf;p t&#x103;ng"/>
+                            <Property name="text" type="java.lang.String" value="T&#xec;m [F3]"/>
                           </Properties>
                         </Component>
                         <Component class="javax.swing.JLabel" name="jLabel8">
