@@ -104,7 +104,7 @@ public class HoaDon {
         this.chuyenKhoan = hinhThucThanhToan;
     }
 
-    public void setTongTien(double tongTien) {
+    public void setTongTien(double tongTien){
         if (tongTien <= 0) {
             throw new IllegalArgumentException("Tổng tiền phải là số thực lớn hơn 0");
         }

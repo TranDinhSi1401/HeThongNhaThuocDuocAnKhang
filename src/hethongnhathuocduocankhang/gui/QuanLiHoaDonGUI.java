@@ -114,7 +114,7 @@ public class QuanLiHoaDonGUI extends JPanel {
             "Khách hàng",
             "Ngày lập",
             "Tổng tiền",
-            "Hình thức TT"
+            "Hình thức TT",
         };
         Object[][] data = {};
 
