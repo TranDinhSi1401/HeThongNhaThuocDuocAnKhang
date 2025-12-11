@@ -145,6 +145,10 @@ public class NhanVien {
         this.ngaySinh = ngaySinh;
 
     }
+    
+    public void setMatKhau(String matKhau){
+        
+    }
 
     public String getDiaChi() {
         return diaChi;

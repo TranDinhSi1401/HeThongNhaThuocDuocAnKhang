@@ -499,7 +499,7 @@ public class DashBoardQuanLi extends javax.swing.JPanel {
         tblLoSapHetHan.getColumnModel().getColumn(2).setPreferredWidth(50);    //Mã SP
         tblLoSapHetHan.getColumnModel().getColumn(3).setPreferredWidth(90);     //Tên SP
         tblLoSapHetHan.getColumnModel().getColumn(4).setPreferredWidth(20);    //SL
-        tblLoSapHetHan.getColumnModel().getColumn(5).setPreferredWidth(40);    //ĐVT
+        tblLoSapHetHan.getColumnModel().getColumn(5).setPreferredWidth(25);    //ĐVT
         tblLoSapHetHan.getColumnModel().getColumn(6).setPreferredWidth(80);    //NHH
 
         JScrollPane scrollPane = new JScrollPane(tblLoSapHetHan);
