@@ -225,4 +225,28 @@ public class NhaCungCapDAO {
         }
         return maCuoiCung;
     }
+    public static NhaCungCap getNhaCungCapTheoTen (String ten){
+        NhaCungCap ncc = new NhaCungCap();
+        String sql = "Select * from NhaCungCap where tenNCC like ?";
+        try {
+            ConnectDB.getInstance().connect();
+            Connection con = ConnectDB.getConnection();
+            PreparedStatement st = con.prepareStatement(sql);
+            st.setString(1, ten);
+            try(ResultSet rs = st.executeQuery()){
+                if(rs.next()){
+                    String ma = rs.getString(1);
+                    String tenNCC = rs.getString(2);
+                    String diaChi = rs.getString(3);
+                    String sdt = rs.getString(4);
+                    String email = rs.getString(5);
+                    ncc = new NhaCungCap(ma, tenNCC, diaChi, sdt, email);
+                }
+            }
+            
+        } catch (SQLException s) {
+            s.printStackTrace();
+        }
+        return ncc;
+    }
 }
