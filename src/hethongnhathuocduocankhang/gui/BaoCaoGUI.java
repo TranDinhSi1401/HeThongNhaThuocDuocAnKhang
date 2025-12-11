@@ -8,12 +8,12 @@ package hethongnhathuocduocankhang.gui;
  *
  * @author MINH KHANG
  */
-public class ThongKeGUI extends javax.swing.JPanel {
+public class BaoCaoGUI extends javax.swing.JPanel {
 
     /**
      * Creates new form ThongKeGUI
      */
-    public ThongKeGUI() {
+    public BaoCaoGUI() {
         initComponents();
     }
 
@@ -68,31 +68,10 @@ public class ThongKeGUI extends javax.swing.JPanel {
         jPanel33 = new javax.swing.JPanel();
         jPanel34 = new javax.swing.JPanel();
         jPanel6 = new javax.swing.JPanel();
-        jPanel35 = new javax.swing.JPanel();
-        jButton11 = new javax.swing.JButton();
-        jPanel36 = new javax.swing.JPanel();
-        jPanel37 = new javax.swing.JPanel();
-        jLabel6 = new javax.swing.JLabel();
-        jPanel38 = new javax.swing.JPanel();
-        jPanel39 = new javax.swing.JPanel();
         jPanel7 = new javax.swing.JPanel();
-        jPanel40 = new javax.swing.JPanel();
-        jButton12 = new javax.swing.JButton();
-        jPanel41 = new javax.swing.JPanel();
-        jPanel42 = new javax.swing.JPanel();
-        jLabel7 = new javax.swing.JLabel();
-        jPanel43 = new javax.swing.JPanel();
-        jPanel44 = new javax.swing.JPanel();
         jPanel8 = new javax.swing.JPanel();
-        jPanel45 = new javax.swing.JPanel();
-        jButton13 = new javax.swing.JButton();
-        jPanel46 = new javax.swing.JPanel();
-        jPanel47 = new javax.swing.JPanel();
-        jLabel8 = new javax.swing.JLabel();
-        jPanel48 = new javax.swing.JPanel();
-        jPanel49 = new javax.swing.JPanel();
         jPanel52 = new javax.swing.JPanel();
-        jPanel54 = new javax.swing.JPanel();
+        jPanel50 = new javax.swing.JPanel();
 
         setLayout(new java.awt.BorderLayout());
 
@@ -100,14 +79,19 @@ public class ThongKeGUI extends javax.swing.JPanel {
 
         jPanel1.setLayout(new java.awt.BorderLayout());
 
-        jLabel1.setText("Báo cáo doanh thu theo tháng");
+        jLabel1.setText("Báo cáo doanh thu");
         jPanel10.add(jLabel1);
 
         jPanel1.add(jPanel10, java.awt.BorderLayout.PAGE_END);
 
         jPanel11.setLayout(new java.awt.BorderLayout());
 
-        jButton3.setText("jButton1");
+        jButton3.setText("Báo cáo 1");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
         jPanel11.add(jButton3, java.awt.BorderLayout.CENTER);
 
         jPanel1.add(jPanel11, java.awt.BorderLayout.CENTER);
@@ -133,7 +117,7 @@ public class ThongKeGUI extends javax.swing.JPanel {
         );
         jPanel13Layout.setVerticalGroup(
             jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 92, Short.MAX_VALUE)
+            .addGap(0, 100, Short.MAX_VALUE)
         );
 
         jPanel1.add(jPanel13, java.awt.BorderLayout.LINE_END);
@@ -146,7 +130,7 @@ public class ThongKeGUI extends javax.swing.JPanel {
         );
         jPanel14Layout.setVerticalGroup(
             jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 92, Short.MAX_VALUE)
+            .addGap(0, 100, Short.MAX_VALUE)
         );
 
         jPanel1.add(jPanel14, java.awt.BorderLayout.LINE_START);
@@ -157,7 +141,7 @@ public class ThongKeGUI extends javax.swing.JPanel {
 
         jPanel15.setLayout(new java.awt.BorderLayout());
 
-        jButton1.setText("jButton1");
+        jButton1.setText("Báo cáo 2");
         jPanel15.add(jButton1, java.awt.BorderLayout.CENTER);
 
         jPanel2.add(jPanel15, java.awt.BorderLayout.CENTER);
@@ -175,7 +159,7 @@ public class ThongKeGUI extends javax.swing.JPanel {
 
         jPanel2.add(jPanel16, java.awt.BorderLayout.PAGE_START);
 
-        jLabel2.setText("jLabel2");
+        jLabel2.setText("Báo cáo lợi nhuận");
         jPanel17.add(jLabel2);
 
         jPanel2.add(jPanel17, java.awt.BorderLayout.PAGE_END);
@@ -188,7 +172,7 @@ public class ThongKeGUI extends javax.swing.JPanel {
         );
         jPanel18Layout.setVerticalGroup(
             jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 92, Short.MAX_VALUE)
+            .addGap(0, 100, Short.MAX_VALUE)
         );
 
         jPanel2.add(jPanel18, java.awt.BorderLayout.LINE_END);
@@ -201,7 +185,7 @@ public class ThongKeGUI extends javax.swing.JPanel {
         );
         jPanel19Layout.setVerticalGroup(
             jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 92, Short.MAX_VALUE)
+            .addGap(0, 100, Short.MAX_VALUE)
         );
 
         jPanel2.add(jPanel19, java.awt.BorderLayout.LINE_START);
@@ -212,7 +196,7 @@ public class ThongKeGUI extends javax.swing.JPanel {
 
         jPanel20.setLayout(new java.awt.BorderLayout());
 
-        jButton8.setText("jButton1");
+        jButton8.setText("Báo cáo 3");
         jPanel20.add(jButton8, java.awt.BorderLayout.CENTER);
 
         jPanel3.add(jPanel20, java.awt.BorderLayout.CENTER);
@@ -230,7 +214,7 @@ public class ThongKeGUI extends javax.swing.JPanel {
 
         jPanel3.add(jPanel21, java.awt.BorderLayout.PAGE_START);
 
-        jLabel3.setText("jLabel2");
+        jLabel3.setText("Báo cáo doanh thu theo ca làm việc");
         jPanel22.add(jLabel3);
 
         jPanel3.add(jPanel22, java.awt.BorderLayout.PAGE_END);
@@ -243,7 +227,7 @@ public class ThongKeGUI extends javax.swing.JPanel {
         );
         jPanel23Layout.setVerticalGroup(
             jPanel23Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 92, Short.MAX_VALUE)
+            .addGap(0, 100, Short.MAX_VALUE)
         );
 
         jPanel3.add(jPanel23, java.awt.BorderLayout.LINE_END);
@@ -256,7 +240,7 @@ public class ThongKeGUI extends javax.swing.JPanel {
         );
         jPanel24Layout.setVerticalGroup(
             jPanel24Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 92, Short.MAX_VALUE)
+            .addGap(0, 100, Short.MAX_VALUE)
         );
 
         jPanel3.add(jPanel24, java.awt.BorderLayout.LINE_START);
@@ -267,7 +251,7 @@ public class ThongKeGUI extends javax.swing.JPanel {
 
         jPanel25.setLayout(new java.awt.BorderLayout());
 
-        jButton9.setText("jButton1");
+        jButton9.setText("Báo cáo 4");
         jPanel25.add(jButton9, java.awt.BorderLayout.CENTER);
 
         jPanel4.add(jPanel25, java.awt.BorderLayout.CENTER);
@@ -285,7 +269,7 @@ public class ThongKeGUI extends javax.swing.JPanel {
 
         jPanel4.add(jPanel26, java.awt.BorderLayout.PAGE_START);
 
-        jLabel4.setText("jLabel2");
+        jLabel4.setText("Báo cáo doanh thu bán hàng theo nhân viên");
         jPanel27.add(jLabel4);
 
         jPanel4.add(jPanel27, java.awt.BorderLayout.PAGE_END);
@@ -298,7 +282,7 @@ public class ThongKeGUI extends javax.swing.JPanel {
         );
         jPanel28Layout.setVerticalGroup(
             jPanel28Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 92, Short.MAX_VALUE)
+            .addGap(0, 100, Short.MAX_VALUE)
         );
 
         jPanel4.add(jPanel28, java.awt.BorderLayout.LINE_END);
@@ -311,7 +295,7 @@ public class ThongKeGUI extends javax.swing.JPanel {
         );
         jPanel29Layout.setVerticalGroup(
             jPanel29Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 92, Short.MAX_VALUE)
+            .addGap(0, 100, Short.MAX_VALUE)
         );
 
         jPanel4.add(jPanel29, java.awt.BorderLayout.LINE_START);
@@ -322,7 +306,7 @@ public class ThongKeGUI extends javax.swing.JPanel {
 
         jPanel30.setLayout(new java.awt.BorderLayout());
 
-        jButton10.setText("jButton1");
+        jButton10.setText("Báo cáo 5");
         jPanel30.add(jButton10, java.awt.BorderLayout.CENTER);
 
         jPanel5.add(jPanel30, java.awt.BorderLayout.CENTER);
@@ -340,7 +324,7 @@ public class ThongKeGUI extends javax.swing.JPanel {
 
         jPanel5.add(jPanel31, java.awt.BorderLayout.PAGE_START);
 
-        jLabel5.setText("jLabel2");
+        jLabel5.setText("Báo cáo nhập hàng");
         jPanel32.add(jLabel5);
 
         jPanel5.add(jPanel32, java.awt.BorderLayout.PAGE_END);
@@ -353,7 +337,7 @@ public class ThongKeGUI extends javax.swing.JPanel {
         );
         jPanel33Layout.setVerticalGroup(
             jPanel33Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 92, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
 
         jPanel5.add(jPanel33, java.awt.BorderLayout.LINE_END);
@@ -366,7 +350,7 @@ public class ThongKeGUI extends javax.swing.JPanel {
         );
         jPanel34Layout.setVerticalGroup(
             jPanel34Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 92, Short.MAX_VALUE)
+            .addGap(0, 0, Short.MAX_VALUE)
         );
 
         jPanel5.add(jPanel34, java.awt.BorderLayout.LINE_START);
@@ -374,168 +358,12 @@ public class ThongKeGUI extends javax.swing.JPanel {
         jPanel9.add(jPanel5);
 
         jPanel6.setLayout(new java.awt.BorderLayout());
-
-        jPanel35.setLayout(new java.awt.BorderLayout());
-
-        jButton11.setText("jButton1");
-        jPanel35.add(jButton11, java.awt.BorderLayout.CENTER);
-
-        jPanel6.add(jPanel35, java.awt.BorderLayout.CENTER);
-
-        javax.swing.GroupLayout jPanel36Layout = new javax.swing.GroupLayout(jPanel36);
-        jPanel36.setLayout(jPanel36Layout);
-        jPanel36Layout.setHorizontalGroup(
-            jPanel36Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 454, Short.MAX_VALUE)
-        );
-        jPanel36Layout.setVerticalGroup(
-            jPanel36Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-        );
-
-        jPanel6.add(jPanel36, java.awt.BorderLayout.PAGE_START);
-
-        jLabel6.setText("jLabel2");
-        jPanel37.add(jLabel6);
-
-        jPanel6.add(jPanel37, java.awt.BorderLayout.PAGE_END);
-
-        javax.swing.GroupLayout jPanel38Layout = new javax.swing.GroupLayout(jPanel38);
-        jPanel38.setLayout(jPanel38Layout);
-        jPanel38Layout.setHorizontalGroup(
-            jPanel38Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-        );
-        jPanel38Layout.setVerticalGroup(
-            jPanel38Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 92, Short.MAX_VALUE)
-        );
-
-        jPanel6.add(jPanel38, java.awt.BorderLayout.LINE_END);
-
-        javax.swing.GroupLayout jPanel39Layout = new javax.swing.GroupLayout(jPanel39);
-        jPanel39.setLayout(jPanel39Layout);
-        jPanel39Layout.setHorizontalGroup(
-            jPanel39Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-        );
-        jPanel39Layout.setVerticalGroup(
-            jPanel39Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 92, Short.MAX_VALUE)
-        );
-
-        jPanel6.add(jPanel39, java.awt.BorderLayout.LINE_START);
-
         jPanel9.add(jPanel6);
 
         jPanel7.setLayout(new java.awt.BorderLayout());
-
-        jPanel40.setLayout(new java.awt.BorderLayout());
-
-        jButton12.setText("jButton1");
-        jPanel40.add(jButton12, java.awt.BorderLayout.CENTER);
-
-        jPanel7.add(jPanel40, java.awt.BorderLayout.CENTER);
-
-        javax.swing.GroupLayout jPanel41Layout = new javax.swing.GroupLayout(jPanel41);
-        jPanel41.setLayout(jPanel41Layout);
-        jPanel41Layout.setHorizontalGroup(
-            jPanel41Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 454, Short.MAX_VALUE)
-        );
-        jPanel41Layout.setVerticalGroup(
-            jPanel41Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-        );
-
-        jPanel7.add(jPanel41, java.awt.BorderLayout.PAGE_START);
-
-        jLabel7.setText("jLabel2");
-        jPanel42.add(jLabel7);
-
-        jPanel7.add(jPanel42, java.awt.BorderLayout.PAGE_END);
-
-        javax.swing.GroupLayout jPanel43Layout = new javax.swing.GroupLayout(jPanel43);
-        jPanel43.setLayout(jPanel43Layout);
-        jPanel43Layout.setHorizontalGroup(
-            jPanel43Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-        );
-        jPanel43Layout.setVerticalGroup(
-            jPanel43Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 92, Short.MAX_VALUE)
-        );
-
-        jPanel7.add(jPanel43, java.awt.BorderLayout.LINE_END);
-
-        javax.swing.GroupLayout jPanel44Layout = new javax.swing.GroupLayout(jPanel44);
-        jPanel44.setLayout(jPanel44Layout);
-        jPanel44Layout.setHorizontalGroup(
-            jPanel44Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-        );
-        jPanel44Layout.setVerticalGroup(
-            jPanel44Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 92, Short.MAX_VALUE)
-        );
-
-        jPanel7.add(jPanel44, java.awt.BorderLayout.LINE_START);
-
         jPanel9.add(jPanel7);
 
         jPanel8.setLayout(new java.awt.BorderLayout());
-
-        jPanel45.setLayout(new java.awt.BorderLayout());
-
-        jButton13.setText("jButton1");
-        jPanel45.add(jButton13, java.awt.BorderLayout.CENTER);
-
-        jPanel8.add(jPanel45, java.awt.BorderLayout.CENTER);
-
-        javax.swing.GroupLayout jPanel46Layout = new javax.swing.GroupLayout(jPanel46);
-        jPanel46.setLayout(jPanel46Layout);
-        jPanel46Layout.setHorizontalGroup(
-            jPanel46Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 454, Short.MAX_VALUE)
-        );
-        jPanel46Layout.setVerticalGroup(
-            jPanel46Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-        );
-
-        jPanel8.add(jPanel46, java.awt.BorderLayout.PAGE_START);
-
-        jLabel8.setText("jLabel2");
-        jPanel47.add(jLabel8);
-
-        jPanel8.add(jPanel47, java.awt.BorderLayout.PAGE_END);
-
-        javax.swing.GroupLayout jPanel48Layout = new javax.swing.GroupLayout(jPanel48);
-        jPanel48.setLayout(jPanel48Layout);
-        jPanel48Layout.setHorizontalGroup(
-            jPanel48Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-        );
-        jPanel48Layout.setVerticalGroup(
-            jPanel48Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 92, Short.MAX_VALUE)
-        );
-
-        jPanel8.add(jPanel48, java.awt.BorderLayout.LINE_END);
-
-        javax.swing.GroupLayout jPanel49Layout = new javax.swing.GroupLayout(jPanel49);
-        jPanel49.setLayout(jPanel49Layout);
-        jPanel49Layout.setHorizontalGroup(
-            jPanel49Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-        );
-        jPanel49Layout.setVerticalGroup(
-            jPanel49Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 92, Short.MAX_VALUE)
-        );
-
-        jPanel8.add(jPanel49, java.awt.BorderLayout.LINE_START);
-
         jPanel9.add(jPanel8);
 
         add(jPanel9, java.awt.BorderLayout.CENTER);
@@ -543,27 +371,28 @@ public class ThongKeGUI extends javax.swing.JPanel {
         jPanel52.setLayout(new javax.swing.BoxLayout(jPanel52, javax.swing.BoxLayout.LINE_AXIS));
         add(jPanel52, java.awt.BorderLayout.PAGE_START);
 
-        javax.swing.GroupLayout jPanel54Layout = new javax.swing.GroupLayout(jPanel54);
-        jPanel54.setLayout(jPanel54Layout);
-        jPanel54Layout.setHorizontalGroup(
-            jPanel54Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout jPanel50Layout = new javax.swing.GroupLayout(jPanel50);
+        jPanel50.setLayout(jPanel50Layout);
+        jPanel50Layout.setHorizontalGroup(
+            jPanel50Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 1818, Short.MAX_VALUE)
         );
-        jPanel54Layout.setVerticalGroup(
-            jPanel54Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        jPanel50Layout.setVerticalGroup(
+            jPanel50Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 100, Short.MAX_VALUE)
         );
 
-        add(jPanel54, java.awt.BorderLayout.PAGE_END);
+        add(jPanel50, java.awt.BorderLayout.PAGE_END);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton3ActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton10;
-    private javax.swing.JButton jButton11;
-    private javax.swing.JButton jButton12;
-    private javax.swing.JButton jButton13;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton8;
     private javax.swing.JButton jButton9;
@@ -572,9 +401,6 @@ public class ThongKeGUI extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
@@ -603,28 +429,10 @@ public class ThongKeGUI extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel32;
     private javax.swing.JPanel jPanel33;
     private javax.swing.JPanel jPanel34;
-    private javax.swing.JPanel jPanel35;
-    private javax.swing.JPanel jPanel36;
-    private javax.swing.JPanel jPanel37;
-    private javax.swing.JPanel jPanel38;
-    private javax.swing.JPanel jPanel39;
     private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel40;
-    private javax.swing.JPanel jPanel41;
-    private javax.swing.JPanel jPanel42;
-    private javax.swing.JPanel jPanel43;
-    private javax.swing.JPanel jPanel44;
-    private javax.swing.JPanel jPanel45;
-    private javax.swing.JPanel jPanel46;
-    private javax.swing.JPanel jPanel47;
-    private javax.swing.JPanel jPanel48;
-    private javax.swing.JPanel jPanel49;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel50;
-    private javax.swing.JPanel jPanel51;
     private javax.swing.JPanel jPanel52;
-    private javax.swing.JPanel jPanel53;
-    private javax.swing.JPanel jPanel54;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
