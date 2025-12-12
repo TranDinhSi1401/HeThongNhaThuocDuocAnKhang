@@ -56,7 +56,7 @@ public class NhanVienDAO {
         try {
             ConnectDB.getInstance().connect();
             Connection con = ConnectDB.getConnection();
-            String sql = "SELECT * FROM NhanVien where daXoa = 0";
+            String sql = "SELECT * FROM NhanVien where nghiViec = 0";
             Statement statement = con.createStatement();
             ResultSet rs = statement.executeQuery(sql);
             while (rs.next()) {
@@ -107,7 +107,7 @@ public class NhanVienDAO {
         try {
             ConnectDB.getInstance().connect();
             Connection con = ConnectDB.getConnection();
-            String query = "UPDATE NhanVien SET daXoa = 1 WHERE maNV = ?";
+            String query = "UPDATE NhanVien SET nghiViec = 1 WHERE maNV = ?";
             PreparedStatement stmt = con.prepareStatement(query);
             stmt.setString(1, maNV);
             n = stmt.executeUpdate();
