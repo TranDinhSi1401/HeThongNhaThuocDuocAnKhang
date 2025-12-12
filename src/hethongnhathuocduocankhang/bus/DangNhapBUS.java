@@ -17,7 +17,7 @@ public class DangNhapBUS {
     public static TaiKhoan dangNhap(String userName, String plainPassword) {               
         TaiKhoan tk = TaiKhoanDAO.getTaiKhoanTheoTenDangNhap(userName);
         String hashed = tk.getMatKhau();
-        if(PasswordUtil.checkPassword(plainPassword, hashed) && !tk.isBiKhoa()) {
+        if(PasswordUtil.checkPassword(plainPassword, hashed)) {
             return tk;
         } else {
             return null;

@@ -195,13 +195,20 @@ public class DangNhapGUI extends javax.swing.JFrame {
 
         TaiKhoan tk = DangNhapBUS.dangNhap(tenDangNhap, matKhau);
         if (tk != null) {
-            new GiaoDienChinhGUI(tk);
-            this.dispose();
-        } else {
-            javax.swing.JOptionPane.showMessageDialog(this,
-                    "Sai tài khoản hoặc mật khẩu!",
+            if(tk.isBiKhoa()) {
+                JOptionPane.showMessageDialog(this,
+                    "Tài khoản đã bị khóa",
                     "Đăng nhập thất bại",
                     javax.swing.JOptionPane.ERROR_MESSAGE);
+            } else {
+                new GiaoDienChinhGUI(tk);
+                this.dispose();
+            }           
+        } else {
+            JOptionPane.showMessageDialog(this,
+                "Sai tài khoản hoặc mật khẩu!",
+                "Đăng nhập thất bại",
+                javax.swing.JOptionPane.ERROR_MESSAGE);
         }
     }
 

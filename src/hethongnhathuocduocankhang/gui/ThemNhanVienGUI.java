@@ -6,6 +6,7 @@ package hethongnhathuocduocankhang.gui;
 
 import hethongnhathuocduocankhang.entity.NhanVien;
 import hethongnhathuocduocankhang.entity.TaiKhoan;
+import hethongnhathuocduocankhang.password.PasswordUtil;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -499,7 +500,8 @@ public class ThemNhanVienGUI extends javax.swing.JPanel {
             LocalDate ngaySinh = LocalDate.parse(txtNgaySinh.getText().trim());
             String diaChi = txtDiaChi.getText().trim();
             String tenDangNhap = txtTenDangNhap.getText().trim();
-            String matKhau = new String(txtMatKhau.getPassword());
+            String plainPassword = new String(txtMatKhau.getPassword());
+            String matKhau = PasswordUtil.hashPassword(plainPassword);
             boolean quanLy = chkQuanLy.isSelected();
             LocalDateTime ngayTao = LocalDateTime.now();
 
