@@ -108,6 +108,10 @@ public class TaiKhoan {
         this.email = email;
     }
 
+    public void setNgayTao(LocalDateTime ngayTao) {
+        this.ngayTao = ngayTao;
+    }
+
     public LocalDateTime getNgayTao() {
         return ngayTao;
     }

@@ -5,7 +5,9 @@
 package hethongnhathuocduocankhang.gui;
 
 import hethongnhathuocduocankhang.dao.NhanVienDAO;
+import hethongnhathuocduocankhang.dao.TaiKhoanDAO;
 import hethongnhathuocduocankhang.entity.NhanVien;
+import hethongnhathuocduocankhang.entity.TaiKhoan;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -16,6 +18,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -153,14 +156,14 @@ public class QuanLiNhanVienGUI extends JPanel {
         columnModel.getColumn(6).setPreferredWidth(70);
         columnModel.getColumn(6).setMaxWidth(80);
         columnModel.getColumn(6).setCellRenderer(centerRenderer);
-        
+
         // 7. Ngày sinh: Căn giữa
         columnModel.getColumn(7).setPreferredWidth(90);
         columnModel.getColumn(7).setCellRenderer(centerRenderer);
-        
+
         // 8. Địa chỉ: Rộng (Tự giãn nở các phần còn lại)
         columnModel.getColumn(8).setPreferredWidth(150);
-        
+
         // 9. Trạng thái: Căn giữa
         columnModel.getColumn(9).setPreferredWidth(90);
         columnModel.getColumn(9).setCellRenderer(centerRenderer);
@@ -168,25 +171,25 @@ public class QuanLiNhanVienGUI extends JPanel {
         JScrollPane scrollPane = new JScrollPane(table);
         centerPanel.add(scrollPane, BorderLayout.CENTER);
         this.add(centerPanel, BorderLayout.CENTER);
-        
+
         // --- 3. PANEL SOUTH (FOOTER) ---
         JPanel pnlSouth = new JPanel(new FlowLayout(FlowLayout.LEFT, 20, 5));
         pnlSouth.setBorder(new EmptyBorder(5, 0, 0, 0));
-        
+
         Font fontFooter = new Font("Arial", Font.BOLD, 13);
-        
+
         lblTongSoDong = new JLabel("Tổng số nhân viên: 0");
         lblTongSoDong.setFont(fontFooter);
         lblTongSoDong.setForeground(new Color(0, 102, 204));
-        
+
         lblSoDongChon = new JLabel("Đang chọn: 0");
         lblSoDongChon.setFont(fontFooter);
         lblSoDongChon.setForeground(new Color(204, 0, 0));
-        
+
         pnlSouth.add(lblTongSoDong);
         pnlSouth.add(new JSeparator(JSeparator.VERTICAL));
         pnlSouth.add(lblSoDongChon);
-        
+
         this.add(pnlSouth, BorderLayout.SOUTH);
 
         // Event
@@ -238,7 +241,7 @@ public class QuanLiNhanVienGUI extends JPanel {
         btnSua.addActionListener(e -> xuLySua());
         txtTimKiem.addActionListener(e -> xuLyTimKiem());
         cmbBoLoc.addActionListener(e -> xuLyLoc());
-        
+
         cmbTieuChiTimKiem.addActionListener(e -> {
             txtTimKiem.setText("");
             txtTimKiem.requestFocus();
@@ -250,7 +253,7 @@ public class QuanLiNhanVienGUI extends JPanel {
                 hienThiChiTietNhanVien(e);
             }
         });
-        
+
         // Sự kiện đếm dòng chọn (hỗ trợ shift/ctrl)
         table.getSelectionModel().addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting()) {
@@ -270,7 +273,9 @@ public class QuanLiNhanVienGUI extends JPanel {
             switch (tieuChi) {
                 case "Mã nhân viên":
                     NhanVien nv = NhanVienDAO.timNVTheoMa(tuKhoa);
-                    if (nv != null) dsKetQua.add(nv);
+                    if (nv != null) {
+                        dsKetQua.add(nv);
+                    }
                     break;
                 case "Tên nhân viên":
                     dsKetQua = NhanVienDAO.timNVTheoTen(tuKhoa);
@@ -305,15 +310,19 @@ public class QuanLiNhanVienGUI extends JPanel {
         dialog.setContentPane(pnlThemNV);
         dialog.pack();
         dialog.setLocationRelativeTo(null);
-        
+
         int maNVCUoiCung = NhanVienDAO.getMaNVCuoiCung();
         String maNVNew = String.format("NV-%04d", maNVCUoiCung + 1);
         pnlThemNV.setTxtMaNhanVien(maNVNew);
-        
+        pnlThemNV.setTxtTenDangNhap(maNVNew);
+        pnlThemNV.setTxtNgayTao(LocalDateTime.now());
+
         dialog.setVisible(true);
         NhanVien nvNew = pnlThemNV.getNhanVienMoi();
-        if (nvNew != null) {
-            if (NhanVienDAO.themNhanVien(nvNew)) {
+        TaiKhoan tkNew = pnlThemNV.getTaiKhoanMoi();
+        
+        if (nvNew != null && tkNew != null) {
+            if (NhanVienDAO.themNhanVien(nvNew) && TaiKhoanDAO.themTaiKhoan(tkNew)) {
                 JOptionPane.showMessageDialog(this, "Thêm nhân viên thành công!");
                 updateTable();
             } else {
@@ -329,16 +338,19 @@ public class QuanLiNhanVienGUI extends JPanel {
             return;
         }
 
-        String message = (selectedRows.length == 1) ? 
-            "Bạn có chắc muốn xóa nhân viên '" + model.getValueAt(selectedRows[0], 3).toString() + "' không?" : // Index 3 là Tên
-            "Bạn có chắc muốn xóa " + selectedRows.length + " nhân viên đã chọn không?";
+        String message = (selectedRows.length == 1)
+                ? "Bạn có chắc muốn xóa nhân viên '" + model.getValueAt(selectedRows[0], 3).toString() + "' không?"
+                : // Index 3 là Tên
+                "Bạn có chắc muốn xóa " + selectedRows.length + " nhân viên đã chọn không?";
 
         if (JOptionPane.showConfirmDialog(this, message, "Xác nhận xóa", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
             int count = 0;
             for (int i = selectedRows.length - 1; i >= 0; i--) {
                 // Lấy mã NV ở cột 1 (cột 0 là STT)
                 String maNV = model.getValueAt(selectedRows[i], 1).toString();
-                if (NhanVienDAO.xoaNhanVien(maNV)) count++;
+                if (NhanVienDAO.xoaNhanVien(maNV) && TaiKhoanDAO.xoaTaiKhoan(maNV)) {
+                    count++;
+                }
             }
             if (count > 0) {
                 JOptionPane.showMessageDialog(this, "Đã xóa thành công " + count + " nhân viên.");
@@ -357,10 +369,10 @@ public class QuanLiNhanVienGUI extends JPanel {
             JOptionPane.showMessageDialog(this, "Vui lòng chọn nhân viên cần sửa.");
             return;
         }
-        
-        // Lấy mã NV ở cột 1
+
         String maNV = model.getValueAt(selectedRow, 1).toString();
         NhanVien nvCanSua = NhanVienDAO.timNVTheoMa(maNV);
+        TaiKhoan tkCanSua = TaiKhoanDAO.getTaiKhoanTheoTenDangNhap(maNV);
 
         if (nvCanSua == null) {
             JOptionPane.showMessageDialog(this, "Không tìm thấy nhân viên.");
@@ -386,10 +398,19 @@ public class QuanLiNhanVienGUI extends JPanel {
         pnlThemNV.setTxtDiaChi(nvCanSua.getDiaChi());
         pnlThemNV.setChkNghiViec(nvCanSua.isNghiViec());
 
+        pnlThemNV.setTxtTenDangNhap(maNV);
+        pnlThemNV.setTxtMatKhau(tkCanSua.getMatKhau());
+        pnlThemNV.setChkQuanLy(tkCanSua.isQuanLy());
+        pnlThemNV.setChkBiKhoa(tkCanSua.isBiKhoa());
+        pnlThemNV.setTxtEmail(tkCanSua.getEmail());
+        pnlThemNV.setTxtNgayTao(tkCanSua.getNgayTao());
+        
+
         dialog.setVisible(true);
         NhanVien nvNew = pnlThemNV.getNhanVienMoi();
-        if (nvNew != null) {
-            if (NhanVienDAO.suaNhanVien(maNV, nvNew)) {
+        TaiKhoan tkNew = pnlThemNV.getTaiKhoanMoi();
+        if (nvNew != null && tkNew != null) {
+            if (NhanVienDAO.suaNhanVien(maNV, nvNew) && TaiKhoanDAO.capNhatTaiKhoan(tkNew)) {
                 JOptionPane.showMessageDialog(this, "Sửa thông tin nhân viên thành công!");
                 updateTable();
             } else {
@@ -404,7 +425,7 @@ public class QuanLiNhanVienGUI extends JPanel {
             // Lấy mã NV ở cột 1
             String maNV = model.getValueAt(selectRow, 1).toString();
             NhanVien nvDaChon = NhanVienDAO.timNVTheoMa(maNV);
-            
+
             ThemNhanVienGUI pnlThemNV = new ThemNhanVienGUI();
             JDialog dialog = new JDialog();
             dialog.setTitle("Thông tin chi tiết nhân viên");
@@ -413,11 +434,11 @@ public class QuanLiNhanVienGUI extends JPanel {
             dialog.setContentPane(pnlThemNV);
             dialog.pack();
             dialog.setLocationRelativeTo(null);
-            
+
             pnlThemNV.getBtnHuy().setVisible(false);
             pnlThemNV.getBtnXacNhan().setText("Đóng");
             pnlThemNV.getBtnXacNhan().addActionListener(l -> dialog.dispose());
-            
+
             pnlThemNV.getTxtHoTenDem().setEditable(false);
             pnlThemNV.getTxtTen().setEditable(false);
             pnlThemNV.getTxtSDT().setEditable(false);
@@ -426,6 +447,11 @@ public class QuanLiNhanVienGUI extends JPanel {
             pnlThemNV.getTxtDiaChi().setEditable(false);
             pnlThemNV.getCmbGioiTinh().setEnabled(false);
             pnlThemNV.getChkNghiViec().setEnabled(false);
+            pnlThemNV.getChkBiKhoa().setEnabled(false);
+            pnlThemNV.getChkQuanLy().setEnabled(false);
+            pnlThemNV.getTxtEmail().setEditable(false);
+            pnlThemNV.getTxtTenDangNhap().setEditable(false);
+            pnlThemNV.getTxtMatKhau().setEditable(false);
 
             pnlThemNV.setTxtMaNhanVien(nvDaChon.getMaNV());
             pnlThemNV.setTxtHoTenDem(nvDaChon.getHoTenDem());
@@ -436,6 +462,13 @@ public class QuanLiNhanVienGUI extends JPanel {
             pnlThemNV.setTxtNgaySinh(nvDaChon.getNgaySinh());
             pnlThemNV.setTxtDiaChi(nvDaChon.getDiaChi());
             pnlThemNV.setChkNghiViec(nvDaChon.isNghiViec());
+            TaiKhoan tk = TaiKhoanDAO.getTaiKhoanTheoTenDangNhap(nvDaChon.getMaNV());
+            pnlThemNV.setChkBiKhoa(tk.isBiKhoa());
+            pnlThemNV.setChkQuanLy(tk.isQuanLy());
+            pnlThemNV.setTxtEmail(tk.getEmail());
+            pnlThemNV.setTxtTenDangNhap(nvDaChon.getMaNV());
+            pnlThemNV.setTxtMatKhau(tk.getMatKhau());
+            pnlThemNV.setTxtNgayTao(tk.getNgayTao());
 
             dialog.setVisible(true);
         }

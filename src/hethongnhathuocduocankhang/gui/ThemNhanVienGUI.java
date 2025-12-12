@@ -5,232 +5,115 @@
 package hethongnhathuocduocankhang.gui;
 
 import hethongnhathuocduocankhang.entity.NhanVien;
+import hethongnhathuocduocankhang.entity.TaiKhoan;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import javax.swing.JCheckBox;
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
-/**
- *
- * @author GIGABYTE
- */
 public class ThemNhanVienGUI extends javax.swing.JPanel {
 
     private NhanVien nhanVienMoi = null;
-    
-    // Thêm các component mới
-    private javax.swing.JLabel jLabel9;
-    private javax.swing.JTextField jTextField8; // Cho Địa chỉ
-    private javax.swing.JCheckBox jCheckBox1; // Cho Nghỉ việc
-
+    private TaiKhoan taiKhoanMoi = null;
 
     public ThemNhanVienGUI() {
         initComponents();
 
-        jButton2.addActionListener(new ActionListener() {
+        // --- CÁC SỰ KIỆN NÚT BẤM ---
+        btnXacNhan.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 xuLyXacNhan();
             }
         });
 
-        // Họ tên đệm
-        jTextField2.addActionListener(new ActionListener() {
+        btnHuy.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                validateHoTenDem();
+                xuLyHuy();
             }
         });
 
-        // Tên
-        jTextField3.addActionListener(new ActionListener() {
+        btnHienMatKhau.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                validateTen();
+                if (btnHienMatKhau.isSelected()) {
+                    txtMatKhau.setEchoChar((char) 0); // Hiển thị
+                    btnHienMatKhau.setText("Ẩn");
+                } else {
+                    txtMatKhau.setEchoChar('*'); // Ẩn
+                    btnHienMatKhau.setText("👁");
+                }
             }
         });
 
-        // SĐT
-        jTextField4.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                validateSDT();
-            }
-        });
-
-        // Giới tính
-        jComboBox1.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                validateGioiTinh();
-            }
-        });
-
-        // CCCD
-        jTextField6.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                validateCCCD();
-            }
-        });
-
-        // Ngày sinh
-        jTextField7.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                validateNgaySinh();
-            }
-        });
-        
-        // Địa chỉ
-        jTextField8.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                validateDiaChi();
-            }
-        });
+        // --- KIỂM TRA DỮ LIỆU ---
+        txtHoTenDem.addActionListener(e -> kiemTraHoTenDem());
+        txtTen.addActionListener(e -> kiemTraTen());
+        txtSdt.addActionListener(e -> kiemTraSDT());
+        txtEmail.addActionListener(e -> kiemTraEmail());
+        cmbGioiTinh.addActionListener(e -> kiemTraGioiTinh());
+        txtCCCD.addActionListener(e -> kiemTraCCCD());
+        txtNgaySinh.addActionListener(e -> kiemTraNgaySinh());
+        txtDiaChi.addActionListener(e -> kiemTraDiaChi());
+        txtTenDangNhap.addActionListener(e -> kiemTraTenDangNhap());
+        txtMatKhau.addActionListener(e -> kiemTraMatKhau());
     }
 
-    @SuppressWarnings("unchecked")
-    public javax.swing.JButton getBtnHuy() {
-        return jButton1;
-    }
-
-    public javax.swing.JButton getBtnXacNhan() {
-        return jButton2;
-    }
-
-    public javax.swing.JLabel getLblTieuDe() {
-        return jLabel1;
-    }
-
-    // ... (Các getter cho JLabel và JPanel có thể giữ nguyên hoặc đổi tên) ...
-
-    public javax.swing.JTextField getTxtMaNhanVien() {
-        return jTextField1;
-    }
-
-    public javax.swing.JTextField getTxtHoTenDem() {
-        return jTextField2;
-    }
-
-    public javax.swing.JTextField getTxtTen() {
-        return jTextField3;
-    }
-
-    public javax.swing.JTextField getTxtSDT() {
-        return jTextField4;
-    }
-
-    public javax.swing.JComboBox<String> getCmbGioiTinh() {
-        return jComboBox1;
-    }
-
-    public javax.swing.JTextField getTxtCCCD() {
-        return jTextField6;
-    }
-
-    public javax.swing.JTextField getTxtNgaySinh() {
-        return jTextField7;
-    }
-    
-    public javax.swing.JTextField getTxtDiaChi() {
-        return jTextField8;
-    }
-    
-    public javax.swing.JCheckBox getChkNghiViec() {
-        return jCheckBox1;
-    }
-    
-
-    public void setTxtMaNhanVien(String maNV) {
-        jTextField1.setText(maNV);
-    }
-
-    public void setTxtHoTenDem(String hoTenDem) {
-        jTextField2.setText(hoTenDem);
-    }
-
-    public void setTxtTen(String ten) {
-        jTextField3.setText(ten);
-    }
-
-    public void setTxtSDT(String sdt) {
-        jTextField4.setText(sdt);
-    }
-    
-    public void setTxtCCCD(String cccd) {
-        jTextField6.setText(cccd);
-    }
-
-    public void setCmbGioiTinh(boolean gioiTinh) {
-        // true: Nam, false: Nữ
-        jComboBox1.setSelectedItem(gioiTinh ? "Nam" : "Nữ");
-    }
-    
-    public void setTxtNgaySinh(LocalDate ngaySinh) {
-        if (ngaySinh != null) {
-            jTextField7.setText(ngaySinh.toString());
-        } else {
-            jTextField7.setText("");
-        }
-    }
-    
-    public void setTxtDiaChi(String diaChi) {
-        jTextField8.setText(diaChi);
-    }
-    
-    public void setChkNghiViec(boolean nghiViec) {
-        jCheckBox1.setSelected(nghiViec);
-    }
-
-    // </editor-fold>
-
-    /**
-     * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
-     * regenerated by the Form Editor.
-     */
+    //Hàm khởi tạo giao diện
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
+        lblTieuDe = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
-        jTextField4 = new javax.swing.JTextField();
-        jTextField6 = new javax.swing.JTextField();
-        jTextField7 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jComboBox1 = new javax.swing.JComboBox<>();
-        
-        // Thêm component mới
+        lblMaNV = new javax.swing.JLabel();
+        lblHoTenDem = new javax.swing.JLabel();
+        lblTen = new javax.swing.JLabel();
+        lblSdt = new javax.swing.JLabel();
+        lblGioiTinh = new javax.swing.JLabel();
+        lblCCCD = new javax.swing.JLabel();
+        lblNgaySinh = new javax.swing.JLabel();
+        txtMaNV = new javax.swing.JTextField();
+        txtHoTenDem = new javax.swing.JTextField();
+        txtTen = new javax.swing.JTextField();
+        txtSdt = new javax.swing.JTextField();
+        txtCCCD = new javax.swing.JTextField();
+        txtNgaySinh = new javax.swing.JTextField();
+        btnHuy = new javax.swing.JButton();
+        btnXacNhan = new javax.swing.JButton();
+        cmbGioiTinh = new javax.swing.JComboBox<>();
         jLabel9 = new javax.swing.JLabel();
-        jTextField8 = new javax.swing.JTextField();
-        jCheckBox1 = new javax.swing.JCheckBox();
-
+        txtDiaChi = new javax.swing.JTextField();
+        chkNghiViec = new javax.swing.JCheckBox();
+        lblMatKhau = new javax.swing.JLabel();
+        txtMatKhau = new javax.swing.JPasswordField();
+        btnHienMatKhau = new javax.swing.JToggleButton();
+        lblEmail = new javax.swing.JLabel();
+        txtEmail = new javax.swing.JTextField();
+        lblTenDangNhap = new javax.swing.JLabel();
+        txtTenDangNhap = new javax.swing.JTextField();
+        chkQuanLy = new javax.swing.JCheckBox();
+        chkBiKhoa = new javax.swing.JCheckBox();
+        lblNgayTao = new javax.swing.JLabel();
+        txtNgayTao = new javax.swing.JTextField();
 
         setLayout(new java.awt.BorderLayout());
 
         jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jLabel1.setText("Thông tin nhân viên"); // THAY ĐỔI
+        lblTieuDe.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        lblTieuDe.setText("Thông tin nhân viên");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -238,14 +121,14 @@ public class ThemNhanVienGUI extends javax.swing.JPanel {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1)
+                .addComponent(lblTieuDe)
                 .addContainerGap(233, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1)
+                .addComponent(lblTieuDe)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -253,62 +136,53 @@ public class ThemNhanVienGUI extends javax.swing.JPanel {
 
         jPanel2.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        jLabel2.setText("Mã nhân viên:"); // THAY ĐỔI
+        lblMaNV.setText("Mã nhân viên:");
 
-        jLabel3.setText("Họ tên đệm:"); // THAY ĐỔI
+        lblHoTenDem.setText("Họ tên đệm:");
 
-        jLabel4.setText("Tên:"); // THAY ĐỔI
+        lblTen.setText("Tên:");
 
-        jLabel5.setText("SĐT:"); // THAY ĐỔI
+        lblSdt.setText("SĐT:");
 
-        jLabel6.setText("Giới tính:"); // THAY ĐỔI
+        lblGioiTinh.setText("Giới tính:");
 
-        jLabel7.setText("CCCD:"); // THAY ĐỔI
+        lblCCCD.setText("CCCD:");
 
-        jLabel8.setText("Ngày sinh (yyyy-MM-dd):"); // THAY ĐỔI
-        
-        jLabel9.setText("Địa chỉ:"); // THÊM MỚI
-        
-        jCheckBox1.setText("Đã nghỉ việc"); // THÊM MỚI
+        lblNgaySinh.setText("Ngày sinh (yyyy-MM-dd):");
 
+        txtMaNV.setEnabled(false);
 
-        jTextField1.setEnabled(false);
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
-            }
-        });
+        btnHuy.setText("Hủy");
 
-        jTextField2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField2ActionPerformed(evt);
-            }
-        });
+        btnXacNhan.setText("Xác nhận");
 
-        jTextField4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField4ActionPerformed(evt);
-            }
-        });
+        cmbGioiTinh.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Nam", "Nữ" }));
 
-        jTextField6.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField6ActionPerformed(evt);
-            }
-        });
+        jLabel9.setText("Địa chỉ:");
 
-        jButton1.setText("Hủy");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
+        chkNghiViec.setText("Đã nghỉ việc");
 
-        jButton2.setText("Xác nhận");
+        lblMatKhau.setText("Mật khẩu:");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Nam", "Nữ" })); // THAY ĐỔI
+        btnHienMatKhau.setText("👁");
+        btnHienMatKhau.setToolTipText("Hiện/Ẩn mật khẩu");
+        btnHienMatKhau.setFocusable(false);
+        btnHienMatKhau.setMargin(new java.awt.Insets(2, 2, 2, 2));
 
-        // CẬP NHẬT GROUP LAYOUT
+        lblEmail.setText("Email:");
+
+        lblTenDangNhap.setText("Tên đăng nhập:");
+
+        txtTenDangNhap.setEnabled(false);
+
+        chkQuanLy.setText("Là Quản lý (Admin)");
+
+        chkBiKhoa.setText("Tài khoản bị khóa");
+
+        lblNgayTao.setText("Ngày tạo:");
+
+        txtNgayTao.setEnabled(false);
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
@@ -318,31 +192,45 @@ public class ThemNhanVienGUI extends javax.swing.JPanel {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButton1)
+                        .addComponent(btnHuy)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton2))
+                        .addComponent(btnXacNhan))
                     .addGroup(jPanel2Layout.createSequentialGroup()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel7)
-                            .addComponent(jLabel8)
-                            .addComponent(jLabel9) // THÊM
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel5)
-                            .addComponent(jLabel6)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel2))
+                            .addComponent(lblCCCD)
+                            .addComponent(lblNgaySinh)
+                            .addComponent(jLabel9)
+                            .addComponent(lblTen)
+                            .addComponent(lblSdt)
+                            .addComponent(lblGioiTinh)
+                            .addComponent(lblHoTenDem)
+                            .addComponent(lblMaNV)
+                            .addComponent(lblMatKhau)
+                            .addComponent(lblEmail)
+                            .addComponent(lblTenDangNhap)
+                            .addComponent(lblNgayTao))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextField1)
-                            .addComponent(jTextField2)
-                            .addComponent(jTextField3)
-                            .addComponent(jTextField4)
-                            .addComponent(jComboBox1, 0, 268, Short.MAX_VALUE) // Điều chỉnh kích thước
-                            .addComponent(jTextField6)
-                            .addComponent(jTextField7)
-                            .addComponent(jTextField8) // THÊM
+                            .addComponent(txtMaNV)
+                            .addComponent(txtHoTenDem)
+                            .addComponent(txtTen)
+                            .addComponent(txtSdt)
+                            .addComponent(cmbGioiTinh, 0, 268, Short.MAX_VALUE)
+                            .addComponent(txtCCCD)
+                            .addComponent(txtNgaySinh)
+                            .addComponent(txtDiaChi)
+                            .addComponent(txtEmail)
+                            .addComponent(txtTenDangNhap)
+                            .addComponent(txtNgayTao)
                             .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(jCheckBox1) // THÊM
+                                .addComponent(txtMatKhau)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnHienMatKhau, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(chkBiKhoa)
+                                    .addComponent(chkQuanLy)
+                                    .addComponent(chkNghiViec))
                                 .addGap(0, 0, Short.MAX_VALUE)))))
                 .addContainerGap())
         );
@@ -351,78 +239,308 @@ public class ThemNhanVienGUI extends javax.swing.JPanel {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblMaNV)
+                    .addComponent(txtMaNV, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblHoTenDem)
+                    .addComponent(txtHoTenDem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblTen)
+                    .addComponent(txtTen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblSdt)
+                    .addComponent(txtSdt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblEmail)
+                    .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblGioiTinh)
+                    .addComponent(cmbGioiTinh, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel7)
-                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblCCCD)
+                    .addComponent(txtCCCD, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel8)
-                    .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18) // THÊM
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE) // THÊM
-                    .addComponent(jLabel9) // THÊM
-                    .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)) // THÊM
-                .addGap(18, 18, 18) // THÊM
-                .addComponent(jCheckBox1) // THÊM
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE) // Điều chỉnh
+                    .addComponent(lblNgaySinh)
+                    .addComponent(txtNgaySinh, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2))
+                    .addComponent(jLabel9)
+                    .addComponent(txtDiaChi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblTenDangNhap)
+                    .addComponent(txtTenDangNhap, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblMatKhau)
+                    .addComponent(txtMatKhau, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnHienMatKhau))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblNgayTao)
+                    .addComponent(txtNgayTao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(chkQuanLy)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(chkBiKhoa)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(chkNghiViec)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnHuy)
+                    .addComponent(btnXacNhan))
                 .addContainerGap())
         );
 
         add(jPanel2, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    //Setter and Getter
+    @SuppressWarnings("unchecked")
+    public javax.swing.JButton getBtnHuy() {
+        return btnHuy;
+    }
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        xuLyHuy();
-    }//GEN-LAST:event_jButton1ActionPerformed
+    public javax.swing.JButton getBtnXacNhan() {
+        return btnXacNhan;
+    }
 
-    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
+    public javax.swing.JLabel getLblTieuDe() {
+        return lblTieuDe;
+    }
 
-    }//GEN-LAST:event_jTextField2ActionPerformed
+    public javax.swing.JTextField getTxtMaNhanVien() {
+        return txtMaNV;
+    }
 
-    private void jTextField4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField4ActionPerformed
+    public javax.swing.JTextField getTxtHoTenDem() {
+        return txtHoTenDem;
+    }
 
-    }//GEN-LAST:event_jTextField4ActionPerformed
+    public javax.swing.JTextField getTxtTen() {
+        return txtTen;
+    }
 
-    private void jTextField6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField6ActionPerformed
+    public javax.swing.JTextField getTxtSDT() {
+        return txtSdt;
+    }
 
-    }//GEN-LAST:event_jTextField6ActionPerformed
+    public javax.swing.JComboBox<String> getCmbGioiTinh() {
+        return cmbGioiTinh;
+    }
 
+    public javax.swing.JTextField getTxtCCCD() {
+        return txtCCCD;
+    }
+
+    public javax.swing.JTextField getTxtNgaySinh() {
+        return txtNgaySinh;
+    }
+
+    public javax.swing.JTextField getTxtDiaChi() {
+        return txtDiaChi;
+    }
+
+    public javax.swing.JCheckBox getChkNghiViec() {
+        return chkNghiViec;
+    }
+
+    public NhanVien getNhanVienMoi() {
+        return this.nhanVienMoi;
+    }
+
+    public TaiKhoan getTaiKhoanMoi() {
+        return this.taiKhoanMoi;
+    }
+
+    public JTextField getTxtTenDangNhap() {
+        return txtTenDangNhap;
+    }
+
+    public JPasswordField getTxtMatKhau() {
+        return txtMatKhau;
+    }
+
+    public JTextField getTxtEmail() {
+        return txtEmail;
+    }
+
+    public JTextField getTxtSdt() {
+        return txtSdt;
+    }
+
+    public JTextField getTxtMaNV() {
+        return txtMaNV;
+    }
+
+    public JCheckBox getChkQuanLy() {
+        return chkQuanLy;
+    }
+
+    public JCheckBox getChkBiKhoa() {
+        return chkBiKhoa;
+    }
+
+    public JTextField getTxtNgayTao() {
+        return txtNgayTao;
+    }
+
+    public void setTxtMaNhanVien(String maNV) {
+        txtMaNV.setText(maNV);
+    }
+
+    public void setTxtHoTenDem(String hoTenDem) {
+        txtHoTenDem.setText(hoTenDem);
+    }
+
+    public void setTxtTen(String ten) {
+        txtTen.setText(ten);
+    }
+
+    public void setTxtSDT(String sdt) {
+        txtSdt.setText(sdt);
+    }
+
+    public void setTxtCCCD(String cccd) {
+        txtCCCD.setText(cccd);
+    }
+
+    public void setCmbGioiTinh(boolean gioiTinh) {
+        // true: Nam, false: Nữ
+        cmbGioiTinh.setSelectedItem(gioiTinh ? "Nam" : "Nữ");
+    }
+
+    public void setTxtNgaySinh(LocalDate ngaySinh) {
+        if (ngaySinh != null) {
+            txtNgaySinh.setText(ngaySinh.toString());
+        } else {
+            txtNgaySinh.setText("");
+        }
+    }
+
+    public void setTxtDiaChi(String diaChi) {
+        txtDiaChi.setText(diaChi);
+    }
+
+    public void setChkNghiViec(boolean nghiViec) {
+        chkNghiViec.setSelected(nghiViec);
+    }
+
+    public void setTaiKhoanMoi(TaiKhoan taiKhoanMoi) {
+        this.taiKhoanMoi = taiKhoanMoi;
+    }
+
+    public void setChkBiKhoa(boolean biKhoa) {
+        this.chkBiKhoa.setSelected(biKhoa);
+    }
+
+    public void setChkQuanLy(boolean quanLy) {
+        this.chkQuanLy.setSelected(quanLy);
+    }
+
+    public void setTxtMaNV(String txtMaNV) {
+        this.txtMaNV.setText(txtMaNV);
+    }
+
+    public void setTxtSdt(String txtSdt) {
+        this.txtSdt.setText(txtSdt);
+    }
+
+    public void setTxtEmail(String txtEmail) {
+        this.txtEmail.setText(txtEmail);
+    }
+
+    public void setTxtMatKhau(String txtMatKhau) {
+        this.txtMatKhau.setText(txtMatKhau);
+    }
+
+    public void setTxtTenDangNhap(String txtTenDangNhap) {
+        this.txtTenDangNhap.setText(txtTenDangNhap);
+    }
+
+    public void setTxtNgayTao(LocalDateTime ngayTao) {
+        if (ngayTao != null) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            txtNgayTao.setText(ngayTao.format(formatter));
+        } else {
+            txtNgayTao.setText("");
+        }
+    }
+
+    public void setTxtNgayTao(String ngayTao) {
+        this.txtNgayTao.setText(ngayTao);
+    }
+
+    //Các hàm khác
     private void showError(String message, JComponent component) {
         JOptionPane.showMessageDialog(this, message, "Lỗi nhập liệu", JOptionPane.ERROR_MESSAGE);
         if (component != null) {
-            component.requestFocusInWindow(); // Đặt con trỏ vào ô bị sai
+            component.requestFocusInWindow();
         }
     }
 
     private void xuLyHuy() {
         this.nhanVienMoi = null;
         closeDialog();
+    }
+
+    private void xuLyXacNhan() {
+        if (!kiemTraHoTenDem() || !kiemTraTen() || !kiemTraSDT() || !kiemTraEmail() || !kiemTraGioiTinh()
+                || !kiemTraCCCD() || !kiemTraNgaySinh() || !kiemTraDiaChi()
+                || !kiemTraTenDangNhap() || !kiemTraMatKhau()) {
+            return;
+        }
+
+        try {
+            String maNV = txtMaNV.getText().trim();
+            String hoTenDem = txtHoTenDem.getText().trim();
+            String ten = txtTen.getText().trim();
+            String sdt = txtSdt.getText().trim();
+            String email = txtEmail.getText().trim();
+            boolean gioiTinh = cmbGioiTinh.getSelectedItem().toString().equals("Nam");
+            String cccd = txtCCCD.getText().trim();
+            LocalDate ngaySinh = LocalDate.parse(txtNgaySinh.getText().trim());
+            String diaChi = txtDiaChi.getText().trim();
+            String tenDangNhap = txtTenDangNhap.getText().trim();
+            String matKhau = new String(txtMatKhau.getPassword());
+            boolean quanLy = chkQuanLy.isSelected();
+            boolean biKhoa = chkBiKhoa.isSelected();
+            boolean nghiViec = chkNghiViec.isSelected();
+            LocalDateTime ngayTao = LocalDateTime.now();
+
+            this.nhanVienMoi = new NhanVien();
+            this.taiKhoanMoi = new TaiKhoan();
+
+            this.nhanVienMoi.setMaNV(maNV);
+            this.nhanVienMoi.setHoTenDem(hoTenDem);
+            this.nhanVienMoi.setTen(ten);
+            this.nhanVienMoi.setSdt(sdt);
+            this.nhanVienMoi.setCccd(cccd);
+            this.nhanVienMoi.setGioiTinh(gioiTinh);
+            this.nhanVienMoi.setNgaySinh(ngaySinh);
+            this.nhanVienMoi.setDiaChi(diaChi);
+            this.nhanVienMoi.setNghiViec(nghiViec);
+
+            this.taiKhoanMoi.setNhanVien(nhanVienMoi);
+            this.taiKhoanMoi.setMatKhau(matKhau);
+            this.taiKhoanMoi.setQuanLy(quanLy);
+            this.taiKhoanMoi.setBiKhoa(biKhoa);
+            this.taiKhoanMoi.setEmail(email);
+            this.taiKhoanMoi.setNgayTao(ngayTao);
+
+            closeDialog();
+
+        } catch (Exception ex) {
+            this.nhanVienMoi = null;
+            JOptionPane.showMessageDialog(this, "Lỗi: " + ex.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     private void closeDialog() {
@@ -432,162 +550,164 @@ public class ThemNhanVienGUI extends javax.swing.JPanel {
         }
     }
 
-    public NhanVien getNhanVienMoi() {
-        return this.nhanVienMoi;
-    }
-
-    // CÁC HÀM VALIDATE MỚI
-    private boolean validateHoTenDem() {
-        String hoTenDem = jTextField2.getText().trim();
-        if (hoTenDem.isEmpty()) {
-            showError("Họ tên đệm không được rỗng.", jTextField2);
+    // --- CÁC HÀM KIỂM TRA ---
+    private boolean kiemTraHoTenDem() {
+        String s = txtHoTenDem.getText().trim();
+        if (s.isEmpty()) {
+            showError("Họ tên đệm không được rỗng.", txtHoTenDem);
             return false;
         }
-        if (hoTenDem.length() > 50) {
-            showError("Họ tên đệm không quá 50 ký tự.", jTextField2);
+        if (s.length() > 50) {
+            showError("Họ tên đệm không quá 50 ký tự.", txtHoTenDem);
             return false;
         }
         return true;
     }
 
-    private boolean validateTen() {
-        String ten = jTextField3.getText().trim();
-        if (ten.isEmpty()) {
-            showError("Tên không được rỗng.", jTextField3);
+    private boolean kiemTraTen() {
+        String s = txtTen.getText().trim();
+        if (s.isEmpty()) {
+            showError("Tên không được rỗng.", txtTen);
             return false;
         }
-         if (ten.length() > 20) {
-            showError("Tên không quá 20 ký tự.", jTextField3);
-            return false;
-        }
-        return true;
-    }
-
-    private boolean validateSDT() {
-        String sdt = jTextField4.getText().trim();
-        if (!sdt.matches("^0\\d{9}$")) {
-            showError("Số điện thoại không hợp lệ (gồm 10 số, bắt đầu bằng 0).", jTextField4);
-            return false;
-        }
-        return true;
-    }
-    
-    private boolean validateCCCD() {
-        String cccd = jTextField6.getText().trim();
-        if (!cccd.matches("^\\d{12}$")) {
-            showError("Số CCCD không hợp lệ (gồm 12 chữ số).", jTextField6);
+        if (s.length() > 20) {
+            showError("Tên không quá 20 ký tự.", txtTen);
             return false;
         }
         return true;
     }
 
-    private boolean validateGioiTinh() {
-        if (jComboBox1.getSelectedItem() == null) {
-            showError("Bạn phải chọn giới tính.", jComboBox1);
+    private boolean kiemTraSDT() {
+        String s = txtSdt.getText().trim();
+        if (!s.matches("^0\\d{9}$")) {
+            showError("SĐT không hợp lệ (10 số, bắt đầu bằng 0).", txtSdt);
             return false;
         }
         return true;
     }
 
-    private boolean validateNgaySinh() {
-        String ngaySinhStr = jTextField7.getText().trim();
-        if (ngaySinhStr.isEmpty()) {
-            showError("Ngày sinh không được rỗng.", jTextField7);
+    private boolean kiemTraEmail() {
+        String s = txtEmail.getText().trim();
+        if (s.isEmpty()) {
+            showError("Email không được rỗng.", txtEmail);
+            return false;
+        }
+        // Regex email cơ bản
+        if (!s.matches("^[A-Za-z0-9+_.-]+@(.+)$")) {
+            showError("Email không đúng định dạng.", txtEmail);
+            return false;
+        }
+        return true;
+    }
+
+    private boolean kiemTraGioiTinh() {
+        if (cmbGioiTinh.getSelectedItem() == null) {
+            showError("Phải chọn giới tính.", cmbGioiTinh);
+            return false;
+        }
+        return true;
+    }
+
+    private boolean kiemTraCCCD() {
+        String s = txtCCCD.getText().trim();
+        if (!s.matches("^\\d{12}$")) {
+            showError("CCCD phải gồm 12 chữ số.", txtCCCD);
+            return false;
+        }
+        return true;
+    }
+
+    private boolean kiemTraNgaySinh() {
+        String s = txtNgaySinh.getText().trim();
+        if (s.isEmpty()) {
+            showError("Ngày sinh không được rỗng.", txtNgaySinh);
             return false;
         }
         try {
-            LocalDate ngaySinh = LocalDate.parse(ngaySinhStr); // YYYY-MM-DD
-            if (ngaySinh.isAfter(LocalDate.now())) {
-                 showError("Ngày sinh phải trước ngày hiện tại.", jTextField7);
-                 return false;
+            LocalDate date = LocalDate.parse(s);
+            if (date.isAfter(LocalDate.now())) {
+                showError("Ngày sinh phải trước hiện tại.", txtNgaySinh);
+                return false;
             }
-             int tuoi = LocalDate.now().getYear() - ngaySinh.getYear();
-             if (LocalDate.now().getDayOfYear() < ngaySinh.getDayOfYear()) {
-                 tuoi--;
-             }
-             if (tuoi < 18) {
-                 showError("Nhân viên phải đủ 18 tuổi.", jTextField7);
-                 return false;
-             }
+            int tuoi = LocalDate.now().getYear() - date.getYear();
+            if (tuoi < 18) {
+                showError("Phải đủ 18 tuổi.", txtNgaySinh);
+                return false;
+            }
         } catch (DateTimeParseException e) {
-            showError("Ngày sinh phải đúng định dạng YYYY-MM-DD.", jTextField7);
+            showError("Ngày sinh sai định dạng (yyyy-MM-dd).", txtNgaySinh);
             return false;
         }
         return true;
     }
 
-    private boolean validateDiaChi() {
-         String diaChi = jTextField8.getText().trim();
-         if (diaChi.length() > 255) {
-            showError("Địa chỉ không được vượt quá 255 ký tự.", jTextField8);
+    private boolean kiemTraDiaChi() {
+        if (txtDiaChi.getText().trim().length() > 255) {
+            showError("Địa chỉ quá dài.", txtDiaChi);
             return false;
         }
         return true;
     }
 
-
-    private void xuLyXacNhan() {
-        if (!validateHoTenDem() || !validateTen() || !validateSDT() || !validateGioiTinh() 
-            || !validateCCCD() || !validateNgaySinh() || !validateDiaChi()) {
-            return;
+    private boolean kiemTraTenDangNhap() {
+        String s = txtTenDangNhap.getText().trim();
+        if (s.isEmpty()) {
+            showError("Tên đăng nhập không được rỗng.", txtTenDangNhap);
+            return false;
         }
-
-        try {
-            // 1. Lấy dữ liệu
-            String maNV = jTextField1.getText().trim();
-            String hoTenDem = jTextField2.getText().trim();
-            String ten = jTextField3.getText().trim();
-            String sdt = jTextField4.getText().trim();
-            // true: Nam, false: Nữ
-            boolean gioiTinh = jComboBox1.getSelectedItem().toString().equals("Nam"); 
-            String cccd = jTextField6.getText().trim();
-            LocalDate ngaySinh = LocalDate.parse(jTextField7.getText().trim());
-            String diaChi = jTextField8.getText().trim();
-            boolean nghiViec = jCheckBox1.isSelected();
-
-            // 2. Tạo đối tượng và lưu vào biến của lớp
-            this.nhanVienMoi = new NhanVien();
-            
-            // Sử dụng setter để validate lần cuối (nếu cần)
-            nhanVienMoi.setMaNV(maNV);
-            nhanVienMoi.setHoTenDem(hoTenDem);
-            nhanVienMoi.setTen(ten);
-            nhanVienMoi.setSdt(sdt);
-            nhanVienMoi.setCccd(cccd);
-            nhanVienMoi.setGioiTinh(gioiTinh);
-            nhanVienMoi.setNgaySinh(ngaySinh);
-            nhanVienMoi.setDiaChi(diaChi);
-            nhanVienMoi.setNghiViec(nghiViec);
-
-
-            closeDialog();
-
-        } catch (Exception ex) {
-            this.nhanVienMoi = null;
-            // Hiển thị lỗi từ setter của Entity (nếu có)
-            JOptionPane.showMessageDialog(this, "Lỗi hệ thống hoặc dữ liệu: " + ex.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
+        if (s.contains(" ")) {
+            showError("Tên đăng nhập không được chứa khoảng trắng.", txtTenDangNhap);
+            return false;
         }
+        return true;
+    }
+
+    private boolean kiemTraMatKhau() {
+        String s = new String(txtMatKhau.getPassword());
+        if (s.isEmpty()) {
+            showError("Mật khẩu không được rỗng.", txtMatKhau);
+            return false;
+        }
+        if (s.length() < 6) {
+            showError("Mật khẩu phải từ 6 ký tự trở lên.", txtMatKhau);
+            return false;
+        }
+        return true;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
+    private javax.swing.JToggleButton btnHienMatKhau;
+    private javax.swing.JCheckBox chkBiKhoa;
+    private javax.swing.JCheckBox chkQuanLy;
+    private javax.swing.JButton btnHuy;
+    private javax.swing.JButton btnXacNhan;
+    private javax.swing.JCheckBox chkNghiViec;
+    private javax.swing.JComboBox<String> cmbGioiTinh;
+    private javax.swing.JLabel lblTieuDe;
+    private javax.swing.JLabel lblMaNV;
+    private javax.swing.JLabel lblHoTenDem;
+    private javax.swing.JLabel lblTen;
+    private javax.swing.JLabel lblSdt;
+    private javax.swing.JLabel lblGioiTinh;
+    private javax.swing.JLabel lblCCCD;
+    private javax.swing.JLabel lblNgaySinh;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField6;
-    private javax.swing.JTextField jTextField7;
+    private javax.swing.JTextField txtMaNV;
+    private javax.swing.JTextField txtHoTenDem;
+    private javax.swing.JTextField txtTen;
+    private javax.swing.JTextField txtSdt;
+    private javax.swing.JTextField txtCCCD;
+    private javax.swing.JTextField txtNgaySinh;
+    private javax.swing.JTextField txtDiaChi;
+    private javax.swing.JLabel lblEmail;
+    private javax.swing.JLabel lblMatKhau;
+    private javax.swing.JLabel lblTenDangNhap;
+    private javax.swing.JTextField txtEmail;
+    private javax.swing.JPasswordField txtMatKhau;
+    private javax.swing.JTextField txtTenDangNhap;
+    private javax.swing.JLabel lblNgayTao;
+    private javax.swing.JTextField txtNgayTao;
     // End of variables declaration//GEN-END:variables
 }

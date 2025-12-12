@@ -22,6 +22,7 @@ public class NhanVien {
     private LocalDate ngaySinh;
     private String diaChi;
     private boolean nghiViec;
+    private boolean daXoa;
 
     public NhanVien(NhanVien other) {
         this.maNV = other.maNV;
@@ -33,6 +34,7 @@ public class NhanVien {
         this.ngaySinh = other.ngaySinh;
         this.diaChi = other.diaChi;
         this.nghiViec = other.nghiViec;
+        this.daXoa = other.daXoa;
     }
 
     public NhanVien(String maNV, String hoTenDem, String ten, String sdt, String cccd, boolean gioiTinh,
@@ -46,6 +48,7 @@ public class NhanVien {
         this.ngaySinh = ngaySinh;
         this.diaChi = diaChi;
         this.nghiViec = nghiViec;
+        this.daXoa = false;
     }
 
     public NhanVien(String maNV) {
@@ -124,6 +127,14 @@ public class NhanVien {
         this.gioiTinh = gioiTinh;
     }
 
+    public boolean isDaXoa() {
+        return daXoa;
+    }
+
+    public void setDaXoa(boolean daXoa) {
+        this.daXoa = daXoa;
+    }
+
     public LocalDate getNgaySinh() {
         return ngaySinh;
     }
@@ -143,6 +154,10 @@ public class NhanVien {
             throw new IllegalArgumentException("Chưa đủ 18 tuổi");
         }
         this.ngaySinh = ngaySinh;
+
+    }
+
+    public void setMatKhau(String matKhau) {
 
     }
 
@@ -198,7 +213,7 @@ public class NhanVien {
 
     @Override
     public String toString() {
-        return "NhanVien{" + "maNV=" + maNV + ", hoTenDem=" + hoTenDem + ", ten=" + ten + ", sdt=" + sdt + ", cccd=" + cccd + ", gioiTinh=" + gioiTinh + ", ngaySinh=" + ngaySinh + ", diaChi=" + diaChi + ", nghiViec=" + nghiViec + '}';
+        return "NhanVien{" + "maNV=" + maNV + ", hoTenDem=" + hoTenDem + ", ten=" + ten + ", sdt=" + sdt + ", cccd=" + cccd + ", gioiTinh=" + gioiTinh + ", ngaySinh=" + ngaySinh + ", diaChi=" + diaChi + ", nghiViec=" + nghiViec + ", daXoa=" + daXoa + '}';
     }
 
 }
