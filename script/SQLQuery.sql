@@ -99,7 +99,7 @@ CREATE TABLE TaiKhoan (
     tenDangNhap NVARCHAR(7) PRIMARY KEY,
     matKhau NVARCHAR(256) NOT NULL,
     quanLy BIT NOT NULL CONSTRAINT DF_TaiKhoan_QuanLy DEFAULT 0, -- true: Quản lý, false: Nhân viên
-    biKhoa BIT NOT NULL CONSTRAINT DF_TaiKhoan_BiKhoa DEFAULT 1, -- true: Bị khóa, false: Hoạt động
+    biKhoa BIT NOT NULL CONSTRAINT DF_TaiKhoan_BiKhoa DEFAULT 0, -- true: Bị khóa, false: Hoạt động
     email NVARCHAR(255) NOT NULL UNIQUE,
     ngayTao DATETIME NOT NULL CONSTRAINT DF_TaiKhoan_NgayTao DEFAULT GETDATE(),
     --daXoa BIT NOT NULL CONSTRAINT DF_TaiKhoan_DaXoa DEFAULT 0,
@@ -330,7 +330,7 @@ CREATE TABLE ChiTietPhieuNhap (
     CONSTRAINT FK_CTPN_LoSanPham FOREIGN KEY (maLoSanPham) REFERENCES LoSanPham(maLoSanPham),
     CONSTRAINT FK_PhieuNhap_NhaCungCap FOREIGN KEY (maNCC) REFERENCES NhaCungCap(maNCC),
     CONSTRAINT CK_CTPN_SoLuong CHECK (soLuong > 0),
-    CONSTRAINT CK_CTPN_SoLuongYeuCau CHECK (soLuongYeuCau >= 0),
+    CONSTRAINT CK_CTPN_SoLuongYeuCau CHECK (soLuongYeuCau > 0),
     CONSTRAINT CK_CTPN_DonGia CHECK (donGia >= 0),
     CONSTRAINT CK_CTPN_ThanhTien CHECK (thanhTien >= 0)
 );
@@ -567,10 +567,10 @@ GO
 -- 7. Bảng TaiKhoan
 -- ===================================================================
 INSERT INTO TaiKhoan (tenDangNhap, matKhau, quanLy, biKhoa, email, ngayTao) VALUES
-('NV-0001', N'$2a$12$gn8WcfAE66kyqsl.Of78Uuafh8uhulZ3hWJuUphOEzoFnhSdAPRFq', 0, 0, N'vtkhoa_staff@gmail.com', '2025-01-01 08:00:00'),
-('NV-0002', N'$2a$12$KGIFfbyWWaUqQVJ1tvtP4.xscY569jCSeajDN2G8ld0fvAutAv75u', 1, 0, N'h.m.khang_manager@gmail.com', '2025-01-01 08:01:00'),
-('NV-0003', N'$2a$12$XR2GrxuO7qAlhaKDsKwebO.fcIKCMMUjnqrwBJ.s8aJ1sulKx2FA.', 0, 0, N'n.k.quan_staff@gmail.com', '2025-01-01 08:02:00'),
-('NV-0004', N'$2a$12$.75d3mOvSyChfi55Yy4epu.eSZMcxSwblMYdJJ1DpyEGL0t0yUbCa', 0, 0, N'trandinhsi1401@gmail.com', '2025-01-01 08:03:00');
+('NV-0001', N'$2a$12$gn8WcfAE66kyqsl.Of78Uuafh8uhulZ3hWJuUphOEzoFnhSdAPRFq', 0, 0, N'votienkhoa435@gmail.com', '2025-01-01 08:00:00'),
+('NV-0002', N'$2a$12$KGIFfbyWWaUqQVJ1tvtP4.xscY569jCSeajDN2G8ld0fvAutAv75u', 1, 0, N'khangdz013@gmail.com', '2025-01-01 08:01:00'),
+('NV-0003', N'$2a$12$XR2GrxuO7qAlhaKDsKwebO.fcIKCMMUjnqrwBJ.s8aJ1sulKx2FA.', 0, 0, N'nguyenkhanhquan9999@gmail.com', '2025-01-01 08:02:00'),
+('NV-0004', N'$2a$12$ZVKoL.rhx/8F/DDu5EWHzuof6GmslFqX3D7IEFS9b3NvZM7N.adN2', 0, 0, N'tistis14012k5@gmail.com', '2025-01-01 08:03:00');
 GO
 
 -- ===================================================================
@@ -2043,77 +2043,3 @@ GO
 
 PRINT N'>>> TẤT CẢ DỮ LIỆU ĐÃ ĐƯỢC TẠO THÀNH CÔNG <<<';
 GO
-
---select * 
---from SanPham sp join LoSanPham lsp
---on sp.maSP = lsp.maSP
-
---select sp.maSP, sp.ten, sp.moTa, sp.thanhPhan, sp.loaiSanPham, sp.tonToiThieu, sp.tonToiDa, sp.daXoa, soLuong = sum(lsp.soLuong)
---from SanPham sp join LoSanPham lsp
---on sp.maSP = lsp.maSP
---where soLuong <= sp.tonToiThieu
---group by sp.maSP, sp.ten, sp.moTa, sp.thanhPhan, sp.loaiSanPham, sp.tonToiThieu, sp.tonToiDa, sp.daXoa
-
-
---select sp.maSP, sp.ten, sp.moTa, sp.thanhPhan, sp.loaiSanPham, sp.tonToiThieu, sp.tonToiDa, sp.daXoa, dvt.tenDonVi, soLuong = sum(lsp.soLuong)
---from SanPham sp join LoSanPham lsp
---on sp.maSP = lsp.maSP join DonViTinh dvt
---on sp.maSP = dvt.maSP
---where soLuong <= sp.tonToiDa
---group by sp.maSP, sp.ten, sp.moTa, sp.thanhPhan, sp.loaiSanPham, sp.tonToiThieu, sp.tonToiDa, sp.daXoa, dvt.tenDonVi
-
-
---select sp.maSP, sp.ten, sp.moTa, sp.thanhPhan, sp.loaiSanPham, sp.tonToiThieu, sp.tonToiDa, sp.daXoa, dvt.tenDonVi
---from SanPham sp join DonViTinh dvt
---on sp.maSP = dvt.maSP
---where dvt.donViTinhCoBan = '1'
-
-
---select *
---from SanPham sp join DonViTinh dvt
---on sp.maSP = dvt.maSP
---where dvt.donViTinhCoBan = '1'
-
-
-
---select sp.maSP, sp.ten, sp.moTa, sp.thanhPhan, sp.loaiSanPham, sp.tonToiThieu, sp.tonToiDa, sp.daXoa, dvt.tenDonVi, soLuong = sum(lsp.soLuong)
---from SanPham sp join LoSanPham lsp
---on sp.maSP = lsp.maSP join DonViTinh dvt
---on sp.maSP = dvt.maSP
---group by sp.maSP, sp.ten, sp.moTa, sp.thanhPhan, sp.loaiSanPham, sp.tonToiThieu, sp.tonToiDa, sp.daXoa, dvt.tenDonVi
---order by sp.maSP
-
-
-
---select sp.maSP, sp.ten, sp.moTa, sp.thanhPhan, sp.loaiSanPham, sp.tonToiThieu, sp.tonToiDa, sp.daXoa, dvt.tenDonVi, soLuong = sum(lsp.soLuong)
---from SanPham sp join LoSanPham lsp
---on sp.maSP = lsp.maSP join DonViTinh dvt
---on sp.maSP = dvt.maSP
---where soLuong <= sp.tonToiDa and dvt.donViTinhCoBan = '1'
---group by sp.maSP, sp.ten, sp.moTa, sp.thanhPhan, sp.loaiSanPham, sp.tonToiThieu, sp.tonToiDa, sp.daXoa, dvt.tenDonVi
---order by sp.maSP
-
---select sp.maSP, sp.ten, sp.moTa, sp.thanhPhan, sp.loaiSanPham, sp.tonToiThieu, sp.tonToiDa, sp.daXoa, dvt.tenDonVi, soLuong = sum(lsp.soLuong)
---from SanPham sp join LoSanPham lsp
---on sp.maSP = lsp.maSP join DonViTinh dvt
---on sp.maSP = dvt.maSP
---where dvt.donViTinhCoBan = '1'
---group by sp.maSP, sp.ten, sp.moTa, sp.thanhPhan, sp.loaiSanPham, sp.tonToiThieu, sp.tonToiDa, sp.daXoa, dvt.tenDonVi
---having SUM(lsp.soLuong) <= sp.tonToiDa
---order by sp.maSP
-
---select *
---from LoSanPham
-
---select sp.maSP, sp.ten, soLuong = sum(soLuong)
---from LoSanPham lsp join SanPham sp
---on lsp.maSP = sp.maSP
---group by sp.maSP, sp.ten
-
---use [DuocAnKhang]
-
---select sp.maSP, sp.ten, sp.moTa, sp.thanhPhan, sp.loaiSanPham, sp.tonToiThieu, sp.tonToiDa, sp.daXoa, soLuong = sum(soLuong)
---from LoSanPham lsp join SanPham sp
---on lsp.maSP = sp.maSP
---group by sp.maSP, sp.ten, sp.moTa, sp.thanhPhan, sp.loaiSanPham, sp.tonToiThieu, sp.tonToiDa, sp.daXoa
---having sum(soLuong) = 0
