@@ -96,10 +96,7 @@ public class GiaoDienChinhGUI extends javax.swing.JFrame {
                     showPanel(new BaoCaoGUI());
                 }
                 
-                if(index == 8 && subIndex == 0) {
-                    showPanel(new DoiQuaGUI());
-                }
-                if (index == 9 && subIndex == 0) {
+                if (index == 8 && subIndex == 0) {
                     dangXuat();
                 }
                 

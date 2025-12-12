@@ -36,9 +36,8 @@ public class Menu extends JComponent{
         {"Trả hàng"},
         {"Quản lý lô"},
         {"Tra cứu"},
-        {"Thống kê","Hóa đơn","Sản phẩm","Phiếu nhập","Phiếu trả hàng"},
+        {"Thống kê", "Hóa đơn", "Sản phẩm", "Phiếu nhập", "Phiếu trả hàng"},
         {"Báo cáo"},
-        {"Đổi quà"},
         {"Đăng xuất"}
             
     };
@@ -123,7 +122,7 @@ public class Menu extends JComponent{
     private void hideMenu(MenuItem item, int index) {
         for(Component com: getComponents()) {
             if(com instanceof JPanel && com.getName().equals(index+"")) {
-                com.setName(null);
+                //com.setName(null);
                 MenuAnimation.showMenu(com, item, layout, false);
                 break;
             }
