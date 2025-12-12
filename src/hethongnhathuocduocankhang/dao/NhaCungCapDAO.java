@@ -6,7 +6,10 @@ package hethongnhathuocduocankhang.dao;
 
 import java.sql.*;
 import hethongnhathuocduocankhang.connectDB.ConnectDB;
+import hethongnhathuocduocankhang.entity.LoSanPham;
 import hethongnhathuocduocankhang.entity.NhaCungCap;
+import hethongnhathuocduocankhang.entity.SanPham;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 /**
@@ -246,6 +249,56 @@ public class NhaCungCapDAO {
             
         } catch (SQLException s) {
             s.printStackTrace();
+        }
+        return ncc;
+    }
+    public static ArrayList<LoSanPham> getDanhSachLoTheoMaNCC(String maNCC){
+        String sql = "Select l.maLoSanPham, maSP, l.soLuong, ngaySanXuat, ngayHetHan, daHuy  from LoSanPham l join ChiTietPhieuNhap ct on l.maLoSanPham=ct.maLoSanPham \n" +
+                    "join NhaCungCap c on c.maNCC=ct.maNCC\n" +
+                    "where c.maNCC like ?";
+        ArrayList<LoSanPham> dsLo = new ArrayList<>();
+        try {
+            ConnectDB.getInstance().connect();
+            Connection con = ConnectDB.getConnection();
+            PreparedStatement st = con.prepareStatement(sql);
+            st.setString(1, maNCC);
+            try(ResultSet rs = st.executeQuery()){
+                while(rs.next()){
+                    String ma = rs.getString(1);
+                    String maSP = rs.getString(2);
+                    int sl = rs.getInt(3);
+                    LocalDate ngaySX = rs.getDate(4).toLocalDate();
+                    LocalDate ngayHH = rs.getDate(5).toLocalDate();
+                    boolean daHuy = rs.getBoolean(6);
+                    LoSanPham lo = new LoSanPham(ma, new SanPham(maSP), sl, ngaySX, ngayHH, daHuy);
+                    dsLo.add(lo);
+                }
+            }
+            
+        } catch (SQLException a) {
+            a.printStackTrace();
+        }
+        return dsLo;
+    }
+    public static NhaCungCap timMotNCCTheoTen(String tenNCCInput) {
+        NhaCungCap ncc = new NhaCungCap();
+        try {
+            ConnectDB.getInstance().connect();
+            Connection con = ConnectDB.getConnection();
+            String querry = "SELECT * FROM NhaCungCap WHERE tenNCC LIKE ?";
+            PreparedStatement stmt = con.prepareStatement(querry);
+            stmt.setString(1, "%" + tenNCCInput + "%");
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                String maNCC = rs.getString("maNCC");
+                String tenNCC = rs.getString("tenNCC");
+                String diaChi = rs.getString("diaChi");
+                String sdt = rs.getString("sdt");
+                String email = rs.getString("email");
+                ncc = new NhaCungCap(maNCC, tenNCC, diaChi, sdt, email);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return ncc;
     }

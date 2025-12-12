@@ -15,6 +15,9 @@ public class MaVachSanPham {
     private SanPham sanPham;
     private String maVach;
 
+    public MaVachSanPham() {
+    }
+    
     public MaVachSanPham(SanPham sanPham, String maVach) {
         this.sanPham = sanPham;
         this.maVach = maVach;
