@@ -80,15 +80,13 @@ public class GiaoDienChinhGUI extends javax.swing.JFrame {
                 if(index == 6) {
                     switch (subIndex) {
                         case 1 ->
-                            showPanel(new QuanLiHoaDonGUI());
+                            showPanel(new ThongKeHoaDonGUI());
                         case 2 ->
-                            showPanel(new QuanLiPhieuTraHangGUI());
+                            showPanel(new ThongKeSanPhamGUI());
                         case 3 ->
-                            showPanel(new QuanLiPhieuTraHangGUI());
+                            showPanel(new ThongKePhieuNhapGUI());
                         case 4 ->
-                            showPanel(new QuanLiSanPhamGUI());
-                        case 5 ->
-                            showPanel(new QuanLiNhanVienGUI());
+                            showPanel(new ThongKePhieuTraHangGUI());
                         default -> {
                         }
                     }

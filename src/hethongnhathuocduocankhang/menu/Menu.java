@@ -36,7 +36,7 @@ public class Menu extends JComponent{
         {"Trả hàng"},
         {"Quản lý lô"},
         {"Tra cứu"},
-        {"Thống kê","Hóa đơn","Phiếu nhập","Phiếu trả hàng","Sản phẩm","Nhân viên"},
+        {"Thống kê","Hóa đơn","Sản phẩm","Phiếu nhập","Phiếu trả hàng"},
         {"Báo cáo"},
         {"Đổi quà"},
         {"Đăng xuất"}
