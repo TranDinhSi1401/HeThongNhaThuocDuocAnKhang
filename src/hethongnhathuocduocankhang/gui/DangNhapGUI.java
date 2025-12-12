@@ -8,13 +8,11 @@ import hethongnhathuocduocankhang.bus.DangNhapBUS;
 import hethongnhathuocduocankhang.connectDB.ConnectDB;
 import hethongnhathuocduocankhang.dao.TaiKhoanDAO;
 import hethongnhathuocduocankhang.entity.TaiKhoan;
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Insets;
 import java.awt.Toolkit;
@@ -22,10 +20,13 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.net.URL;
 import java.sql.SQLException;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
+import javax.swing.SwingWorker;
 import javax.swing.border.EmptyBorder;
 
 /**
@@ -211,10 +212,10 @@ public class DangNhapGUI extends javax.swing.JFrame {
     private void lblQuenMatKhauMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblQuenMatKhauMouseClicked
         JPanel panel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(2, 2, 2, 2); // khoảng cách nhỏ cho phần input
+        gbc.insets = new Insets(2, 2, 2, 2);
         gbc.fill = GridBagConstraints.HORIZONTAL;
 
-        // Dòng hướng dẫn
+        // Label hướng dẫn
         JLabel lblGuide = new JLabel(
             "Vui lòng nhập tài khoản và email đã đăng ký để đặt lại mật khẩu mới"
         );
@@ -230,7 +231,7 @@ public class DangNhapGUI extends javax.swing.JFrame {
         gbc.gridwidth = 1;
         gbc.insets = new Insets(2, 2, 2, 2);
 
-        // Tài khoản
+        // Username
         JLabel lblUser = new JLabel("Tài khoản:");
         JTextField txtUser = new JTextField(15);
 
@@ -250,7 +251,7 @@ public class DangNhapGUI extends javax.swing.JFrame {
         gbc.gridx = 1;
         panel.add(txtEmail, gbc);
 
-        // Hiển thị dialog
+        // Hiển thị dialog nhập
         int result = JOptionPane.showConfirmDialog(
                 this,
                 panel,
@@ -264,6 +265,7 @@ public class DangNhapGUI extends javax.swing.JFrame {
             String userName = txtUser.getText().trim();
             String email = txtEmail.getText().trim();
 
+            // Kiểm tra rỗng
             if (userName.isEmpty() || email.isEmpty()) {
                 JOptionPane.showMessageDialog(this,
                         "Vui lòng nhập đầy đủ Tài khoản và Email!",
@@ -271,6 +273,7 @@ public class DangNhapGUI extends javax.swing.JFrame {
                 return;
             }
 
+            // Kiểm tra tài khoản tồn tại
             if (TaiKhoanDAO.getTaiKhoanTheoTenDangNhap(userName) == null) {
                 JOptionPane.showMessageDialog(this,
                         "Tài khoản không tồn tại!",
@@ -278,6 +281,7 @@ public class DangNhapGUI extends javax.swing.JFrame {
                 return;
             }
 
+            // Kiểm tra email khớp với tài khoản
             if (!TaiKhoanDAO.kiemTraEmailThuocTaiKhoan(userName, email)) {
                 JOptionPane.showMessageDialog(this,
                         "Email không khớp với tài khoản!",
@@ -285,15 +289,47 @@ public class DangNhapGUI extends javax.swing.JFrame {
                 return;
             }
 
-            if (DangNhapBUS.quenMatKhau(userName, email)) {
-                JOptionPane.showMessageDialog(this,
-                        "Mật khẩu mới đã được gửi đến email: " + email,
-                        "Đặt lại mật khẩu", JOptionPane.INFORMATION_MESSAGE);
-            } else {
-                JOptionPane.showMessageDialog(this,
-                        "Không thể đặt lại mật khẩu. Vui lòng thử lại!",
-                        "Lỗi", JOptionPane.ERROR_MESSAGE);
-            }
+            // Tạo màn hình loading
+            LoadingDialog loading = new LoadingDialog((JFrame) SwingUtilities.getWindowAncestor(this));
+
+            // Chạy gửi mail trong background
+            SwingWorker<Boolean, Void> worker = new SwingWorker<Boolean, Void>() {
+
+                @Override
+                protected Boolean doInBackground() throws Exception {
+                    return DangNhapBUS.quenMatKhau(userName, email);
+                }
+
+                @Override
+                protected void done() {
+                    loading.dispose(); // tắt loading khi xong
+
+                    try {
+                        boolean ok = get();
+
+                        if (ok) {
+                            JOptionPane.showMessageDialog(null,
+                                    "Mật khẩu mới đã được gửi đến email: " + email,
+                                    "Thành công",
+                                    JOptionPane.INFORMATION_MESSAGE);
+                        } else {
+                            JOptionPane.showMessageDialog(null,
+                                    "Không thể đặt lại mật khẩu. Vui lòng thử lại!",
+                                    "Lỗi",
+                                    JOptionPane.ERROR_MESSAGE);
+                        }
+
+                    } catch (Exception e) {
+                        JOptionPane.showMessageDialog(null,
+                                "Có lỗi xảy ra: " + e.getMessage(),
+                                "Lỗi",
+                                JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+            };
+
+            worker.execute();
+            loading.setVisible(true);
         }
     }//GEN-LAST:event_lblQuenMatKhauMouseClicked
 
@@ -305,7 +341,7 @@ public class DangNhapGUI extends javax.swing.JFrame {
             txtMatKhau.setEchoChar('•');
         }
     }
-
+       
     /**
      * @param args the command line arguments
      */

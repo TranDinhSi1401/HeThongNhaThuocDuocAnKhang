@@ -17,7 +17,7 @@ public class DangNhapBUS {
     public static TaiKhoan dangNhap(String userName, String plainPassword) {               
         TaiKhoan tk = TaiKhoanDAO.getTaiKhoanTheoTenDangNhap(userName);
         String hashed = tk.getMatKhau();
-        if(PasswordUtil.checkPassword(plainPassword, hashed)) {
+        if(PasswordUtil.checkPassword(plainPassword, hashed) && !tk.isBiKhoa()) {
             return tk;
         } else {
             return null;
@@ -45,7 +45,7 @@ public class DangNhapBUS {
           + newPassword
           + "</div>"
           + "<p>Vui lòng đăng nhập và đổi mật khẩu ngay.</p>"
-          + "<p style='color:#555;'>Trân trọng,<br>Hệ thống nhà thuốc</p>"
+          + "<p style='color:#555;'>Trân trọng,<br>Hệ thống nhà thuốc Dược An Khang</p>"
           + "</div>";
 
         EmailUtil.sendEmail(email, subject, body);
