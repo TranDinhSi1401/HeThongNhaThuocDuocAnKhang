@@ -26,6 +26,8 @@ public class BaoCaoGUI extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jTabbedPane1 = new javax.swing.JTabbedPane();
+        jPanel35 = new javax.swing.JPanel();
         jPanel9 = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
         jPanel10 = new javax.swing.JPanel();
@@ -70,10 +72,12 @@ public class BaoCaoGUI extends javax.swing.JPanel {
         jPanel6 = new javax.swing.JPanel();
         jPanel7 = new javax.swing.JPanel();
         jPanel8 = new javax.swing.JPanel();
-        jPanel52 = new javax.swing.JPanel();
         jPanel50 = new javax.swing.JPanel();
+        jPanel36 = new javax.swing.JPanel();
 
         setLayout(new java.awt.BorderLayout());
+
+        jPanel35.setLayout(new java.awt.BorderLayout());
 
         jPanel9.setLayout(new java.awt.GridLayout(2, 4));
 
@@ -117,7 +121,7 @@ public class BaoCaoGUI extends javax.swing.JPanel {
         );
         jPanel13Layout.setVerticalGroup(
             jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
+            .addGap(0, 82, Short.MAX_VALUE)
         );
 
         jPanel1.add(jPanel13, java.awt.BorderLayout.LINE_END);
@@ -130,7 +134,7 @@ public class BaoCaoGUI extends javax.swing.JPanel {
         );
         jPanel14Layout.setVerticalGroup(
             jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
+            .addGap(0, 82, Short.MAX_VALUE)
         );
 
         jPanel1.add(jPanel14, java.awt.BorderLayout.LINE_START);
@@ -172,7 +176,7 @@ public class BaoCaoGUI extends javax.swing.JPanel {
         );
         jPanel18Layout.setVerticalGroup(
             jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
+            .addGap(0, 82, Short.MAX_VALUE)
         );
 
         jPanel2.add(jPanel18, java.awt.BorderLayout.LINE_END);
@@ -185,7 +189,7 @@ public class BaoCaoGUI extends javax.swing.JPanel {
         );
         jPanel19Layout.setVerticalGroup(
             jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
+            .addGap(0, 82, Short.MAX_VALUE)
         );
 
         jPanel2.add(jPanel19, java.awt.BorderLayout.LINE_START);
@@ -227,7 +231,7 @@ public class BaoCaoGUI extends javax.swing.JPanel {
         );
         jPanel23Layout.setVerticalGroup(
             jPanel23Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
+            .addGap(0, 82, Short.MAX_VALUE)
         );
 
         jPanel3.add(jPanel23, java.awt.BorderLayout.LINE_END);
@@ -240,7 +244,7 @@ public class BaoCaoGUI extends javax.swing.JPanel {
         );
         jPanel24Layout.setVerticalGroup(
             jPanel24Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
+            .addGap(0, 82, Short.MAX_VALUE)
         );
 
         jPanel3.add(jPanel24, java.awt.BorderLayout.LINE_START);
@@ -282,7 +286,7 @@ public class BaoCaoGUI extends javax.swing.JPanel {
         );
         jPanel28Layout.setVerticalGroup(
             jPanel28Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
+            .addGap(0, 82, Short.MAX_VALUE)
         );
 
         jPanel4.add(jPanel28, java.awt.BorderLayout.LINE_END);
@@ -295,7 +299,7 @@ public class BaoCaoGUI extends javax.swing.JPanel {
         );
         jPanel29Layout.setVerticalGroup(
             jPanel29Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
+            .addGap(0, 82, Short.MAX_VALUE)
         );
 
         jPanel4.add(jPanel29, java.awt.BorderLayout.LINE_START);
@@ -366,10 +370,7 @@ public class BaoCaoGUI extends javax.swing.JPanel {
         jPanel8.setLayout(new java.awt.BorderLayout());
         jPanel9.add(jPanel8);
 
-        add(jPanel9, java.awt.BorderLayout.CENTER);
-
-        jPanel52.setLayout(new javax.swing.BoxLayout(jPanel52, javax.swing.BoxLayout.LINE_AXIS));
-        add(jPanel52, java.awt.BorderLayout.PAGE_START);
+        jPanel35.add(jPanel9, java.awt.BorderLayout.CENTER);
 
         javax.swing.GroupLayout jPanel50Layout = new javax.swing.GroupLayout(jPanel50);
         jPanel50.setLayout(jPanel50Layout);
@@ -382,7 +383,24 @@ public class BaoCaoGUI extends javax.swing.JPanel {
             .addGap(0, 100, Short.MAX_VALUE)
         );
 
-        add(jPanel50, java.awt.BorderLayout.PAGE_END);
+        jPanel35.add(jPanel50, java.awt.BorderLayout.PAGE_END);
+
+        jTabbedPane1.addTab("tab1", jPanel35);
+
+        javax.swing.GroupLayout jPanel36Layout = new javax.swing.GroupLayout(jPanel36);
+        jPanel36.setLayout(jPanel36Layout);
+        jPanel36Layout.setHorizontalGroup(
+            jPanel36Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 1818, Short.MAX_VALUE)
+        );
+        jPanel36Layout.setVerticalGroup(
+            jPanel36Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 517, Short.MAX_VALUE)
+        );
+
+        jTabbedPane1.addTab("tab2", jPanel36);
+
+        add(jTabbedPane1, java.awt.BorderLayout.LINE_END);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
@@ -429,13 +447,15 @@ public class BaoCaoGUI extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel32;
     private javax.swing.JPanel jPanel33;
     private javax.swing.JPanel jPanel34;
+    private javax.swing.JPanel jPanel35;
+    private javax.swing.JPanel jPanel36;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel50;
-    private javax.swing.JPanel jPanel52;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
+    private javax.swing.JTabbedPane jTabbedPane1;
     // End of variables declaration//GEN-END:variables
 }
