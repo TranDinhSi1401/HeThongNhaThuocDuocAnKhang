@@ -7,11 +7,15 @@ package hethongnhathuocduocankhang;
 
 import hethongnhathuocduocankhang.connectDB.ConnectDB;
 import hethongnhathuocduocankhang.dao.KhachHangDAO;
+import hethongnhathuocduocankhang.dao.LoSanPhamDAO;
 import hethongnhathuocduocankhang.dao.NhanVienDAO;
 import hethongnhathuocduocankhang.dao.SanPhamDAO;
+import hethongnhathuocduocankhang.entity.LoSanPham;
 import hethongnhathuocduocankhang.gui.DangNhapGUI;
 import hethongnhathuocduocankhang.gui.GiaoDienChinhGUI;
 import hethongnhathuocduocankhang.gui.SplashScreen;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
 
@@ -20,7 +24,6 @@ import javax.swing.SwingWorker;
  * @author trand
  */
 public class HeThongNhaThuocDuocAnKhang {
-
     /**
      * @param args the command line arguments
      */
@@ -50,18 +53,25 @@ public class HeThongNhaThuocDuocAnKhang {
                     try {
                         firePropertyChange("message", null, "Tải dữ liệu khách hàng...");
                         KhachHangDAO.getAllKhachHang();
-                        setProgress(75);
+                        setProgress(70);
                         firePropertyChange("message", null, "Khách hàng sẵn sàng");
                     } catch (Exception ex) {
                     }
                     try {
                         firePropertyChange("message", null, "Tải dữ liệu nhân viên...");
                         NhanVienDAO.getAllNhanVien();
-                        setProgress(95);
+                        setProgress(85);
                         firePropertyChange("message", null, "Nhân viên sẵn sàng");
                     } catch (Exception ex) {
                     }
-
+                    try {
+                        firePropertyChange("message", null, "Tải dữ liệu lô sản phẩm...");
+                        //dsLo=
+                        LoSanPhamDAO.dsLoSanPham();
+                        setProgress(99);
+                        firePropertyChange("message", null, "Lô sản phẩm sẵn sàng");
+                    } catch (Exception ex) {
+                    }                    
                     setProgress(100);
                     return null;
                 }
