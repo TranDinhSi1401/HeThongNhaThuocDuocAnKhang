@@ -320,6 +320,7 @@ public class QuanLiNhanVienGUI extends JPanel {
         dialog.setVisible(true);
         NhanVien nvNew = pnlThemNV.getNhanVienMoi();
         TaiKhoan tkNew = pnlThemNV.getTaiKhoanMoi();
+        
         if (nvNew != null && tkNew != null) {
             if (NhanVienDAO.themNhanVien(nvNew) && TaiKhoanDAO.themTaiKhoan(tkNew)) {
                 JOptionPane.showMessageDialog(this, "Thêm nhân viên thành công!");
