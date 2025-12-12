@@ -3,6 +3,7 @@ package hethongnhathuocduocankhang.dao;
 
 import hethongnhathuocduocankhang.connectDB.ConnectDB;
 import hethongnhathuocduocankhang.entity.LoSanPham;
+import hethongnhathuocduocankhang.entity.MaVachSanPham;
 import hethongnhathuocduocankhang.entity.SanPham;
 import java.sql.Connection;
 import java.sql.PreparedStatement;

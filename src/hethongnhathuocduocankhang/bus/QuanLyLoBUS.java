@@ -9,6 +9,7 @@ import hethongnhathuocduocankhang.dao.NhaCungCapDAO;
 import hethongnhathuocduocankhang.dao.SanPhamCungCapDAO;
 import hethongnhathuocduocankhang.dao.SanPhamDAO;
 import hethongnhathuocduocankhang.entity.LoSanPham;
+import hethongnhathuocduocankhang.entity.NhaCungCap;
 import hethongnhathuocduocankhang.entity.SanPham;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -25,29 +26,6 @@ import java.util.stream.Collectors;
  */
 public class QuanLyLoBUS {
     LoSanPhamDAO loSanPhamDao= new LoSanPhamDAO();
-    
-//    public ArrayList<Integer> soLuongLoQuaKiem(ArrayList<LoSanPham> dsLo){
-//        int conHan =0;
-//        int sapHetHan=0;
-//        int hetHan=0;
-//        int daHuy=0;
-//        for (LoSanPham i:dsLo){
-//            if(!i.isDaHuy()){
-//                long kq = kiemTra(LocalDate.now(), i.getNgayHetHan());
-//                if(kq>=0&&kq<=30) sapHetHan++;
-//                else if(kq<0) hetHan++;
-//                else conHan++; 
-//            }else{
-//                daHuy++;
-//            }
-//        }
-//        ArrayList<Integer> dsKQ= new ArrayList<>();
-//        dsKQ.add(daHuy);
-//        dsKQ.add(hetHan);
-//        dsKQ.add(sapHetHan);
-//        dsKQ.add(conHan);        
-//        return dsKQ;
-//    }
     
         public String tinhTrangThaiLo(LoSanPham lo) {
         if (lo.isDaHuy()) {
@@ -106,7 +84,6 @@ public class QuanLyLoBUS {
         return dsThongKeLo;
     }
     
-    
     public long kiemTra(LocalDate ht, LocalDate hh){
         return ChronoUnit.DAYS.between(ht, hh);
     }
@@ -120,88 +97,51 @@ public class QuanLyLoBUS {
         String newDate = datee.format(xuat);
         return newDate;
     }
+ 
     
-    //Chưa làm
-    public ArrayList timKiemVaTraVeLoVoiNhieuDieuKien(){
-        ArrayList<LoSanPham> dsLo = LoSanPhamDAO.dsLoSanPham();
-
-        return dsLo;
-    }
-    
-    public ArrayList<LoSanPham> timKiemLo ( 
-            String maLo, 
-            String maSP, 
-            String tenSP, 
-            String maNCC, 
-            String trangThai){
-        
+    public ArrayList<LoSanPham> timKiemLoVoiNhieuDieuKien(String tieuChi, String noiDung, String trangThai){    
         Map<String, Object> ds = thongKe(LoSanPhamDAO.dsLoSanPham());
-        ArrayList<LoSanPham> dsLoDaHuy = (ArrayList<LoSanPham>) ds.get("dsLoDaHuy");
-        ArrayList<LoSanPham> dsLoHetHan = (ArrayList<LoSanPham>) ds.get("dsLoHetHan");
-        ArrayList<LoSanPham> dsLoSapHetHan = (ArrayList<LoSanPham>) ds.get("dsSapHetHan");
-        ArrayList<LoSanPham> dsLoConHan = (ArrayList<LoSanPham>) ds.get("dsConHan");
-        ArrayList<LoSanPham> dsLo = LoSanPhamDAO.dsLoSanPham();
-        
-        ArrayList<LoSanPham> dsTraVe = new ArrayList<>();
-        
-        switch(trangThai){
-            case "còn hạn" -> dsTraVe = dsLoConHan;
-            case "sắp hết hạn" -> dsTraVe = dsLoSapHetHan;
-            case "hết hạn" -> dsTraVe = dsLoHetHan;
-            case "đã hủy" -> dsTraVe = dsLoDaHuy;
-            default ->{ dsTraVe = dsLo;
+        ArrayList<LoSanPham> dsLoDaLocTheoTrangThai = new ArrayList<>();
+        switch(trangThai.toLowerCase()){
+            case "còn hạn" -> dsLoDaLocTheoTrangThai = (ArrayList<LoSanPham>) ds.get("dsConHan");
+            case "sắp hết hạn" -> dsLoDaLocTheoTrangThai = (ArrayList<LoSanPham>) ds.get("dsLoSapHetHan");
+            case "hết hạn" -> dsLoDaLocTheoTrangThai = (ArrayList<LoSanPham>) ds.get("dsLoHetHan");
+            case "đã hủy" -> dsLoDaLocTheoTrangThai = (ArrayList<LoSanPham>) ds.get("dsLoDaHuy");
+            default -> dsLoDaLocTheoTrangThai = LoSanPhamDAO.dsLoSanPham();
+        }
+        String loaiTimKiem = tieuChi.toLowerCase();
+
+        if(loaiTimKiem.equals("nhà cung cấp") && noiDung != null){
+            NhaCungCap ncc = NhaCungCapDAO.timMotNCCTheoTen(noiDung); 
+            if(ncc != null){
+                ArrayList<LoSanPham> dsloTheoNhaCungCap = NhaCungCapDAO.getDanhSachLoTheoMaNCC(ncc.getMaNCC());
+                java.util.Set<String> maLoNCCSet = dsloTheoNhaCungCap.stream()
+                    .map(LoSanPham::getMaLoSanPham) 
+                    .collect(Collectors.toSet());
+
+                List<LoSanPham> ketQuaCuoiCung = dsLoDaLocTheoTrangThai.stream()
+                    .filter(lo -> maLoNCCSet.contains(lo.getMaLoSanPham())) 
+                    .collect(Collectors.toList());
+                return new ArrayList<>(ketQuaCuoiCung);
+            } else {
+                return new ArrayList<>(); 
             }
         }
-        return (ArrayList<LoSanPham>) dsTraVe.stream()
-                .filter(lo->maLo == null || lo.getMaLoSanPham().contains(maLo))
-                .filter(lo->maSP==null||lo.getSanPham().getMaSP().contains(maSP))
-                .filter(lo->tenSP==null||lo.getSanPham().getTen().contains(tenSP))
-                .collect(Collectors.toList());        
-    }
-    public ArrayList<LoSanPham> timKiemLoVoiNhieuDieuKien( 
-            String maLo, 
-            String maSP, 
-            String tenSP, 
-            String trangThai,
-            String loaiThongTinThem, 
-            String giaTriThongTinThem){
-        Map<String, Object> ds = thongKe(LoSanPhamDAO.dsLoSanPham());
-        ArrayList<LoSanPham> dsLoConHan = (ArrayList<LoSanPham>) ds.get("dsConHan");
-        ArrayList<LoSanPham> dsLoHetHan = (ArrayList<LoSanPham>) ds.get("dsLoHetHan");
-        ArrayList<LoSanPham> dsLoSapHetHan = (ArrayList<LoSanPham>) ds.get("dsSapHetHan");
-        ArrayList<LoSanPham> dsLoDaHuy = (ArrayList<LoSanPham>) ds.get("dsLoDaHuy");
-        ArrayList<LoSanPham> dsTraVe = new ArrayList<>();
-
-        switch(trangThai.toLowerCase()){
-            case "còn hạn" -> dsTraVe = dsLoConHan;
-            case "sắp hết hạn" -> dsTraVe = dsLoSapHetHan;
-            case "hết hạn" -> dsTraVe = dsLoHetHan;
-            case "đã hủy" -> dsTraVe = dsLoDaHuy;
-            default -> dsTraVe = LoSanPhamDAO.dsLoSanPham(); 
-        }
-
-        List<LoSanPham> ketQuaLoc = dsTraVe.stream()
-            .filter(lo->maLo == null || lo.getMaLoSanPham().contains(maLo))
-            .filter(lo->maSP == null || lo.getSanPham().getMaSP().contains(maSP))
-            .filter(lo->tenSP == null || SanPhamDAO.timSPTheoMa(lo.getSanPham().getMaSP()).getTen().contains(tenSP)) 
-            .collect(Collectors.toList()); 
-        if(loaiThongTinThem != null && giaTriThongTinThem != null){
-            ketQuaLoc = ketQuaLoc.stream().filter(lo -> {
-                switch(loaiThongTinThem.toLowerCase()){
-                    case "nhà cung cấp":
-                        String maNCC = NhaCungCapDAO.timNCCTheoMa(SanPhamCungCapDAO.getSanPhamCungCap(lo.getSanPham().getMaSP()).getNhaCungCap().getMaNCC()).getMaNCC();
-                        return maNCC.contains(giaTriThongTinThem);
-                    case "ngày sản xuất":
-                        LocalDate nsx = lo.getNgaySanXuat();
-                        return nsx.toString().contains(giaTriThongTinThem); 
-                    case "ngày hết hạn":
-                        LocalDate nhh = lo.getNgayHetHan();
-                        return nhh.toString().contains(giaTriThongTinThem);
-                    default:
-                        return true;
-                }
-            }).collect(Collectors.toList());
-        }
+        String noiDungLowerCase = (noiDung == null) ? null : noiDung.toLowerCase();
+        List<LoSanPham> ketQuaLoc = dsLoDaLocTheoTrangThai.stream().filter(lo -> {
+            if (noiDung == null) return true; // Nếu không nhập nội dung, không cần lọc thêm
+            switch(loaiTimKiem){
+                case "mã lô sản phẩm":
+                    return lo.getMaLoSanPham().toLowerCase().contains(noiDungLowerCase);
+                case "mã sản phẩm":
+                    return lo.getSanPham().getMaSP().toLowerCase().contains(noiDungLowerCase);
+                case "tên sản phẩm":
+                    SanPham sp = SanPhamDAO.timSPTheoMa(lo.getSanPham().getMaSP());
+                    return sp != null && sp.getTen().toLowerCase().contains(noiDungLowerCase);
+                default:
+                    return true; 
+            }
+        }).collect(Collectors.toList()); 
 
         return new ArrayList<>(ketQuaLoc);
     }
