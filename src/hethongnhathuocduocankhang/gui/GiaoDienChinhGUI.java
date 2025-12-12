@@ -73,16 +73,36 @@ public class GiaoDienChinhGUI extends javax.swing.JFrame {
                 }
                 if (index == 4 && subIndex == 0) {
                     showPanel(new LoSanPhamGUI());
-                }
-                if (index == 7 && subIndex == 0) {
-                    showPanel(new DoiQuaGUI());
-                }
-                if (index == 8 && subIndex == 0) {
-                    dangXuat();
-                }
+                } 
                 if (index == 5 && subIndex == 0) {
                     showPanel(new TraCuuChungGUI());
                 }
+                if(index == 6) {
+                    switch (subIndex) {
+                        case 1 ->
+                            showPanel(new ThongKeHoaDonGUI());
+                        case 2 ->
+                            showPanel(new ThongKeSanPhamGUI());
+                        case 3 ->
+                            showPanel(new ThongKePhieuNhapGUI());
+                        case 4 ->
+                            showPanel(new ThongKePhieuTraHangGUI());
+                        default -> {
+                        }
+                    }
+                }
+                
+                if(index == 7 && subIndex == 0) {
+                    showPanel(new BaoCaoGUI());
+                }
+                
+                if(index == 8 && subIndex == 0) {
+                    showPanel(new DoiQuaGUI());
+                }
+                if (index == 9 && subIndex == 0) {
+                    dangXuat();
+                }
+                
             }
         });
         if (tk != null) {
