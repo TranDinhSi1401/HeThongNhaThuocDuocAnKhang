@@ -317,16 +317,28 @@ public class QuanLiNhanVienGUI extends JPanel {
         pnlThemNV.setTxtTenDangNhap(maNVNew);
         pnlThemNV.setTxtNgayTao(LocalDateTime.now());
 
-        dialog.setVisible(true);
-        NhanVien nvNew = pnlThemNV.getNhanVienMoi();
-        TaiKhoan tkNew = pnlThemNV.getTaiKhoanMoi();
-        
-        if (nvNew != null && tkNew != null) {
+        boolean isSuccess = false; 
+
+        while (!isSuccess) {
+            dialog.setVisible(true); 
+
+            NhanVien nvNew = pnlThemNV.getNhanVienMoi();
+            TaiKhoan tkNew = pnlThemNV.getTaiKhoanMoi();
+
+            if (nvNew == null || tkNew == null) {
+                break; 
+            }
+
             if (NhanVienDAO.themNhanVien(nvNew) && TaiKhoanDAO.themTaiKhoan(tkNew)) {
                 JOptionPane.showMessageDialog(this, "Thêm nhân viên thành công!");
                 updateTable();
+                isSuccess = true; 
+                dialog.dispose(); 
             } else {
-                JOptionPane.showMessageDialog(this, "Thêm nhân viên thất bại.");
+                JOptionPane.showMessageDialog(this,
+                        "Thêm nhân viên thất bại.\nCó thể do trùng CCCD hoặc SĐT.\nVui lòng kiểm tra lại thông tin!",
+                        "Lỗi",
+                        JOptionPane.ERROR_MESSAGE);
             }
         }
     }
@@ -396,15 +408,12 @@ public class QuanLiNhanVienGUI extends JPanel {
         pnlThemNV.setCmbGioiTinh(nvCanSua.isGioiTinh());
         pnlThemNV.setTxtNgaySinh(nvCanSua.getNgaySinh());
         pnlThemNV.setTxtDiaChi(nvCanSua.getDiaChi());
-        pnlThemNV.setChkNghiViec(nvCanSua.isNghiViec());
 
         pnlThemNV.setTxtTenDangNhap(maNV);
         pnlThemNV.setTxtMatKhau(tkCanSua.getMatKhau());
         pnlThemNV.setChkQuanLy(tkCanSua.isQuanLy());
-        pnlThemNV.setChkBiKhoa(tkCanSua.isBiKhoa());
         pnlThemNV.setTxtEmail(tkCanSua.getEmail());
         pnlThemNV.setTxtNgayTao(tkCanSua.getNgayTao());
-        
 
         dialog.setVisible(true);
         NhanVien nvNew = pnlThemNV.getNhanVienMoi();
@@ -446,8 +455,6 @@ public class QuanLiNhanVienGUI extends JPanel {
             pnlThemNV.getTxtNgaySinh().setEditable(false);
             pnlThemNV.getTxtDiaChi().setEditable(false);
             pnlThemNV.getCmbGioiTinh().setEnabled(false);
-            pnlThemNV.getChkNghiViec().setEnabled(false);
-            pnlThemNV.getChkBiKhoa().setEnabled(false);
             pnlThemNV.getChkQuanLy().setEnabled(false);
             pnlThemNV.getTxtEmail().setEditable(false);
             pnlThemNV.getTxtTenDangNhap().setEditable(false);
@@ -461,9 +468,7 @@ public class QuanLiNhanVienGUI extends JPanel {
             pnlThemNV.setCmbGioiTinh(nvDaChon.isGioiTinh());
             pnlThemNV.setTxtNgaySinh(nvDaChon.getNgaySinh());
             pnlThemNV.setTxtDiaChi(nvDaChon.getDiaChi());
-            pnlThemNV.setChkNghiViec(nvDaChon.isNghiViec());
             TaiKhoan tk = TaiKhoanDAO.getTaiKhoanTheoTenDangNhap(nvDaChon.getMaNV());
-            pnlThemNV.setChkBiKhoa(tk.isBiKhoa());
             pnlThemNV.setChkQuanLy(tk.isQuanLy());
             pnlThemNV.setTxtEmail(tk.getEmail());
             pnlThemNV.setTxtTenDangNhap(nvDaChon.getMaNV());

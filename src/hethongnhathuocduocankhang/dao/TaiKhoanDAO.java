@@ -106,7 +106,7 @@ public class TaiKhoanDAO {
             ConnectDB.getInstance();
             Connection con = ConnectDB.getConnection();
 
-            String sql = "UPDATE TaiKhoan SET daXoa = 1 WHERE tenDangNhap = ?";
+            String sql = "UPDATE TaiKhoan SET biKhoa = 1 WHERE tenDangNhap = ?";
 
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, tenDangNhap);
