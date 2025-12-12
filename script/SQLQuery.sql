@@ -567,10 +567,10 @@ GO
 -- 7. Bảng TaiKhoan
 -- ===================================================================
 INSERT INTO TaiKhoan (tenDangNhap, matKhau, quanLy, biKhoa, email, ngayTao) VALUES
-('NV-0001', N'Votienkhoa123@', 0, 0, N'vtkhoa_staff@gmail.com', '2025-01-01 08:00:00'),
-('NV-0002', N'Hominhkhang123@', 1, 0, N'h.m.khang_manager@gmail.com', '2025-01-01 08:01:00'),
-('NV-0003', N'Nguyenkhanhquan123@', 0, 0, N'n.k.quan_staff@gmail.com', '2025-01-01 08:02:00'),
-('NV-0004', N'Trandinhsi123@', 0, 0, N't.d.si_locked@gmail.com', '2025-01-01 08:03:00');
+('NV-0001', N'$2a$12$gn8WcfAE66kyqsl.Of78Uuafh8uhulZ3hWJuUphOEzoFnhSdAPRFq', 0, 0, N'vtkhoa_staff@gmail.com', '2025-01-01 08:00:00'),
+('NV-0002', N'$2a$12$KGIFfbyWWaUqQVJ1tvtP4.xscY569jCSeajDN2G8ld0fvAutAv75u', 1, 0, N'h.m.khang_manager@gmail.com', '2025-01-01 08:01:00'),
+('NV-0003', N'$2a$12$XR2GrxuO7qAlhaKDsKwebO.fcIKCMMUjnqrwBJ.s8aJ1sulKx2FA.', 0, 0, N'n.k.quan_staff@gmail.com', '2025-01-01 08:02:00'),
+('NV-0004', N'$2a$12$.75d3mOvSyChfi55Yy4epu.eSZMcxSwblMYdJJ1DpyEGL0t0yUbCa', 0, 0, N'trandinhsi1401@gmail.com', '2025-01-01 08:03:00');
 GO
 
 -- ===================================================================

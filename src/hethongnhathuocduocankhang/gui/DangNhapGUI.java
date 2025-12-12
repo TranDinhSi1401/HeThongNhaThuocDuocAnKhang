@@ -4,17 +4,29 @@
  */
 package hethongnhathuocduocankhang.gui;
 
+import hethongnhathuocduocankhang.bus.DangNhapBUS;
 import hethongnhathuocduocankhang.connectDB.ConnectDB;
 import hethongnhathuocduocankhang.dao.TaiKhoanDAO;
 import hethongnhathuocduocankhang.entity.TaiKhoan;
+import java.awt.Color;
 import java.awt.Cursor;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.Image;
+import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.net.URL;
 import java.sql.SQLException;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
+import javax.swing.SwingWorker;
 import javax.swing.border.EmptyBorder;
 
 /**
@@ -62,9 +74,6 @@ public class DangNhapGUI extends javax.swing.JFrame {
         // Mặc định để đỡ phải đăng nhập mỗi lần test
         txtTaiKhoan.setText("NV-0001");
         txtMatKhau.setText("Votienkhoa123@");
-
-//        txtTaiKhoan.setText("NV-0002");
-//        txtMatKhau.setText("Hominhkhang123@");
     }
 
     /**
@@ -175,7 +184,7 @@ public class DangNhapGUI extends javax.swing.JFrame {
     private void dangNhap() {
         String tenDangNhap = txtTaiKhoan.getText().trim();
         String matKhau = new String(txtMatKhau.getPassword()).trim();
-
+        
         if (tenDangNhap.isEmpty() || matKhau.isEmpty()) {
             javax.swing.JOptionPane.showMessageDialog(this,
                     "Vui lòng nhập đầy đủ tài khoản và mật khẩu!",
@@ -184,7 +193,7 @@ public class DangNhapGUI extends javax.swing.JFrame {
             return;
         }
 
-        TaiKhoan tk = TaiKhoanDAO.getTaiKhoanTheoTenDangNhapVaMatKhau(tenDangNhap, matKhau);
+        TaiKhoan tk = DangNhapBUS.dangNhap(tenDangNhap, matKhau);
         if (tk != null) {
             new GiaoDienChinhGUI(tk);
             this.dispose();
@@ -201,21 +210,127 @@ public class DangNhapGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_txtMatKhauActionPerformed
 
     private void lblQuenMatKhauMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblQuenMatKhauMouseClicked
-        String email = JOptionPane.showInputDialog(this, "Nhập email đã đăng ký để đặt lại mật khẩu:");
-        if (email != null && !email.trim().isEmpty()) {
-            if (TaiKhoanDAO.kiemTraEmailTonTai(email.trim())) {
-                JOptionPane.showMessageDialog(this,
-                        "Một liên kết đặt lại mật khẩu đã được gửi đến " + email,
-                        "Đặt lại mật khẩu",
-                        JOptionPane.INFORMATION_MESSAGE);
-            } else {
-                JOptionPane.showMessageDialog(this,
-                        "Email không tồn tại trong hệ thống!",
-                        "Lỗi",
-                        JOptionPane.ERROR_MESSAGE);
-            }
-        }
+        JPanel panel = new JPanel(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(2, 2, 2, 2);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
 
+        // Label hướng dẫn
+        JLabel lblGuide = new JLabel(
+            "Vui lòng nhập tài khoản và email đã đăng ký để đặt lại mật khẩu mới"
+        );
+        lblGuide.setFont(lblGuide.getFont().deriveFont(Font.BOLD));
+        lblGuide.setForeground(new Color(0x19, 0x76, 0xD2));
+
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.gridwidth = 2;
+        gbc.insets = new Insets(2, 2, 10, 2);
+        panel.add(lblGuide, gbc);
+
+        gbc.gridwidth = 1;
+        gbc.insets = new Insets(2, 2, 2, 2);
+
+        // Username
+        JLabel lblUser = new JLabel("Tài khoản:");
+        JTextField txtUser = new JTextField(15);
+
+        gbc.gridy = 1; gbc.gridx = 0;
+        panel.add(lblUser, gbc);
+
+        gbc.gridx = 1;
+        panel.add(txtUser, gbc);
+
+        // Email
+        JLabel lblEmail = new JLabel("Email:");
+        JTextField txtEmail = new JTextField(15);
+
+        gbc.gridy = 2; gbc.gridx = 0;
+        panel.add(lblEmail, gbc);
+
+        gbc.gridx = 1;
+        panel.add(txtEmail, gbc);
+
+        // Hiển thị dialog nhập
+        int result = JOptionPane.showConfirmDialog(
+                this,
+                panel,
+                "Quên mật khẩu",
+                JOptionPane.OK_CANCEL_OPTION,
+                JOptionPane.PLAIN_MESSAGE
+        );
+
+        if (result == JOptionPane.OK_OPTION) {
+
+            String userName = txtUser.getText().trim();
+            String email = txtEmail.getText().trim();
+
+            // Kiểm tra rỗng
+            if (userName.isEmpty() || email.isEmpty()) {
+                JOptionPane.showMessageDialog(this,
+                        "Vui lòng nhập đầy đủ Tài khoản và Email!",
+                        "Lỗi", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            // Kiểm tra tài khoản tồn tại
+            if (TaiKhoanDAO.getTaiKhoanTheoTenDangNhap(userName) == null) {
+                JOptionPane.showMessageDialog(this,
+                        "Tài khoản không tồn tại!",
+                        "Lỗi", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            // Kiểm tra email khớp với tài khoản
+            if (!TaiKhoanDAO.kiemTraEmailThuocTaiKhoan(userName, email)) {
+                JOptionPane.showMessageDialog(this,
+                        "Email không khớp với tài khoản!",
+                        "Lỗi", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            // Tạo màn hình loading
+            LoadingDialog loading = new LoadingDialog((JFrame) SwingUtilities.getWindowAncestor(this));
+
+            // Chạy gửi mail trong background
+            SwingWorker<Boolean, Void> worker = new SwingWorker<Boolean, Void>() {
+
+                @Override
+                protected Boolean doInBackground() throws Exception {
+                    return DangNhapBUS.quenMatKhau(userName, email);
+                }
+
+                @Override
+                protected void done() {
+                    loading.dispose(); // tắt loading khi xong
+
+                    try {
+                        boolean ok = get();
+
+                        if (ok) {
+                            JOptionPane.showMessageDialog(null,
+                                    "Mật khẩu mới đã được gửi đến email: " + email,
+                                    "Thành công",
+                                    JOptionPane.INFORMATION_MESSAGE);
+                        } else {
+                            JOptionPane.showMessageDialog(null,
+                                    "Không thể đặt lại mật khẩu. Vui lòng thử lại!",
+                                    "Lỗi",
+                                    JOptionPane.ERROR_MESSAGE);
+                        }
+
+                    } catch (Exception e) {
+                        JOptionPane.showMessageDialog(null,
+                                "Có lỗi xảy ra: " + e.getMessage(),
+                                "Lỗi",
+                                JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+            };
+
+            worker.execute();
+            loading.setVisible(true);
+        }
     }//GEN-LAST:event_lblQuenMatKhauMouseClicked
 
     private void cheMatKhau() {
@@ -226,31 +341,31 @@ public class DangNhapGUI extends javax.swing.JFrame {
             txtMatKhau.setEchoChar('•');
         }
     }
-
+       
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> new DangNhapGUI().setVisible(true));
-    }
+//    public static void main(String args[]) {
+//        /* Set the Nimbus look and feel */
+//        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+//        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+//         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+//         */
+//        try {
+//            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+//                if ("Nimbus".equals(info.getName())) {
+//                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+//                    break;
+//                }
+//            }
+//        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
+//            logger.log(java.util.logging.Level.SEVERE, null, ex);
+//        }
+//        //</editor-fold>
+//
+//        /* Create and display the form */
+//        java.awt.EventQueue.invokeLater(() -> new DangNhapGUI().setVisible(true));
+//    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCheMatKhau;
