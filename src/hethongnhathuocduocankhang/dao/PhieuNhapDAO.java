@@ -15,6 +15,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 /**
  *
@@ -101,4 +102,129 @@ public class PhieuNhapDAO {
         }return n>0;
         
     }
+    public static ArrayList<PhieuNhap> getAllPhieuNhap() {
+        ArrayList<PhieuNhap> dsPN = new ArrayList<>();
+        String sql = "SELECT pn.maPhieuNhap, pn.ngayTao, nv.maNV, nv.hoTenDem, nv.ten, pn.tongTien, pn.ghiChu " +
+                     "FROM PhieuNhap pn JOIN NhanVien nv ON pn.maNV = nv.maNV " +
+                     "ORDER BY pn.ngayTao DESC";
+        try {
+            ConnectDB.getInstance().connect();
+            Connection con = ConnectDB.getConnection();
+            PreparedStatement st = con.prepareStatement(sql);
+            try (ResultSet rs = st.executeQuery()) {
+                while (rs.next()) {
+                    String maPN = rs.getString("maPhieuNhap");
+                    LocalDate ngayTao = rs.getDate("ngayTao").toLocalDate();
+                    String maNV = rs.getString("maNV");
+                    String hoTenDem = rs.getString("hoTenDem");
+                    String ten = rs.getString("ten");
+                    double tongTien = rs.getDouble("tongTien");
+                    String ghiChu = rs.getString("ghiChu");
+                    
+                    NhanVien nv = new NhanVien(maNV, hoTenDem, ten);
+                    PhieuNhap pn = new PhieuNhap(maPN, ngayTao, nv, tongTien, ghiChu);
+                    dsPN.add(pn);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return dsPN;
+    }
+    
+    public static PhieuNhap getPhieuNhapTheoMa(String ma) {
+        PhieuNhap pn = null;
+        String sql = "SELECT pn.maPhieuNhap, pn.ngayTao, nv.maNV, nv.hoTenDem, nv.ten, pn.tongTien, pn.ghiChu " +
+                     "FROM PhieuNhap pn JOIN NhanVien nv ON pn.maNV = nv.maNV " +
+                     "WHERE pn.maPhieuNhap = ?";
+        try {
+            ConnectDB.getInstance().connect();
+            Connection con = ConnectDB.getConnection();
+            PreparedStatement st = con.prepareStatement(sql);
+            st.setString(1, ma);
+            try (ResultSet rs = st.executeQuery()) {
+                if (rs.next()) {
+                    String maPN = rs.getString("maPhieuNhap");
+                    LocalDate ngayTao = rs.getDate("ngayTao").toLocalDate();
+                    String maNV = rs.getString("maNV");
+                    String hoTenDem = rs.getString("hoTenDem");
+                    String ten = rs.getString("ten");
+                    double tongTien = rs.getDouble("tongTien");
+                    String ghiChu = rs.getString("ghiChu");
+                    
+                    NhanVien nv = new NhanVien(maNV, hoTenDem, ten);
+                    pn = new PhieuNhap(maPN, ngayTao, nv, tongTien, ghiChu);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return pn;
+    }
+    
+    public static ArrayList<PhieuNhap> timPNTheoNgayLap(LocalDate ngay) {
+        ArrayList<PhieuNhap> dsPN = new ArrayList<>();
+        String sql = "SELECT pn.maPhieuNhap, pn.ngayTao, nv.maNV, nv.hoTenDem, nv.ten, pn.tongTien, pn.ghiChu " +
+                     "FROM PhieuNhap pn JOIN NhanVien nv ON pn.maNV = nv.maNV " +
+                     "WHERE pn.ngayTao = ? " +
+                     "ORDER BY pn.ngayTao DESC";
+        try {
+            ConnectDB.getInstance().connect();
+            Connection con = ConnectDB.getConnection();
+            PreparedStatement st = con.prepareStatement(sql);
+            st.setDate(1, java.sql.Date.valueOf(ngay));
+            try (ResultSet rs = st.executeQuery()) {
+                while (rs.next()) {
+                    String maPN = rs.getString("maPhieuNhap");
+                    LocalDate ngayTao = rs.getDate("ngayTao").toLocalDate();
+                    String maNV = rs.getString("maNV");
+                    String hoTenDem = rs.getString("hoTenDem");
+                    String ten = rs.getString("ten");
+                    double tongTien = rs.getDouble("tongTien");
+                    String ghiChu = rs.getString("ghiChu");
+                    
+                    NhanVien nv = new NhanVien(maNV, hoTenDem, ten);
+                    PhieuNhap pn = new PhieuNhap(maPN, ngayTao, nv, tongTien, ghiChu);
+                    dsPN.add(pn);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return dsPN;
+    }
+    
+    public static ArrayList<PhieuNhap> timPNTheoKhoangNgay(LocalDate start, LocalDate end) {
+        ArrayList<PhieuNhap> dsPN = new ArrayList<>();
+        String sql = "SELECT pn.maPhieuNhap, pn.ngayTao, nv.maNV, nv.hoTenDem, nv.ten, pn.tongTien, pn.ghiChu " +
+                     "FROM PhieuNhap pn JOIN NhanVien nv ON pn.maNV = nv.maNV " +
+                     "WHERE pn.ngayTao BETWEEN ? AND ? " +
+                     "ORDER BY pn.ngayTao DESC";
+        try {
+            ConnectDB.getInstance().connect();
+            Connection con = ConnectDB.getConnection();
+            PreparedStatement st = con.prepareStatement(sql);
+            st.setDate(1, java.sql.Date.valueOf(start));
+            st.setDate(2, java.sql.Date.valueOf(end));
+            try (ResultSet rs = st.executeQuery()) {
+                while (rs.next()) {
+                    String maPN = rs.getString("maPhieuNhap");
+                    LocalDate ngayTao = rs.getDate("ngayTao").toLocalDate();
+                    String maNV = rs.getString("maNV");
+                    String hoTenDem = rs.getString("hoTenDem");
+                    String ten = rs.getString("ten");
+                    double tongTien = rs.getDouble("tongTien");
+                    String ghiChu = rs.getString("ghiChu");
+                    
+                    NhanVien nv = new NhanVien(maNV, hoTenDem, ten);
+                    PhieuNhap pn = new PhieuNhap(maPN, ngayTao, nv, tongTien, ghiChu);
+                    dsPN.add(pn);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return dsPN;
+    }
 }
+    

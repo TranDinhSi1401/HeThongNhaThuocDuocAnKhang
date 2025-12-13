@@ -50,6 +50,12 @@ public class NhanVien {
         this.nghiViec = nghiViec;
         this.daXoa = false;
     }
+    
+    public NhanVien(String maNV, String hoTenDem, String ten) {
+        this.maNV = maNV;
+        this.hoTenDem = hoTenDem;
+        this.ten = ten;
+    }
 
     public NhanVien(String maNV) {
         this.maNV = maNV;

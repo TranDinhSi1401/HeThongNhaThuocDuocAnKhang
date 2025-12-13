@@ -232,4 +232,28 @@ public class KhachHangDAO {
         }
         return maCuoiCung;
     }
+    
+    
+    public static ArrayList<KhachHang> getAllKhachHang(String sql) {
+        ArrayList<KhachHang> dsKH = new ArrayList<>();
+        try {
+            ConnectDB.getInstance().connect();
+            Connection con = ConnectDB.getConnection();
+            Statement statement = con.createStatement();
+            ResultSet rs = statement.executeQuery(sql);
+            while (rs.next()) {
+                String maKH = rs.getString("maKH");
+                String hoTenDem = rs.getString("hoTenDem");
+                String ten = rs.getString("ten");
+                String sdt = rs.getString("sdt");
+                int diemTichLuy = rs.getInt("diemTichLuy");
+
+                KhachHang kh = new KhachHang(maKH, hoTenDem, ten, sdt, diemTichLuy);
+                dsKH.add(kh);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return dsKH;
+    }
 }
