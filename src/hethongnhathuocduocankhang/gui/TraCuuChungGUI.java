@@ -9,12 +9,14 @@ import hethongnhathuocduocankhang.dao.KhachHangDAO;
 import hethongnhathuocduocankhang.dao.KhuyenMaiDAO;
 import hethongnhathuocduocankhang.dao.NhaCungCapDAO;
 import hethongnhathuocduocankhang.dao.NhanVienDAO;
+import hethongnhathuocduocankhang.dao.PhieuNhapDAO;
 import hethongnhathuocduocankhang.dao.SanPhamDAO;
 import hethongnhathuocduocankhang.entity.HoaDon;
 import hethongnhathuocduocankhang.entity.KhachHang;
 import hethongnhathuocduocankhang.entity.KhuyenMai;
 import hethongnhathuocduocankhang.entity.NhaCungCap;
 import hethongnhathuocduocankhang.entity.NhanVien;
+import hethongnhathuocduocankhang.entity.PhieuNhap;
 import hethongnhathuocduocankhang.entity.SanPham;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -85,6 +87,7 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         dpkTheoNgayHoaDon.addPropertyChangeListener(dateListener);
         dpkThoiGianKetThucHoaDon.addPropertyChangeListener(dateListener);
         //Phiếu nhập
+        
         
         //Phiếu trả
         
@@ -1090,9 +1093,19 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
                 txtNhapPhieuNhapActionPerformed(evt);
             }
         });
+        txtNhapPhieuNhap.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtNhapPhieuNhapKeyPressed(evt);
+            }
+        });
         jPanel72.add(txtNhapPhieuNhap);
 
         btnTimPhieuNhap.setText("Tìm kiếm");
+        btnTimPhieuNhap.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTimPhieuNhapActionPerformed(evt);
+            }
+        });
         jPanel72.add(btnTimPhieuNhap);
 
         pnlPhieuNhap.add(jPanel72, java.awt.BorderLayout.PAGE_START);
@@ -1148,6 +1161,11 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         jPanel79.add(jLabel9);
 
         cbbSapXepPhieuNhap.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ngày tạo", "Tổng tiền" }));
+        cbbSapXepPhieuNhap.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbbSapXepPhieuNhapActionPerformed(evt);
+            }
+        });
         jPanel79.add(cbbSapXepPhieuNhap);
 
         btnLocPhieuNhap.setText("Lọc [F6]");
@@ -1512,10 +1530,12 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
 
     private void btnLocPhieuNhapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLocPhieuNhapActionPerformed
         // TODO add your handling code here:
+        locPhieuNhapTheoNgay();
     }//GEN-LAST:event_btnLocPhieuNhapActionPerformed
 
     private void btnXemTatCaPhieuNhapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXemTatCaPhieuNhapActionPerformed
         // TODO add your handling code here:
+        themPhieuNhapVaoBang(PhieuNhapDAO.getAllPhieuNhap());
     }//GEN-LAST:event_btnXemTatCaPhieuNhapActionPerformed
 
     private void btnXemTatCaPhieuTraHangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXemTatCaPhieuTraHangActionPerformed
@@ -1558,6 +1578,25 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
             timKhuyenMaiTheoThuocTinh(cbbThuocTinhKhuyenMai.getSelectedItem().toString(), key);
         }
     }//GEN-LAST:event_txtNhapKhuyenMaiKeyPressed
+
+    private void txtNhapPhieuNhapKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNhapPhieuNhapKeyPressed
+        // TODO add your handling code here:
+                if(evt.getKeyCode() == KeyEvent.VK_ENTER){
+            String key = txtNhapPhieuNhap.getText();
+            timKhuyenMaiTheoThuocTinh(cbbThuocTinhPhieuNhap.getSelectedItem().toString(), key);
+        }
+    }//GEN-LAST:event_txtNhapPhieuNhapKeyPressed
+
+    private void btnTimPhieuNhapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTimPhieuNhapActionPerformed
+        // TODO add your handling code here:
+            String thuocTinh = cbbThuocTinhPhieuNhap.getSelectedItem().toString();
+            String key = txtNhapPhieuNhap.getText();
+            timPhieuNhapTheoThuocTinh(thuocTinh, key);
+    }//GEN-LAST:event_btnTimPhieuNhapActionPerformed
+
+    private void cbbSapXepPhieuNhapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbbSapXepPhieuNhapActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbbSapXepPhieuNhapActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnLocHoaDon;
@@ -2313,6 +2352,9 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
             // Nếu chỉ có ngày kết thúc, coi như tìm một ngày
             dsHD = HoaDonDAO.timHDTheoNgayLap(ngayKetThuc);
         }
+        else if(ngayBatDau == null && ngayKetThuc == null){
+            dsHD = HoaDonDAO.getAllHoaDon();
+        }
         
         // Sắp xếp
         String sapXep = cbbSapXepHoaDon.getSelectedItem().toString();
@@ -2433,12 +2475,106 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         themKhuyenMaiVaoBang(dsKM);
     }
 
+//Phiếu nhập
+    private void themPhieuNhapVaoBang(ArrayList<PhieuNhap> dsPN) {
+        DefaultTableModel dtm = (DefaultTableModel) tblPhieuNhap.getModel();
+        dtm.setRowCount(0);
+        for (PhieuNhap pn : dsPN) {
+            Object[] row = new Object[5];
+            row[0] = pn.getMaPhieuNhap();
+            row[1] = pn.getNv().getHoTenDem() + " " + pn.getNv().getTen();
+            row[2] = dinhDangNgay(pn.getNgayTao().toString());
+            row[3] = dinhDangTien(pn.getTongTien());
+            row[4] = pn.getGhiChu();
+            dtm.addRow(row);
+        }
+    }
+
+    private void timPhieuNhapTheoThuocTinh(String thuocTinh, String key) {
+        ArrayList<PhieuNhap> dsPN = new ArrayList<>();
+        if (key.equals("") || key.equals("Nhập...")) {
+            return;
+        }
+        switch (thuocTinh) {
+            case "Mã phiếu nhập":
+                PhieuNhap pn = PhieuNhapDAO.getPhieuNhapTheoMa(key);
+                if (pn != null) {
+                    dsPN.add(pn);
+                }
+                break;
+            case "Tên nhân viên":
+                // Giả sử có phương thức tìm theo tên NV, nhưng hiện tại chưa có, có thể thêm sau
+                // dsPN = PhieuNhapDAO.timPNTheoTenNV(key);
+                break;
+            default:
+                break;
+        }
+        themPhieuNhapVaoBang(dsPN);
+    }
+
+    private void locPhieuNhapTheoNgay() {
+        LocalDate ngayBatDau = null;
+        LocalDate ngayKetThuc = null;
+        
+        if (dpkTheoNgayPhieuNhap.getDate() != null) {
+            ngayBatDau = LocalDate.ofInstant(dpkTheoNgayPhieuNhap.getDate().toInstant(), java.time.ZoneId.systemDefault());
+        }
+        if (dpkThoiGianKetThucPhieuNhap.getDate() != null) {
+            ngayKetThuc = LocalDate.ofInstant(dpkThoiGianKetThucPhieuNhap.getDate().toInstant(), java.time.ZoneId.systemDefault());
+        }
+        
+        ArrayList<PhieuNhap> dsPN = new ArrayList<>();
+        
+        if (ngayBatDau != null && ngayKetThuc != null) {
+            // Tìm theo khoảng ngày
+            if (ngayBatDau.isAfter(ngayKetThuc)) {
+                // Swap nếu ngày bắt đầu > ngày kết thúc
+                LocalDate temp = ngayBatDau;
+                ngayBatDau = ngayKetThuc;
+                ngayKetThuc = temp;
+            }
+            dsPN = PhieuNhapDAO.timPNTheoKhoangNgay(ngayBatDau, ngayKetThuc);
+        } else if (ngayBatDau != null) {
+            // Tìm theo ngày cụ thể
+            dsPN = PhieuNhapDAO.timPNTheoNgayLap(ngayBatDau);
+        } else if (ngayKetThuc != null) {
+            // Nếu chỉ có ngày kết thúc, coi như tìm một ngày
+            dsPN = PhieuNhapDAO.timPNTheoNgayLap(ngayKetThuc);
+        }
+        else if(ngayBatDau == null && ngayKetThuc == null){
+            dsPN = PhieuNhapDAO.getAllPhieuNhap();
+        }
+        
+        // Sắp xếp
+        String sapXep = cbbSapXepPhieuNhap.getSelectedItem().toString();
+        if (sapXep.equals("Ngày tạo")) {
+            dsPN.sort((a, b) -> b.getNgayTao().compareTo(a.getNgayTao()));
+        } else if (sapXep.equals("Tổng tiền")) {
+            dsPN.sort((a, b) -> Double.compare(b.getTongTien(), a.getTongTien()));
+        }
+        
+        themPhieuNhapVaoBang(dsPN);
+    }
+
+
+
+    
 
 //Định dạng tiền
     private String dinhDangTien(double thanhTien) {
         DecimalFormat formatter = new DecimalFormat("#,###");
         return formatter.format(thanhTien) + " VNĐ";
     }
+    public double boDinhDangTien(String formatted) {
+        // Bước 1: Loại bỏ "VNĐ" và khoảng trắng
+        String cleaned = formatted.replace("VNĐ", "").trim();
+
+        // Bước 2: Loại bỏ dấu phẩy
+        cleaned = cleaned.replace(",", "");
+
+        // Bước 3: Chuyển thành double
+        return Double.parseDouble(cleaned);
+    }    
     
 //định dạng ngày
     public static String dinhDangNgay(String ngayChuoi) {
