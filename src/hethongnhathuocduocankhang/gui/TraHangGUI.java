@@ -817,7 +817,6 @@ public class TraHangGUI extends javax.swing.JPanel {
         rowData[10] = maCTHD;
         dtm.addRow(rowData);        
         taoLyDo();
-        
     }
     
     public double boDinhDangTien(String formatted) {
