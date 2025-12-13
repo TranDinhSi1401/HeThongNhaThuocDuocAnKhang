@@ -69,10 +69,20 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         mapKeyToClickButton("F6", btnLocNhanVien);
         mapKeyToFocus("F3", txtNhapNhanVien);
         
-                //Hóa đơn
+        //Hóa đơn
         mapKeyToClickButton("F4", btnXemTatCaHoaDon);
         mapKeyToClickButton("F6", btnLocHoaDon);
         mapKeyToFocus("F3", txtNhapHoaDon);
+        
+        //Phiếu nhập
+        mapKeyToClickButton("F4", btnXemTatCaPhieuNhap);
+        mapKeyToClickButton("F6", btnLocPhieuNhap);
+        mapKeyToFocus("F3", txtNhapPhieuNhap);        
+        
+        //Phiếu trả
+        mapKeyToClickButton("F4", btnXemTatCaPhieuTraHang);
+        mapKeyToClickButton("F6", btnLocPhieuTraHang);
+        mapKeyToFocus("F3", txtNhapPhieuTraHang);
         
         // Ngăn chọn ngày lớn hơn ngày hiện tại
         PropertyChangeListener dateListener = evt -> {
