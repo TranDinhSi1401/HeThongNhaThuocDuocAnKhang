@@ -52,7 +52,6 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         cbbThuocTinhSanPham = new javax.swing.JComboBox<>();
         txtNhapSanPham = new javax.swing.JTextField();
         btnTimKiemSanPham = new javax.swing.JButton();
-        btnXemTatCaSanPham = new javax.swing.JButton();
         jPanel5 = new javax.swing.JPanel();
         jPanel6 = new javax.swing.JPanel();
         jPanel7 = new javax.swing.JPanel();
@@ -62,6 +61,7 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         cbxTPCNSanPham = new javax.swing.JCheckBox();
         jPanel9 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
+        btnXemTatCaSanPham = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         cbbSapXepSanPham = new javax.swing.JComboBox<>();
         btnLocSanPham = new javax.swing.JButton();
@@ -96,12 +96,12 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         cbbThuocTinhNhaCungCap = new javax.swing.JComboBox<>();
         txtNhapNhaCungCap = new javax.swing.JTextField();
         btnTimKiemNhaCungCap = new javax.swing.JButton();
-        btnXemTatCaNhaCungCap = new javax.swing.JButton();
         jPanel23 = new javax.swing.JPanel();
         jPanel24 = new javax.swing.JPanel();
         jPanel25 = new javax.swing.JPanel();
         jPanel28 = new javax.swing.JPanel();
         jPanel29 = new javax.swing.JPanel();
+        btnXemTatCaNhaCungCap = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
         cbbSapXepNhaCungCap = new javax.swing.JComboBox<>();
         btnLocNhaCungCap = new javax.swing.JButton();
@@ -290,14 +290,6 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         });
         jPanel4.add(btnTimKiemSanPham);
 
-        btnXemTatCaSanPham.setText("Xem tất cả [F4]");
-        btnXemTatCaSanPham.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnXemTatCaSanPhamActionPerformed(evt);
-            }
-        });
-        jPanel4.add(btnXemTatCaSanPham);
-
         pnlSanPham.add(jPanel4, java.awt.BorderLayout.PAGE_START);
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
@@ -371,6 +363,14 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
 
         jPanel3.setPreferredSize(new java.awt.Dimension(278, 40));
         jPanel3.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+
+        btnXemTatCaSanPham.setText("Xem tất cả [F4]");
+        btnXemTatCaSanPham.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnXemTatCaSanPhamActionPerformed(evt);
+            }
+        });
+        jPanel3.add(btnXemTatCaSanPham);
 
         jLabel1.setText("Sắp xếp theo:");
         jPanel3.add(jLabel1);
@@ -569,14 +569,6 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         });
         jPanel22.add(btnTimKiemNhaCungCap);
 
-        btnXemTatCaNhaCungCap.setText("Xem tất cả [F4]");
-        btnXemTatCaNhaCungCap.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnXemTatCaNhaCungCapActionPerformed(evt);
-            }
-        });
-        jPanel22.add(btnXemTatCaNhaCungCap);
-
         pnlNhaCungCap.add(jPanel22, java.awt.BorderLayout.PAGE_START);
 
         javax.swing.GroupLayout jPanel23Layout = new javax.swing.GroupLayout(jPanel23);
@@ -604,6 +596,14 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
 
         jPanel29.setPreferredSize(new java.awt.Dimension(278, 40));
         jPanel29.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+
+        btnXemTatCaNhaCungCap.setText("Xem tất cả [F4]");
+        btnXemTatCaNhaCungCap.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnXemTatCaNhaCungCapActionPerformed(evt);
+            }
+        });
+        jPanel29.add(btnXemTatCaNhaCungCap);
 
         jLabel3.setText("Sắp xếp theo:");
         jPanel29.add(jLabel3);

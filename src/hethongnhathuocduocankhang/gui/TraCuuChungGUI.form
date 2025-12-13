@@ -95,14 +95,6 @@
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnTimKiemSanPhamActionPerformed"/>
                   </Events>
                 </Component>
-                <Component class="javax.swing.JButton" name="btnXemTatCaSanPham">
-                  <Properties>
-                    <Property name="text" type="java.lang.String" value="Xem t&#x1ea5;t c&#x1ea3; [F4]"/>
-                  </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnXemTatCaSanPhamActionPerformed"/>
-                  </Events>
-                </Component>
               </SubComponents>
             </Container>
             <Container class="javax.swing.JPanel" name="jPanel5">
@@ -249,6 +241,14 @@
                         <Property name="alignment" type="int" value="0"/>
                       </Layout>
                       <SubComponents>
+                        <Component class="javax.swing.JButton" name="btnXemTatCaSanPham">
+                          <Properties>
+                            <Property name="text" type="java.lang.String" value="Xem t&#x1ea5;t c&#x1ea3; [F4]"/>
+                          </Properties>
+                          <Events>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnXemTatCaSanPhamActionPerformed"/>
+                          </Events>
+                        </Component>
                         <Component class="javax.swing.JLabel" name="jLabel1">
                           <Properties>
                             <Property name="text" type="java.lang.String" value="S&#x1eaf;p x&#x1ebf;p theo:"/>
@@ -744,14 +744,6 @@
                     <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="btnTimKiemNhaCungCapKeyTyped"/>
                   </Events>
                 </Component>
-                <Component class="javax.swing.JButton" name="btnXemTatCaNhaCungCap">
-                  <Properties>
-                    <Property name="text" type="java.lang.String" value="Xem t&#x1ea5;t c&#x1ea3; [F4]"/>
-                  </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnXemTatCaNhaCungCapActionPerformed"/>
-                  </Events>
-                </Component>
               </SubComponents>
             </Container>
             <Container class="javax.swing.JPanel" name="jPanel23">
@@ -832,6 +824,14 @@
                         <Property name="alignment" type="int" value="0"/>
                       </Layout>
                       <SubComponents>
+                        <Component class="javax.swing.JButton" name="btnXemTatCaNhaCungCap">
+                          <Properties>
+                            <Property name="text" type="java.lang.String" value="Xem t&#x1ea5;t c&#x1ea3; [F4]"/>
+                          </Properties>
+                          <Events>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnXemTatCaNhaCungCapActionPerformed"/>
+                          </Events>
+                        </Component>
                         <Component class="javax.swing.JLabel" name="jLabel3">
                           <Properties>
                             <Property name="text" type="java.lang.String" value="S&#x1eaf;p x&#x1ebf;p theo:"/>
