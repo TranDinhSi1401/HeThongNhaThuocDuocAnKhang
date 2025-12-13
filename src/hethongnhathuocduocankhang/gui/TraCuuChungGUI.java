@@ -4,7 +4,9 @@
  */
 package hethongnhathuocduocankhang.gui;
 
+import hethongnhathuocduocankhang.dao.NhaCungCapDAO;
 import hethongnhathuocduocankhang.dao.SanPhamDAO;
+import hethongnhathuocduocankhang.entity.NhaCungCap;
 import hethongnhathuocduocankhang.entity.SanPham;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -30,9 +32,9 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
     public TraCuuChungGUI() {
         initComponents();
         
-        mapKeyToClickButton("F4", jButton7);
-        mapKeyToClickButton("F6", jButton2);
-        mapKeyToFocus("F3", jTextField2);
+        mapKeyToClickButton("F4", btnXemTatCaSanPham);
+        mapKeyToClickButton("F6", btnLocSanPham);
+        mapKeyToFocus("F3", txtNhapSanPham);
     }
 
     /**
@@ -45,32 +47,33 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
     private void initComponents() {
 
         jTabbedPane1 = new javax.swing.JTabbedPane();
-        jPanel10 = new javax.swing.JPanel();
+        pnlSanPham = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
-        jComboBox1 = new javax.swing.JComboBox<>();
-        jTextField2 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
-        jButton7 = new javax.swing.JButton();
+        cbbThuocTinhSanPham = new javax.swing.JComboBox<>();
+        txtNhapSanPham = new javax.swing.JTextField();
+        btnTimKiemSanPham = new javax.swing.JButton();
+        btnXemTatCaSanPham = new javax.swing.JButton();
         jPanel5 = new javax.swing.JPanel();
         jPanel6 = new javax.swing.JPanel();
         jPanel7 = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
-        jCheckBox5 = new javax.swing.JCheckBox();
-        jCheckBox3 = new javax.swing.JCheckBox();
-        jCheckBox6 = new javax.swing.JCheckBox();
+        cbxTKKDSanPham = new javax.swing.JCheckBox();
+        cbxTKDSanPham = new javax.swing.JCheckBox();
+        cbxTPCNSanPham = new javax.swing.JCheckBox();
         jPanel9 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jComboBox9 = new javax.swing.JComboBox<>();
-        jButton2 = new javax.swing.JButton();
+        cbbSapXepSanPham = new javax.swing.JComboBox<>();
+        btnLocSanPham = new javax.swing.JButton();
         jPanel8 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        tblSanPham = new javax.swing.JTable();
         jPanel11 = new javax.swing.JPanel();
         jPanel12 = new javax.swing.JPanel();
         jComboBox2 = new javax.swing.JComboBox<>();
         jTextField3 = new javax.swing.JTextField();
         jToggleButton2 = new javax.swing.JToggleButton();
+        jButton9 = new javax.swing.JButton();
         jPanel13 = new javax.swing.JPanel();
         jPanel14 = new javax.swing.JPanel();
         jPanel15 = new javax.swing.JPanel();
@@ -82,37 +85,29 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         jXDatePicker7 = new org.jdesktop.swingx.JXDatePicker();
         jPanel18 = new javax.swing.JPanel();
         jPanel19 = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        jComboBox10 = new javax.swing.JComboBox<>();
         jButton8 = new javax.swing.JButton();
         jPanel20 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         jTable3 = new javax.swing.JTable();
-        jPanel21 = new javax.swing.JPanel();
+        pnlNhaCungCap = new javax.swing.JPanel();
         jPanel22 = new javax.swing.JPanel();
-        jComboBox3 = new javax.swing.JComboBox<>();
-        jTextField4 = new javax.swing.JTextField();
+        cbbThuocTinhNhaCungCap = new javax.swing.JComboBox<>();
+        txtNhapNhaCungCap = new javax.swing.JTextField();
+        btnTimKiemNhaCungCap = new javax.swing.JButton();
+        btnXemTatCaNhaCungCap = new javax.swing.JButton();
         jPanel23 = new javax.swing.JPanel();
         jPanel24 = new javax.swing.JPanel();
         jPanel25 = new javax.swing.JPanel();
-        jPanel26 = new javax.swing.JPanel();
-        jCheckBox24 = new javax.swing.JCheckBox();
-        jCheckBox25 = new javax.swing.JCheckBox();
-        jCheckBox26 = new javax.swing.JCheckBox();
-        jButton5 = new javax.swing.JButton();
-        jRadioButton5 = new javax.swing.JRadioButton();
-        jPanel91 = new javax.swing.JPanel();
-        jRadioButton11 = new javax.swing.JRadioButton();
-        jCheckBox30 = new javax.swing.JCheckBox();
-        jCheckBox31 = new javax.swing.JCheckBox();
-        jButton6 = new javax.swing.JButton();
         jPanel28 = new javax.swing.JPanel();
         jPanel29 = new javax.swing.JPanel();
-        jToggleButton3 = new javax.swing.JToggleButton();
         jLabel3 = new javax.swing.JLabel();
-        jCheckBox32 = new javax.swing.JCheckBox();
-        jCheckBox28 = new javax.swing.JCheckBox();
+        cbbSapXepNhaCungCap = new javax.swing.JComboBox<>();
+        btnLocNhaCungCap = new javax.swing.JButton();
         jPanel30 = new javax.swing.JPanel();
         jScrollPane4 = new javax.swing.JScrollPane();
-        jTable4 = new javax.swing.JTable();
+        tblNhaCungCap = new javax.swing.JTable();
         jPanel31 = new javax.swing.JPanel();
         jPanel32 = new javax.swing.JPanel();
         jComboBox4 = new javax.swing.JComboBox<>();
@@ -254,75 +249,69 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
             }
         });
 
-        jPanel10.setLayout(new java.awt.BorderLayout());
+        pnlSanPham.setLayout(new java.awt.BorderLayout());
 
         jPanel4.setMinimumSize(new java.awt.Dimension(242, 50));
         jPanel4.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Mã sản phẩm", "Tên sản phẩm" }));
-        jComboBox1.setMinimumSize(new java.awt.Dimension(163, 22));
-        jComboBox1.setPreferredSize(new java.awt.Dimension(170, 22));
-        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
+        cbbThuocTinhSanPham.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Mã sản phẩm", "Tên sản phẩm" }));
+        cbbThuocTinhSanPham.setMinimumSize(new java.awt.Dimension(163, 22));
+        cbbThuocTinhSanPham.setPreferredSize(new java.awt.Dimension(170, 22));
+        cbbThuocTinhSanPham.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox1ActionPerformed(evt);
+                cbbThuocTinhSanPhamActionPerformed(evt);
             }
         });
-        jPanel4.add(jComboBox1);
+        jPanel4.add(cbbThuocTinhSanPham);
 
-        jTextField2.setText("Nhập [F3]");
-        jTextField2.setPreferredSize(new java.awt.Dimension(800, 22));
-        jTextField2.addFocusListener(new java.awt.event.FocusAdapter() {
+        txtNhapSanPham.setPreferredSize(new java.awt.Dimension(800, 22));
+        txtNhapSanPham.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
-                jTextField2FocusGained(evt);
+                txtNhapSanPhamFocusGained(evt);
             }
         });
-        jTextField2.addActionListener(new java.awt.event.ActionListener() {
+        txtNhapSanPham.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField2ActionPerformed(evt);
+                txtNhapSanPhamActionPerformed(evt);
             }
         });
-        jTextField2.addKeyListener(new java.awt.event.KeyAdapter() {
+        txtNhapSanPham.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
-                jTextField2KeyPressed(evt);
+                txtNhapSanPhamKeyPressed(evt);
             }
         });
-        jPanel4.add(jTextField2);
+        jPanel4.add(txtNhapSanPham);
 
-        jButton1.setText("Tìm kiếm");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnTimKiemSanPham.setText("Tìm kiếm");
+        btnTimKiemSanPham.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnTimKiemSanPhamActionPerformed(evt);
             }
         });
-        jButton1.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                jButton1KeyTyped(evt);
-            }
-        });
-        jPanel4.add(jButton1);
+        jPanel4.add(btnTimKiemSanPham);
 
-        jButton7.setText("Xem tất cả [F4]");
-        jButton7.addActionListener(new java.awt.event.ActionListener() {
+        btnXemTatCaSanPham.setText("Xem tất cả [F4]");
+        btnXemTatCaSanPham.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton7ActionPerformed(evt);
+                btnXemTatCaSanPhamActionPerformed(evt);
             }
         });
-        jPanel4.add(jButton7);
+        jPanel4.add(btnXemTatCaSanPham);
 
-        jPanel10.add(jPanel4, java.awt.BorderLayout.PAGE_START);
+        pnlSanPham.add(jPanel4, java.awt.BorderLayout.PAGE_START);
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1238, Short.MAX_VALUE)
+            .addGap(0, 1290, Short.MAX_VALUE)
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 100, Short.MAX_VALUE)
         );
 
-        jPanel10.add(jPanel5, java.awt.BorderLayout.PAGE_END);
+        pnlSanPham.add(jPanel5, java.awt.BorderLayout.PAGE_END);
 
         jPanel6.setPreferredSize(new java.awt.Dimension(630, 556));
         jPanel6.setLayout(new java.awt.BorderLayout());
@@ -334,19 +323,19 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Theo danh mục"));
         jPanel1.setMaximumSize(new java.awt.Dimension(500, 32767));
 
-        jCheckBox5.setText("Thuốc không kê đơn");
-        jCheckBox5.addActionListener(new java.awt.event.ActionListener() {
+        cbxTKKDSanPham.setText("Thuốc không kê đơn");
+        cbxTKKDSanPham.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBox5ActionPerformed(evt);
+                cbxTKKDSanPhamActionPerformed(evt);
             }
         });
 
-        jCheckBox3.setText("Thuốc kê đơn");
+        cbxTKDSanPham.setText("Thuốc kê đơn");
 
-        jCheckBox6.setText("TP chức năng");
-        jCheckBox6.addActionListener(new java.awt.event.ActionListener() {
+        cbxTPCNSanPham.setText("TP chức năng");
+        cbxTPCNSanPham.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBox6ActionPerformed(evt);
+                cbxTPCNSanPhamActionPerformed(evt);
             }
         });
 
@@ -357,20 +346,20 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jCheckBox6)
-                    .addComponent(jCheckBox5)
-                    .addComponent(jCheckBox3, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cbxTPCNSanPham)
+                    .addComponent(cbxTKKDSanPham)
+                    .addComponent(cbxTKDSanPham, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(24, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jCheckBox5)
+                .addComponent(cbxTKKDSanPham)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jCheckBox3)
+                .addComponent(cbxTKDSanPham)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jCheckBox6, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(cbxTPCNSanPham, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(454, Short.MAX_VALUE))
         );
 
@@ -386,22 +375,22 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         jLabel1.setText("Sắp xếp theo:");
         jPanel3.add(jLabel1);
 
-        jComboBox9.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Mã sản phẩm", "Tên sản phẩm", " " }));
-        jPanel3.add(jComboBox9);
+        cbbSapXepSanPham.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Mã sản phẩm", "Tên sản phẩm", " " }));
+        jPanel3.add(cbbSapXepSanPham);
 
-        jButton2.setText("Lọc theo tiêu chí [F6]");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        btnLocSanPham.setText("Lọc bảng [F6]");
+        btnLocSanPham.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                btnLocSanPhamActionPerformed(evt);
             }
         });
-        jPanel3.add(jButton2);
+        jPanel3.add(btnLocSanPham);
 
         jPanel9.add(jPanel3, java.awt.BorderLayout.PAGE_START);
 
         jPanel8.setLayout(new javax.swing.BoxLayout(jPanel8, javax.swing.BoxLayout.LINE_AXIS));
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        tblSanPham.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -409,11 +398,11 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
                 "Mã sản phẩm", "Tên sản phẩm", "Loại sản phẩm", "Mô tả", "Thành phần", "Tồn tối thiểu", "Tồn tối đa"
             }
         ));
-        jTable2.setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-        jTable2.setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-        jTable2.setShowGrid(false);
-        jTable2.setShowVerticalLines(true);
-        jScrollPane2.setViewportView(jTable2);
+        tblSanPham.setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        tblSanPham.setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        tblSanPham.setShowGrid(false);
+        tblSanPham.setShowVerticalLines(true);
+        jScrollPane2.setViewportView(tblSanPham);
 
         jPanel8.add(jScrollPane2);
 
@@ -421,16 +410,16 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
 
         jPanel6.add(jPanel9, java.awt.BorderLayout.CENTER);
 
-        jPanel10.add(jPanel6, java.awt.BorderLayout.CENTER);
+        pnlSanPham.add(jPanel6, java.awt.BorderLayout.CENTER);
 
-        jTabbedPane1.addTab("Sản phẩm", jPanel10);
+        jTabbedPane1.addTab("Sản phẩm", pnlSanPham);
 
         jPanel11.setLayout(new java.awt.BorderLayout());
 
         jPanel12.setMinimumSize(new java.awt.Dimension(242, 50));
         jPanel12.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Mã hóa đơn", "Số điện thoại khách hàng", "..." }));
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Mã hóa đơn", "Số điện thoại khách hàng" }));
         jComboBox2.setMinimumSize(new java.awt.Dimension(163, 22));
         jComboBox2.setPreferredSize(new java.awt.Dimension(170, 22));
         jComboBox2.addActionListener(new java.awt.event.ActionListener() {
@@ -448,8 +437,16 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         });
         jPanel12.add(jTextField3);
 
-        jToggleButton2.setText("Tìm [F3]");
+        jToggleButton2.setText("Tìm kiếm");
         jPanel12.add(jToggleButton2);
+
+        jButton9.setText("Xem tất cả [F4]");
+        jButton9.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton9ActionPerformed(evt);
+            }
+        });
+        jPanel12.add(jButton9);
 
         jPanel11.add(jPanel12, java.awt.BorderLayout.PAGE_START);
 
@@ -457,7 +454,7 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         jPanel13.setLayout(jPanel13Layout);
         jPanel13Layout.setHorizontalGroup(
             jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1238, Short.MAX_VALUE)
+            .addGap(0, 1290, Short.MAX_VALUE)
         );
         jPanel13Layout.setVerticalGroup(
             jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -497,7 +494,13 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         jPanel19.setPreferredSize(new java.awt.Dimension(278, 40));
         jPanel19.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
-        jButton8.setText("Lọc theo tiêu chí");
+        jLabel2.setText("Sắp xếp theo:");
+        jPanel19.add(jLabel2);
+
+        jComboBox10.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ngày tạo", "Tổng tiền", "Khách hàng" }));
+        jPanel19.add(jComboBox10);
+
+        jButton8.setText("Lọc [F6]");
         jPanel19.add(jButton8);
 
         jPanel18.add(jPanel19, java.awt.BorderLayout.PAGE_START);
@@ -525,43 +528,69 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
 
         jTabbedPane1.addTab("Hóa đơn", jPanel11);
 
-        jPanel21.setLayout(new java.awt.BorderLayout());
+        pnlNhaCungCap.setLayout(new java.awt.BorderLayout());
 
         jPanel22.setMinimumSize(new java.awt.Dimension(242, 50));
         jPanel22.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Mã nhà cung cấp", "Tên nhà cung cấp", "..." }));
-        jComboBox3.setMinimumSize(new java.awt.Dimension(163, 22));
-        jComboBox3.setPreferredSize(new java.awt.Dimension(170, 22));
-        jComboBox3.addActionListener(new java.awt.event.ActionListener() {
+        cbbThuocTinhNhaCungCap.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Mã nhà cung cấp", "Tên nhà cung cấp" }));
+        cbbThuocTinhNhaCungCap.setMinimumSize(new java.awt.Dimension(163, 22));
+        cbbThuocTinhNhaCungCap.setPreferredSize(new java.awt.Dimension(170, 22));
+        cbbThuocTinhNhaCungCap.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox3ActionPerformed(evt);
+                cbbThuocTinhNhaCungCapActionPerformed(evt);
             }
         });
-        jPanel22.add(jComboBox3);
+        jPanel22.add(cbbThuocTinhNhaCungCap);
 
-        jTextField4.setPreferredSize(new java.awt.Dimension(1000, 22));
-        jTextField4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField4ActionPerformed(evt);
+        txtNhapNhaCungCap.setPreferredSize(new java.awt.Dimension(800, 22));
+        txtNhapNhaCungCap.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txtNhapNhaCungCapFocusGained(evt);
             }
         });
-        jPanel22.add(jTextField4);
+        txtNhapNhaCungCap.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtNhapNhaCungCapActionPerformed(evt);
+            }
+        });
+        jPanel22.add(txtNhapNhaCungCap);
 
-        jPanel21.add(jPanel22, java.awt.BorderLayout.PAGE_START);
+        btnTimKiemNhaCungCap.setText("Tìm kiếm");
+        btnTimKiemNhaCungCap.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTimKiemNhaCungCapActionPerformed(evt);
+            }
+        });
+        btnTimKiemNhaCungCap.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                btnTimKiemNhaCungCapKeyTyped(evt);
+            }
+        });
+        jPanel22.add(btnTimKiemNhaCungCap);
+
+        btnXemTatCaNhaCungCap.setText("Xem tất cả [F4]");
+        btnXemTatCaNhaCungCap.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnXemTatCaNhaCungCapActionPerformed(evt);
+            }
+        });
+        jPanel22.add(btnXemTatCaNhaCungCap);
+
+        pnlNhaCungCap.add(jPanel22, java.awt.BorderLayout.PAGE_START);
 
         javax.swing.GroupLayout jPanel23Layout = new javax.swing.GroupLayout(jPanel23);
         jPanel23.setLayout(jPanel23Layout);
         jPanel23Layout.setHorizontalGroup(
             jPanel23Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1238, Short.MAX_VALUE)
+            .addGap(0, 1290, Short.MAX_VALUE)
         );
         jPanel23Layout.setVerticalGroup(
             jPanel23Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 100, Short.MAX_VALUE)
         );
 
-        jPanel21.add(jPanel23, java.awt.BorderLayout.PAGE_END);
+        pnlNhaCungCap.add(jPanel23, java.awt.BorderLayout.PAGE_END);
 
         jPanel24.setPreferredSize(new java.awt.Dimension(630, 556));
         jPanel24.setLayout(new java.awt.BorderLayout());
@@ -569,89 +598,6 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         jPanel25.setMaximumSize(new java.awt.Dimension(170, 65534));
         jPanel25.setPreferredSize(new java.awt.Dimension(170, 556));
         jPanel25.setLayout(new javax.swing.BoxLayout(jPanel25, javax.swing.BoxLayout.Y_AXIS));
-
-        jPanel26.setBorder(javax.swing.BorderFactory.createTitledBorder("Theo hàng cung cấp"));
-        jPanel26.setMaximumSize(new java.awt.Dimension(500, 32767));
-
-        jCheckBox24.setText("Thuốc");
-        jCheckBox24.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBox24ActionPerformed(evt);
-            }
-        });
-
-        jCheckBox25.setText("TP chức năng");
-        jCheckBox25.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBox25ActionPerformed(evt);
-            }
-        });
-
-        jCheckBox26.setText("Khác");
-
-        jButton5.setText("Làm mới");
-
-        jRadioButton5.setText("Tất cả");
-        jRadioButton5.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jRadioButton5ActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel26Layout = new javax.swing.GroupLayout(jPanel26);
-        jPanel26.setLayout(jPanel26Layout);
-        jPanel26Layout.setHorizontalGroup(
-            jPanel26Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel26Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel26Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jCheckBox24)
-                    .addComponent(jCheckBox25)
-                    .addComponent(jCheckBox26)
-                    .addComponent(jButton5)
-                    .addComponent(jRadioButton5))
-                .addContainerGap(61, Short.MAX_VALUE))
-        );
-        jPanel26Layout.setVerticalGroup(
-            jPanel26Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel26Layout.createSequentialGroup()
-                .addGap(0, 0, 0)
-                .addComponent(jRadioButton5)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jCheckBox24)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jCheckBox25, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jCheckBox26)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton5)
-                .addGap(0, 0, Short.MAX_VALUE))
-        );
-
-        jPanel25.add(jPanel26);
-
-        jPanel91.setBorder(javax.swing.BorderFactory.createTitledBorder("Trạng thái"));
-        jPanel91.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
-
-        jRadioButton11.setText("Tất cả");
-        jPanel91.add(jRadioButton11);
-
-        jCheckBox30.setText("Đang hoạt động");
-        jPanel91.add(jCheckBox30);
-
-        jCheckBox31.setText("Đã nghĩ việc");
-        jCheckBox31.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBox31ActionPerformed(evt);
-            }
-        });
-        jPanel91.add(jCheckBox31);
-
-        jButton6.setText("Làm mới");
-        jPanel91.add(jButton6);
-
-        jPanel25.add(jPanel91);
-
         jPanel24.add(jPanel25, java.awt.BorderLayout.LINE_START);
 
         jPanel28.setLayout(new java.awt.BorderLayout());
@@ -659,37 +605,34 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         jPanel29.setPreferredSize(new java.awt.Dimension(278, 40));
         jPanel29.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
-        jToggleButton3.setText("Tìm [F3]");
-        jPanel29.add(jToggleButton3);
-
         jLabel3.setText("Sắp xếp theo:");
         jPanel29.add(jLabel3);
 
-        jCheckBox32.setText("Tên nhà cung cấp");
-        jCheckBox32.addActionListener(new java.awt.event.ActionListener() {
+        cbbSapXepNhaCungCap.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tên nhà cung cấp", "Mã nhà cung cấp" }));
+        jPanel29.add(cbbSapXepNhaCungCap);
+
+        btnLocNhaCungCap.setText("Lọc bảng [F6]");
+        btnLocNhaCungCap.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBox32ActionPerformed(evt);
+                btnLocNhaCungCapActionPerformed(evt);
             }
         });
-        jPanel29.add(jCheckBox32);
-
-        jCheckBox28.setText("Trạng thái");
-        jPanel29.add(jCheckBox28);
+        jPanel29.add(btnLocNhaCungCap);
 
         jPanel28.add(jPanel29, java.awt.BorderLayout.PAGE_START);
 
         jPanel30.setLayout(new javax.swing.BoxLayout(jPanel30, javax.swing.BoxLayout.LINE_AXIS));
 
-        jTable4.setModel(new javax.swing.table.DefaultTableModel(
+        tblNhaCungCap.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4", "Title 5", "Title 6", "Title 7", "Title 8", "Title 9", "Title 10", "Title 11"
+                "Mã NCC", "Tên NCC", "Địa chỉ", "Số điện thoại", "Email", "Loại thuốc"
             }
         ));
-        jTable4.setShowVerticalLines(true);
-        jScrollPane4.setViewportView(jTable4);
+        tblNhaCungCap.setShowVerticalLines(true);
+        jScrollPane4.setViewportView(tblNhaCungCap);
 
         jPanel30.add(jScrollPane4);
 
@@ -697,9 +640,9 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
 
         jPanel24.add(jPanel28, java.awt.BorderLayout.CENTER);
 
-        jPanel21.add(jPanel24, java.awt.BorderLayout.CENTER);
+        pnlNhaCungCap.add(jPanel24, java.awt.BorderLayout.CENTER);
 
-        jTabbedPane1.addTab("Nhà cung cấp", jPanel21);
+        jTabbedPane1.addTab("Nhà cung cấp", pnlNhaCungCap);
 
         jPanel31.setLayout(new java.awt.BorderLayout());
 
@@ -730,7 +673,7 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         jPanel33.setLayout(jPanel33Layout);
         jPanel33Layout.setHorizontalGroup(
             jPanel33Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1238, Short.MAX_VALUE)
+            .addGap(0, 1290, Short.MAX_VALUE)
         );
         jPanel33Layout.setVerticalGroup(
             jPanel33Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -820,7 +763,7 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         jPanel43.setLayout(jPanel43Layout);
         jPanel43Layout.setHorizontalGroup(
             jPanel43Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1238, Short.MAX_VALUE)
+            .addGap(0, 1290, Short.MAX_VALUE)
         );
         jPanel43Layout.setVerticalGroup(
             jPanel43Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1017,7 +960,7 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         jPanel53.setLayout(jPanel53Layout);
         jPanel53Layout.setHorizontalGroup(
             jPanel53Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1238, Short.MAX_VALUE)
+            .addGap(0, 1290, Short.MAX_VALUE)
         );
         jPanel53Layout.setVerticalGroup(
             jPanel53Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1174,7 +1117,7 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         jPanel63.setLayout(jPanel63Layout);
         jPanel63Layout.setHorizontalGroup(
             jPanel63Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1238, Short.MAX_VALUE)
+            .addGap(0, 1290, Short.MAX_VALUE)
         );
         jPanel63Layout.setVerticalGroup(
             jPanel63Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1321,7 +1264,7 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         jPanel73.setLayout(jPanel73Layout);
         jPanel73Layout.setHorizontalGroup(
             jPanel73Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1238, Short.MAX_VALUE)
+            .addGap(0, 1290, Short.MAX_VALUE)
         );
         jPanel73Layout.setVerticalGroup(
             jPanel73Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1601,29 +1544,13 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboBox4ActionPerformed
 
-    private void jCheckBox32ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox32ActionPerformed
+    private void txtNhapNhaCungCapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNhapNhaCungCapActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jCheckBox32ActionPerformed
+    }//GEN-LAST:event_txtNhapNhaCungCapActionPerformed
 
-    private void jRadioButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton5ActionPerformed
+    private void cbbThuocTinhNhaCungCapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbbThuocTinhNhaCungCapActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jRadioButton5ActionPerformed
-
-    private void jCheckBox25ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox25ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jCheckBox25ActionPerformed
-
-    private void jCheckBox24ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox24ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jCheckBox24ActionPerformed
-
-    private void jTextField4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField4ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField4ActionPerformed
-
-    private void jComboBox3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox3ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox3ActionPerformed
+    }//GEN-LAST:event_cbbThuocTinhNhaCungCapActionPerformed
 
     private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed
         // TODO add your handling code here:
@@ -1633,22 +1560,22 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboBox2ActionPerformed
 
-    private void jCheckBox6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox6ActionPerformed
+    private void cbxTPCNSanPhamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxTPCNSanPhamActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jCheckBox6ActionPerformed
+    }//GEN-LAST:event_cbxTPCNSanPhamActionPerformed
 
-    private void jCheckBox5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox5ActionPerformed
+    private void cbxTKKDSanPhamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxTKKDSanPhamActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jCheckBox5ActionPerformed
+    }//GEN-LAST:event_cbxTKKDSanPhamActionPerformed
 
-    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
+    private void txtNhapSanPhamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNhapSanPhamActionPerformed
         // TODO add your handling code here:
         
-    }//GEN-LAST:event_jTextField2ActionPerformed
+    }//GEN-LAST:event_txtNhapSanPhamActionPerformed
 
-    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+    private void cbbThuocTinhSanPhamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbbThuocTinhSanPhamActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox1ActionPerformed
+    }//GEN-LAST:event_cbbThuocTinhSanPhamActionPerformed
 
     private void jCheckBox12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox12ActionPerformed
         // TODO add your handling code here:
@@ -1678,26 +1605,21 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_jCheckBox19ActionPerformed
 
-    private void jCheckBox31ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox31ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jCheckBox31ActionPerformed
-
     private void jCheckBox70ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox70ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jCheckBox70ActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnTimKiemSanPhamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTimKiemSanPhamActionPerformed
         // TODO add your handling code here:
-        String thuocTinh = jComboBox1.getSelectedItem().toString();
-        String key = jTextField2.getText();
-        System.out.println("Xin chào, đây là chữ tiếng Việt: dầu ăn, vĩ thuốc, viên nén");
+        String thuocTinh = cbbThuocTinhSanPham.getSelectedItem().toString();
+        String key = txtNhapSanPham.getText();
         timSanPhamTheoThuocTinh(thuocTinh,key);
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_btnTimKiemSanPhamActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void btnLocSanPhamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLocSanPhamActionPerformed
         // TODO add your handling code here:
-        locSanPhamTheoTieuChi(getSQLSanPhamTheoThuocTinh(),jCheckBox5.isSelected(),jCheckBox3.isSelected(),jCheckBox6.isSelected());
-    }//GEN-LAST:event_jButton2ActionPerformed
+        locSanPhamTheoTieuChi(getSQLSanPhamTheoThuocTinh(),cbxTKKDSanPham.isSelected(),cbxTKDSanPham.isSelected(),cbxTPCNSanPham.isSelected());
+    }//GEN-LAST:event_btnLocSanPhamActionPerformed
 
     private void jTabbedPane1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jTabbedPane1StateChanged
         // TODO add your handling code here:
@@ -1707,43 +1629,78 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
 //        }
     }//GEN-LAST:event_jTabbedPane1StateChanged
 
-    private void jTextField2FocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jTextField2FocusGained
+    private void txtNhapSanPhamFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtNhapSanPhamFocusGained
         // TODO add your handling code here:
-        jTextField2.setText("");
-    }//GEN-LAST:event_jTextField2FocusGained
+        txtNhapSanPham.setText("");
+    }//GEN-LAST:event_txtNhapSanPhamFocusGained
 
-    private void jButton1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jButton1KeyTyped
-        // TODO add your handling code here:
-        
-    }//GEN-LAST:event_jButton1KeyTyped
-
-    private void jTextField2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField2KeyPressed
+    private void txtNhapSanPhamKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNhapSanPhamKeyPressed
         // TODO add your handling code here:
         if(evt.getKeyCode() == KeyEvent.VK_ENTER){
-            String key = jTextField2.getText();
-            timSanPhamTheoThuocTinh(jComboBox1.getSelectedItem().toString(), key);
+            String key = txtNhapSanPham.getText();
+            timSanPhamTheoThuocTinh(cbbThuocTinhSanPham.getSelectedItem().toString(), key);
         }
-    }//GEN-LAST:event_jTextField2KeyPressed
+    }//GEN-LAST:event_txtNhapSanPhamKeyPressed
 
-    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+    private void btnXemTatCaSanPhamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXemTatCaSanPhamActionPerformed
         // TODO add your handling code here:
         themSPVaoBang(SanPhamDAO.getAllTableSanPham());
-    }//GEN-LAST:event_jButton7ActionPerformed
+    }//GEN-LAST:event_btnXemTatCaSanPhamActionPerformed
+
+    private void jButton9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton9ActionPerformed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_jButton9ActionPerformed
+
+    private void btnXemTatCaNhaCungCapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXemTatCaNhaCungCapActionPerformed
+        // TODO add your handling code here:
+        themNCCVaoBang(NhaCungCapDAO.getAllNhaCungCap());
+    }//GEN-LAST:event_btnXemTatCaNhaCungCapActionPerformed
+
+    private void btnTimKiemNhaCungCapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTimKiemNhaCungCapActionPerformed
+        // TODO add your handling code here:
+        String thuocTinh = cbbThuocTinhNhaCungCap.getSelectedItem().toString();
+        String key = txtNhapNhaCungCap.getText();
+        timNhaCungCapTheoThuocTinh(thuocTinh,key);
+    }//GEN-LAST:event_btnTimKiemNhaCungCapActionPerformed
+
+    private void btnTimKiemNhaCungCapKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnTimKiemNhaCungCapKeyTyped
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnTimKiemNhaCungCapKeyTyped
+
+    private void btnLocNhaCungCapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLocNhaCungCapActionPerformed
+        // TODO add your handling code here:
+        locNhaCungCapTheoTieuChi(getSQLNhaCungCapTheoThuocTinh());
+    }//GEN-LAST:event_btnLocNhaCungCapActionPerformed
+
+    private void txtNhapNhaCungCapFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtNhapNhaCungCapFocusGained
+        // TODO add your handling code here:
+        txtNhapNhaCungCap.setText("");
+    }//GEN-LAST:event_txtNhapNhaCungCapFocusGained
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton btnLocNhaCungCap;
+    private javax.swing.JButton btnLocSanPham;
+    private javax.swing.JButton btnTimKiemNhaCungCap;
+    private javax.swing.JButton btnTimKiemSanPham;
+    private javax.swing.JButton btnXemTatCaNhaCungCap;
+    private javax.swing.JButton btnXemTatCaSanPham;
+    private javax.swing.JComboBox<String> cbbSapXepNhaCungCap;
+    private javax.swing.JComboBox<String> cbbSapXepSanPham;
+    private javax.swing.JComboBox<String> cbbThuocTinhNhaCungCap;
+    private javax.swing.JComboBox<String> cbbThuocTinhSanPham;
+    private javax.swing.JCheckBox cbxTKDSanPham;
+    private javax.swing.JCheckBox cbxTKKDSanPham;
+    private javax.swing.JCheckBox cbxTPCNSanPham;
     private javax.swing.JButton jButton13;
     private javax.swing.JButton jButton15;
     private javax.swing.JButton jButton16;
     private javax.swing.JButton jButton18;
     private javax.swing.JButton jButton19;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
-    private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
+    private javax.swing.JButton jButton9;
     private javax.swing.JCheckBox jCheckBox1;
     private javax.swing.JCheckBox jCheckBox12;
     private javax.swing.JCheckBox jCheckBox13;
@@ -1754,19 +1711,9 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
     private javax.swing.JCheckBox jCheckBox19;
     private javax.swing.JCheckBox jCheckBox20;
     private javax.swing.JCheckBox jCheckBox23;
-    private javax.swing.JCheckBox jCheckBox24;
-    private javax.swing.JCheckBox jCheckBox25;
-    private javax.swing.JCheckBox jCheckBox26;
     private javax.swing.JCheckBox jCheckBox27;
-    private javax.swing.JCheckBox jCheckBox28;
-    private javax.swing.JCheckBox jCheckBox3;
-    private javax.swing.JCheckBox jCheckBox30;
-    private javax.swing.JCheckBox jCheckBox31;
-    private javax.swing.JCheckBox jCheckBox32;
     private javax.swing.JCheckBox jCheckBox43;
-    private javax.swing.JCheckBox jCheckBox5;
     private javax.swing.JCheckBox jCheckBox54;
-    private javax.swing.JCheckBox jCheckBox6;
     private javax.swing.JCheckBox jCheckBox66;
     private javax.swing.JCheckBox jCheckBox68;
     private javax.swing.JCheckBox jCheckBox69;
@@ -1784,16 +1731,15 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
     private javax.swing.JCheckBox jCheckBox89;
     private javax.swing.JCheckBox jCheckBox90;
     private javax.swing.JCheckBox jCheckBox91;
-    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JComboBox<String> jComboBox10;
     private javax.swing.JComboBox<String> jComboBox2;
-    private javax.swing.JComboBox<String> jComboBox3;
     private javax.swing.JComboBox<String> jComboBox4;
     private javax.swing.JComboBox<String> jComboBox5;
     private javax.swing.JComboBox<String> jComboBox6;
     private javax.swing.JComboBox<String> jComboBox7;
     private javax.swing.JComboBox<String> jComboBox8;
-    private javax.swing.JComboBox<String> jComboBox9;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -1801,7 +1747,6 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel12;
     private javax.swing.JPanel jPanel13;
@@ -1812,12 +1757,10 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel18;
     private javax.swing.JPanel jPanel19;
     private javax.swing.JPanel jPanel20;
-    private javax.swing.JPanel jPanel21;
     private javax.swing.JPanel jPanel22;
     private javax.swing.JPanel jPanel23;
     private javax.swing.JPanel jPanel24;
     private javax.swing.JPanel jPanel25;
-    private javax.swing.JPanel jPanel26;
     private javax.swing.JPanel jPanel27;
     private javax.swing.JPanel jPanel28;
     private javax.swing.JPanel jPanel29;
@@ -1881,12 +1824,9 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel89;
     private javax.swing.JPanel jPanel9;
     private javax.swing.JPanel jPanel90;
-    private javax.swing.JPanel jPanel91;
     private javax.swing.JRadioButton jRadioButton1;
     private javax.swing.JRadioButton jRadioButton10;
-    private javax.swing.JRadioButton jRadioButton11;
     private javax.swing.JRadioButton jRadioButton2;
-    private javax.swing.JRadioButton jRadioButton5;
     private javax.swing.JRadioButton jRadioButton6;
     private javax.swing.JRadioButton jRadioButton7;
     private javax.swing.JRadioButton jRadioButton9;
@@ -1899,24 +1839,19 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane8;
     private javax.swing.JScrollPane jScrollPane9;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable jTable2;
     private javax.swing.JTable jTable3;
-    private javax.swing.JTable jTable4;
     private javax.swing.JTable jTable5;
     private javax.swing.JTable jTable6;
     private javax.swing.JTable jTable7;
     private javax.swing.JTable jTable8;
     private javax.swing.JTable jTable9;
-    private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField5;
     private javax.swing.JTextField jTextField6;
     private javax.swing.JTextField jTextField7;
     private javax.swing.JTextField jTextField8;
     private javax.swing.JTextField jTextField9;
     private javax.swing.JToggleButton jToggleButton2;
-    private javax.swing.JToggleButton jToggleButton3;
     private javax.swing.JToggleButton jToggleButton4;
     private javax.swing.JToggleButton jToggleButton5;
     private javax.swing.JToggleButton jToggleButton6;
@@ -1931,6 +1866,12 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
     private org.jdesktop.swingx.JXDatePicker jXDatePicker7;
     private org.jdesktop.swingx.JXDatePicker jXDatePicker8;
     private org.jdesktop.swingx.JXDatePicker jXDatePicker9;
+    private javax.swing.JPanel pnlNhaCungCap;
+    private javax.swing.JPanel pnlSanPham;
+    private javax.swing.JTable tblNhaCungCap;
+    private javax.swing.JTable tblSanPham;
+    private javax.swing.JTextField txtNhapNhaCungCap;
+    private javax.swing.JTextField txtNhapSanPham;
     // End of variables declaration//GEN-END:variables
     
 // Tra cứu sản phẩm
@@ -1974,8 +1915,8 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
     
     //lấy sql lấy dữ liệu từ csdl
     private String getSQLSanPhamTheoThuocTinh() {
-        String thuocTinh = jComboBox1.getSelectedItem().toString();
-        String key = jTextField2.getText();
+        String thuocTinh = cbbThuocTinhSanPham.getSelectedItem().toString();
+        String key = txtNhapSanPham.getText();
         StringBuilder sql = new StringBuilder();
         String select = "Select * from SanPham ";
         
@@ -2039,7 +1980,7 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
             tieuChi.append(") ");
             
             //sort theo
-            String sapXep = jComboBox9.getSelectedItem().toString();
+            String sapXep = cbbSapXepSanPham.getSelectedItem().toString();
             if(sapXep.equals("Mã sản phẩm")){
                 tieuChi.append(" order by BangTam.maSP ");
             }
@@ -2063,7 +2004,7 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
     }
 
     private void themSPVaoBang(ArrayList<SanPham> allTableSanPham) {
-        DefaultTableModel dtm = (DefaultTableModel) jTable2.getModel();
+        DefaultTableModel dtm = (DefaultTableModel) tblSanPham.getModel();
         dtm.setRowCount(0);
         for(SanPham spTam : allTableSanPham){
             Object[] sp = new Object[7];
@@ -2080,6 +2021,147 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
     
 //Hóa đơn
 //Nhà cung cấp
+        //Lấy dữ liệu từ csdl về theo mã, tên
+    private void timNhaCungCapTheoThuocTinh(String thuocTinh, String key) {
+        System.out.println(key);
+        StringBuilder sql = new StringBuilder();
+        String select = "Select * from NhaCungCap ";
+        
+        sql.append(select);
+        
+        //tìm theo thuộc tính
+        if(key.equalsIgnoreCase("Nhập [F3]") || key.equals("")){
+            return;
+        }
+        else if(key.length()>=0){
+            sql.append("where ");
+            //tìm theo cái gì
+            switch (thuocTinh) {
+                case "Mã nhà cung cấp":
+                    sql.append("maNCC like N'%");
+                    sql.append(key);
+                    sql.append("%',");
+                    break;
+
+                case "Tên nhà cung cấp":
+                    sql.append("tenNCC like N'%");
+                    sql.append(key);
+                    sql.append("%',");
+                    break;
+
+                default:
+                    throw new AssertionError();
+            }
+            sql.deleteCharAt(sql.length()-1);
+        }
+        
+        //Đưa danh sách trả về vào bảng
+        themNCCVaoBang(NhaCungCapDAO.getAllNhaCungCap(sql.toString()));
+    }
+    
+    //lấy sql lấy dữ liệu từ csdl
+    private String getSQLNhaCungCapTheoThuocTinh() {
+        String thuocTinh = cbbThuocTinhNhaCungCap.getSelectedItem().toString();
+        String key = txtNhapNhaCungCap.getText();
+        StringBuilder sql = new StringBuilder();
+        String select = "Select * from NhaCungCap ";
+        
+        sql.append(select);
+        
+        //tìm theo thuộc tính
+        if(key.length()>0){
+            sql.append("where ");
+            //tìm theo cái gì
+            switch (thuocTinh) {
+                case "Mã nhà cung cấp":
+                    sql.append("maNCC like N'%");
+                    sql.append(key);
+                    sql.append("%',");
+                    break;
+
+                case "Tên nhà cung cấp":
+                    sql.append("tenNCC like N'%");
+                    sql.append(key);
+                    sql.append("%',");
+                    break;
+
+                default:
+                    throw new AssertionError();
+            }
+            sql.deleteCharAt(sql.length()-1);
+        }
+        
+        //Đưa danh sách trả về vào bảng
+        return sql.toString();
+    }
+    
+    
+    //lấy sql
+    private void locNhaCungCapTheoTieuChi(String sqlSub) {
+        StringBuilder sql = new StringBuilder();
+        String select = "Select * from ";
+        
+        sql.append(select);
+        sql.append("(");
+        sql.append(sqlSub);
+        sql.append(") as BangTam ");
+        
+        //tìm theo tiêu chí
+        StringBuilder tieuChi = new StringBuilder();
+//        if(thuocKeDon || thuocKhongKeDon || tpChucNang){
+//            
+//            tieuChi.append("where loaiSanPham in(");
+//
+//            if(thuocKhongKeDon){
+//                tieuChi.append("'THUOC_KHONG_KE_DON',");
+//            }
+//            if(thuocKeDon){
+//                tieuChi.append("'THUOC_KE_DON',");
+//            }
+//            if(tpChucNang){
+//                tieuChi.append("'THUC_PHAM_CHUC_NANG',");
+//            }
+//            //Xóa dấu , cuối cùng
+//            tieuChi.deleteCharAt(tieuChi.length()-1);
+//           
+//            tieuChi.append(") ");
+//            
+            //sort theo
+            String sapXep = cbbSapXepNhaCungCap.getSelectedItem().toString();
+            if(sapXep.equals("Mã nhà cung cấp")){
+                tieuChi.append(" order by BangTam.maNCC ");
+            }
+            else{
+                tieuChi.append(" order by BangTam.tenNCC ");
+            }
+
+            //Thêm điều kiện danh mục vào sql
+            sql.append(tieuChi.toString());
+            System.out.println(tieuChi.toString());
+        
+        
+
+        //Đưa danh sách trả về vào bảng
+        themNCCVaoBang(NhaCungCapDAO.getAllNhaCungCap(sql.toString()));
+        System.out.println(sql);
+
+    }
+    
+    private void themNCCVaoBang(ArrayList<NhaCungCap> allTableCungCap) {
+        DefaultTableModel dtm = (DefaultTableModel) tblNhaCungCap.getModel();
+        dtm.setRowCount(0);
+        for(NhaCungCap nccTam : allTableCungCap){
+            Object[] ncc = new Object[6];
+            ncc[0] = nccTam.getMaNCC();
+            ncc[1] = nccTam.getTenNCC();
+            ncc[2] = nccTam.getDiaChi();
+            ncc[3] = nccTam.getSdt();
+            ncc[4] = nccTam.getEmail();
+            dtm.addRow(ncc);
+            System.out.println("hethongnhathuocduocankhang.gui.TraCuuChungGUI.themNCCVaoBang()");
+        }
+    }
+    
 //Khách hàng
 
     
