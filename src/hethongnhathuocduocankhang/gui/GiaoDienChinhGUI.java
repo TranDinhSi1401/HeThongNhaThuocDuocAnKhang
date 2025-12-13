@@ -5,7 +5,6 @@
 package hethongnhathuocduocankhang.gui;
 
 import hethongnhathuocduocankhang.entity.TaiKhoan;
-import hethongnhathuocduocankhang.menu.Menu;
 import hethongnhathuocduocankhang.menu.MenuEvent;
 import java.awt.Image;
 import java.awt.Toolkit;
@@ -25,7 +24,6 @@ public class GiaoDienChinhGUI extends javax.swing.JFrame {
 
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(GiaoDienChinhGUI.class.getName());
     private static TaiKhoan tk = null;
-    private Menu menu;
 
     /**
      * Creates new form GiaoDienChinhGUI
@@ -34,12 +32,20 @@ public class GiaoDienChinhGUI extends javax.swing.JFrame {
      */
     public GiaoDienChinhGUI(TaiKhoan tk) {
         initComponents();
+        // assign static reference early so handlers can safely read it
+        if (tk != null) {
+            GiaoDienChinhGUI.tk = tk;
+        }
+
         menu.setEvent(new MenuEvent() {
             @Override
             public void selected(int index, int subIndex) {
+                // use the stored static account and guard against null
+                TaiKhoan currentTk = GiaoDienChinhGUI.getTk();
+                boolean isQuanLy = currentTk != null && currentTk.isQuanLy();
 
                 if (index == 0 && subIndex == 0) {
-                    if (tk.isQuanLy()) {
+                    if (isQuanLy) {
                         showPanel(new DashBoardQuanLi());
                     } else {
                         showPanel(new DashBoardNhanVien());
@@ -110,11 +116,9 @@ public class GiaoDienChinhGUI extends javax.swing.JFrame {
                 
             }
         });
-        if (tk != null) {
-            GiaoDienChinhGUI.tk = tk;
-        }
-        
-        if (tk.isQuanLy()) {
+        // ensure we choose a default dashboard safely
+        TaiKhoan current = GiaoDienChinhGUI.getTk();
+        if (current != null && current.isQuanLy()) {
             showPanel(new DashBoardQuanLi());
         } else {
             showPanel(new DashBoardNhanVien());
@@ -173,6 +177,8 @@ public class GiaoDienChinhGUI extends javax.swing.JFrame {
         lblLogo = new javax.swing.JLabel();
         lblTenNV = new javax.swing.JLabel();
         lblChucVu = new javax.swing.JLabel();
+        scrollPaneWin111 = new hethongnhathuocduocankhang.scroll.win11.ScrollPaneWin11();
+        menu = new hethongnhathuocduocankhang.menu.Menu();
         pCenter = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -228,6 +234,10 @@ public class GiaoDienChinhGUI extends javax.swing.JFrame {
 
         pLeft.add(pLogo, java.awt.BorderLayout.PAGE_START);
 
+        scrollPaneWin111.setViewportView(menu);
+
+        pLeft.add(scrollPaneWin111, java.awt.BorderLayout.CENTER);
+
         getContentPane().add(pLeft, java.awt.BorderLayout.LINE_START);
 
         pCenter.setBackground(new java.awt.Color(255, 255, 255));
@@ -277,8 +287,10 @@ public class GiaoDienChinhGUI extends javax.swing.JFrame {
     private javax.swing.JLabel lblChucVu;
     private javax.swing.JLabel lblLogo;
     private javax.swing.JLabel lblTenNV;
+    private hethongnhathuocduocankhang.menu.Menu menu;
     private javax.swing.JPanel pCenter;
     private javax.swing.JPanel pLeft;
     private javax.swing.JPanel pLogo;
+    private hethongnhathuocduocankhang.scroll.win11.ScrollPaneWin11 scrollPaneWin111;
     // End of variables declaration//GEN-END:variables
 }
