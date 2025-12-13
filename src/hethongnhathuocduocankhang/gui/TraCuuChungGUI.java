@@ -6,9 +6,11 @@ package hethongnhathuocduocankhang.gui;
 
 import hethongnhathuocduocankhang.dao.KhachHangDAO;
 import hethongnhathuocduocankhang.dao.NhaCungCapDAO;
+import hethongnhathuocduocankhang.dao.NhanVienDAO;
 import hethongnhathuocduocankhang.dao.SanPhamDAO;
 import hethongnhathuocduocankhang.entity.KhachHang;
 import hethongnhathuocduocankhang.entity.NhaCungCap;
+import hethongnhathuocduocankhang.entity.NhanVien;
 import hethongnhathuocduocankhang.entity.SanPham;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -50,6 +52,9 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         mapKeyToFocus("F3", txtNhapNhaCungCap);
         
         //Nhân viên
+        mapKeyToClickButton("F4", btnXemTatCaNhanVien);
+        mapKeyToClickButton("F6", btnLocNhanVien);
+        mapKeyToFocus("F3", txtNhapNhanVien);
         
         //Hóa đơn
         
@@ -133,9 +138,6 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         jPanel63 = new javax.swing.JPanel();
         jPanel64 = new javax.swing.JPanel();
         jPanel65 = new javax.swing.JPanel();
-        jPanel66 = new javax.swing.JPanel();
-        cbxNhanVienNhanVien = new javax.swing.JCheckBox();
-        cbxQuanLyNhanVien = new javax.swing.JCheckBox();
         jPanel90 = new javax.swing.JPanel();
         cbxDangHoatDongNhanVien = new javax.swing.JCheckBox();
         cbxDaNghiViecNhanVien = new javax.swing.JCheckBox();
@@ -668,7 +670,7 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         jPanel62.setMinimumSize(new java.awt.Dimension(242, 50));
         jPanel62.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
-        cbbThuocTinhNhanVien.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Mã nhà cung cấp", "Tên nhà cung cấp", "..." }));
+        cbbThuocTinhNhanVien.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tên nhân viên", "Mã nhân viên", "Số điện thoại", "CCCD" }));
         cbbThuocTinhNhanVien.setMinimumSize(new java.awt.Dimension(163, 22));
         cbbThuocTinhNhanVien.setPreferredSize(new java.awt.Dimension(170, 22));
         cbbThuocTinhNhanVien.addActionListener(new java.awt.event.ActionListener() {
@@ -684,9 +686,19 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
                 txtNhapNhanVienActionPerformed(evt);
             }
         });
+        txtNhapNhanVien.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtNhapNhanVienKeyPressed(evt);
+            }
+        });
         jPanel62.add(txtNhapNhanVien);
 
         btnTimNhanVien.setText("Tìm kiếm");
+        btnTimNhanVien.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTimNhanVienActionPerformed(evt);
+            }
+        });
         jPanel62.add(btnTimNhanVien);
 
         pnlNhanVien.add(jPanel62, java.awt.BorderLayout.PAGE_START);
@@ -710,30 +722,6 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         jPanel65.setMaximumSize(new java.awt.Dimension(170, 65534));
         jPanel65.setPreferredSize(new java.awt.Dimension(170, 556));
         jPanel65.setLayout(new javax.swing.BoxLayout(jPanel65, javax.swing.BoxLayout.Y_AXIS));
-
-        jPanel66.setBorder(javax.swing.BorderFactory.createTitledBorder("Vai trò"));
-        jPanel66.setMaximumSize(new java.awt.Dimension(500, 32767));
-        jPanel66.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
-
-        cbxNhanVienNhanVien.setText("Nhân viên");
-        cbxNhanVienNhanVien.setPreferredSize(new java.awt.Dimension(100, 20));
-        cbxNhanVienNhanVien.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbxNhanVienNhanVienActionPerformed(evt);
-            }
-        });
-        jPanel66.add(cbxNhanVienNhanVien);
-
-        cbxQuanLyNhanVien.setText("Quản lý");
-        cbxQuanLyNhanVien.setPreferredSize(new java.awt.Dimension(100, 20));
-        cbxQuanLyNhanVien.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbxQuanLyNhanVienActionPerformed(evt);
-            }
-        });
-        jPanel66.add(cbxQuanLyNhanVien);
-
-        jPanel65.add(jPanel66);
 
         jPanel90.setBorder(javax.swing.BorderFactory.createTitledBorder("Trạng thái"));
         jPanel90.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
@@ -759,6 +747,11 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         jPanel69.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
         btnXemTatCaNhanVien.setText("Xem tất cả [F4]");
+        btnXemTatCaNhanVien.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnXemTatCaNhanVienActionPerformed(evt);
+            }
+        });
         jPanel69.add(btnXemTatCaNhanVien);
 
         jLabel7.setText("Sắp xếp theo:");
@@ -768,6 +761,11 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         jPanel69.add(cbbSapXepNhanVien);
 
         btnLocNhanVien.setText("Lọc bảng [F6]");
+        btnLocNhanVien.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLocNhanVienActionPerformed(evt);
+            }
+        });
         jPanel69.add(btnLocNhanVien);
 
         jPanel68.add(jPanel69, java.awt.BorderLayout.PAGE_START);
@@ -779,7 +777,7 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Mã nhân viên", "Họ tên đệm", "Tên", "Số điện thoại", "Giới tính", "Ngày sinh", "Quản lý", "Bị khóa"
+                "Mã nhân viên", "Họ tên đệm", "Tên", "Số điện thoại", "Giới tính", "Ngày sinh", "Bị khóa"
             }
         ));
         tblNhanVien.setShowVerticalLines(true);
@@ -1525,14 +1523,6 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboBox8ActionPerformed
 
-    private void cbxQuanLyNhanVienActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxQuanLyNhanVienActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cbxQuanLyNhanVienActionPerformed
-
-    private void cbxNhanVienNhanVienActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxNhanVienNhanVienActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cbxNhanVienNhanVienActionPerformed
-
     private void txtNhapNhanVienActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNhapNhanVienActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtNhapNhanVienActionPerformed
@@ -1736,6 +1726,31 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_txtNhapKhachHangKeyPressed
 
+    private void btnTimNhanVienActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTimNhanVienActionPerformed
+        // TODO add your handling code here:
+        String thuocTinh = cbbThuocTinhNhanVien.getSelectedItem().toString();
+        String key = txtNhapNhanVien.getText();
+        timNhanVienTheoThuocTinh(thuocTinh, key);
+    }//GEN-LAST:event_btnTimNhanVienActionPerformed
+
+    private void btnXemTatCaNhanVienActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXemTatCaNhanVienActionPerformed
+        // TODO add your handling code here:
+        themNhanVienVaoBang(NhanVienDAO.getAllNhanVien());
+    }//GEN-LAST:event_btnXemTatCaNhanVienActionPerformed
+
+    private void btnLocNhanVienActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLocNhanVienActionPerformed
+        // TODO add your handling code here:
+        locNhanVienTheoTieuChi();
+    }//GEN-LAST:event_btnLocNhanVienActionPerformed
+
+    private void txtNhapNhanVienKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNhapNhanVienKeyPressed
+        // TODO add your handling code here:
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER){
+            String key = txtNhapNhanVien.getText();
+            timSanPhamTheoThuocTinh(cbbThuocTinhNhanVien.getSelectedItem().toString(), key);
+        }
+    }//GEN-LAST:event_txtNhapNhanVienKeyPressed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnLocKhachHang;
     private javax.swing.JButton btnLocNhaCungCap;
@@ -1759,8 +1774,6 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
     private javax.swing.JComboBox<String> cbbThuocTinhSanPham;
     private javax.swing.JCheckBox cbxDaNghiViecNhanVien;
     private javax.swing.JCheckBox cbxDangHoatDongNhanVien;
-    private javax.swing.JCheckBox cbxNhanVienNhanVien;
-    private javax.swing.JCheckBox cbxQuanLyNhanVien;
     private javax.swing.JCheckBox cbxTKDSanPham;
     private javax.swing.JCheckBox cbxTKKDSanPham;
     private javax.swing.JCheckBox cbxTPCNSanPham;
@@ -1854,7 +1867,6 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel63;
     private javax.swing.JPanel jPanel64;
     private javax.swing.JPanel jPanel65;
-    private javax.swing.JPanel jPanel66;
     private javax.swing.JPanel jPanel68;
     private javax.swing.JPanel jPanel69;
     private javax.swing.JPanel jPanel7;
@@ -2374,6 +2386,81 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         }
     }
     
+    //nhân viên
+    // Nhân viên - tra cứu
+    private void timNhanVienTheoThuocTinh(String thuocTinh, String key) {
+        if(key == null || key.trim().isEmpty()) return;
+        switch (thuocTinh) {
+            case "Mã nhân viên": {
+                try {
+                    NhanVien nv = NhanVienDAO.getNhanVienTheoMaNV(key);
+                    ArrayList<NhanVien> ds = new ArrayList<>();
+                    if (nv != null) ds.add(nv);
+                    themNhanVienVaoBang(ds);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                break;
+            }
+            case "Tên nhân viên":
+                themNhanVienVaoBang(NhanVienDAO.timNVTheoTen(key));
+                break;
+            case "Số điện thoại":
+                themNhanVienVaoBang(NhanVienDAO.timNVTheoSDT(key));
+                break;
+            case "CCCD":
+                themNhanVienVaoBang(NhanVienDAO.timNVTheoCCCD(key));
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void locNhanVienTheoTieuChi() {
+        ArrayList<NhanVien> ketQua = new ArrayList<>();
+        boolean dangHoatDong = cbxDangHoatDongNhanVien.isSelected();
+        boolean daNghiViec = cbxDaNghiViecNhanVien.isSelected();
+
+        if(dangHoatDong && daNghiViec){
+            ketQua = NhanVienDAO.getAllNhanVien();
+        }
+        else if(dangHoatDong){
+            ketQua = NhanVienDAO.timNVTheoTrangThai(false); // nghiViec = false => đang hoạt động
+        }
+        else if(daNghiViec){
+            ketQua = NhanVienDAO.timNVTheoTrangThai(true);
+        }
+        else{
+            // none selected => show empty
+            ketQua = new ArrayList<>();
+        }
+
+        // sắp xếp
+        String sapXep = cbbSapXepNhanVien.getSelectedItem().toString();
+        if(sapXep.equals("Tên nhân viên")){
+            ketQua.sort((a,b) -> (a.getHoTenDem()+" "+a.getTen()).compareToIgnoreCase(b.getHoTenDem()+" "+b.getTen()));
+        } else if(sapXep.equals("Trạng thái")){
+            ketQua.sort((a,b) -> Boolean.compare(a.isNghiViec(), b.isNghiViec()));
+        }
+
+        themNhanVienVaoBang(ketQua);
+    }
+
+    private void themNhanVienVaoBang(ArrayList<NhanVien> dsNV) {
+        DefaultTableModel dtm = (DefaultTableModel) tblNhanVien.getModel();
+        dtm.setRowCount(0);
+        for(NhanVien nv : dsNV){
+            Object[] row = new Object[7];
+            row[0] = nv.getMaNV();
+            row[1] = nv.getHoTenDem();
+            row[2] = nv.getTen();
+            row[3] = nv.getSdt();
+            row[4] = nv.isGioiTinh() ? "Nam" : "Nữ";
+            row[5] = nv.getNgaySinh() != null ? nv.getNgaySinh().toString() : "";
+            row[6] = nv.isNghiViec()?"Có":"Không"; // Bị khóa / nghỉ việc
+            dtm.addRow(row);
+        }
+    }
     
     
 //Phím tắt
