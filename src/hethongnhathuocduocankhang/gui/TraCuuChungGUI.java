@@ -10,6 +10,7 @@ import hethongnhathuocduocankhang.dao.KhuyenMaiDAO;
 import hethongnhathuocduocankhang.dao.NhaCungCapDAO;
 import hethongnhathuocduocankhang.dao.NhanVienDAO;
 import hethongnhathuocduocankhang.dao.PhieuNhapDAO;
+import hethongnhathuocduocankhang.dao.PhieuTraHangDAO;
 import hethongnhathuocduocankhang.dao.SanPhamDAO;
 import hethongnhathuocduocankhang.entity.HoaDon;
 import hethongnhathuocduocankhang.entity.KhachHang;
@@ -17,6 +18,7 @@ import hethongnhathuocduocankhang.entity.KhuyenMai;
 import hethongnhathuocduocankhang.entity.NhaCungCap;
 import hethongnhathuocduocankhang.entity.NhanVien;
 import hethongnhathuocduocankhang.entity.PhieuNhap;
+import hethongnhathuocduocankhang.entity.PhieuTraHang;
 import hethongnhathuocduocankhang.entity.SanPham;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -272,7 +274,7 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         btnLocPhieuTraHang = new javax.swing.JButton();
         jPanel60 = new javax.swing.JPanel();
         jScrollPane7 = new javax.swing.JScrollPane();
-        jTable7 = new javax.swing.JTable();
+        tblPhieuTraHang = new javax.swing.JTable();
 
         setLayout(new javax.swing.BoxLayout(this, javax.swing.BoxLayout.LINE_AXIS));
 
@@ -1225,6 +1227,11 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         jPanel52.add(txtNhapPhieuTraHang);
 
         btnTimPhieuTraHang.setText("Tìm kiếm");
+        btnTimPhieuTraHang.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTimPhieuTraHangActionPerformed(evt);
+            }
+        });
         jPanel52.add(btnTimPhieuTraHang);
 
         pnlPhieuTraHang.add(jPanel52, java.awt.BorderLayout.PAGE_START);
@@ -1299,7 +1306,7 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
 
         jPanel60.setLayout(new javax.swing.BoxLayout(jPanel60, javax.swing.BoxLayout.LINE_AXIS));
 
-        jTable7.setModel(new javax.swing.table.DefaultTableModel(
+        tblPhieuTraHang.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
@@ -1307,8 +1314,8 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
                 "Mã phiếu trả", "Ngày lập phiếu trả hàng", "Mã nhân viên", "Mã hóa đơn", "Tổng tiền hoàn trả"
             }
         ));
-        jTable7.setShowVerticalLines(true);
-        jScrollPane7.setViewportView(jTable7);
+        tblPhieuTraHang.setShowVerticalLines(true);
+        jScrollPane7.setViewportView(tblPhieuTraHang);
 
         jPanel60.add(jScrollPane7);
 
@@ -1540,10 +1547,12 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
 
     private void btnXemTatCaPhieuTraHangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXemTatCaPhieuTraHangActionPerformed
         // TODO add your handling code here:
+        themPhieuTraHangVaoBang(PhieuTraHangDAO.getAllPhieuTraHangTraCuu());
     }//GEN-LAST:event_btnXemTatCaPhieuTraHangActionPerformed
 
     private void btnLocPhieuTraHangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLocPhieuTraHangActionPerformed
         // TODO add your handling code here:
+        locPhieuTraHangTheoNgay();
     }//GEN-LAST:event_btnLocPhieuTraHangActionPerformed
 
     private void cbbSapXepKhuyenMaiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbbSapXepKhuyenMaiActionPerformed
@@ -1597,6 +1606,13 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
     private void cbbSapXepPhieuNhapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbbSapXepPhieuNhapActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cbbSapXepPhieuNhapActionPerformed
+
+    private void btnTimPhieuTraHangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTimPhieuTraHangActionPerformed
+        // TODO add your handling code here:
+        String thuocTinh = cbbThuocTinhPhieuTraHang.getSelectedItem().toString();
+        String key = txtNhapPhieuTraHang.getText();
+        timPhieuTraHangTheoThuocTinh(thuocTinh, key);
+    }//GEN-LAST:event_btnTimPhieuTraHangActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnLocHoaDon;
@@ -1741,7 +1757,6 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane8;
     private javax.swing.JScrollPane jScrollPane9;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable jTable7;
     private javax.swing.JPanel pnlHoaDon;
     private javax.swing.JPanel pnlKhachHang;
     private javax.swing.JPanel pnlKhuyenMai;
@@ -1756,6 +1771,7 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
     private javax.swing.JTable tblNhaCungCap;
     private javax.swing.JTable tblNhanVien;
     private javax.swing.JTable tblPhieuNhap;
+    private javax.swing.JTable tblPhieuTraHang;
     private javax.swing.JTable tblSanPham;
     private javax.swing.JTextField txtNhapHoaDon;
     private javax.swing.JTextField txtNhapKhachHang;
@@ -2554,6 +2570,86 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         }
         
         themPhieuNhapVaoBang(dsPN);
+    }
+
+//Phiếu trả hàng
+    private void themPhieuTraHangVaoBang(ArrayList<PhieuTraHang> dsPTH) {
+        DefaultTableModel dtm = (DefaultTableModel) tblPhieuTraHang.getModel();
+        dtm.setRowCount(0);
+        for (PhieuTraHang pth : dsPTH) {
+            Object[] row = new Object[5];
+            row[0] = pth.getMaPhieuTraHang();
+            row[1] = pth.getNhanVien().getHoTenDem() + " " + pth.getNhanVien().getTen();
+            row[2] = dinhDangNgay(pth.getNgayLapPhieuTraHang().toLocalDate().toString());
+            row[3] = dinhDangTien(pth.getTongTienHoanTra());
+            row[4] = ""; // Ghi chú - có thể thêm sau nếu có trường này
+            dtm.addRow(row);
+        }
+    }
+
+    private void timPhieuTraHangTheoThuocTinh(String thuocTinh, String key) {
+        ArrayList<PhieuTraHang> dsPTH = new ArrayList<>();
+        if (key.equals("") || key.equals("Nhập...")) {
+            return;
+        }
+        switch (thuocTinh) {
+            case "Mã phiếu trả":
+                PhieuTraHang pth = PhieuTraHangDAO.getPhieuTraHangTheoMa(key);
+                if (pth != null) {
+                    dsPTH.add(pth);
+                }
+                break;
+            case "Tên nhân viên":
+                // Giả sử có phương thức tìm theo tên NV, nhưng hiện tại chưa có, có thể thêm sau
+                // dsPTH = PhieuTraHangDAO.timPTTheoTenNV(key);
+                break;
+            default:
+                break;
+        }
+        themPhieuTraHangVaoBang(dsPTH);
+    }
+
+    private void locPhieuTraHangTheoNgay() {
+        LocalDate ngayBatDau = null;
+        LocalDate ngayKetThuc = null;
+        
+        if (dpkTheoNgayPhieuTraHang.getDate() != null) {
+            ngayBatDau = LocalDate.ofInstant(dpkTheoNgayPhieuTraHang.getDate().toInstant(), java.time.ZoneId.systemDefault());
+        }
+        if (dpkThoiGianKetThucPhieuTraHang.getDate() != null) {
+            ngayKetThuc = LocalDate.ofInstant(dpkThoiGianKetThucPhieuTraHang.getDate().toInstant(), java.time.ZoneId.systemDefault());
+        }
+        
+        ArrayList<PhieuTraHang> dsPTH = new ArrayList<>();
+        
+        if (ngayBatDau != null && ngayKetThuc != null) {
+            // Tìm theo khoảng ngày
+            if (ngayBatDau.isAfter(ngayKetThuc)) {
+                // Swap nếu ngày bắt đầu > ngày kết thúc
+                LocalDate temp = ngayBatDau;
+                ngayBatDau = ngayKetThuc;
+                ngayKetThuc = temp;
+            }
+            dsPTH = PhieuTraHangDAO.timPTTheoKhoangNgay(ngayBatDau, ngayKetThuc);
+        } else if (ngayBatDau != null) {
+            // Tìm theo ngày cụ thể
+            dsPTH = PhieuTraHangDAO.timPTTheoNgayLap(ngayBatDau);
+        } else if (ngayKetThuc != null) {
+            // Nếu chỉ có ngày kết thúc, coi như tìm một ngày
+            dsPTH = PhieuTraHangDAO.timPTTheoNgayLap(ngayKetThuc);
+        } else {
+            // Nếu không có ngày, hiển thị tất cả
+            dsPTH = PhieuTraHangDAO.getAllPhieuTraHangTraCuu();
+        }
+        // Sắp xếp
+        String sapXep = cbbSapXepPhieuTraHang.getSelectedItem().toString();
+        if (sapXep.equals("Ngày tạo")) {
+            dsPTH.sort((a, b) -> b.getNgayLapPhieuTraHang().compareTo(a.getNgayLapPhieuTraHang()));
+        } else if (sapXep.equals("Tổng tiền")) {
+            dsPTH.sort((a, b) -> Double.compare(b.getTongTienHoanTra(), a.getTongTienHoanTra()));
+        }
+        
+        themPhieuTraHangVaoBang(dsPTH);
     }
 
 
