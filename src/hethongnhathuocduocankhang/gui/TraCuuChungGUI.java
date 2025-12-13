@@ -6,11 +6,13 @@ package hethongnhathuocduocankhang.gui;
 
 import hethongnhathuocduocankhang.dao.HoaDonDAO;
 import hethongnhathuocduocankhang.dao.KhachHangDAO;
+import hethongnhathuocduocankhang.dao.KhuyenMaiDAO;
 import hethongnhathuocduocankhang.dao.NhaCungCapDAO;
 import hethongnhathuocduocankhang.dao.NhanVienDAO;
 import hethongnhathuocduocankhang.dao.SanPhamDAO;
 import hethongnhathuocduocankhang.entity.HoaDon;
 import hethongnhathuocduocankhang.entity.KhachHang;
+import hethongnhathuocduocankhang.entity.KhuyenMai;
 import hethongnhathuocduocankhang.entity.NhaCungCap;
 import hethongnhathuocduocankhang.entity.NhanVien;
 import hethongnhathuocduocankhang.entity.SanPham;
@@ -19,6 +21,7 @@ import java.awt.event.KeyEvent;
 import java.beans.PropertyChangeListener;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import javax.swing.AbstractAction;
@@ -86,6 +89,10 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         //Phiếu trả
         
         //Khuyến mãi
+        mapKeyToClickButton("F4", btnXemTatCaKhuyenMai);
+        mapKeyToClickButton("F6", btnLocKhuyenMai);
+        mapKeyToFocus("F3", txtNhapKhuyenMai);
+        
     }
 
     /**
@@ -810,22 +817,22 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         cbbThuocTinhKhuyenMai.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Mã khuyến mãi" }));
         cbbThuocTinhKhuyenMai.setMinimumSize(new java.awt.Dimension(163, 22));
         cbbThuocTinhKhuyenMai.setPreferredSize(new java.awt.Dimension(170, 22));
-        cbbThuocTinhKhuyenMai.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbbThuocTinhKhuyenMaiActionPerformed(evt);
-            }
-        });
         jPanel42.add(cbbThuocTinhKhuyenMai);
 
         txtNhapKhuyenMai.setPreferredSize(new java.awt.Dimension(1000, 22));
-        txtNhapKhuyenMai.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtNhapKhuyenMaiActionPerformed(evt);
+        txtNhapKhuyenMai.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtNhapKhuyenMaiKeyPressed(evt);
             }
         });
         jPanel42.add(txtNhapKhuyenMai);
 
         btnTimKhuyenMai.setText("Tìm kiếm");
+        btnTimKhuyenMai.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTimKhuyenMaiActionPerformed(evt);
+            }
+        });
         jPanel42.add(btnTimKhuyenMai);
 
         pnlKhuyenMai.add(jPanel42, java.awt.BorderLayout.PAGE_START);
@@ -898,7 +905,7 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         jLabel5.setText("Sắp xếp theo:");
         jPanel49.add(jLabel5);
 
-        cbbSapXepKhuyenMai.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ngày bắt đầu khuyến mãi", "Tên khuyến mãi", "Trạng thái" }));
+        cbbSapXepKhuyenMai.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ngày bắt đầu khuyến mãi", "Trạng thái" }));
         cbbSapXepKhuyenMai.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbbSapXepKhuyenMaiActionPerformed(evt);
@@ -1320,15 +1327,8 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
 
     private void cbbThuocTinhPhieuTraHangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbbThuocTinhPhieuTraHangActionPerformed
         // TODO add your handling code here:
+        
     }//GEN-LAST:event_cbbThuocTinhPhieuTraHangActionPerformed
-
-    private void txtNhapKhuyenMaiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNhapKhuyenMaiActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtNhapKhuyenMaiActionPerformed
-
-    private void cbbThuocTinhKhuyenMaiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbbThuocTinhKhuyenMaiActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_cbbThuocTinhKhuyenMaiActionPerformed
 
     private void txtNhapKhachHangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNhapKhachHangActionPerformed
         // TODO add your handling code here:
@@ -1532,15 +1532,32 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
 
     private void btnXemTatCaKhuyenMaiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXemTatCaKhuyenMaiActionPerformed
         // TODO add your handling code here:
+        themKhuyenMaiVaoBang(KhuyenMaiDAO.getAllKhuyenMai());
     }//GEN-LAST:event_btnXemTatCaKhuyenMaiActionPerformed
 
     private void btnLocKhuyenMaiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLocKhuyenMaiActionPerformed
         // TODO add your handling code here:
+        locKhuyenMaiTheoNgay();
     }//GEN-LAST:event_btnLocKhuyenMaiActionPerformed
 
     private void cbbSapXepPhieuTraHangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbbSapXepPhieuTraHangActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cbbSapXepPhieuTraHangActionPerformed
+
+    private void btnTimKhuyenMaiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTimKhuyenMaiActionPerformed
+        // TODO add your handling code here:
+        String thuocTinh = cbbThuocTinhKhuyenMai.getSelectedItem().toString();
+        String key = txtNhapKhuyenMai.getText();
+        timKhuyenMaiTheoThuocTinh(thuocTinh, key);
+    }//GEN-LAST:event_btnTimKhuyenMaiActionPerformed
+
+    private void txtNhapKhuyenMaiKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNhapKhuyenMaiKeyPressed
+        // TODO add your handling code here:
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER){
+            String key = txtNhapKhuyenMai.getText();
+            timKhuyenMaiTheoThuocTinh(cbbThuocTinhKhuyenMai.getSelectedItem().toString(), key);
+        }
+    }//GEN-LAST:event_txtNhapKhuyenMaiKeyPressed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnLocHoaDon;
@@ -2306,6 +2323,114 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         }
         
         themHoaDonVaoBang(dsHD);
+    }
+ 
+//Khuyến mãi
+    private void timKhuyenMaiTheoThuocTinh(String thuocTinh, String key) {
+        ArrayList<KhuyenMai> dsKM = new ArrayList<>();
+        if (key.equals("") || key.equals("Nhập...")) {
+            return;
+        }
+        switch (thuocTinh) {
+            case "Mã khuyến mãi":
+                KhuyenMai km = KhuyenMaiDAO.timKMTheoMa(key);
+                if (km != null) {
+                    dsKM.add(km);
+                }
+                break;
+            case "Mô tả":
+                dsKM = KhuyenMaiDAO.timKMTheoMoTa(key);
+                break;
+            default:
+                break;
+        }
+        themKhuyenMaiVaoBang(dsKM);
+    }
+        
+    private void themKhuyenMaiVaoBang(ArrayList<KhuyenMai> khuyenMai) {
+        DefaultTableModel dtm = (DefaultTableModel) tblKhuyenMai.getModel();
+        dtm.setRowCount(0);
+        for(KhuyenMai km : khuyenMai){
+            Object[] row = new Object[8];
+            row[0] = km.getMaKhuyenMai();
+            row[1] = km.getMoTa();
+            row[2] = km.getPhanTram();
+            row[3] = km.getLoaiKhuyenMai();
+            row[4] = km.getNgayBatDau();
+            row[5] = km.getNgayKetThuc();
+            row[6] = km.getSoLuongToiThieu();
+            row[7] = km.getSoLuongToiDa();
+            dtm.addRow(row);
+        }
+    }
+
+    private void locKhuyenMaiTheoNgay() {
+        ArrayList<KhuyenMai> dsKM = KhuyenMaiDAO.getAllKhuyenMai();
+        //lọc theo ngày
+        LocalDate ngayBatDau = null;
+        LocalDate ngayKetThuc = null;
+        
+        if (dpkTheoNgayKhuyenMai.getDate() != null) {
+            ngayBatDau = LocalDate.ofInstant(dpkTheoNgayKhuyenMai.getDate().toInstant(), java.time.ZoneId.systemDefault());
+        }
+        if (dpkThoiGianKetThucKhuyenMai.getDate() != null) {
+            ngayKetThuc = LocalDate.ofInstant(dpkThoiGianKetThucKhuyenMai.getDate().toInstant(), java.time.ZoneId.systemDefault());
+        }
+        
+                // Lọc theo trạng thái
+        boolean hoatDong = cbxHoatDongKhuyenMai.isSelected();
+        boolean chuaHoatDong = cbxChuaHoatDongKhuyenMai.isSelected();
+        boolean hetHan = cbxHetHanKhuyenMai.isSelected();
+        
+        if (hoatDong || chuaHoatDong || hetHan) {
+            LocalDateTime now = LocalDateTime.now();
+            dsKM = dsKM.stream()
+                .filter(km -> {
+                    boolean isHoatDong = !km.getNgayBatDau().isAfter(now) && !km.getNgayKetThuc().isBefore(now);
+                    boolean isChuaHoatDong = km.getNgayBatDau().isAfter(now);
+                    boolean isHetHan = km.getNgayKetThuc().isBefore(now);
+                    return (hoatDong && isHoatDong) || (chuaHoatDong && isChuaHoatDong) || (hetHan && isHetHan);
+                })
+                .collect(java.util.stream.Collectors.toCollection(ArrayList::new));
+        }
+        
+        
+        // Lọc theo khoảng ngày
+        if (ngayBatDau != null && ngayKetThuc != null) {
+            if (ngayBatDau.isAfter(ngayKetThuc)) {
+                LocalDate temp = ngayBatDau;
+                ngayBatDau = ngayKetThuc;
+                ngayKetThuc = temp;
+            }
+            final LocalDate start = ngayBatDau;
+            final LocalDate end = ngayKetThuc;
+            dsKM = dsKM.stream()
+                .filter(km -> {
+                    LocalDate ngayBD = km.getNgayBatDau().toLocalDate();
+                    return !ngayBD.isBefore(start) && !ngayBD.isAfter(end);
+                })
+                .collect(java.util.stream.Collectors.toCollection(ArrayList::new));
+        } else if (ngayBatDau != null) {
+            final LocalDate start = ngayBatDau;
+            dsKM = dsKM.stream()
+                .filter(km -> km.getNgayBatDau().toLocalDate().equals(start))
+                .collect(java.util.stream.Collectors.toCollection(ArrayList::new));
+        } else if (ngayKetThuc != null) {
+            final LocalDate end = ngayKetThuc;
+            dsKM = dsKM.stream()
+                .filter(km -> km.getNgayKetThuc().toLocalDate().equals(end))
+                .collect(java.util.stream.Collectors.toCollection(ArrayList::new));
+        }
+        // Sắp xếp
+        String sapXep = cbbSapXepKhuyenMai.getSelectedItem().toString();
+        if (sapXep.equals("Ngày bắt đầu khuyến mãi")) {
+            dsKM.sort((a, b) -> b.getNgayBatDau().compareTo(a.getNgayBatDau()));
+        } else if (sapXep.equals("Trạng thái")) {
+            // Có thể sort theo trạng thái, nhưng để đơn giản, sort theo ngày kết thúc
+            dsKM.sort((a, b) -> b.getNgayKetThuc().compareTo(a.getNgayKetThuc()));
+        }
+        
+        themKhuyenMaiVaoBang(dsKM);
     }
 
 
