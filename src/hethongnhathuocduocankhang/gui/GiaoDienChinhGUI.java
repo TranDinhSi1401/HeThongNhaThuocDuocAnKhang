@@ -5,10 +5,14 @@
 package hethongnhathuocduocankhang.gui;
 
 import hethongnhathuocduocankhang.entity.TaiKhoan;
+import hethongnhathuocduocankhang.menu.Menu;
 import hethongnhathuocduocankhang.menu.MenuEvent;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.net.URL;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -21,6 +25,7 @@ public class GiaoDienChinhGUI extends javax.swing.JFrame {
 
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(GiaoDienChinhGUI.class.getName());
     private static TaiKhoan tk = null;
+    private Menu menu;
 
     /**
      * Creates new form GiaoDienChinhGUI
@@ -29,7 +34,6 @@ public class GiaoDienChinhGUI extends javax.swing.JFrame {
      */
     public GiaoDienChinhGUI(TaiKhoan tk) {
         initComponents();
-
         menu.setEvent(new MenuEvent() {
             @Override
             public void selected(int index, int subIndex) {
@@ -72,7 +76,11 @@ public class GiaoDienChinhGUI extends javax.swing.JFrame {
                     showPanel(new TraHangGUI());
                 }
                 if (index == 4 && subIndex == 0) {
-                    showPanel(new LoSanPhamGUI());
+                    try {
+                        showPanel(new LoSanPhamGUI());
+                    } catch (SQLException ex) {
+                        Logger.getLogger(GiaoDienChinhGUI.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 } 
                 if (index == 5 && subIndex == 0) {
                     showPanel(new TraCuuChungGUI());
@@ -165,8 +173,6 @@ public class GiaoDienChinhGUI extends javax.swing.JFrame {
         lblLogo = new javax.swing.JLabel();
         lblTenNV = new javax.swing.JLabel();
         lblChucVu = new javax.swing.JLabel();
-        scrollPaneWin111 = new hethongnhathuocduocankhang.scroll.win11.ScrollPaneWin11();
-        menu = new hethongnhathuocduocankhang.menu.Menu();
         pCenter = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -222,10 +228,6 @@ public class GiaoDienChinhGUI extends javax.swing.JFrame {
 
         pLeft.add(pLogo, java.awt.BorderLayout.PAGE_START);
 
-        scrollPaneWin111.setViewportView(menu);
-
-        pLeft.add(scrollPaneWin111, java.awt.BorderLayout.CENTER);
-
         getContentPane().add(pLeft, java.awt.BorderLayout.LINE_START);
 
         pCenter.setBackground(new java.awt.Color(255, 255, 255));
@@ -275,10 +277,8 @@ public class GiaoDienChinhGUI extends javax.swing.JFrame {
     private javax.swing.JLabel lblChucVu;
     private javax.swing.JLabel lblLogo;
     private javax.swing.JLabel lblTenNV;
-    private hethongnhathuocduocankhang.menu.Menu menu;
     private javax.swing.JPanel pCenter;
     private javax.swing.JPanel pLeft;
     private javax.swing.JPanel pLogo;
-    private hethongnhathuocduocankhang.scroll.win11.ScrollPaneWin11 scrollPaneWin111;
     // End of variables declaration//GEN-END:variables
 }

@@ -129,19 +129,6 @@
             </Component>
           </SubComponents>
         </Container>
-        <Container class="hethongnhathuocduocankhang.scroll.win11.ScrollPaneWin11" name="scrollPaneWin111">
-          <Constraints>
-            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
-              <BorderConstraints direction="Center"/>
-            </Constraint>
-          </Constraints>
-
-          <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
-          <SubComponents>
-            <Component class="hethongnhathuocduocankhang.menu.Menu" name="menu">
-            </Component>
-          </SubComponents>
-        </Container>
       </SubComponents>
     </Container>
     <Container class="javax.swing.JPanel" name="pCenter">
