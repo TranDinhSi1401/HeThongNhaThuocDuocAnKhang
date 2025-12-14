@@ -111,7 +111,15 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
         tblThemSanPham.getColumnModel().getColumn(10).setPreferredWidth(60);
         tblThemSanPham.getColumnModel().getColumn(11).setPreferredWidth(110);
 
-        
+        tblKetQua.getColumnModel().getColumn(0).setPreferredWidth(70);
+        tblKetQua.getColumnModel().getColumn(1).setPreferredWidth(250);
+        tblKetQua.getColumnModel().getColumn(2).setPreferredWidth(150);
+        tblKetQua.getColumnModel().getColumn(3).setPreferredWidth(230);
+        tblKetQua.getColumnModel().getColumn(4).setPreferredWidth(60);
+        tblKetQua.getColumnModel().getColumn(5).setPreferredWidth(75);
+        tblKetQua.getColumnModel().getColumn(6).setPreferredWidth(75);
+        tblKetQua.getColumnModel().getColumn(7).setPreferredWidth(80);
+
 
         tblThemSanPham.getTableHeader().setReorderingAllowed(false);
         tblLoSanPham.getTableHeader().setReorderingAllowed(false);
@@ -489,7 +497,7 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Mã sản phẩm", "Tên sản phẩm", "Mã lô", "Nhà cung cấp", "Số lượng", "Ngày sản xuất", "Ngày hết hạn", "Trạng thái"
+                "Mã sản phẩm", "Tên sản phẩm", "Mã lô", "Nhà cung cấp", "Số lượng(viên)", "Ngày sản xuất", "Ngày hết hạn", "Trạng thái"
             }
         ));
         jScrollPane2.setViewportView(tblKetQua);

@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -98,6 +99,20 @@ public class QuanLyLoBUS {
         return newDate;
     }
  
+    private ArrayList<LoSanPham> timLoTheotenNhaCungCap(ArrayList<LoSanPham> dsLo, String tenNCC){
+        ArrayList<LoSanPham> ds = new ArrayList<>();
+        NhaCungCap ncc = NhaCungCapDAO.timMotNCCTheoTen(tenNCC);
+        if(ncc!=null){
+            for(LoSanPham lo:dsLo){
+                String maSanPham = lo.getSanPham().getMaSP();
+                NhaCungCap nccTheoLo = NhaCungCapDAO.timNCCTheoMa(SanPhamCungCapDAO.getSanPhamCungCap(maSanPham).getNhaCungCap().getMaNCC());
+                if(ncc.getTenNCC() == null ? nccTheoLo.getTenNCC() == null : ncc.getTenNCC().equals(nccTheoLo.getTenNCC())){
+                    ds.add(lo);
+                }
+            }
+        }
+        return ds;
+    }
     
     public ArrayList<LoSanPham> timKiemLoVoiNhieuDieuKien(String tieuChi, String noiDung, String trangThai){    
         Map<String, Object> ds = thongKe(LoSanPhamDAO.dsLoSanPham());
@@ -112,21 +127,12 @@ public class QuanLyLoBUS {
         String loaiTimKiem = tieuChi.toLowerCase();
 
         if(loaiTimKiem.equals("nhà cung cấp") && noiDung != null){
-            NhaCungCap ncc = NhaCungCapDAO.timMotNCCTheoTen(noiDung); 
-            if(ncc != null){
-                ArrayList<LoSanPham> dsloTheoNhaCungCap = NhaCungCapDAO.getDanhSachLoTheoMaNCC(ncc.getMaNCC());
-                java.util.Set<String> maLoNCCSet = dsloTheoNhaCungCap.stream()
-                    .map(LoSanPham::getMaLoSanPham) 
-                    .collect(Collectors.toSet());
-
-                List<LoSanPham> ketQuaCuoiCung = dsLoDaLocTheoTrangThai.stream()
-                    .filter(lo -> maLoNCCSet.contains(lo.getMaLoSanPham())) 
-                    .collect(Collectors.toList());
-                return new ArrayList<>(ketQuaCuoiCung);
-            } else {
-                return new ArrayList<>(); 
-            }
+            dsLoDaLocTheoTrangThai = timLoTheotenNhaCungCap(dsLoDaLocTheoTrangThai, noiDung);
+            return dsLoDaLocTheoTrangThai;
         }
+                
+                
+
         String noiDungLowerCase = (noiDung == null) ? null : noiDung.toLowerCase();
         List<LoSanPham> ketQuaLoc = dsLoDaLocTheoTrangThai.stream().filter(lo -> {
             if (noiDung == null) return true; // Nếu không nhập nội dung, không cần lọc thêm
