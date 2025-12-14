@@ -5,6 +5,7 @@
 package hethongnhathuocduocankhang.menu;
 
 
+import com.kitfox.svg.app.beans.SVGIcon;
 import hethongnhathuocduocankhang.gui.GiaoDienChinhGUI;
 import java.awt.Color;
 import java.awt.Component;
@@ -14,6 +15,7 @@ import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.Rectangle2D;
+import java.net.URISyntaxException;
 import java.net.URL;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -75,13 +77,45 @@ public class Menu extends JComponent{
         }        
     }
     
+    private Icon getIconSVG(int index) {
+        try {
+            String path = "/resources/images/icon/" + index + ".svg";
+            SVGIcon svgIcon = new SVGIcon();
+            svgIcon.setSvgURI(getClass().getResource(path).toURI());
+
+            // Quan trọng: tắt autosize và bật scale-to-fit
+            svgIcon.setAutosize(0);
+            svgIcon.setScaleToFit(true);
+
+            // Đặt kích thước mong muốn
+            svgIcon.setPreferredSize(new java.awt.Dimension(30,30));
+
+            // Nếu vẫn to, có thể giảm scale trực tiếp
+            // svgIcon.setScale(0.8f);
+
+            return svgIcon;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    
     private void addMenu(String menuName, int index){
         int length = menuItems[index].length;
         MenuItem item = new MenuItem(menuName, index, length > 1);
+        //icon PNG
         Icon icon = getIcon(index);
         if(icon != null) {
             item.setIcon(icon);
         }
+        
+//        //icon SVG
+//        Icon icon = getIconSVG(index);
+//        if(icon != null) {
+//            item.setIcon(icon);
+//        }
+
         item.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {

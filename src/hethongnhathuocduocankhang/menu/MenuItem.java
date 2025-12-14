@@ -63,6 +63,7 @@ public class MenuItem extends JButton{
         this.subMenuIndex = subMenuIndex;
         this.length = length;
         setBorder(new EmptyBorder(9, 33, 9, 10));
+        //set màu itemsubmenu
         setBackground(new Color(21, 101, 192));
         setOpaque(true);
     }
