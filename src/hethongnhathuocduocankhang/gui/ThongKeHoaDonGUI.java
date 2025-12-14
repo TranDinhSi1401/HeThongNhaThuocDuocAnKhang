@@ -4,6 +4,9 @@
  */
 package hethongnhathuocduocankhang.gui;
 
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+
 /**
  *
  * @author MINH KHANG
@@ -26,30 +29,124 @@ public class ThongKeHoaDonGUI extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel1 = new javax.swing.JPanel();
+        jPanel2 = new javax.swing.JPanel();
+        jPanel8 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
+        jComboBox1 = new javax.swing.JComboBox<>();
+        jPanel9 = new javax.swing.JPanel();
+        jLabel4 = new javax.swing.JLabel();
+        jTextField2 = new javax.swing.JTextField();
+        jPanel10 = new javax.swing.JPanel();
+        jTextField3 = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        jPanel3 = new javax.swing.JPanel();
+        jLabel2 = new javax.swing.JLabel();
+        jPanel4 = new javax.swing.JPanel();
+        jTextField1 = new javax.swing.JTextField();
+        jButton1 = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jTable1 = new javax.swing.JTable();
 
-        jLabel1.setText("Hóa đơn");
+        setLayout(new java.awt.BorderLayout(0, 10));
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(145, 145, 145)
-                .addComponent(jLabel1)
-                .addContainerGap(209, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(125, 125, 125)
-                .addComponent(jLabel1)
-                .addContainerGap(159, Short.MAX_VALUE))
-        );
+        jPanel1.setLayout(new javax.swing.BoxLayout(jPanel1, javax.swing.BoxLayout.Y_AXIS));
+
+        jPanel2.setLayout(new javax.swing.BoxLayout(jPanel2, javax.swing.BoxLayout.X_AXIS));
+
+        jPanel8.setLayout(new java.awt.BorderLayout(0, 5));
+
+        jLabel1.setText("Loại thời gian");
+        jPanel8.add(jLabel1, java.awt.BorderLayout.PAGE_START);
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ngày", "Tháng ", "Quý", "Năm" }));
+        jPanel8.add(jComboBox1, java.awt.BorderLayout.CENTER);
+
+        jPanel2.add(jPanel8);
+
+        jPanel9.setLayout(new java.awt.BorderLayout(0, 5));
+
+        jLabel4.setText("Từ ngày");
+        jPanel9.add(jLabel4, java.awt.BorderLayout.PAGE_START);
+
+        jTextField2.setText("Chọn ngày");
+        jPanel9.add(jTextField2, java.awt.BorderLayout.CENTER);
+
+        jPanel2.add(Box.createHorizontalStrut(10));
+
+        jPanel2.add(jPanel9);
+
+        jPanel10.setLayout(new java.awt.BorderLayout(0, 5));
+
+        jTextField3.setText("Chọn ngày");
+        jPanel10.add(jTextField3, java.awt.BorderLayout.CENTER);
+
+        jLabel3.setText("Tới ngày");
+        jPanel10.add(jLabel3, java.awt.BorderLayout.PAGE_START);
+
+        jPanel2.add(Box.createHorizontalStrut(10));
+
+        jPanel2.add(jPanel10);
+
+        jPanel1.add(jPanel2);
+
+        jPanel3.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 0, 5));
+
+        jLabel2.setText("Từ khóa tìm kiếm");
+        jPanel3.add(jLabel2);
+
+        jPanel1.add(jPanel3);
+
+        jPanel4.setLayout(new java.awt.BorderLayout());
+
+        jTextField1.setText("Tìm kiếm ...");
+        jPanel4.add(jTextField1, java.awt.BorderLayout.CENTER);
+
+        jButton1.setText("Tìm kiếm");
+        jPanel4.add(jButton1, java.awt.BorderLayout.LINE_END);
+
+        jPanel1.add(jPanel4);
+
+        // padding: top, left, bottom, right
+        jPanel1.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        add(jPanel1, java.awt.BorderLayout.PAGE_START);
+
+        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        jScrollPane1.setViewportView(jTable1);
+
+        add(jScrollPane1, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
+    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel10;
+    private javax.swing.JPanel jPanel2;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel8;
+    private javax.swing.JPanel jPanel9;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JTable jTable1;
+    private javax.swing.JTextField jTextField1;
+    private javax.swing.JTextField jTextField2;
+    private javax.swing.JTextField jTextField3;
     // End of variables declaration//GEN-END:variables
 }
