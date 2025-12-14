@@ -1197,7 +1197,7 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Mã phiếu nhập", "Ngày tạo", "Mã nhân viên", "Tổng tiền", "Ghi chú"
+                "Mã phiếu nhập", "Ngày tạo", "Tên nhân viên", "Tổng tiền", "Ghi chú"
             }
         ));
         tblPhieuNhap.setShowVerticalLines(true);
@@ -1321,7 +1321,7 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Mã phiếu trả", "Ngày lập phiếu trả hàng", "Mã nhân viên", "Mã hóa đơn", "Tổng tiền hoàn trả"
+                "Mã phiếu trả", "Ngày lập phiếu trả hàng", "Tên nhân viên", "Mã hóa đơn", "Tổng tiền hoàn trả"
             }
         ));
         tblPhieuTraHang.setShowVerticalLines(true);
@@ -2508,8 +2508,8 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         for (PhieuNhap pn : dsPN) {
             Object[] row = new Object[5];
             row[0] = pn.getMaPhieuNhap();
-            row[1] = pn.getNv().getHoTenDem() + " " + pn.getNv().getTen();
-            row[2] = dinhDangNgay(pn.getNgayTao().toString());
+            row[2] = pn.getNv().getHoTenDem() + " " + pn.getNv().getTen();
+            row[1] = dinhDangNgay(pn.getNgayTao().toString());
             row[3] = dinhDangTien(pn.getTongTien());
             row[4] = pn.getGhiChu();
             dtm.addRow(row);
@@ -2589,10 +2589,10 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         for (PhieuTraHang pth : dsPTH) {
             Object[] row = new Object[5];
             row[0] = pth.getMaPhieuTraHang();
-            row[1] = pth.getNhanVien().getHoTenDem() + " " + pth.getNhanVien().getTen();
-            row[2] = dinhDangNgay(pth.getNgayLapPhieuTraHang().toLocalDate().toString());
-            row[3] = dinhDangTien(pth.getTongTienHoanTra());
-            row[4] = ""; // Ghi chú - có thể thêm sau nếu có trường này
+            row[2] = pth.getNhanVien().getHoTenDem() + " " + pth.getNhanVien().getTen();
+            row[1] = dinhDangNgay(pth.getNgayLapPhieuTraHang().toLocalDate().toString());
+            row[4] = dinhDangTien(pth.getTongTienHoanTra());
+            row[3] = pth.getHoaDon().getMaHoaDon(); // Ghi chú - có thể thêm sau nếu có trường này
             dtm.addRow(row);
         }
     }

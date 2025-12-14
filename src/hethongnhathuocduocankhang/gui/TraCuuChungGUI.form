@@ -2091,7 +2091,7 @@
                                   <Table columnCount="5" rowCount="0">
                                     <Column editable="true" title="M&#xe3; phi&#x1ebf;u nh&#x1ead;p" type="java.lang.Object"/>
                                     <Column editable="true" title="Ng&#xe0;y t&#x1ea1;o" type="java.lang.Object"/>
-                                    <Column editable="true" title="M&#xe3; nh&#xe2;n vi&#xea;n" type="java.lang.Object"/>
+                                    <Column editable="true" title="T&#xea;n nh&#xe2;n vi&#xea;n" type="java.lang.Object"/>
                                     <Column editable="true" title="T&#x1ed5;ng ti&#x1ec1;n" type="java.lang.Object"/>
                                     <Column editable="true" title="Ghi ch&#xfa;" type="java.lang.Object"/>
                                   </Table>
@@ -2384,7 +2384,7 @@
                                   <Table columnCount="5" rowCount="0">
                                     <Column editable="true" title="M&#xe3; phi&#x1ebf;u tr&#x1ea3;" type="java.lang.Object"/>
                                     <Column editable="true" title="Ng&#xe0;y l&#x1ead;p phi&#x1ebf;u tr&#x1ea3; h&#xe0;ng" type="java.lang.Object"/>
-                                    <Column editable="true" title="M&#xe3; nh&#xe2;n vi&#xea;n" type="java.lang.Object"/>
+                                    <Column editable="true" title="T&#xea;n nh&#xe2;n vi&#xea;n" type="java.lang.Object"/>
                                     <Column editable="true" title="M&#xe3; h&#xf3;a &#x111;&#x1a1;n" type="java.lang.Object"/>
                                     <Column editable="true" title="T&#x1ed5;ng ti&#x1ec1;n ho&#xe0;n tr&#x1ea3;" type="java.lang.Object"/>
                                   </Table>
