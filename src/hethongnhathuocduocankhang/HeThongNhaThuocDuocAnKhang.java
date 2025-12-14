@@ -5,6 +5,12 @@
 package hethongnhathuocduocankhang;
 
 
+import com.formdev.flatlaf.FlatClientProperties;
+import com.formdev.flatlaf.FlatLaf;
+import com.formdev.flatlaf.FlatLightLaf;
+import com.formdev.flatlaf.extras.FlatAnimatedLafChange;
+import com.formdev.flatlaf.fonts.roboto.FlatRobotoFont;
+import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import hethongnhathuocduocankhang.connectDB.ConnectDB;
 import hethongnhathuocduocankhang.dao.KhachHangDAO;
 import hethongnhathuocduocankhang.dao.LoSanPhamDAO;
@@ -14,10 +20,12 @@ import hethongnhathuocduocankhang.entity.LoSanPham;
 import hethongnhathuocduocankhang.gui.DangNhapGUI;
 import hethongnhathuocduocankhang.gui.GiaoDienChinhGUI;
 import hethongnhathuocduocankhang.gui.SplashScreen;
+import java.awt.Font;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
+import javax.swing.UIManager;
 
 /**
  *
@@ -29,6 +37,21 @@ public class HeThongNhaThuocDuocAnKhang {
      */
     public static void main(String[] args) {
         java.awt.EventQueue.invokeLater(() -> {
+            
+            //set up làm đẹp
+            FlatRobotoFont.install();
+            FlatLaf.registerCustomDefaultsSource("raven.theme");
+            UIManager.put("defaultFont", new Font(FlatRobotoFont.FAMILY, Font.PLAIN, 13));
+            
+            //animation
+            FlatAnimatedLafChange.showSnapshot();
+            // ... thay đổi content pane, update UI
+            FlatAnimatedLafChange.hideSnapshotWithAnimation();
+            
+            //áp dụng làm đẹp
+            FlatLightLaf.setup();     // Theme sáng hiện đại
+            
+
             SplashScreen ss = new SplashScreen(0);
             SwingWorker<Void, Void> worker = new SwingWorker<>() {
                 @Override

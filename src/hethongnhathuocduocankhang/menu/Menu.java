@@ -109,6 +109,12 @@ public class Menu extends JComponent{
         JPanel panel = new JPanel(new MigLayout("wrap 1, fillx, inset 0, gapy 0", "fill"));
         panel.setName(index + "");
         panel.setOpaque(false);
+        
+        // áp vào màu sắc cho submenu
+        panel.setOpaque(true);
+        panel.setBackground(new Color(25, 118, 210));
+        //
+        
         for(int i = 1; i < length; i++) {
             MenuItem subItem = new MenuItem(menuItems[index][i], i, false);
             subItem.addActionListener(new ActionListener() {
