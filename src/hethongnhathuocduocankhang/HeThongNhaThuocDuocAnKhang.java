@@ -39,18 +39,14 @@ public class HeThongNhaThuocDuocAnKhang {
     public static void main(String[] args) {
         java.awt.EventQueue.invokeLater(() -> {
             
-            //set up làm đẹp
+            //set up làm đẹp ... thay đổi content pane, update UI
             FlatRobotoFont.install();
             FlatLaf.registerCustomDefaultsSource("raven.theme");
             UIManager.put("defaultFont", new Font(FlatRobotoFont.FAMILY, Font.PLAIN, 13));
-            
             //animation
-            FlatAnimatedLafChange.showSnapshot();
-            // ... thay đổi content pane, update UI
             FlatAnimatedLafChange.hideSnapshotWithAnimation();
-            
             //áp dụng làm đẹp
-            FlatLightLaf.setup();     // Theme sáng hiện đại
+            FlatLightLaf.setup();
             
             
             SplashScreen ss = new SplashScreen(0);
