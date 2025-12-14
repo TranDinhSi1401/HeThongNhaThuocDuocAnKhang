@@ -26,6 +26,7 @@ import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
 import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 /**
  *
@@ -51,7 +52,7 @@ public class HeThongNhaThuocDuocAnKhang {
             //áp dụng làm đẹp
             FlatLightLaf.setup();     // Theme sáng hiện đại
             
-
+            
             SplashScreen ss = new SplashScreen(0);
             SwingWorker<Void, Void> worker = new SwingWorker<>() {
                 @Override
