@@ -5,6 +5,7 @@
 package hethongnhathuocduocankhang.menu;
 
 
+import hethongnhathuocduocankhang.gui.GiaoDienChinhGUI;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
@@ -26,6 +27,7 @@ import net.miginfocom.swing.MigLayout;
 public class Menu extends JComponent{
     private MenuEvent event;
     private MigLayout layout;
+    private boolean isQuanLy = GiaoDienChinhGUI.getTk().isQuanLy();
     private final String [][]menuItems= new String[][]{
         {"Tổng quan"},
         {"Bán hàng"},
@@ -51,9 +53,17 @@ public class Menu extends JComponent{
         setLayout(layout);
         setOpaque(true);
         //Menu Items
-        for(int i = 0; i < menuItems.length; i++){
-            addMenu(menuItems[i][0], i);
+        if(isQuanLy) {
+            for(int i = 0; i < menuItems.length; i++){
+                addMenu(menuItems[i][0], i);
+            }
+        }else {
+            for(int i = 0; i < menuItems.length; i++){
+                if(i == 0 || i == 1 || i == 3 || i == 5 || i == 8)
+                    addMenu(menuItems[i][0], i);
+            }
         }
+        
     }
     
     private Icon getIcon(int index) {
