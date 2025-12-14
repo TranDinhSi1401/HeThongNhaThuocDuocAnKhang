@@ -19,15 +19,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import javax.swing.JOptionPane;
 
 /**
  *
  * @author admin
  */
-public class QuanLyLoBUS {
-    LoSanPhamDAO loSanPhamDao= new LoSanPhamDAO();
-    
+public class QuanLyLoBUS {    
         public String tinhTrangThaiLo(LoSanPham lo) {
         if (lo.isDaHuy()) {
             return "Đã hủy";
@@ -165,4 +162,5 @@ public class QuanLyLoBUS {
             return true;
         return false;
     }
+    
 }
