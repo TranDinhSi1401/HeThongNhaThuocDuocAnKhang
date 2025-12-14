@@ -162,17 +162,9 @@ public class TraHangGUI extends javax.swing.JPanel {
                 txtNhapMaHoaDonFocusGained(evt);
             }
         });
-        txtNhapMaHoaDon.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtNhapMaHoaDonActionPerformed(evt);
-            }
-        });
         txtNhapMaHoaDon.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 txtNhapMaHoaDonKeyPressed(evt);
-            }
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtNhapMaHoaDonKeyTyped(evt);
             }
         });
         jPanel25.add(txtNhapMaHoaDon);
@@ -450,10 +442,6 @@ public class TraHangGUI extends javax.swing.JPanel {
         add(jTabbedPane1);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtNhapMaHoaDonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNhapMaHoaDonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtNhapMaHoaDonActionPerformed
-
     private void btnXoaDongActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaDongActionPerformed
         // TODO add your handling code here:
         DefaultTableModel dtm = (DefaultTableModel) tblTraHang.getModel();
@@ -639,11 +627,6 @@ public class TraHangGUI extends javax.swing.JPanel {
     private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField3ActionPerformed
-
-    private void txtNhapMaHoaDonKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNhapMaHoaDonKeyTyped
-        // TODO add your handling code here:
-        
-    }//GEN-LAST:event_txtNhapMaHoaDonKeyTyped
 
     private void jPanel8KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jPanel8KeyPressed
         // TODO add your handling code here:
@@ -834,7 +817,6 @@ public class TraHangGUI extends javax.swing.JPanel {
         rowData[10] = maCTHD;
         dtm.addRow(rowData);        
         taoLyDo();
-        
     }
     
     public double boDinhDangTien(String formatted) {
