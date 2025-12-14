@@ -11,7 +11,7 @@
     <AuxValue name="FormSettings_listenerGenerationStyle" type="java.lang.Integer" value="0"/>
     <AuxValue name="FormSettings_variablesLocal" type="java.lang.Boolean" value="false"/>
     <AuxValue name="FormSettings_variablesModifier" type="java.lang.Integer" value="2"/>
-    <AuxValue name="designerSize" type="java.awt.Dimension" value="-84,-19,0,5,115,114,0,18,106,97,118,97,46,97,119,116,46,68,105,109,101,110,115,105,111,110,65,-114,-39,-41,-84,95,68,20,2,0,2,73,0,6,104,101,105,103,104,116,73,0,5,119,105,100,116,104,120,112,0,0,2,-45,0,0,5,-59"/>
+    <AuxValue name="designerSize" type="java.awt.Dimension" value="-84,-19,0,5,115,114,0,18,106,97,118,97,46,97,119,116,46,68,105,109,101,110,115,105,111,110,65,-114,-39,-41,-84,95,68,20,2,0,2,73,0,6,104,101,105,103,104,116,73,0,5,119,105,100,116,104,120,112,0,0,1,124,0,0,5,-59"/>
   </AuxValues>
 
   <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBoxLayout"/>
@@ -26,867 +26,6 @@
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout"/>
       <SubComponents>
-        <Container class="javax.swing.JPanel" name="pnlSanPham">
-          <Constraints>
-            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-              <JTabbedPaneConstraints tabName="S&#x1ea3;n ph&#x1ea9;m">
-                <Property name="tabTitle" type="java.lang.String" value="S&#x1ea3;n ph&#x1ea9;m"/>
-              </JTabbedPaneConstraints>
-            </Constraint>
-          </Constraints>
-
-          <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
-          <SubComponents>
-            <Container class="javax.swing.JPanel" name="jPanel4">
-              <Properties>
-                <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                  <Dimension value="[242, 50]"/>
-                </Property>
-              </Properties>
-              <Constraints>
-                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
-                  <BorderConstraints direction="First"/>
-                </Constraint>
-              </Constraints>
-
-              <Layout class="org.netbeans.modules.form.compat2.layouts.DesignFlowLayout">
-                <Property name="alignment" type="int" value="0"/>
-              </Layout>
-              <SubComponents>
-                <Component class="javax.swing.JComboBox" name="cbbThuocTinhSanPham">
-                  <Properties>
-                    <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                      <StringArray count="2">
-                        <StringItem index="0" value="M&#xe3; s&#x1ea3;n ph&#x1ea9;m"/>
-                        <StringItem index="1" value="T&#xea;n s&#x1ea3;n ph&#x1ea9;m"/>
-                      </StringArray>
-                    </Property>
-                    <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                      <Dimension value="[163, 22]"/>
-                    </Property>
-                    <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                      <Dimension value="[170, 22]"/>
-                    </Property>
-                  </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cbbThuocTinhSanPhamActionPerformed"/>
-                  </Events>
-                  <AuxValues>
-                    <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
-                  </AuxValues>
-                </Component>
-                <Component class="javax.swing.JTextField" name="txtNhapSanPham">
-                  <Properties>
-                    <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                      <Dimension value="[800, 22]"/>
-                    </Property>
-                  </Properties>
-                  <Events>
-                    <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="txtNhapSanPhamFocusGained"/>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtNhapSanPhamActionPerformed"/>
-                    <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtNhapSanPhamKeyPressed"/>
-                  </Events>
-                </Component>
-                <Component class="javax.swing.JButton" name="btnTimKiemSanPham">
-                  <Properties>
-                    <Property name="text" type="java.lang.String" value="T&#xec;m ki&#x1ebf;m"/>
-                  </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnTimKiemSanPhamActionPerformed"/>
-                  </Events>
-                </Component>
-              </SubComponents>
-            </Container>
-            <Container class="javax.swing.JPanel" name="jPanel5">
-              <Constraints>
-                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
-                  <BorderConstraints direction="Last"/>
-                </Constraint>
-              </Constraints>
-
-              <Layout>
-                <DimensionLayout dim="0">
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <EmptySpace min="0" pref="1477" max="32767" attributes="0"/>
-                  </Group>
-                </DimensionLayout>
-                <DimensionLayout dim="1">
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <EmptySpace min="0" pref="100" max="32767" attributes="0"/>
-                  </Group>
-                </DimensionLayout>
-              </Layout>
-            </Container>
-            <Container class="javax.swing.JPanel" name="jPanel6">
-              <Properties>
-                <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                  <Dimension value="[630, 556]"/>
-                </Property>
-              </Properties>
-              <Constraints>
-                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
-                  <BorderConstraints direction="Center"/>
-                </Constraint>
-              </Constraints>
-
-              <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
-              <SubComponents>
-                <Container class="javax.swing.JPanel" name="jPanel7">
-                  <Properties>
-                    <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                      <Dimension value="[170, 65534]"/>
-                    </Property>
-                    <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                      <Dimension value="[170, 556]"/>
-                    </Property>
-                  </Properties>
-                  <Constraints>
-                    <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
-                      <BorderConstraints direction="Before"/>
-                    </Constraint>
-                  </Constraints>
-
-                  <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBoxLayout">
-                    <Property name="axis" type="int" value="1"/>
-                  </Layout>
-                  <SubComponents>
-                    <Container class="javax.swing.JPanel" name="jPanel1">
-                      <Properties>
-                        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
-                          <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
-                            <TitledBorder title="Theo danh m&#x1ee5;c"/>
-                          </Border>
-                        </Property>
-                        <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                          <Dimension value="[500, 32767]"/>
-                        </Property>
-                      </Properties>
-
-                      <Layout>
-                        <DimensionLayout dim="0">
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="102" attributes="0">
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="0" attributes="0">
-                                      <Component id="cbxTPCNSanPham" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      <Component id="cbxTKKDSanPham" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      <Component id="cbxTKDSanPham" alignment="0" min="-2" pref="111" max="-2" attributes="0"/>
-                                  </Group>
-                                  <EmptySpace pref="24" max="32767" attributes="0"/>
-                              </Group>
-                          </Group>
-                        </DimensionLayout>
-                        <DimensionLayout dim="1">
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="102" alignment="0" attributes="0">
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="cbxTKKDSanPham" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="cbxTKDSanPham" min="-2" max="-2" attributes="0"/>
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="cbxTPCNSanPham" min="-2" pref="20" max="-2" attributes="0"/>
-                                  <EmptySpace pref="454" max="32767" attributes="0"/>
-                              </Group>
-                          </Group>
-                        </DimensionLayout>
-                      </Layout>
-                      <SubComponents>
-                        <Component class="javax.swing.JCheckBox" name="cbxTKKDSanPham">
-                          <Properties>
-                            <Property name="text" type="java.lang.String" value="Thu&#x1ed1;c kh&#xf4;ng k&#xea; &#x111;&#x1a1;n"/>
-                          </Properties>
-                          <Events>
-                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cbxTKKDSanPhamActionPerformed"/>
-                          </Events>
-                        </Component>
-                        <Component class="javax.swing.JCheckBox" name="cbxTKDSanPham">
-                          <Properties>
-                            <Property name="text" type="java.lang.String" value="Thu&#x1ed1;c k&#xea; &#x111;&#x1a1;n"/>
-                          </Properties>
-                        </Component>
-                        <Component class="javax.swing.JCheckBox" name="cbxTPCNSanPham">
-                          <Properties>
-                            <Property name="text" type="java.lang.String" value="TP ch&#x1ee9;c n&#x103;ng"/>
-                          </Properties>
-                          <Events>
-                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cbxTPCNSanPhamActionPerformed"/>
-                          </Events>
-                        </Component>
-                      </SubComponents>
-                    </Container>
-                  </SubComponents>
-                </Container>
-                <Container class="javax.swing.JPanel" name="jPanel9">
-                  <Constraints>
-                    <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
-                      <BorderConstraints direction="Center"/>
-                    </Constraint>
-                  </Constraints>
-
-                  <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
-                  <SubComponents>
-                    <Container class="javax.swing.JPanel" name="jPanel3">
-                      <Properties>
-                        <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                          <Dimension value="[278, 40]"/>
-                        </Property>
-                      </Properties>
-                      <Constraints>
-                        <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
-                          <BorderConstraints direction="First"/>
-                        </Constraint>
-                      </Constraints>
-
-                      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignFlowLayout">
-                        <Property name="alignment" type="int" value="0"/>
-                      </Layout>
-                      <SubComponents>
-                        <Component class="javax.swing.JButton" name="btnXemTatCaSanPham">
-                          <Properties>
-                            <Property name="text" type="java.lang.String" value="Xem t&#x1ea5;t c&#x1ea3; [F4]"/>
-                          </Properties>
-                          <Events>
-                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnXemTatCaSanPhamActionPerformed"/>
-                          </Events>
-                        </Component>
-                        <Component class="javax.swing.JLabel" name="jLabel1">
-                          <Properties>
-                            <Property name="text" type="java.lang.String" value="S&#x1eaf;p x&#x1ebf;p theo:"/>
-                          </Properties>
-                        </Component>
-                        <Component class="javax.swing.JComboBox" name="cbbSapXepSanPham">
-                          <Properties>
-                            <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                              <StringArray count="3">
-                                <StringItem index="0" value="M&#xe3; s&#x1ea3;n ph&#x1ea9;m"/>
-                                <StringItem index="1" value="T&#xea;n s&#x1ea3;n ph&#x1ea9;m"/>
-                                <StringItem index="2" value=" "/>
-                              </StringArray>
-                            </Property>
-                          </Properties>
-                          <AuxValues>
-                            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
-                          </AuxValues>
-                        </Component>
-                        <Component class="javax.swing.JButton" name="btnLocSanPham">
-                          <Properties>
-                            <Property name="text" type="java.lang.String" value="L&#x1ecd;c b&#x1ea3;ng [F6]"/>
-                          </Properties>
-                          <Events>
-                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnLocSanPhamActionPerformed"/>
-                          </Events>
-                        </Component>
-                      </SubComponents>
-                    </Container>
-                    <Container class="javax.swing.JPanel" name="jPanel8">
-                      <Constraints>
-                        <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
-                          <BorderConstraints direction="Center"/>
-                        </Constraint>
-                      </Constraints>
-
-                      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBoxLayout"/>
-                      <SubComponents>
-                        <Container class="javax.swing.JScrollPane" name="jScrollPane2">
-                          <AuxValues>
-                            <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
-                          </AuxValues>
-
-                          <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
-                          <SubComponents>
-                            <Component class="javax.swing.JTable" name="tblSanPham">
-                              <Properties>
-                                <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                                  <Table columnCount="7" rowCount="0">
-                                    <Column editable="true" title="M&#xe3; s&#x1ea3;n ph&#x1ea9;m" type="java.lang.Object"/>
-                                    <Column editable="true" title="T&#xea;n s&#x1ea3;n ph&#x1ea9;m" type="java.lang.Object"/>
-                                    <Column editable="true" title="Lo&#x1ea1;i s&#x1ea3;n ph&#x1ea9;m" type="java.lang.Object"/>
-                                    <Column editable="true" title="M&#xf4; t&#x1ea3;" type="java.lang.Object"/>
-                                    <Column editable="true" title="Th&#xe0;nh ph&#x1ea7;n" type="java.lang.Object"/>
-                                    <Column editable="true" title="T&#x1ed3;n t&#x1ed1;i thi&#x1ec3;u" type="java.lang.Object"/>
-                                    <Column editable="true" title="T&#x1ed3;n t&#x1ed1;i &#x111;a" type="java.lang.Object"/>
-                                  </Table>
-                                </Property>
-                                <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
-                                  <TableColumnModel selectionModel="0">
-                                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                                      <Title/>
-                                      <Editor/>
-                                      <Renderer/>
-                                    </Column>
-                                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                                      <Title/>
-                                      <Editor/>
-                                      <Renderer/>
-                                    </Column>
-                                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                                      <Title/>
-                                      <Editor/>
-                                      <Renderer/>
-                                    </Column>
-                                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                                      <Title/>
-                                      <Editor/>
-                                      <Renderer/>
-                                    </Column>
-                                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                                      <Title/>
-                                      <Editor/>
-                                      <Renderer/>
-                                    </Column>
-                                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                                      <Title/>
-                                      <Editor/>
-                                      <Renderer/>
-                                    </Column>
-                                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                                      <Title/>
-                                      <Editor/>
-                                      <Renderer/>
-                                    </Column>
-                                  </TableColumnModel>
-                                </Property>
-                                <Property name="selectionMode" type="int" value="2"/>
-                                <Property name="selectionModel" type="javax.swing.ListSelectionModel" editor="org.netbeans.modules.form.editors2.JTableSelectionModelEditor">
-                                  <JTableSelectionModel selectionMode="2"/>
-                                </Property>
-                                <Property name="showGrid" type="boolean" value="false"/>
-                                <Property name="showVerticalLines" type="boolean" value="true"/>
-                                <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
-                                  <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
-                                </Property>
-                              </Properties>
-                            </Component>
-                          </SubComponents>
-                        </Container>
-                      </SubComponents>
-                    </Container>
-                  </SubComponents>
-                </Container>
-              </SubComponents>
-            </Container>
-          </SubComponents>
-        </Container>
-        <Container class="javax.swing.JPanel" name="pnlKhachHang">
-          <Constraints>
-            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-              <JTabbedPaneConstraints tabName="Kh&#xe1;ch h&#xe0;ng">
-                <Property name="tabTitle" type="java.lang.String" value="Kh&#xe1;ch h&#xe0;ng"/>
-              </JTabbedPaneConstraints>
-            </Constraint>
-          </Constraints>
-
-          <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
-          <SubComponents>
-            <Container class="javax.swing.JPanel" name="jPanel32">
-              <Properties>
-                <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                  <Dimension value="[242, 50]"/>
-                </Property>
-              </Properties>
-              <Constraints>
-                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
-                  <BorderConstraints direction="First"/>
-                </Constraint>
-              </Constraints>
-
-              <Layout class="org.netbeans.modules.form.compat2.layouts.DesignFlowLayout">
-                <Property name="alignment" type="int" value="0"/>
-              </Layout>
-              <SubComponents>
-                <Component class="javax.swing.JComboBox" name="cbbThuocTinhKhachHang">
-                  <Properties>
-                    <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                      <StringArray count="3">
-                        <StringItem index="0" value="S&#x1ed1; &#x111;i&#x1ec7;n tho&#x1ea1;i"/>
-                        <StringItem index="1" value="T&#xea;n kh&#xe1;ch h&#xe0;ng"/>
-                        <StringItem index="2" value="M&#xe3; kh&#xe1;ch h&#xe0;ng"/>
-                      </StringArray>
-                    </Property>
-                    <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                      <Dimension value="[163, 22]"/>
-                    </Property>
-                    <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                      <Dimension value="[170, 22]"/>
-                    </Property>
-                  </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cbbThuocTinhKhachHangActionPerformed"/>
-                  </Events>
-                  <AuxValues>
-                    <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
-                  </AuxValues>
-                </Component>
-                <Component class="javax.swing.JTextField" name="txtNhapKhachHang">
-                  <Properties>
-                    <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                      <Dimension value="[1000, 22]"/>
-                    </Property>
-                  </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtNhapKhachHangActionPerformed"/>
-                    <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtNhapKhachHangKeyPressed"/>
-                  </Events>
-                </Component>
-                <Component class="javax.swing.JButton" name="btnTimKhachHang">
-                  <Properties>
-                    <Property name="text" type="java.lang.String" value="T&#xec;m ki&#x1ebf;m"/>
-                  </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnTimKhachHangActionPerformed"/>
-                  </Events>
-                </Component>
-              </SubComponents>
-            </Container>
-            <Container class="javax.swing.JPanel" name="jPanel33">
-              <Constraints>
-                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
-                  <BorderConstraints direction="Last"/>
-                </Constraint>
-              </Constraints>
-
-              <Layout>
-                <DimensionLayout dim="0">
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <EmptySpace min="0" pref="1477" max="32767" attributes="0"/>
-                  </Group>
-                </DimensionLayout>
-                <DimensionLayout dim="1">
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <EmptySpace min="0" pref="100" max="32767" attributes="0"/>
-                  </Group>
-                </DimensionLayout>
-              </Layout>
-            </Container>
-            <Container class="javax.swing.JPanel" name="jPanel34">
-              <Properties>
-                <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                  <Dimension value="[630, 556]"/>
-                </Property>
-              </Properties>
-              <Constraints>
-                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
-                  <BorderConstraints direction="Center"/>
-                </Constraint>
-              </Constraints>
-
-              <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
-              <SubComponents>
-                <Container class="javax.swing.JPanel" name="jPanel35">
-                  <Properties>
-                    <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                      <Dimension value="[170, 65534]"/>
-                    </Property>
-                    <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                      <Dimension value="[170, 556]"/>
-                    </Property>
-                  </Properties>
-                  <Constraints>
-                    <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
-                      <BorderConstraints direction="Before"/>
-                    </Constraint>
-                  </Constraints>
-
-                  <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBoxLayout">
-                    <Property name="axis" type="int" value="1"/>
-                  </Layout>
-                </Container>
-                <Container class="javax.swing.JPanel" name="jPanel38">
-                  <Constraints>
-                    <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
-                      <BorderConstraints direction="Center"/>
-                    </Constraint>
-                  </Constraints>
-
-                  <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
-                  <SubComponents>
-                    <Container class="javax.swing.JPanel" name="jPanel39">
-                      <Properties>
-                        <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                          <Dimension value="[278, 40]"/>
-                        </Property>
-                      </Properties>
-                      <Constraints>
-                        <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
-                          <BorderConstraints direction="First"/>
-                        </Constraint>
-                      </Constraints>
-
-                      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignFlowLayout">
-                        <Property name="alignment" type="int" value="0"/>
-                      </Layout>
-                      <SubComponents>
-                        <Component class="javax.swing.JButton" name="btnXemTatCaKhachHang">
-                          <Properties>
-                            <Property name="text" type="java.lang.String" value="Xem t&#x1ea5;t c&#x1ea3; [F4]"/>
-                          </Properties>
-                          <Events>
-                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnXemTatCaKhachHangActionPerformed"/>
-                          </Events>
-                        </Component>
-                        <Component class="javax.swing.JLabel" name="jLabel4">
-                          <Properties>
-                            <Property name="text" type="java.lang.String" value="S&#x1eaf;p x&#x1ebf;p theo:"/>
-                          </Properties>
-                        </Component>
-                        <Component class="javax.swing.JComboBox" name="cbbSapXepKhachHang">
-                          <Properties>
-                            <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                              <StringArray count="2">
-                                <StringItem index="0" value="T&#xea;n kh&#xe1;ch h&#xe0;ng"/>
-                                <StringItem index="1" value="&#x110;i&#x1ec3;m t&#xed;ch l&#x169;y"/>
-                              </StringArray>
-                            </Property>
-                          </Properties>
-                          <AuxValues>
-                            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
-                          </AuxValues>
-                        </Component>
-                        <Component class="javax.swing.JButton" name="btnLocKhachHang">
-                          <Properties>
-                            <Property name="text" type="java.lang.String" value="L&#x1ecd;c b&#x1ea3;ng [F6]"/>
-                          </Properties>
-                          <Events>
-                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnLocKhachHangActionPerformed"/>
-                          </Events>
-                        </Component>
-                      </SubComponents>
-                    </Container>
-                    <Container class="javax.swing.JPanel" name="jPanel40">
-                      <Constraints>
-                        <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
-                          <BorderConstraints direction="Center"/>
-                        </Constraint>
-                      </Constraints>
-
-                      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBoxLayout"/>
-                      <SubComponents>
-                        <Container class="javax.swing.JScrollPane" name="jScrollPane5">
-                          <AuxValues>
-                            <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
-                          </AuxValues>
-
-                          <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
-                          <SubComponents>
-                            <Component class="javax.swing.JTable" name="tblKhachHang">
-                              <Properties>
-                                <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                                  <Table columnCount="5" rowCount="0">
-                                    <Column editable="true" title="M&#xe3; kh&#xe1;ch h&#xe0;ng" type="java.lang.Object"/>
-                                    <Column editable="true" title="S&#x1ed1; &#x111;i&#x1ec7;n tho&#x1ea1;i" type="java.lang.Object"/>
-                                    <Column editable="true" title="H&#x1ecd; t&#xea;n &#x111;&#xea;m" type="java.lang.Object"/>
-                                    <Column editable="true" title="T&#xea;n kh&#xe1;ch h&#xe0;ng" type="java.lang.Object"/>
-                                    <Column editable="true" title="&#x110;i&#x1ec3;m t&#xed;ch l&#x169;y" type="java.lang.Object"/>
-                                  </Table>
-                                </Property>
-                                <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
-                                  <TableColumnModel selectionModel="0">
-                                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                                      <Title/>
-                                      <Editor/>
-                                      <Renderer/>
-                                    </Column>
-                                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                                      <Title/>
-                                      <Editor/>
-                                      <Renderer/>
-                                    </Column>
-                                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                                      <Title/>
-                                      <Editor/>
-                                      <Renderer/>
-                                    </Column>
-                                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                                      <Title/>
-                                      <Editor/>
-                                      <Renderer/>
-                                    </Column>
-                                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                                      <Title/>
-                                      <Editor/>
-                                      <Renderer/>
-                                    </Column>
-                                  </TableColumnModel>
-                                </Property>
-                                <Property name="showVerticalLines" type="boolean" value="true"/>
-                                <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
-                                  <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
-                                </Property>
-                              </Properties>
-                            </Component>
-                          </SubComponents>
-                        </Container>
-                      </SubComponents>
-                    </Container>
-                  </SubComponents>
-                </Container>
-              </SubComponents>
-            </Container>
-          </SubComponents>
-        </Container>
-        <Container class="javax.swing.JPanel" name="pnlNhaCungCap">
-          <Constraints>
-            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
-              <JTabbedPaneConstraints tabName="Nh&#xe0; cung c&#x1ea5;p">
-                <Property name="tabTitle" type="java.lang.String" value="Nh&#xe0; cung c&#x1ea5;p"/>
-              </JTabbedPaneConstraints>
-            </Constraint>
-          </Constraints>
-
-          <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
-          <SubComponents>
-            <Container class="javax.swing.JPanel" name="jPanel22">
-              <Properties>
-                <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                  <Dimension value="[242, 50]"/>
-                </Property>
-              </Properties>
-              <Constraints>
-                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
-                  <BorderConstraints direction="First"/>
-                </Constraint>
-              </Constraints>
-
-              <Layout class="org.netbeans.modules.form.compat2.layouts.DesignFlowLayout">
-                <Property name="alignment" type="int" value="0"/>
-              </Layout>
-              <SubComponents>
-                <Component class="javax.swing.JComboBox" name="cbbThuocTinhNhaCungCap">
-                  <Properties>
-                    <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                      <StringArray count="2">
-                        <StringItem index="0" value="M&#xe3; nh&#xe0; cung c&#x1ea5;p"/>
-                        <StringItem index="1" value="T&#xea;n nh&#xe0; cung c&#x1ea5;p"/>
-                      </StringArray>
-                    </Property>
-                    <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                      <Dimension value="[163, 22]"/>
-                    </Property>
-                    <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                      <Dimension value="[170, 22]"/>
-                    </Property>
-                  </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cbbThuocTinhNhaCungCapActionPerformed"/>
-                  </Events>
-                  <AuxValues>
-                    <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
-                  </AuxValues>
-                </Component>
-                <Component class="javax.swing.JTextField" name="txtNhapNhaCungCap">
-                  <Properties>
-                    <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                      <Dimension value="[800, 22]"/>
-                    </Property>
-                  </Properties>
-                  <Events>
-                    <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="txtNhapNhaCungCapFocusGained"/>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtNhapNhaCungCapActionPerformed"/>
-                  </Events>
-                </Component>
-                <Component class="javax.swing.JButton" name="btnTimKiemNhaCungCap">
-                  <Properties>
-                    <Property name="text" type="java.lang.String" value="T&#xec;m ki&#x1ebf;m"/>
-                  </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnTimKiemNhaCungCapActionPerformed"/>
-                    <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="btnTimKiemNhaCungCapKeyTyped"/>
-                  </Events>
-                </Component>
-              </SubComponents>
-            </Container>
-            <Container class="javax.swing.JPanel" name="jPanel23">
-              <Constraints>
-                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
-                  <BorderConstraints direction="Last"/>
-                </Constraint>
-              </Constraints>
-
-              <Layout>
-                <DimensionLayout dim="0">
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <EmptySpace min="0" pref="1477" max="32767" attributes="0"/>
-                  </Group>
-                </DimensionLayout>
-                <DimensionLayout dim="1">
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <EmptySpace min="0" pref="100" max="32767" attributes="0"/>
-                  </Group>
-                </DimensionLayout>
-              </Layout>
-            </Container>
-            <Container class="javax.swing.JPanel" name="jPanel24">
-              <Properties>
-                <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                  <Dimension value="[630, 556]"/>
-                </Property>
-              </Properties>
-              <Constraints>
-                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
-                  <BorderConstraints direction="Center"/>
-                </Constraint>
-              </Constraints>
-
-              <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
-              <SubComponents>
-                <Container class="javax.swing.JPanel" name="jPanel25">
-                  <Properties>
-                    <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                      <Dimension value="[170, 65534]"/>
-                    </Property>
-                    <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                      <Dimension value="[170, 556]"/>
-                    </Property>
-                  </Properties>
-                  <Constraints>
-                    <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
-                      <BorderConstraints direction="Before"/>
-                    </Constraint>
-                  </Constraints>
-
-                  <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBoxLayout">
-                    <Property name="axis" type="int" value="1"/>
-                  </Layout>
-                </Container>
-                <Container class="javax.swing.JPanel" name="jPanel28">
-                  <Constraints>
-                    <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
-                      <BorderConstraints direction="Center"/>
-                    </Constraint>
-                  </Constraints>
-
-                  <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
-                  <SubComponents>
-                    <Container class="javax.swing.JPanel" name="jPanel29">
-                      <Properties>
-                        <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                          <Dimension value="[278, 40]"/>
-                        </Property>
-                      </Properties>
-                      <Constraints>
-                        <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
-                          <BorderConstraints direction="First"/>
-                        </Constraint>
-                      </Constraints>
-
-                      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignFlowLayout">
-                        <Property name="alignment" type="int" value="0"/>
-                      </Layout>
-                      <SubComponents>
-                        <Component class="javax.swing.JButton" name="btnXemTatCaNhaCungCap">
-                          <Properties>
-                            <Property name="text" type="java.lang.String" value="Xem t&#x1ea5;t c&#x1ea3; [F4]"/>
-                          </Properties>
-                          <Events>
-                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnXemTatCaNhaCungCapActionPerformed"/>
-                          </Events>
-                        </Component>
-                        <Component class="javax.swing.JLabel" name="jLabel3">
-                          <Properties>
-                            <Property name="text" type="java.lang.String" value="S&#x1eaf;p x&#x1ebf;p theo:"/>
-                          </Properties>
-                        </Component>
-                        <Component class="javax.swing.JComboBox" name="cbbSapXepNhaCungCap">
-                          <Properties>
-                            <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                              <StringArray count="2">
-                                <StringItem index="0" value="T&#xea;n nh&#xe0; cung c&#x1ea5;p"/>
-                                <StringItem index="1" value="M&#xe3; nh&#xe0; cung c&#x1ea5;p"/>
-                              </StringArray>
-                            </Property>
-                          </Properties>
-                          <AuxValues>
-                            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
-                          </AuxValues>
-                        </Component>
-                        <Component class="javax.swing.JButton" name="btnLocNhaCungCap">
-                          <Properties>
-                            <Property name="text" type="java.lang.String" value="L&#x1ecd;c b&#x1ea3;ng [F6]"/>
-                          </Properties>
-                          <Events>
-                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnLocNhaCungCapActionPerformed"/>
-                          </Events>
-                        </Component>
-                      </SubComponents>
-                    </Container>
-                    <Container class="javax.swing.JPanel" name="jPanel30">
-                      <Constraints>
-                        <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
-                          <BorderConstraints direction="Center"/>
-                        </Constraint>
-                      </Constraints>
-
-                      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBoxLayout"/>
-                      <SubComponents>
-                        <Container class="javax.swing.JScrollPane" name="jScrollPane4">
-                          <AuxValues>
-                            <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
-                          </AuxValues>
-
-                          <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
-                          <SubComponents>
-                            <Component class="javax.swing.JTable" name="tblNhaCungCap">
-                              <Properties>
-                                <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                                  <Table columnCount="6" rowCount="0">
-                                    <Column editable="true" title="M&#xe3; NCC" type="java.lang.Object"/>
-                                    <Column editable="true" title="T&#xea;n NCC" type="java.lang.Object"/>
-                                    <Column editable="true" title="&#x110;&#x1ecb;a ch&#x1ec9;" type="java.lang.Object"/>
-                                    <Column editable="true" title="S&#x1ed1; &#x111;i&#x1ec7;n tho&#x1ea1;i" type="java.lang.Object"/>
-                                    <Column editable="true" title="Email" type="java.lang.Object"/>
-                                    <Column editable="true" title="Lo&#x1ea1;i thu&#x1ed1;c" type="java.lang.Object"/>
-                                  </Table>
-                                </Property>
-                                <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
-                                  <TableColumnModel selectionModel="0">
-                                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                                      <Title/>
-                                      <Editor/>
-                                      <Renderer/>
-                                    </Column>
-                                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                                      <Title/>
-                                      <Editor/>
-                                      <Renderer/>
-                                    </Column>
-                                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                                      <Title/>
-                                      <Editor/>
-                                      <Renderer/>
-                                    </Column>
-                                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                                      <Title/>
-                                      <Editor/>
-                                      <Renderer/>
-                                    </Column>
-                                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                                      <Title/>
-                                      <Editor/>
-                                      <Renderer/>
-                                    </Column>
-                                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
-                                      <Title/>
-                                      <Editor/>
-                                      <Renderer/>
-                                    </Column>
-                                  </TableColumnModel>
-                                </Property>
-                                <Property name="showVerticalLines" type="boolean" value="true"/>
-                                <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
-                                  <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
-                                </Property>
-                              </Properties>
-                            </Component>
-                          </SubComponents>
-                        </Container>
-                      </SubComponents>
-                    </Container>
-                  </SubComponents>
-                </Container>
-              </SubComponents>
-            </Container>
-          </SubComponents>
-        </Container>
         <Container class="javax.swing.JPanel" name="pnlNhanVien">
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
@@ -941,7 +80,7 @@
                 <Component class="javax.swing.JTextField" name="txtNhapNhanVien">
                   <Properties>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                      <Dimension value="[1000, 22]"/>
+                      <Dimension value="[500, 22]"/>
                     </Property>
                   </Properties>
                   <Events>
@@ -958,26 +97,6 @@
                   </Events>
                 </Component>
               </SubComponents>
-            </Container>
-            <Container class="javax.swing.JPanel" name="jPanel63">
-              <Constraints>
-                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
-                  <BorderConstraints direction="Last"/>
-                </Constraint>
-              </Constraints>
-
-              <Layout>
-                <DimensionLayout dim="0">
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <EmptySpace min="0" pref="1477" max="32767" attributes="0"/>
-                  </Group>
-                </DimensionLayout>
-                <DimensionLayout dim="1">
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <EmptySpace min="0" pref="100" max="32767" attributes="0"/>
-                  </Group>
-                </DimensionLayout>
-              </Layout>
             </Container>
             <Container class="javax.swing.JPanel" name="jPanel64">
               <Properties>
@@ -1123,13 +242,13 @@
                               <Properties>
                                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                                   <Table columnCount="7" rowCount="0">
-                                    <Column editable="true" title="M&#xe3; nh&#xe2;n vi&#xea;n" type="java.lang.Object"/>
-                                    <Column editable="true" title="H&#x1ecd; t&#xea;n &#x111;&#x1ec7;m" type="java.lang.Object"/>
-                                    <Column editable="true" title="T&#xea;n" type="java.lang.Object"/>
-                                    <Column editable="true" title="S&#x1ed1; &#x111;i&#x1ec7;n tho&#x1ea1;i" type="java.lang.Object"/>
-                                    <Column editable="true" title="Gi&#x1edb;i t&#xed;nh" type="java.lang.Object"/>
-                                    <Column editable="true" title="Ng&#xe0;y sinh" type="java.lang.Object"/>
-                                    <Column editable="true" title="B&#x1ecb; kh&#xf3;a" type="java.lang.Object"/>
+                                    <Column editable="false" title="M&#xe3; nh&#xe2;n vi&#xea;n" type="java.lang.Object"/>
+                                    <Column editable="false" title="H&#x1ecd; t&#xea;n &#x111;&#x1ec7;m" type="java.lang.Object"/>
+                                    <Column editable="false" title="T&#xea;n" type="java.lang.Object"/>
+                                    <Column editable="false" title="S&#x1ed1; &#x111;i&#x1ec7;n tho&#x1ea1;i" type="java.lang.Object"/>
+                                    <Column editable="false" title="Gi&#x1edb;i t&#xed;nh" type="java.lang.Object"/>
+                                    <Column editable="false" title="Ng&#xe0;y sinh" type="java.lang.Object"/>
+                                    <Column editable="false" title="B&#x1ecb; kh&#xf3;a" type="java.lang.Object"/>
                                   </Table>
                                 </Property>
                                 <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
@@ -1190,6 +309,807 @@
             </Container>
           </SubComponents>
         </Container>
+        <Container class="javax.swing.JPanel" name="pnlKhachHang">
+          <Constraints>
+            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
+              <JTabbedPaneConstraints tabName="Kh&#xe1;ch h&#xe0;ng">
+                <Property name="tabTitle" type="java.lang.String" value="Kh&#xe1;ch h&#xe0;ng"/>
+              </JTabbedPaneConstraints>
+            </Constraint>
+          </Constraints>
+
+          <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
+          <SubComponents>
+            <Container class="javax.swing.JPanel" name="jPanel32">
+              <Properties>
+                <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                  <Dimension value="[242, 50]"/>
+                </Property>
+              </Properties>
+              <Constraints>
+                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
+                  <BorderConstraints direction="First"/>
+                </Constraint>
+              </Constraints>
+
+              <Layout class="org.netbeans.modules.form.compat2.layouts.DesignFlowLayout">
+                <Property name="alignment" type="int" value="0"/>
+              </Layout>
+              <SubComponents>
+                <Component class="javax.swing.JComboBox" name="cbbThuocTinhKhachHang">
+                  <Properties>
+                    <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+                      <StringArray count="3">
+                        <StringItem index="0" value="S&#x1ed1; &#x111;i&#x1ec7;n tho&#x1ea1;i"/>
+                        <StringItem index="1" value="T&#xea;n kh&#xe1;ch h&#xe0;ng"/>
+                        <StringItem index="2" value="M&#xe3; kh&#xe1;ch h&#xe0;ng"/>
+                      </StringArray>
+                    </Property>
+                    <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                      <Dimension value="[163, 22]"/>
+                    </Property>
+                    <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                      <Dimension value="[170, 22]"/>
+                    </Property>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cbbThuocTinhKhachHangActionPerformed"/>
+                  </Events>
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+                  </AuxValues>
+                </Component>
+                <Component class="javax.swing.JTextField" name="txtNhapKhachHang">
+                  <Properties>
+                    <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                      <Dimension value="[500, 22]"/>
+                    </Property>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtNhapKhachHangActionPerformed"/>
+                    <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtNhapKhachHangKeyPressed"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JButton" name="btnTimKhachHang">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="T&#xec;m ki&#x1ebf;m"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnTimKhachHangActionPerformed"/>
+                  </Events>
+                </Component>
+              </SubComponents>
+            </Container>
+            <Container class="javax.swing.JPanel" name="jPanel34">
+              <Properties>
+                <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                  <Dimension value="[630, 556]"/>
+                </Property>
+              </Properties>
+              <Constraints>
+                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
+                  <BorderConstraints direction="Center"/>
+                </Constraint>
+              </Constraints>
+
+              <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
+              <SubComponents>
+                <Container class="javax.swing.JPanel" name="jPanel35">
+                  <Properties>
+                    <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                      <Dimension value="[170, 65534]"/>
+                    </Property>
+                    <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                      <Dimension value="[170, 556]"/>
+                    </Property>
+                  </Properties>
+                  <Constraints>
+                    <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
+                      <BorderConstraints direction="Before"/>
+                    </Constraint>
+                  </Constraints>
+
+                  <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBoxLayout">
+                    <Property name="axis" type="int" value="1"/>
+                  </Layout>
+                </Container>
+                <Container class="javax.swing.JPanel" name="jPanel38">
+                  <Constraints>
+                    <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
+                      <BorderConstraints direction="Center"/>
+                    </Constraint>
+                  </Constraints>
+
+                  <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
+                  <SubComponents>
+                    <Container class="javax.swing.JPanel" name="jPanel39">
+                      <Properties>
+                        <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                          <Dimension value="[278, 40]"/>
+                        </Property>
+                      </Properties>
+                      <Constraints>
+                        <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
+                          <BorderConstraints direction="First"/>
+                        </Constraint>
+                      </Constraints>
+
+                      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignFlowLayout">
+                        <Property name="alignment" type="int" value="0"/>
+                      </Layout>
+                      <SubComponents>
+                        <Component class="javax.swing.JButton" name="btnXemTatCaKhachHang">
+                          <Properties>
+                            <Property name="text" type="java.lang.String" value="Xem t&#x1ea5;t c&#x1ea3; [F4]"/>
+                          </Properties>
+                          <Events>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnXemTatCaKhachHangActionPerformed"/>
+                          </Events>
+                        </Component>
+                        <Component class="javax.swing.JLabel" name="jLabel4">
+                          <Properties>
+                            <Property name="text" type="java.lang.String" value="S&#x1eaf;p x&#x1ebf;p theo:"/>
+                          </Properties>
+                        </Component>
+                        <Component class="javax.swing.JComboBox" name="cbbSapXepKhachHang">
+                          <Properties>
+                            <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+                              <StringArray count="2">
+                                <StringItem index="0" value="T&#xea;n kh&#xe1;ch h&#xe0;ng"/>
+                                <StringItem index="1" value="&#x110;i&#x1ec3;m t&#xed;ch l&#x169;y"/>
+                              </StringArray>
+                            </Property>
+                          </Properties>
+                          <AuxValues>
+                            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+                          </AuxValues>
+                        </Component>
+                        <Component class="javax.swing.JButton" name="btnLocKhachHang">
+                          <Properties>
+                            <Property name="text" type="java.lang.String" value="L&#x1ecd;c b&#x1ea3;ng [F6]"/>
+                          </Properties>
+                          <Events>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnLocKhachHangActionPerformed"/>
+                          </Events>
+                        </Component>
+                      </SubComponents>
+                    </Container>
+                    <Container class="javax.swing.JPanel" name="jPanel40">
+                      <Constraints>
+                        <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
+                          <BorderConstraints direction="Center"/>
+                        </Constraint>
+                      </Constraints>
+
+                      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBoxLayout"/>
+                      <SubComponents>
+                        <Container class="javax.swing.JScrollPane" name="jScrollPane5">
+                          <AuxValues>
+                            <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+                          </AuxValues>
+
+                          <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+                          <SubComponents>
+                            <Component class="javax.swing.JTable" name="tblKhachHang">
+                              <Properties>
+                                <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
+                                  <Table columnCount="5" rowCount="0">
+                                    <Column editable="false" title="M&#xe3; kh&#xe1;ch h&#xe0;ng" type="java.lang.Object"/>
+                                    <Column editable="false" title="S&#x1ed1; &#x111;i&#x1ec7;n tho&#x1ea1;i" type="java.lang.Object"/>
+                                    <Column editable="false" title="H&#x1ecd; t&#xea;n &#x111;&#xea;m" type="java.lang.Object"/>
+                                    <Column editable="false" title="T&#xea;n kh&#xe1;ch h&#xe0;ng" type="java.lang.Object"/>
+                                    <Column editable="false" title="&#x110;i&#x1ec3;m t&#xed;ch l&#x169;y" type="java.lang.Object"/>
+                                  </Table>
+                                </Property>
+                                <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
+                                  <TableColumnModel selectionModel="0">
+                                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                                      <Title/>
+                                      <Editor/>
+                                      <Renderer/>
+                                    </Column>
+                                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                                      <Title/>
+                                      <Editor/>
+                                      <Renderer/>
+                                    </Column>
+                                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                                      <Title/>
+                                      <Editor/>
+                                      <Renderer/>
+                                    </Column>
+                                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                                      <Title/>
+                                      <Editor/>
+                                      <Renderer/>
+                                    </Column>
+                                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                                      <Title/>
+                                      <Editor/>
+                                      <Renderer/>
+                                    </Column>
+                                  </TableColumnModel>
+                                </Property>
+                                <Property name="showVerticalLines" type="boolean" value="true"/>
+                                <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
+                                  <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
+                                </Property>
+                              </Properties>
+                            </Component>
+                          </SubComponents>
+                        </Container>
+                      </SubComponents>
+                    </Container>
+                  </SubComponents>
+                </Container>
+              </SubComponents>
+            </Container>
+          </SubComponents>
+        </Container>
+        <Container class="javax.swing.JPanel" name="pnlNhaCungCap">
+          <Constraints>
+            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
+              <JTabbedPaneConstraints tabName="Nh&#xe0; cung c&#x1ea5;p">
+                <Property name="tabTitle" type="java.lang.String" value="Nh&#xe0; cung c&#x1ea5;p"/>
+              </JTabbedPaneConstraints>
+            </Constraint>
+          </Constraints>
+
+          <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
+          <SubComponents>
+            <Container class="javax.swing.JPanel" name="jPanel22">
+              <Properties>
+                <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                  <Dimension value="[242, 50]"/>
+                </Property>
+              </Properties>
+              <Constraints>
+                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
+                  <BorderConstraints direction="First"/>
+                </Constraint>
+              </Constraints>
+
+              <Layout class="org.netbeans.modules.form.compat2.layouts.DesignFlowLayout">
+                <Property name="alignment" type="int" value="0"/>
+              </Layout>
+              <SubComponents>
+                <Component class="javax.swing.JComboBox" name="cbbThuocTinhNhaCungCap">
+                  <Properties>
+                    <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+                      <StringArray count="2">
+                        <StringItem index="0" value="M&#xe3; nh&#xe0; cung c&#x1ea5;p"/>
+                        <StringItem index="1" value="T&#xea;n nh&#xe0; cung c&#x1ea5;p"/>
+                      </StringArray>
+                    </Property>
+                    <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                      <Dimension value="[163, 22]"/>
+                    </Property>
+                    <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                      <Dimension value="[170, 22]"/>
+                    </Property>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cbbThuocTinhNhaCungCapActionPerformed"/>
+                  </Events>
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+                  </AuxValues>
+                </Component>
+                <Component class="javax.swing.JTextField" name="txtNhapNhaCungCap">
+                  <Properties>
+                    <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                      <Dimension value="[500, 22]"/>
+                    </Property>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="txtNhapNhaCungCapFocusGained"/>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtNhapNhaCungCapActionPerformed"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JButton" name="btnTimKiemNhaCungCap">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="T&#xec;m ki&#x1ebf;m"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnTimKiemNhaCungCapActionPerformed"/>
+                    <EventHandler event="keyTyped" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="btnTimKiemNhaCungCapKeyTyped"/>
+                  </Events>
+                </Component>
+              </SubComponents>
+            </Container>
+            <Container class="javax.swing.JPanel" name="jPanel24">
+              <Properties>
+                <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                  <Dimension value="[630, 556]"/>
+                </Property>
+              </Properties>
+              <Constraints>
+                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
+                  <BorderConstraints direction="Center"/>
+                </Constraint>
+              </Constraints>
+
+              <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
+              <SubComponents>
+                <Container class="javax.swing.JPanel" name="jPanel25">
+                  <Properties>
+                    <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                      <Dimension value="[170, 65534]"/>
+                    </Property>
+                    <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                      <Dimension value="[170, 556]"/>
+                    </Property>
+                  </Properties>
+                  <Constraints>
+                    <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
+                      <BorderConstraints direction="Before"/>
+                    </Constraint>
+                  </Constraints>
+
+                  <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBoxLayout">
+                    <Property name="axis" type="int" value="1"/>
+                  </Layout>
+                </Container>
+                <Container class="javax.swing.JPanel" name="jPanel28">
+                  <Constraints>
+                    <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
+                      <BorderConstraints direction="Center"/>
+                    </Constraint>
+                  </Constraints>
+
+                  <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
+                  <SubComponents>
+                    <Container class="javax.swing.JPanel" name="jPanel29">
+                      <Properties>
+                        <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                          <Dimension value="[278, 40]"/>
+                        </Property>
+                      </Properties>
+                      <Constraints>
+                        <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
+                          <BorderConstraints direction="First"/>
+                        </Constraint>
+                      </Constraints>
+
+                      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignFlowLayout">
+                        <Property name="alignment" type="int" value="0"/>
+                      </Layout>
+                      <SubComponents>
+                        <Component class="javax.swing.JButton" name="btnXemTatCaNhaCungCap">
+                          <Properties>
+                            <Property name="text" type="java.lang.String" value="Xem t&#x1ea5;t c&#x1ea3; [F4]"/>
+                          </Properties>
+                          <Events>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnXemTatCaNhaCungCapActionPerformed"/>
+                          </Events>
+                        </Component>
+                        <Component class="javax.swing.JLabel" name="jLabel3">
+                          <Properties>
+                            <Property name="text" type="java.lang.String" value="S&#x1eaf;p x&#x1ebf;p theo:"/>
+                          </Properties>
+                        </Component>
+                        <Component class="javax.swing.JComboBox" name="cbbSapXepNhaCungCap">
+                          <Properties>
+                            <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+                              <StringArray count="2">
+                                <StringItem index="0" value="T&#xea;n nh&#xe0; cung c&#x1ea5;p"/>
+                                <StringItem index="1" value="M&#xe3; nh&#xe0; cung c&#x1ea5;p"/>
+                              </StringArray>
+                            </Property>
+                          </Properties>
+                          <AuxValues>
+                            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+                          </AuxValues>
+                        </Component>
+                        <Component class="javax.swing.JButton" name="btnLocNhaCungCap">
+                          <Properties>
+                            <Property name="text" type="java.lang.String" value="L&#x1ecd;c b&#x1ea3;ng [F6]"/>
+                          </Properties>
+                          <Events>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnLocNhaCungCapActionPerformed"/>
+                          </Events>
+                        </Component>
+                      </SubComponents>
+                    </Container>
+                    <Container class="javax.swing.JPanel" name="jPanel30">
+                      <Constraints>
+                        <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
+                          <BorderConstraints direction="Center"/>
+                        </Constraint>
+                      </Constraints>
+
+                      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBoxLayout"/>
+                      <SubComponents>
+                        <Container class="javax.swing.JScrollPane" name="jScrollPane4">
+                          <AuxValues>
+                            <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+                          </AuxValues>
+
+                          <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+                          <SubComponents>
+                            <Component class="javax.swing.JTable" name="tblNhaCungCap">
+                              <Properties>
+                                <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
+                                  <Table columnCount="6" rowCount="0">
+                                    <Column editable="false" title="M&#xe3; NCC" type="java.lang.Object"/>
+                                    <Column editable="false" title="T&#xea;n NCC" type="java.lang.Object"/>
+                                    <Column editable="false" title="&#x110;&#x1ecb;a ch&#x1ec9;" type="java.lang.Object"/>
+                                    <Column editable="false" title="S&#x1ed1; &#x111;i&#x1ec7;n tho&#x1ea1;i" type="java.lang.Object"/>
+                                    <Column editable="false" title="Email" type="java.lang.Object"/>
+                                    <Column editable="false" title="Lo&#x1ea1;i thu&#x1ed1;c" type="java.lang.Object"/>
+                                  </Table>
+                                </Property>
+                                <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
+                                  <TableColumnModel selectionModel="0">
+                                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                                      <Title/>
+                                      <Editor/>
+                                      <Renderer/>
+                                    </Column>
+                                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                                      <Title/>
+                                      <Editor/>
+                                      <Renderer/>
+                                    </Column>
+                                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                                      <Title/>
+                                      <Editor/>
+                                      <Renderer/>
+                                    </Column>
+                                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                                      <Title/>
+                                      <Editor/>
+                                      <Renderer/>
+                                    </Column>
+                                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                                      <Title/>
+                                      <Editor/>
+                                      <Renderer/>
+                                    </Column>
+                                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                                      <Title/>
+                                      <Editor/>
+                                      <Renderer/>
+                                    </Column>
+                                  </TableColumnModel>
+                                </Property>
+                                <Property name="showVerticalLines" type="boolean" value="true"/>
+                                <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
+                                  <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
+                                </Property>
+                              </Properties>
+                            </Component>
+                          </SubComponents>
+                        </Container>
+                      </SubComponents>
+                    </Container>
+                  </SubComponents>
+                </Container>
+              </SubComponents>
+            </Container>
+          </SubComponents>
+        </Container>
+        <Container class="javax.swing.JPanel" name="pnlSanPham">
+          <Constraints>
+            <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
+              <JTabbedPaneConstraints tabName="S&#x1ea3;n ph&#x1ea9;m">
+                <Property name="tabTitle" type="java.lang.String" value="S&#x1ea3;n ph&#x1ea9;m"/>
+              </JTabbedPaneConstraints>
+            </Constraint>
+          </Constraints>
+
+          <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
+          <SubComponents>
+            <Container class="javax.swing.JPanel" name="jPanel4">
+              <Properties>
+                <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                  <Dimension value="[242, 50]"/>
+                </Property>
+              </Properties>
+              <Constraints>
+                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
+                  <BorderConstraints direction="First"/>
+                </Constraint>
+              </Constraints>
+
+              <Layout class="org.netbeans.modules.form.compat2.layouts.DesignFlowLayout">
+                <Property name="alignment" type="int" value="0"/>
+              </Layout>
+              <SubComponents>
+                <Component class="javax.swing.JComboBox" name="cbbThuocTinhSanPham">
+                  <Properties>
+                    <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+                      <StringArray count="2">
+                        <StringItem index="0" value="M&#xe3; s&#x1ea3;n ph&#x1ea9;m"/>
+                        <StringItem index="1" value="T&#xea;n s&#x1ea3;n ph&#x1ea9;m"/>
+                      </StringArray>
+                    </Property>
+                    <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                      <Dimension value="[163, 22]"/>
+                    </Property>
+                    <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                      <Dimension value="[170, 22]"/>
+                    </Property>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cbbThuocTinhSanPhamActionPerformed"/>
+                  </Events>
+                  <AuxValues>
+                    <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+                  </AuxValues>
+                </Component>
+                <Component class="javax.swing.JTextField" name="txtNhapSanPham">
+                  <Properties>
+                    <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                      <Dimension value="[500, 22]"/>
+                    </Property>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="txtNhapSanPhamFocusGained"/>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtNhapSanPhamActionPerformed"/>
+                    <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtNhapSanPhamKeyPressed"/>
+                  </Events>
+                </Component>
+                <Component class="javax.swing.JButton" name="btnTimKiemSanPham">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="T&#xec;m ki&#x1ebf;m"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnTimKiemSanPhamActionPerformed"/>
+                  </Events>
+                </Component>
+              </SubComponents>
+            </Container>
+            <Container class="javax.swing.JPanel" name="jPanel6">
+              <Properties>
+                <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                  <Dimension value="[630, 556]"/>
+                </Property>
+              </Properties>
+              <Constraints>
+                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
+                  <BorderConstraints direction="Center"/>
+                </Constraint>
+              </Constraints>
+
+              <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
+              <SubComponents>
+                <Container class="javax.swing.JPanel" name="jPanel7">
+                  <Properties>
+                    <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                      <Dimension value="[170, 65534]"/>
+                    </Property>
+                    <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                      <Dimension value="[170, 556]"/>
+                    </Property>
+                  </Properties>
+                  <Constraints>
+                    <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
+                      <BorderConstraints direction="Before"/>
+                    </Constraint>
+                  </Constraints>
+
+                  <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBoxLayout">
+                    <Property name="axis" type="int" value="1"/>
+                  </Layout>
+                  <SubComponents>
+                    <Container class="javax.swing.JPanel" name="jPanel1">
+                      <Properties>
+                        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+                          <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
+                            <TitledBorder title="Theo danh m&#x1ee5;c"/>
+                          </Border>
+                        </Property>
+                        <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                          <Dimension value="[500, 32767]"/>
+                        </Property>
+                      </Properties>
+
+                      <Layout>
+                        <DimensionLayout dim="0">
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="102" attributes="0">
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="cbxTPCNSanPham" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="cbxTKKDSanPham" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="cbxTKDSanPham" alignment="0" min="-2" pref="111" max="-2" attributes="0"/>
+                                  </Group>
+                                  <EmptySpace pref="24" max="32767" attributes="0"/>
+                              </Group>
+                          </Group>
+                        </DimensionLayout>
+                        <DimensionLayout dim="1">
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="102" alignment="0" attributes="0">
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="cbxTKKDSanPham" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="cbxTKDSanPham" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="cbxTPCNSanPham" min="-2" pref="20" max="-2" attributes="0"/>
+                                  <EmptySpace pref="211" max="32767" attributes="0"/>
+                              </Group>
+                          </Group>
+                        </DimensionLayout>
+                      </Layout>
+                      <SubComponents>
+                        <Component class="javax.swing.JCheckBox" name="cbxTKKDSanPham">
+                          <Properties>
+                            <Property name="text" type="java.lang.String" value="Thu&#x1ed1;c kh&#xf4;ng k&#xea; &#x111;&#x1a1;n"/>
+                          </Properties>
+                          <Events>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cbxTKKDSanPhamActionPerformed"/>
+                          </Events>
+                        </Component>
+                        <Component class="javax.swing.JCheckBox" name="cbxTKDSanPham">
+                          <Properties>
+                            <Property name="text" type="java.lang.String" value="Thu&#x1ed1;c k&#xea; &#x111;&#x1a1;n"/>
+                          </Properties>
+                        </Component>
+                        <Component class="javax.swing.JCheckBox" name="cbxTPCNSanPham">
+                          <Properties>
+                            <Property name="text" type="java.lang.String" value="TP ch&#x1ee9;c n&#x103;ng"/>
+                          </Properties>
+                          <Events>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="cbxTPCNSanPhamActionPerformed"/>
+                          </Events>
+                        </Component>
+                      </SubComponents>
+                    </Container>
+                  </SubComponents>
+                </Container>
+                <Container class="javax.swing.JPanel" name="jPanel9">
+                  <Constraints>
+                    <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
+                      <BorderConstraints direction="Center"/>
+                    </Constraint>
+                  </Constraints>
+
+                  <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout"/>
+                  <SubComponents>
+                    <Container class="javax.swing.JPanel" name="jPanel3">
+                      <Properties>
+                        <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                          <Dimension value="[278, 40]"/>
+                        </Property>
+                      </Properties>
+                      <Constraints>
+                        <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
+                          <BorderConstraints direction="First"/>
+                        </Constraint>
+                      </Constraints>
+
+                      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignFlowLayout">
+                        <Property name="alignment" type="int" value="0"/>
+                      </Layout>
+                      <SubComponents>
+                        <Component class="javax.swing.JButton" name="btnXemTatCaSanPham">
+                          <Properties>
+                            <Property name="text" type="java.lang.String" value="Xem t&#x1ea5;t c&#x1ea3; [F4]"/>
+                          </Properties>
+                          <Events>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnXemTatCaSanPhamActionPerformed"/>
+                          </Events>
+                        </Component>
+                        <Component class="javax.swing.JLabel" name="jLabel1">
+                          <Properties>
+                            <Property name="text" type="java.lang.String" value="S&#x1eaf;p x&#x1ebf;p theo:"/>
+                          </Properties>
+                        </Component>
+                        <Component class="javax.swing.JComboBox" name="cbbSapXepSanPham">
+                          <Properties>
+                            <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+                              <StringArray count="3">
+                                <StringItem index="0" value="M&#xe3; s&#x1ea3;n ph&#x1ea9;m"/>
+                                <StringItem index="1" value="T&#xea;n s&#x1ea3;n ph&#x1ea9;m"/>
+                                <StringItem index="2" value=" "/>
+                              </StringArray>
+                            </Property>
+                          </Properties>
+                          <AuxValues>
+                            <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
+                          </AuxValues>
+                        </Component>
+                        <Component class="javax.swing.JButton" name="btnLocSanPham">
+                          <Properties>
+                            <Property name="text" type="java.lang.String" value="L&#x1ecd;c b&#x1ea3;ng [F6]"/>
+                          </Properties>
+                          <Events>
+                            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnLocSanPhamActionPerformed"/>
+                          </Events>
+                        </Component>
+                      </SubComponents>
+                    </Container>
+                    <Container class="javax.swing.JPanel" name="jPanel8">
+                      <Constraints>
+                        <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
+                          <BorderConstraints direction="Center"/>
+                        </Constraint>
+                      </Constraints>
+
+                      <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBoxLayout"/>
+                      <SubComponents>
+                        <Container class="javax.swing.JScrollPane" name="jScrollPane2">
+                          <AuxValues>
+                            <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+                          </AuxValues>
+
+                          <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+                          <SubComponents>
+                            <Component class="javax.swing.JTable" name="tblSanPham">
+                              <Properties>
+                                <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
+                                  <Table columnCount="7" rowCount="0">
+                                    <Column editable="false" title="M&#xe3; s&#x1ea3;n ph&#x1ea9;m" type="java.lang.Object"/>
+                                    <Column editable="false" title="T&#xea;n s&#x1ea3;n ph&#x1ea9;m" type="java.lang.Object"/>
+                                    <Column editable="false" title="Lo&#x1ea1;i s&#x1ea3;n ph&#x1ea9;m" type="java.lang.Object"/>
+                                    <Column editable="false" title="M&#xf4; t&#x1ea3;" type="java.lang.Object"/>
+                                    <Column editable="false" title="Th&#xe0;nh ph&#x1ea7;n" type="java.lang.Object"/>
+                                    <Column editable="false" title="T&#x1ed3;n t&#x1ed1;i thi&#x1ec3;u" type="java.lang.Object"/>
+                                    <Column editable="false" title="T&#x1ed3;n t&#x1ed1;i &#x111;a" type="java.lang.Object"/>
+                                  </Table>
+                                </Property>
+                                <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
+                                  <TableColumnModel selectionModel="0">
+                                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                                      <Title/>
+                                      <Editor/>
+                                      <Renderer/>
+                                    </Column>
+                                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                                      <Title/>
+                                      <Editor/>
+                                      <Renderer/>
+                                    </Column>
+                                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                                      <Title/>
+                                      <Editor/>
+                                      <Renderer/>
+                                    </Column>
+                                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                                      <Title/>
+                                      <Editor/>
+                                      <Renderer/>
+                                    </Column>
+                                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                                      <Title/>
+                                      <Editor/>
+                                      <Renderer/>
+                                    </Column>
+                                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                                      <Title/>
+                                      <Editor/>
+                                      <Renderer/>
+                                    </Column>
+                                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                                      <Title/>
+                                      <Editor/>
+                                      <Renderer/>
+                                    </Column>
+                                  </TableColumnModel>
+                                </Property>
+                                <Property name="selectionMode" type="int" value="2"/>
+                                <Property name="selectionModel" type="javax.swing.ListSelectionModel" editor="org.netbeans.modules.form.editors2.JTableSelectionModelEditor">
+                                  <JTableSelectionModel selectionMode="2"/>
+                                </Property>
+                                <Property name="showGrid" type="boolean" value="false"/>
+                                <Property name="showVerticalLines" type="boolean" value="true"/>
+                                <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
+                                  <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
+                                </Property>
+                              </Properties>
+                            </Component>
+                          </SubComponents>
+                        </Container>
+                      </SubComponents>
+                    </Container>
+                  </SubComponents>
+                </Container>
+              </SubComponents>
+            </Container>
+          </SubComponents>
+        </Container>
         <Container class="javax.swing.JPanel" name="pnlKhuyenMai">
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout" value="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout$JTabbedPaneConstraintsDescription">
@@ -1238,7 +1158,7 @@
                 <Component class="javax.swing.JTextField" name="txtNhapKhuyenMai">
                   <Properties>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                      <Dimension value="[1000, 22]"/>
+                      <Dimension value="[500, 22]"/>
                     </Property>
                   </Properties>
                   <Events>
@@ -1254,26 +1174,6 @@
                   </Events>
                 </Component>
               </SubComponents>
-            </Container>
-            <Container class="javax.swing.JPanel" name="jPanel43">
-              <Constraints>
-                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
-                  <BorderConstraints direction="Last"/>
-                </Constraint>
-              </Constraints>
-
-              <Layout>
-                <DimensionLayout dim="0">
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <EmptySpace min="0" pref="1477" max="32767" attributes="0"/>
-                  </Group>
-                </DimensionLayout>
-                <DimensionLayout dim="1">
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <EmptySpace min="0" pref="100" max="32767" attributes="0"/>
-                  </Group>
-                </DimensionLayout>
-              </Layout>
             </Container>
             <Container class="javax.swing.JPanel" name="jPanel44">
               <Properties>
@@ -1466,15 +1366,15 @@
                               <Properties>
                                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                                   <Table columnCount="9" rowCount="0">
-                                    <Column editable="true" title="M&#xe3; khuy&#x1ebf;n m&#xe3;i" type="java.lang.Object"/>
-                                    <Column editable="true" title="M&#xf4; t&#x1ea3;" type="java.lang.Object"/>
-                                    <Column editable="true" title="Ph&#x1ea7;n tr&#x103;m" type="java.lang.Object"/>
-                                    <Column editable="true" title="Lo&#x1ea1;i khuy&#x1ebf;n m&#xe3;i" type="java.lang.Object"/>
-                                    <Column editable="true" title="Ng&#xe0;y b&#x1eaf;t &#x111;&#x1ea7;u" type="java.lang.Object"/>
-                                    <Column editable="true" title="Ng&#xe0;y k&#x1ebf;t th&#xfa;c" type="java.lang.Object"/>
-                                    <Column editable="true" title="S&#x1ed1; l&#x1b0;&#x1ee3;ng t&#x1ed1;i thi&#x1ec3;u" type="java.lang.Object"/>
-                                    <Column editable="true" title="S&#x1ed1; l&#x1b0;&#x1ee3;ng t&#x1ed1;i &#x111;a" type="java.lang.Object"/>
-                                    <Column editable="true" title="Ng&#xe0;y ch&#x1ec9;nh s&#x1eed;a" type="java.lang.Object"/>
+                                    <Column editable="false" title="M&#xe3; khuy&#x1ebf;n m&#xe3;i" type="java.lang.Object"/>
+                                    <Column editable="false" title="M&#xf4; t&#x1ea3;" type="java.lang.Object"/>
+                                    <Column editable="false" title="Ph&#x1ea7;n tr&#x103;m" type="java.lang.Object"/>
+                                    <Column editable="false" title="Lo&#x1ea1;i khuy&#x1ebf;n m&#xe3;i" type="java.lang.Object"/>
+                                    <Column editable="false" title="Ng&#xe0;y b&#x1eaf;t &#x111;&#x1ea7;u" type="java.lang.Object"/>
+                                    <Column editable="false" title="Ng&#xe0;y k&#x1ebf;t th&#xfa;c" type="java.lang.Object"/>
+                                    <Column editable="false" title="S&#x1ed1; l&#x1b0;&#x1ee3;ng t&#x1ed1;i thi&#x1ec3;u" type="java.lang.Object"/>
+                                    <Column editable="false" title="S&#x1ed1; l&#x1b0;&#x1ee3;ng t&#x1ed1;i &#x111;a" type="java.lang.Object"/>
+                                    <Column editable="false" title="Ng&#xe0;y ch&#x1ec9;nh s&#x1eed;a" type="java.lang.Object"/>
                                   </Table>
                                 </Property>
                                 <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
@@ -1594,7 +1494,7 @@
                 <Component class="javax.swing.JTextField" name="txtNhapHoaDon">
                   <Properties>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                      <Dimension value="[800, 22]"/>
+                      <Dimension value="[500, 22]"/>
                     </Property>
                   </Properties>
                   <Events>
@@ -1610,26 +1510,6 @@
                   </Events>
                 </Component>
               </SubComponents>
-            </Container>
-            <Container class="javax.swing.JPanel" name="jPanel13">
-              <Constraints>
-                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
-                  <BorderConstraints direction="Last"/>
-                </Constraint>
-              </Constraints>
-
-              <Layout>
-                <DimensionLayout dim="0">
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <EmptySpace min="0" pref="1477" max="32767" attributes="0"/>
-                  </Group>
-                </DimensionLayout>
-                <DimensionLayout dim="1">
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <EmptySpace min="0" pref="100" max="32767" attributes="0"/>
-                  </Group>
-                </DimensionLayout>
-              </Layout>
             </Container>
             <Container class="javax.swing.JPanel" name="jPanel14">
               <Properties>
@@ -1789,11 +1669,11 @@
                               <Properties>
                                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                                   <Table columnCount="6" rowCount="0">
-                                    <Column editable="true" title="M&#xe3; h&#xf3;a &#x111;&#x1a1;n" type="java.lang.Object"/>
-                                    <Column editable="true" title="T&#xea;n nh&#xe2;n vi&#xea;n" type="java.lang.Object"/>
-                                    <Column editable="true" title="T&#xea;n kh&#xe1;ch h&#xe0;ng" type="java.lang.Object"/>
+                                    <Column editable="false" title="M&#xe3; h&#xf3;a &#x111;&#x1a1;n" type="java.lang.Object"/>
+                                    <Column editable="false" title="T&#xea;n nh&#xe2;n vi&#xea;n" type="java.lang.Object"/>
+                                    <Column editable="false" title="T&#xea;n kh&#xe1;ch h&#xe0;ng" type="java.lang.Object"/>
                                     <Column editable="true" title="Ng&#xe0;y l&#x1ead;p h&#xf3;a &#x111;&#x1a1;n" type="java.lang.Object"/>
-                                    <Column editable="true" title="H&#xec;nh th&#x1ee9;c thanh to&#xe1;n" type="java.lang.Object"/>
+                                    <Column editable="false" title="H&#xec;nh th&#x1ee9;c thanh to&#xe1;n" type="java.lang.Object"/>
                                     <Column editable="true" title="T&#x1ed5;ng ti&#x1ec1;n" type="java.lang.Object"/>
                                   </Table>
                                 </Property>
@@ -1898,7 +1778,7 @@
                 <Component class="javax.swing.JTextField" name="txtNhapPhieuNhap">
                   <Properties>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                      <Dimension value="[1000, 22]"/>
+                      <Dimension value="[500, 22]"/>
                     </Property>
                   </Properties>
                   <Events>
@@ -1915,26 +1795,6 @@
                   </Events>
                 </Component>
               </SubComponents>
-            </Container>
-            <Container class="javax.swing.JPanel" name="jPanel73">
-              <Constraints>
-                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
-                  <BorderConstraints direction="Last"/>
-                </Constraint>
-              </Constraints>
-
-              <Layout>
-                <DimensionLayout dim="0">
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <EmptySpace min="0" pref="1477" max="32767" attributes="0"/>
-                  </Group>
-                </DimensionLayout>
-                <DimensionLayout dim="1">
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <EmptySpace min="0" pref="100" max="32767" attributes="0"/>
-                  </Group>
-                </DimensionLayout>
-              </Layout>
             </Container>
             <Container class="javax.swing.JPanel" name="jPanel74">
               <Properties>
@@ -2089,10 +1949,10 @@
                               <Properties>
                                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                                   <Table columnCount="5" rowCount="0">
-                                    <Column editable="true" title="M&#xe3; phi&#x1ebf;u nh&#x1ead;p" type="java.lang.Object"/>
-                                    <Column editable="true" title="Ng&#xe0;y t&#x1ea1;o" type="java.lang.Object"/>
-                                    <Column editable="true" title="T&#xea;n nh&#xe2;n vi&#xea;n" type="java.lang.Object"/>
-                                    <Column editable="true" title="T&#x1ed5;ng ti&#x1ec1;n" type="java.lang.Object"/>
+                                    <Column editable="false" title="M&#xe3; phi&#x1ebf;u nh&#x1ead;p" type="java.lang.Object"/>
+                                    <Column editable="false" title="Ng&#xe0;y t&#x1ea1;o" type="java.lang.Object"/>
+                                    <Column editable="false" title="T&#xea;n nh&#xe2;n vi&#xea;n" type="java.lang.Object"/>
+                                    <Column editable="false" title="T&#x1ed5;ng ti&#x1ec1;n" type="java.lang.Object"/>
                                     <Column editable="true" title="Ghi ch&#xfa;" type="java.lang.Object"/>
                                   </Table>
                                 </Property>
@@ -2192,7 +2052,7 @@
                 <Component class="javax.swing.JTextField" name="txtNhapPhieuTraHang">
                   <Properties>
                     <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
-                      <Dimension value="[1000, 22]"/>
+                      <Dimension value="[500, 22]"/>
                     </Property>
                   </Properties>
                   <Events>
@@ -2208,26 +2068,6 @@
                   </Events>
                 </Component>
               </SubComponents>
-            </Container>
-            <Container class="javax.swing.JPanel" name="jPanel53">
-              <Constraints>
-                <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout" value="org.netbeans.modules.form.compat2.layouts.DesignBorderLayout$BorderConstraintsDescription">
-                  <BorderConstraints direction="Last"/>
-                </Constraint>
-              </Constraints>
-
-              <Layout>
-                <DimensionLayout dim="0">
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <EmptySpace min="0" pref="1477" max="32767" attributes="0"/>
-                  </Group>
-                </DimensionLayout>
-                <DimensionLayout dim="1">
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <EmptySpace min="0" pref="100" max="32767" attributes="0"/>
-                  </Group>
-                </DimensionLayout>
-              </Layout>
             </Container>
             <Container class="javax.swing.JPanel" name="jPanel54">
               <Properties>
@@ -2382,11 +2222,11 @@
                               <Properties>
                                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                                   <Table columnCount="5" rowCount="0">
-                                    <Column editable="true" title="M&#xe3; phi&#x1ebf;u tr&#x1ea3;" type="java.lang.Object"/>
-                                    <Column editable="true" title="Ng&#xe0;y l&#x1ead;p phi&#x1ebf;u tr&#x1ea3; h&#xe0;ng" type="java.lang.Object"/>
-                                    <Column editable="true" title="T&#xea;n nh&#xe2;n vi&#xea;n" type="java.lang.Object"/>
-                                    <Column editable="true" title="M&#xe3; h&#xf3;a &#x111;&#x1a1;n" type="java.lang.Object"/>
-                                    <Column editable="true" title="T&#x1ed5;ng ti&#x1ec1;n ho&#xe0;n tr&#x1ea3;" type="java.lang.Object"/>
+                                    <Column editable="false" title="M&#xe3; phi&#x1ebf;u tr&#x1ea3;" type="java.lang.Object"/>
+                                    <Column editable="false" title="Ng&#xe0;y l&#x1ead;p phi&#x1ebf;u tr&#x1ea3; h&#xe0;ng" type="java.lang.Object"/>
+                                    <Column editable="false" title="T&#xea;n nh&#xe2;n vi&#xea;n" type="java.lang.Object"/>
+                                    <Column editable="false" title="M&#xe3; h&#xf3;a &#x111;&#x1a1;n" type="java.lang.Object"/>
+                                    <Column editable="false" title="T&#x1ed5;ng ti&#x1ec1;n ho&#xe0;n tr&#x1ea3;" type="java.lang.Object"/>
                                   </Table>
                                 </Property>
                                 <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">

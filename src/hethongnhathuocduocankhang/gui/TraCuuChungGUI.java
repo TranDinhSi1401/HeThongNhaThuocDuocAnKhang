@@ -120,33 +120,30 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
     private void initComponents() {
 
         jTabbedPane1 = new javax.swing.JTabbedPane();
-        pnlSanPham = new javax.swing.JPanel();
-        jPanel4 = new javax.swing.JPanel();
-        cbbThuocTinhSanPham = new javax.swing.JComboBox<>();
-        txtNhapSanPham = new javax.swing.JTextField();
-        btnTimKiemSanPham = new javax.swing.JButton();
-        jPanel5 = new javax.swing.JPanel();
-        jPanel6 = new javax.swing.JPanel();
-        jPanel7 = new javax.swing.JPanel();
-        jPanel1 = new javax.swing.JPanel();
-        cbxTKKDSanPham = new javax.swing.JCheckBox();
-        cbxTKDSanPham = new javax.swing.JCheckBox();
-        cbxTPCNSanPham = new javax.swing.JCheckBox();
-        jPanel9 = new javax.swing.JPanel();
-        jPanel3 = new javax.swing.JPanel();
-        btnXemTatCaSanPham = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
-        cbbSapXepSanPham = new javax.swing.JComboBox<>();
-        btnLocSanPham = new javax.swing.JButton();
-        jPanel8 = new javax.swing.JPanel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        tblSanPham = new javax.swing.JTable();
+        pnlNhanVien = new javax.swing.JPanel();
+        jPanel62 = new javax.swing.JPanel();
+        cbbThuocTinhNhanVien = new javax.swing.JComboBox<>();
+        txtNhapNhanVien = new javax.swing.JTextField();
+        btnTimNhanVien = new javax.swing.JButton();
+        jPanel64 = new javax.swing.JPanel();
+        jPanel65 = new javax.swing.JPanel();
+        jPanel90 = new javax.swing.JPanel();
+        cbxDangHoatDongNhanVien = new javax.swing.JCheckBox();
+        cbxDaNghiViecNhanVien = new javax.swing.JCheckBox();
+        jPanel68 = new javax.swing.JPanel();
+        jPanel69 = new javax.swing.JPanel();
+        btnXemTatCaNhanVien = new javax.swing.JButton();
+        jLabel7 = new javax.swing.JLabel();
+        cbbSapXepNhanVien = new javax.swing.JComboBox<>();
+        btnLocNhanVien = new javax.swing.JButton();
+        jPanel70 = new javax.swing.JPanel();
+        jScrollPane8 = new javax.swing.JScrollPane();
+        tblNhanVien = new javax.swing.JTable();
         pnlKhachHang = new javax.swing.JPanel();
         jPanel32 = new javax.swing.JPanel();
         cbbThuocTinhKhachHang = new javax.swing.JComboBox<>();
         txtNhapKhachHang = new javax.swing.JTextField();
         btnTimKhachHang = new javax.swing.JButton();
-        jPanel33 = new javax.swing.JPanel();
         jPanel34 = new javax.swing.JPanel();
         jPanel35 = new javax.swing.JPanel();
         jPanel38 = new javax.swing.JPanel();
@@ -163,7 +160,6 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         cbbThuocTinhNhaCungCap = new javax.swing.JComboBox<>();
         txtNhapNhaCungCap = new javax.swing.JTextField();
         btnTimKiemNhaCungCap = new javax.swing.JButton();
-        jPanel23 = new javax.swing.JPanel();
         jPanel24 = new javax.swing.JPanel();
         jPanel25 = new javax.swing.JPanel();
         jPanel28 = new javax.swing.JPanel();
@@ -175,32 +171,31 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         jPanel30 = new javax.swing.JPanel();
         jScrollPane4 = new javax.swing.JScrollPane();
         tblNhaCungCap = new javax.swing.JTable();
-        pnlNhanVien = new javax.swing.JPanel();
-        jPanel62 = new javax.swing.JPanel();
-        cbbThuocTinhNhanVien = new javax.swing.JComboBox<>();
-        txtNhapNhanVien = new javax.swing.JTextField();
-        btnTimNhanVien = new javax.swing.JButton();
-        jPanel63 = new javax.swing.JPanel();
-        jPanel64 = new javax.swing.JPanel();
-        jPanel65 = new javax.swing.JPanel();
-        jPanel90 = new javax.swing.JPanel();
-        cbxDangHoatDongNhanVien = new javax.swing.JCheckBox();
-        cbxDaNghiViecNhanVien = new javax.swing.JCheckBox();
-        jPanel68 = new javax.swing.JPanel();
-        jPanel69 = new javax.swing.JPanel();
-        btnXemTatCaNhanVien = new javax.swing.JButton();
-        jLabel7 = new javax.swing.JLabel();
-        cbbSapXepNhanVien = new javax.swing.JComboBox<>();
-        btnLocNhanVien = new javax.swing.JButton();
-        jPanel70 = new javax.swing.JPanel();
-        jScrollPane8 = new javax.swing.JScrollPane();
-        tblNhanVien = new javax.swing.JTable();
+        pnlSanPham = new javax.swing.JPanel();
+        jPanel4 = new javax.swing.JPanel();
+        cbbThuocTinhSanPham = new javax.swing.JComboBox<>();
+        txtNhapSanPham = new javax.swing.JTextField();
+        btnTimKiemSanPham = new javax.swing.JButton();
+        jPanel6 = new javax.swing.JPanel();
+        jPanel7 = new javax.swing.JPanel();
+        jPanel1 = new javax.swing.JPanel();
+        cbxTKKDSanPham = new javax.swing.JCheckBox();
+        cbxTKDSanPham = new javax.swing.JCheckBox();
+        cbxTPCNSanPham = new javax.swing.JCheckBox();
+        jPanel9 = new javax.swing.JPanel();
+        jPanel3 = new javax.swing.JPanel();
+        btnXemTatCaSanPham = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        cbbSapXepSanPham = new javax.swing.JComboBox<>();
+        btnLocSanPham = new javax.swing.JButton();
+        jPanel8 = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tblSanPham = new javax.swing.JTable();
         pnlKhuyenMai = new javax.swing.JPanel();
         jPanel42 = new javax.swing.JPanel();
         cbbThuocTinhKhuyenMai = new javax.swing.JComboBox<>();
         txtNhapKhuyenMai = new javax.swing.JTextField();
         btnTimKhuyenMai = new javax.swing.JButton();
-        jPanel43 = new javax.swing.JPanel();
         jPanel44 = new javax.swing.JPanel();
         jPanel45 = new javax.swing.JPanel();
         jPanel82 = new javax.swing.JPanel();
@@ -226,7 +221,6 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         cbbHoaDon = new javax.swing.JComboBox<>();
         txtNhapHoaDon = new javax.swing.JTextField();
         btnTimKiem = new javax.swing.JButton();
-        jPanel13 = new javax.swing.JPanel();
         jPanel14 = new javax.swing.JPanel();
         jPanel15 = new javax.swing.JPanel();
         jPanel81 = new javax.swing.JPanel();
@@ -248,7 +242,6 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         cbbThuocTinhPhieuNhap = new javax.swing.JComboBox<>();
         txtNhapPhieuNhap = new javax.swing.JTextField();
         btnTimPhieuNhap = new javax.swing.JButton();
-        jPanel73 = new javax.swing.JPanel();
         jPanel74 = new javax.swing.JPanel();
         jPanel75 = new javax.swing.JPanel();
         jPanel21 = new javax.swing.JPanel();
@@ -269,7 +262,6 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         cbbThuocTinhPhieuTraHang = new javax.swing.JComboBox<>();
         txtNhapPhieuTraHang = new javax.swing.JTextField();
         btnTimPhieuTraHang = new javax.swing.JButton();
-        jPanel53 = new javax.swing.JPanel();
         jPanel54 = new javax.swing.JPanel();
         jPanel55 = new javax.swing.JPanel();
         jPanel26 = new javax.swing.JPanel();
@@ -295,398 +287,6 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
             }
         });
 
-        pnlSanPham.setLayout(new java.awt.BorderLayout());
-
-        jPanel4.setMinimumSize(new java.awt.Dimension(242, 50));
-        jPanel4.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
-
-        cbbThuocTinhSanPham.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Mã sản phẩm", "Tên sản phẩm" }));
-        cbbThuocTinhSanPham.setMinimumSize(new java.awt.Dimension(163, 22));
-        cbbThuocTinhSanPham.setPreferredSize(new java.awt.Dimension(170, 22));
-        cbbThuocTinhSanPham.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbbThuocTinhSanPhamActionPerformed(evt);
-            }
-        });
-        jPanel4.add(cbbThuocTinhSanPham);
-
-        txtNhapSanPham.setPreferredSize(new java.awt.Dimension(800, 22));
-        txtNhapSanPham.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                txtNhapSanPhamFocusGained(evt);
-            }
-        });
-        txtNhapSanPham.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtNhapSanPhamActionPerformed(evt);
-            }
-        });
-        txtNhapSanPham.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                txtNhapSanPhamKeyPressed(evt);
-            }
-        });
-        jPanel4.add(txtNhapSanPham);
-
-        btnTimKiemSanPham.setText("Tìm kiếm");
-        btnTimKiemSanPham.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnTimKiemSanPhamActionPerformed(evt);
-            }
-        });
-        jPanel4.add(btnTimKiemSanPham);
-
-        pnlSanPham.add(jPanel4, java.awt.BorderLayout.PAGE_START);
-
-        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
-        jPanel5.setLayout(jPanel5Layout);
-        jPanel5Layout.setHorizontalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1477, Short.MAX_VALUE)
-        );
-        jPanel5Layout.setVerticalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-        );
-
-        pnlSanPham.add(jPanel5, java.awt.BorderLayout.PAGE_END);
-
-        jPanel6.setPreferredSize(new java.awt.Dimension(630, 556));
-        jPanel6.setLayout(new java.awt.BorderLayout());
-
-        jPanel7.setMaximumSize(new java.awt.Dimension(170, 65534));
-        jPanel7.setPreferredSize(new java.awt.Dimension(170, 556));
-        jPanel7.setLayout(new javax.swing.BoxLayout(jPanel7, javax.swing.BoxLayout.Y_AXIS));
-
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Theo danh mục"));
-        jPanel1.setMaximumSize(new java.awt.Dimension(500, 32767));
-
-        cbxTKKDSanPham.setText("Thuốc không kê đơn");
-        cbxTKKDSanPham.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbxTKKDSanPhamActionPerformed(evt);
-            }
-        });
-
-        cbxTKDSanPham.setText("Thuốc kê đơn");
-
-        cbxTPCNSanPham.setText("TP chức năng");
-        cbxTPCNSanPham.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbxTPCNSanPhamActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(cbxTPCNSanPham)
-                    .addComponent(cbxTKKDSanPham)
-                    .addComponent(cbxTKDSanPham, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(24, Short.MAX_VALUE))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(cbxTKKDSanPham)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cbxTKDSanPham)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cbxTPCNSanPham, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(454, Short.MAX_VALUE))
-        );
-
-        jPanel7.add(jPanel1);
-
-        jPanel6.add(jPanel7, java.awt.BorderLayout.LINE_START);
-
-        jPanel9.setLayout(new java.awt.BorderLayout());
-
-        jPanel3.setPreferredSize(new java.awt.Dimension(278, 40));
-        jPanel3.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
-
-        btnXemTatCaSanPham.setText("Xem tất cả [F4]");
-        btnXemTatCaSanPham.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnXemTatCaSanPhamActionPerformed(evt);
-            }
-        });
-        jPanel3.add(btnXemTatCaSanPham);
-
-        jLabel1.setText("Sắp xếp theo:");
-        jPanel3.add(jLabel1);
-
-        cbbSapXepSanPham.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Mã sản phẩm", "Tên sản phẩm", " " }));
-        jPanel3.add(cbbSapXepSanPham);
-
-        btnLocSanPham.setText("Lọc bảng [F6]");
-        btnLocSanPham.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnLocSanPhamActionPerformed(evt);
-            }
-        });
-        jPanel3.add(btnLocSanPham);
-
-        jPanel9.add(jPanel3, java.awt.BorderLayout.PAGE_START);
-
-        jPanel8.setLayout(new javax.swing.BoxLayout(jPanel8, javax.swing.BoxLayout.LINE_AXIS));
-
-        tblSanPham.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "Mã sản phẩm", "Tên sản phẩm", "Loại sản phẩm", "Mô tả", "Thành phần", "Tồn tối thiểu", "Tồn tối đa"
-            }
-        ));
-        tblSanPham.setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-        tblSanPham.setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-        tblSanPham.setShowGrid(false);
-        tblSanPham.setShowVerticalLines(true);
-        jScrollPane2.setViewportView(tblSanPham);
-
-        jPanel8.add(jScrollPane2);
-
-        jPanel9.add(jPanel8, java.awt.BorderLayout.CENTER);
-
-        jPanel6.add(jPanel9, java.awt.BorderLayout.CENTER);
-
-        pnlSanPham.add(jPanel6, java.awt.BorderLayout.CENTER);
-
-        jTabbedPane1.addTab("Sản phẩm", pnlSanPham);
-
-        pnlKhachHang.setLayout(new java.awt.BorderLayout());
-
-        jPanel32.setMinimumSize(new java.awt.Dimension(242, 50));
-        jPanel32.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
-
-        cbbThuocTinhKhachHang.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Số điện thoại", "Tên khách hàng", "Mã khách hàng" }));
-        cbbThuocTinhKhachHang.setMinimumSize(new java.awt.Dimension(163, 22));
-        cbbThuocTinhKhachHang.setPreferredSize(new java.awt.Dimension(170, 22));
-        cbbThuocTinhKhachHang.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbbThuocTinhKhachHangActionPerformed(evt);
-            }
-        });
-        jPanel32.add(cbbThuocTinhKhachHang);
-
-        txtNhapKhachHang.setPreferredSize(new java.awt.Dimension(1000, 22));
-        txtNhapKhachHang.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtNhapKhachHangActionPerformed(evt);
-            }
-        });
-        txtNhapKhachHang.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                txtNhapKhachHangKeyPressed(evt);
-            }
-        });
-        jPanel32.add(txtNhapKhachHang);
-
-        btnTimKhachHang.setText("Tìm kiếm");
-        btnTimKhachHang.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnTimKhachHangActionPerformed(evt);
-            }
-        });
-        jPanel32.add(btnTimKhachHang);
-
-        pnlKhachHang.add(jPanel32, java.awt.BorderLayout.PAGE_START);
-
-        javax.swing.GroupLayout jPanel33Layout = new javax.swing.GroupLayout(jPanel33);
-        jPanel33.setLayout(jPanel33Layout);
-        jPanel33Layout.setHorizontalGroup(
-            jPanel33Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1477, Short.MAX_VALUE)
-        );
-        jPanel33Layout.setVerticalGroup(
-            jPanel33Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-        );
-
-        pnlKhachHang.add(jPanel33, java.awt.BorderLayout.PAGE_END);
-
-        jPanel34.setPreferredSize(new java.awt.Dimension(630, 556));
-        jPanel34.setLayout(new java.awt.BorderLayout());
-
-        jPanel35.setMaximumSize(new java.awt.Dimension(170, 65534));
-        jPanel35.setPreferredSize(new java.awt.Dimension(170, 556));
-        jPanel35.setLayout(new javax.swing.BoxLayout(jPanel35, javax.swing.BoxLayout.Y_AXIS));
-        jPanel34.add(jPanel35, java.awt.BorderLayout.LINE_START);
-
-        jPanel38.setLayout(new java.awt.BorderLayout());
-
-        jPanel39.setPreferredSize(new java.awt.Dimension(278, 40));
-        jPanel39.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
-
-        btnXemTatCaKhachHang.setText("Xem tất cả [F4]");
-        btnXemTatCaKhachHang.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnXemTatCaKhachHangActionPerformed(evt);
-            }
-        });
-        jPanel39.add(btnXemTatCaKhachHang);
-
-        jLabel4.setText("Sắp xếp theo:");
-        jPanel39.add(jLabel4);
-
-        cbbSapXepKhachHang.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tên khách hàng", "Điểm tích lũy" }));
-        jPanel39.add(cbbSapXepKhachHang);
-
-        btnLocKhachHang.setText("Lọc bảng [F6]");
-        btnLocKhachHang.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnLocKhachHangActionPerformed(evt);
-            }
-        });
-        jPanel39.add(btnLocKhachHang);
-
-        jPanel38.add(jPanel39, java.awt.BorderLayout.PAGE_START);
-
-        jPanel40.setLayout(new javax.swing.BoxLayout(jPanel40, javax.swing.BoxLayout.LINE_AXIS));
-
-        tblKhachHang.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "Mã khách hàng", "Số điện thoại", "Họ tên đêm", "Tên khách hàng", "Điểm tích lũy"
-            }
-        ));
-        tblKhachHang.setShowVerticalLines(true);
-        jScrollPane5.setViewportView(tblKhachHang);
-
-        jPanel40.add(jScrollPane5);
-
-        jPanel38.add(jPanel40, java.awt.BorderLayout.CENTER);
-
-        jPanel34.add(jPanel38, java.awt.BorderLayout.CENTER);
-
-        pnlKhachHang.add(jPanel34, java.awt.BorderLayout.CENTER);
-
-        jTabbedPane1.addTab("Khách hàng", pnlKhachHang);
-
-        pnlNhaCungCap.setLayout(new java.awt.BorderLayout());
-
-        jPanel22.setMinimumSize(new java.awt.Dimension(242, 50));
-        jPanel22.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
-
-        cbbThuocTinhNhaCungCap.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Mã nhà cung cấp", "Tên nhà cung cấp" }));
-        cbbThuocTinhNhaCungCap.setMinimumSize(new java.awt.Dimension(163, 22));
-        cbbThuocTinhNhaCungCap.setPreferredSize(new java.awt.Dimension(170, 22));
-        cbbThuocTinhNhaCungCap.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cbbThuocTinhNhaCungCapActionPerformed(evt);
-            }
-        });
-        jPanel22.add(cbbThuocTinhNhaCungCap);
-
-        txtNhapNhaCungCap.setPreferredSize(new java.awt.Dimension(800, 22));
-        txtNhapNhaCungCap.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                txtNhapNhaCungCapFocusGained(evt);
-            }
-        });
-        txtNhapNhaCungCap.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtNhapNhaCungCapActionPerformed(evt);
-            }
-        });
-        jPanel22.add(txtNhapNhaCungCap);
-
-        btnTimKiemNhaCungCap.setText("Tìm kiếm");
-        btnTimKiemNhaCungCap.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnTimKiemNhaCungCapActionPerformed(evt);
-            }
-        });
-        btnTimKiemNhaCungCap.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                btnTimKiemNhaCungCapKeyTyped(evt);
-            }
-        });
-        jPanel22.add(btnTimKiemNhaCungCap);
-
-        pnlNhaCungCap.add(jPanel22, java.awt.BorderLayout.PAGE_START);
-
-        javax.swing.GroupLayout jPanel23Layout = new javax.swing.GroupLayout(jPanel23);
-        jPanel23.setLayout(jPanel23Layout);
-        jPanel23Layout.setHorizontalGroup(
-            jPanel23Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1477, Short.MAX_VALUE)
-        );
-        jPanel23Layout.setVerticalGroup(
-            jPanel23Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-        );
-
-        pnlNhaCungCap.add(jPanel23, java.awt.BorderLayout.PAGE_END);
-
-        jPanel24.setPreferredSize(new java.awt.Dimension(630, 556));
-        jPanel24.setLayout(new java.awt.BorderLayout());
-
-        jPanel25.setMaximumSize(new java.awt.Dimension(170, 65534));
-        jPanel25.setPreferredSize(new java.awt.Dimension(170, 556));
-        jPanel25.setLayout(new javax.swing.BoxLayout(jPanel25, javax.swing.BoxLayout.Y_AXIS));
-        jPanel24.add(jPanel25, java.awt.BorderLayout.LINE_START);
-
-        jPanel28.setLayout(new java.awt.BorderLayout());
-
-        jPanel29.setPreferredSize(new java.awt.Dimension(278, 40));
-        jPanel29.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
-
-        btnXemTatCaNhaCungCap.setText("Xem tất cả [F4]");
-        btnXemTatCaNhaCungCap.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnXemTatCaNhaCungCapActionPerformed(evt);
-            }
-        });
-        jPanel29.add(btnXemTatCaNhaCungCap);
-
-        jLabel3.setText("Sắp xếp theo:");
-        jPanel29.add(jLabel3);
-
-        cbbSapXepNhaCungCap.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tên nhà cung cấp", "Mã nhà cung cấp" }));
-        jPanel29.add(cbbSapXepNhaCungCap);
-
-        btnLocNhaCungCap.setText("Lọc bảng [F6]");
-        btnLocNhaCungCap.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnLocNhaCungCapActionPerformed(evt);
-            }
-        });
-        jPanel29.add(btnLocNhaCungCap);
-
-        jPanel28.add(jPanel29, java.awt.BorderLayout.PAGE_START);
-
-        jPanel30.setLayout(new javax.swing.BoxLayout(jPanel30, javax.swing.BoxLayout.LINE_AXIS));
-
-        tblNhaCungCap.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "Mã NCC", "Tên NCC", "Địa chỉ", "Số điện thoại", "Email", "Loại thuốc"
-            }
-        ));
-        tblNhaCungCap.setShowVerticalLines(true);
-        jScrollPane4.setViewportView(tblNhaCungCap);
-
-        jPanel30.add(jScrollPane4);
-
-        jPanel28.add(jPanel30, java.awt.BorderLayout.CENTER);
-
-        jPanel24.add(jPanel28, java.awt.BorderLayout.CENTER);
-
-        pnlNhaCungCap.add(jPanel24, java.awt.BorderLayout.CENTER);
-
-        jTabbedPane1.addTab("Nhà cung cấp", pnlNhaCungCap);
-
         pnlNhanVien.setLayout(new java.awt.BorderLayout());
 
         jPanel62.setMinimumSize(new java.awt.Dimension(242, 50));
@@ -702,7 +302,7 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         });
         jPanel62.add(cbbThuocTinhNhanVien);
 
-        txtNhapNhanVien.setPreferredSize(new java.awt.Dimension(1000, 22));
+        txtNhapNhanVien.setPreferredSize(new java.awt.Dimension(500, 22));
         txtNhapNhanVien.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtNhapNhanVienActionPerformed(evt);
@@ -724,19 +324,6 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         jPanel62.add(btnTimNhanVien);
 
         pnlNhanVien.add(jPanel62, java.awt.BorderLayout.PAGE_START);
-
-        javax.swing.GroupLayout jPanel63Layout = new javax.swing.GroupLayout(jPanel63);
-        jPanel63.setLayout(jPanel63Layout);
-        jPanel63Layout.setHorizontalGroup(
-            jPanel63Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1477, Short.MAX_VALUE)
-        );
-        jPanel63Layout.setVerticalGroup(
-            jPanel63Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-        );
-
-        pnlNhanVien.add(jPanel63, java.awt.BorderLayout.PAGE_END);
 
         jPanel64.setPreferredSize(new java.awt.Dimension(630, 556));
         jPanel64.setLayout(new java.awt.BorderLayout());
@@ -801,7 +388,15 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
             new String [] {
                 "Mã nhân viên", "Họ tên đệm", "Tên", "Số điện thoại", "Giới tính", "Ngày sinh", "Bị khóa"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         tblNhanVien.setShowVerticalLines(true);
         tblNhanVien.addAncestorListener(new javax.swing.event.AncestorListener() {
             public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
@@ -824,6 +419,383 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
 
         jTabbedPane1.addTab("Nhân viên", pnlNhanVien);
 
+        pnlKhachHang.setLayout(new java.awt.BorderLayout());
+
+        jPanel32.setMinimumSize(new java.awt.Dimension(242, 50));
+        jPanel32.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+
+        cbbThuocTinhKhachHang.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Số điện thoại", "Tên khách hàng", "Mã khách hàng" }));
+        cbbThuocTinhKhachHang.setMinimumSize(new java.awt.Dimension(163, 22));
+        cbbThuocTinhKhachHang.setPreferredSize(new java.awt.Dimension(170, 22));
+        cbbThuocTinhKhachHang.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbbThuocTinhKhachHangActionPerformed(evt);
+            }
+        });
+        jPanel32.add(cbbThuocTinhKhachHang);
+
+        txtNhapKhachHang.setPreferredSize(new java.awt.Dimension(500, 22));
+        txtNhapKhachHang.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtNhapKhachHangActionPerformed(evt);
+            }
+        });
+        txtNhapKhachHang.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtNhapKhachHangKeyPressed(evt);
+            }
+        });
+        jPanel32.add(txtNhapKhachHang);
+
+        btnTimKhachHang.setText("Tìm kiếm");
+        btnTimKhachHang.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTimKhachHangActionPerformed(evt);
+            }
+        });
+        jPanel32.add(btnTimKhachHang);
+
+        pnlKhachHang.add(jPanel32, java.awt.BorderLayout.PAGE_START);
+
+        jPanel34.setPreferredSize(new java.awt.Dimension(630, 556));
+        jPanel34.setLayout(new java.awt.BorderLayout());
+
+        jPanel35.setMaximumSize(new java.awt.Dimension(170, 65534));
+        jPanel35.setPreferredSize(new java.awt.Dimension(170, 556));
+        jPanel35.setLayout(new javax.swing.BoxLayout(jPanel35, javax.swing.BoxLayout.Y_AXIS));
+        jPanel34.add(jPanel35, java.awt.BorderLayout.LINE_START);
+
+        jPanel38.setLayout(new java.awt.BorderLayout());
+
+        jPanel39.setPreferredSize(new java.awt.Dimension(278, 40));
+        jPanel39.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+
+        btnXemTatCaKhachHang.setText("Xem tất cả [F4]");
+        btnXemTatCaKhachHang.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnXemTatCaKhachHangActionPerformed(evt);
+            }
+        });
+        jPanel39.add(btnXemTatCaKhachHang);
+
+        jLabel4.setText("Sắp xếp theo:");
+        jPanel39.add(jLabel4);
+
+        cbbSapXepKhachHang.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tên khách hàng", "Điểm tích lũy" }));
+        jPanel39.add(cbbSapXepKhachHang);
+
+        btnLocKhachHang.setText("Lọc bảng [F6]");
+        btnLocKhachHang.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLocKhachHangActionPerformed(evt);
+            }
+        });
+        jPanel39.add(btnLocKhachHang);
+
+        jPanel38.add(jPanel39, java.awt.BorderLayout.PAGE_START);
+
+        jPanel40.setLayout(new javax.swing.BoxLayout(jPanel40, javax.swing.BoxLayout.LINE_AXIS));
+
+        tblKhachHang.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Mã khách hàng", "Số điện thoại", "Họ tên đêm", "Tên khách hàng", "Điểm tích lũy"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tblKhachHang.setShowVerticalLines(true);
+        jScrollPane5.setViewportView(tblKhachHang);
+
+        jPanel40.add(jScrollPane5);
+
+        jPanel38.add(jPanel40, java.awt.BorderLayout.CENTER);
+
+        jPanel34.add(jPanel38, java.awt.BorderLayout.CENTER);
+
+        pnlKhachHang.add(jPanel34, java.awt.BorderLayout.CENTER);
+
+        jTabbedPane1.addTab("Khách hàng", pnlKhachHang);
+
+        pnlNhaCungCap.setLayout(new java.awt.BorderLayout());
+
+        jPanel22.setMinimumSize(new java.awt.Dimension(242, 50));
+        jPanel22.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+
+        cbbThuocTinhNhaCungCap.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Mã nhà cung cấp", "Tên nhà cung cấp" }));
+        cbbThuocTinhNhaCungCap.setMinimumSize(new java.awt.Dimension(163, 22));
+        cbbThuocTinhNhaCungCap.setPreferredSize(new java.awt.Dimension(170, 22));
+        cbbThuocTinhNhaCungCap.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbbThuocTinhNhaCungCapActionPerformed(evt);
+            }
+        });
+        jPanel22.add(cbbThuocTinhNhaCungCap);
+
+        txtNhapNhaCungCap.setPreferredSize(new java.awt.Dimension(500, 22));
+        txtNhapNhaCungCap.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txtNhapNhaCungCapFocusGained(evt);
+            }
+        });
+        txtNhapNhaCungCap.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtNhapNhaCungCapActionPerformed(evt);
+            }
+        });
+        jPanel22.add(txtNhapNhaCungCap);
+
+        btnTimKiemNhaCungCap.setText("Tìm kiếm");
+        btnTimKiemNhaCungCap.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTimKiemNhaCungCapActionPerformed(evt);
+            }
+        });
+        btnTimKiemNhaCungCap.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                btnTimKiemNhaCungCapKeyTyped(evt);
+            }
+        });
+        jPanel22.add(btnTimKiemNhaCungCap);
+
+        pnlNhaCungCap.add(jPanel22, java.awt.BorderLayout.PAGE_START);
+
+        jPanel24.setPreferredSize(new java.awt.Dimension(630, 556));
+        jPanel24.setLayout(new java.awt.BorderLayout());
+
+        jPanel25.setMaximumSize(new java.awt.Dimension(170, 65534));
+        jPanel25.setPreferredSize(new java.awt.Dimension(170, 556));
+        jPanel25.setLayout(new javax.swing.BoxLayout(jPanel25, javax.swing.BoxLayout.Y_AXIS));
+        jPanel24.add(jPanel25, java.awt.BorderLayout.LINE_START);
+
+        jPanel28.setLayout(new java.awt.BorderLayout());
+
+        jPanel29.setPreferredSize(new java.awt.Dimension(278, 40));
+        jPanel29.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+
+        btnXemTatCaNhaCungCap.setText("Xem tất cả [F4]");
+        btnXemTatCaNhaCungCap.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnXemTatCaNhaCungCapActionPerformed(evt);
+            }
+        });
+        jPanel29.add(btnXemTatCaNhaCungCap);
+
+        jLabel3.setText("Sắp xếp theo:");
+        jPanel29.add(jLabel3);
+
+        cbbSapXepNhaCungCap.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tên nhà cung cấp", "Mã nhà cung cấp" }));
+        jPanel29.add(cbbSapXepNhaCungCap);
+
+        btnLocNhaCungCap.setText("Lọc bảng [F6]");
+        btnLocNhaCungCap.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLocNhaCungCapActionPerformed(evt);
+            }
+        });
+        jPanel29.add(btnLocNhaCungCap);
+
+        jPanel28.add(jPanel29, java.awt.BorderLayout.PAGE_START);
+
+        jPanel30.setLayout(new javax.swing.BoxLayout(jPanel30, javax.swing.BoxLayout.LINE_AXIS));
+
+        tblNhaCungCap.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Mã NCC", "Tên NCC", "Địa chỉ", "Số điện thoại", "Email", "Loại thuốc"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tblNhaCungCap.setShowVerticalLines(true);
+        jScrollPane4.setViewportView(tblNhaCungCap);
+
+        jPanel30.add(jScrollPane4);
+
+        jPanel28.add(jPanel30, java.awt.BorderLayout.CENTER);
+
+        jPanel24.add(jPanel28, java.awt.BorderLayout.CENTER);
+
+        pnlNhaCungCap.add(jPanel24, java.awt.BorderLayout.CENTER);
+
+        jTabbedPane1.addTab("Nhà cung cấp", pnlNhaCungCap);
+
+        pnlSanPham.setLayout(new java.awt.BorderLayout());
+
+        jPanel4.setMinimumSize(new java.awt.Dimension(242, 50));
+        jPanel4.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+
+        cbbThuocTinhSanPham.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Mã sản phẩm", "Tên sản phẩm" }));
+        cbbThuocTinhSanPham.setMinimumSize(new java.awt.Dimension(163, 22));
+        cbbThuocTinhSanPham.setPreferredSize(new java.awt.Dimension(170, 22));
+        cbbThuocTinhSanPham.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbbThuocTinhSanPhamActionPerformed(evt);
+            }
+        });
+        jPanel4.add(cbbThuocTinhSanPham);
+
+        txtNhapSanPham.setPreferredSize(new java.awt.Dimension(500, 22));
+        txtNhapSanPham.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txtNhapSanPhamFocusGained(evt);
+            }
+        });
+        txtNhapSanPham.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtNhapSanPhamActionPerformed(evt);
+            }
+        });
+        txtNhapSanPham.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtNhapSanPhamKeyPressed(evt);
+            }
+        });
+        jPanel4.add(txtNhapSanPham);
+
+        btnTimKiemSanPham.setText("Tìm kiếm");
+        btnTimKiemSanPham.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTimKiemSanPhamActionPerformed(evt);
+            }
+        });
+        jPanel4.add(btnTimKiemSanPham);
+
+        pnlSanPham.add(jPanel4, java.awt.BorderLayout.PAGE_START);
+
+        jPanel6.setPreferredSize(new java.awt.Dimension(630, 556));
+        jPanel6.setLayout(new java.awt.BorderLayout());
+
+        jPanel7.setMaximumSize(new java.awt.Dimension(170, 65534));
+        jPanel7.setPreferredSize(new java.awt.Dimension(170, 556));
+        jPanel7.setLayout(new javax.swing.BoxLayout(jPanel7, javax.swing.BoxLayout.Y_AXIS));
+
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Theo danh mục"));
+        jPanel1.setMaximumSize(new java.awt.Dimension(500, 32767));
+
+        cbxTKKDSanPham.setText("Thuốc không kê đơn");
+        cbxTKKDSanPham.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbxTKKDSanPhamActionPerformed(evt);
+            }
+        });
+
+        cbxTKDSanPham.setText("Thuốc kê đơn");
+
+        cbxTPCNSanPham.setText("TP chức năng");
+        cbxTPCNSanPham.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbxTPCNSanPhamActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(cbxTPCNSanPham)
+                    .addComponent(cbxTKKDSanPham)
+                    .addComponent(cbxTKDSanPham, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(24, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(cbxTKKDSanPham)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(cbxTKDSanPham)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(cbxTPCNSanPham, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(211, Short.MAX_VALUE))
+        );
+
+        jPanel7.add(jPanel1);
+
+        jPanel6.add(jPanel7, java.awt.BorderLayout.LINE_START);
+
+        jPanel9.setLayout(new java.awt.BorderLayout());
+
+        jPanel3.setPreferredSize(new java.awt.Dimension(278, 40));
+        jPanel3.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+
+        btnXemTatCaSanPham.setText("Xem tất cả [F4]");
+        btnXemTatCaSanPham.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnXemTatCaSanPhamActionPerformed(evt);
+            }
+        });
+        jPanel3.add(btnXemTatCaSanPham);
+
+        jLabel1.setText("Sắp xếp theo:");
+        jPanel3.add(jLabel1);
+
+        cbbSapXepSanPham.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Mã sản phẩm", "Tên sản phẩm", " " }));
+        jPanel3.add(cbbSapXepSanPham);
+
+        btnLocSanPham.setText("Lọc bảng [F6]");
+        btnLocSanPham.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLocSanPhamActionPerformed(evt);
+            }
+        });
+        jPanel3.add(btnLocSanPham);
+
+        jPanel9.add(jPanel3, java.awt.BorderLayout.PAGE_START);
+
+        jPanel8.setLayout(new javax.swing.BoxLayout(jPanel8, javax.swing.BoxLayout.LINE_AXIS));
+
+        tblSanPham.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Mã sản phẩm", "Tên sản phẩm", "Loại sản phẩm", "Mô tả", "Thành phần", "Tồn tối thiểu", "Tồn tối đa"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tblSanPham.setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        tblSanPham.setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        tblSanPham.setShowGrid(false);
+        tblSanPham.setShowVerticalLines(true);
+        jScrollPane2.setViewportView(tblSanPham);
+
+        jPanel8.add(jScrollPane2);
+
+        jPanel9.add(jPanel8, java.awt.BorderLayout.CENTER);
+
+        jPanel6.add(jPanel9, java.awt.BorderLayout.CENTER);
+
+        pnlSanPham.add(jPanel6, java.awt.BorderLayout.CENTER);
+
+        jTabbedPane1.addTab("Sản phẩm", pnlSanPham);
+
         pnlKhuyenMai.setLayout(new java.awt.BorderLayout());
 
         jPanel42.setMinimumSize(new java.awt.Dimension(242, 50));
@@ -834,7 +806,7 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         cbbThuocTinhKhuyenMai.setPreferredSize(new java.awt.Dimension(170, 22));
         jPanel42.add(cbbThuocTinhKhuyenMai);
 
-        txtNhapKhuyenMai.setPreferredSize(new java.awt.Dimension(1000, 22));
+        txtNhapKhuyenMai.setPreferredSize(new java.awt.Dimension(500, 22));
         txtNhapKhuyenMai.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 txtNhapKhuyenMaiKeyPressed(evt);
@@ -851,19 +823,6 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         jPanel42.add(btnTimKhuyenMai);
 
         pnlKhuyenMai.add(jPanel42, java.awt.BorderLayout.PAGE_START);
-
-        javax.swing.GroupLayout jPanel43Layout = new javax.swing.GroupLayout(jPanel43);
-        jPanel43.setLayout(jPanel43Layout);
-        jPanel43Layout.setHorizontalGroup(
-            jPanel43Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1477, Short.MAX_VALUE)
-        );
-        jPanel43Layout.setVerticalGroup(
-            jPanel43Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-        );
-
-        pnlKhuyenMai.add(jPanel43, java.awt.BorderLayout.PAGE_END);
 
         jPanel44.setPreferredSize(new java.awt.Dimension(630, 556));
         jPanel44.setLayout(new java.awt.BorderLayout());
@@ -947,7 +906,15 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
             new String [] {
                 "Mã khuyến mãi", "Mô tả", "Phần trăm", "Loại khuyến mãi", "Ngày bắt đầu", "Ngày kết thúc", "Số lượng tối thiểu", "Số lượng tối đa", "Ngày chỉnh sửa"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         tblKhuyenMai.setShowVerticalLines(true);
         jScrollPane6.setViewportView(tblKhuyenMai);
 
@@ -976,7 +943,7 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         });
         jPanel12.add(cbbHoaDon);
 
-        txtNhapHoaDon.setPreferredSize(new java.awt.Dimension(800, 22));
+        txtNhapHoaDon.setPreferredSize(new java.awt.Dimension(500, 22));
         txtNhapHoaDon.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtNhapHoaDonActionPerformed(evt);
@@ -993,19 +960,6 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         jPanel12.add(btnTimKiem);
 
         pnlHoaDon.add(jPanel12, java.awt.BorderLayout.PAGE_START);
-
-        javax.swing.GroupLayout jPanel13Layout = new javax.swing.GroupLayout(jPanel13);
-        jPanel13.setLayout(jPanel13Layout);
-        jPanel13Layout.setHorizontalGroup(
-            jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1477, Short.MAX_VALUE)
-        );
-        jPanel13Layout.setVerticalGroup(
-            jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-        );
-
-        pnlHoaDon.add(jPanel13, java.awt.BorderLayout.PAGE_END);
 
         jPanel14.setPreferredSize(new java.awt.Dimension(630, 556));
         jPanel14.setLayout(new java.awt.BorderLayout());
@@ -1070,7 +1024,15 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
             new String [] {
                 "Mã hóa đơn", "Tên nhân viên", "Tên khách hàng", "Ngày lập hóa đơn", "Hình thức thanh toán", "Tổng tiền"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, true, false, true
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         tblHoaDon.setShowVerticalLines(true);
         jScrollPane3.setViewportView(tblHoaDon);
 
@@ -1099,7 +1061,7 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         });
         jPanel72.add(cbbThuocTinhPhieuNhap);
 
-        txtNhapPhieuNhap.setPreferredSize(new java.awt.Dimension(1000, 22));
+        txtNhapPhieuNhap.setPreferredSize(new java.awt.Dimension(500, 22));
         txtNhapPhieuNhap.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtNhapPhieuNhapActionPerformed(evt);
@@ -1121,19 +1083,6 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         jPanel72.add(btnTimPhieuNhap);
 
         pnlPhieuNhap.add(jPanel72, java.awt.BorderLayout.PAGE_START);
-
-        javax.swing.GroupLayout jPanel73Layout = new javax.swing.GroupLayout(jPanel73);
-        jPanel73.setLayout(jPanel73Layout);
-        jPanel73Layout.setHorizontalGroup(
-            jPanel73Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1477, Short.MAX_VALUE)
-        );
-        jPanel73Layout.setVerticalGroup(
-            jPanel73Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-        );
-
-        pnlPhieuNhap.add(jPanel73, java.awt.BorderLayout.PAGE_END);
 
         jPanel74.setPreferredSize(new java.awt.Dimension(630, 556));
         jPanel74.setLayout(new java.awt.BorderLayout());
@@ -1199,7 +1148,15 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
             new String [] {
                 "Mã phiếu nhập", "Ngày tạo", "Tên nhân viên", "Tổng tiền", "Ghi chú"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, true
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         tblPhieuNhap.setShowVerticalLines(true);
         jScrollPane9.setViewportView(tblPhieuNhap);
 
@@ -1228,7 +1185,7 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         });
         jPanel52.add(cbbThuocTinhPhieuTraHang);
 
-        txtNhapPhieuTraHang.setPreferredSize(new java.awt.Dimension(1000, 22));
+        txtNhapPhieuTraHang.setPreferredSize(new java.awt.Dimension(500, 22));
         txtNhapPhieuTraHang.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtNhapPhieuTraHangActionPerformed(evt);
@@ -1245,19 +1202,6 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         jPanel52.add(btnTimPhieuTraHang);
 
         pnlPhieuTraHang.add(jPanel52, java.awt.BorderLayout.PAGE_START);
-
-        javax.swing.GroupLayout jPanel53Layout = new javax.swing.GroupLayout(jPanel53);
-        jPanel53.setLayout(jPanel53Layout);
-        jPanel53Layout.setHorizontalGroup(
-            jPanel53Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1477, Short.MAX_VALUE)
-        );
-        jPanel53Layout.setVerticalGroup(
-            jPanel53Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-        );
-
-        pnlPhieuTraHang.add(jPanel53, java.awt.BorderLayout.PAGE_END);
 
         jPanel54.setPreferredSize(new java.awt.Dimension(630, 556));
         jPanel54.setLayout(new java.awt.BorderLayout());
@@ -1323,7 +1267,15 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
             new String [] {
                 "Mã phiếu trả", "Ngày lập phiếu trả hàng", "Tên nhân viên", "Mã hóa đơn", "Tổng tiền hoàn trả"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         tblPhieuTraHang.setShowVerticalLines(true);
         jScrollPane7.setViewportView(tblPhieuTraHang);
 
@@ -1691,7 +1643,6 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel12;
-    private javax.swing.JPanel jPanel13;
     private javax.swing.JPanel jPanel14;
     private javax.swing.JPanel jPanel15;
     private javax.swing.JPanel jPanel16;
@@ -1700,7 +1651,6 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel20;
     private javax.swing.JPanel jPanel21;
     private javax.swing.JPanel jPanel22;
-    private javax.swing.JPanel jPanel23;
     private javax.swing.JPanel jPanel24;
     private javax.swing.JPanel jPanel25;
     private javax.swing.JPanel jPanel26;
@@ -1710,7 +1660,6 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel30;
     private javax.swing.JPanel jPanel31;
     private javax.swing.JPanel jPanel32;
-    private javax.swing.JPanel jPanel33;
     private javax.swing.JPanel jPanel34;
     private javax.swing.JPanel jPanel35;
     private javax.swing.JPanel jPanel38;
@@ -1718,15 +1667,12 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel40;
     private javax.swing.JPanel jPanel42;
-    private javax.swing.JPanel jPanel43;
     private javax.swing.JPanel jPanel44;
     private javax.swing.JPanel jPanel45;
     private javax.swing.JPanel jPanel48;
     private javax.swing.JPanel jPanel49;
-    private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel50;
     private javax.swing.JPanel jPanel52;
-    private javax.swing.JPanel jPanel53;
     private javax.swing.JPanel jPanel54;
     private javax.swing.JPanel jPanel55;
     private javax.swing.JPanel jPanel58;
@@ -1734,7 +1680,6 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel60;
     private javax.swing.JPanel jPanel62;
-    private javax.swing.JPanel jPanel63;
     private javax.swing.JPanel jPanel64;
     private javax.swing.JPanel jPanel65;
     private javax.swing.JPanel jPanel68;
@@ -1742,7 +1687,6 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel70;
     private javax.swing.JPanel jPanel72;
-    private javax.swing.JPanel jPanel73;
     private javax.swing.JPanel jPanel74;
     private javax.swing.JPanel jPanel75;
     private javax.swing.JPanel jPanel78;
