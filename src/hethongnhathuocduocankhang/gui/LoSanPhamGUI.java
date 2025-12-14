@@ -41,6 +41,7 @@ import java.util.Map;
 import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
@@ -142,6 +143,7 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
                 }
             }
         });
+        ImageIcon iconExcel = new ImageIcon();
 
     }
 
@@ -1103,42 +1105,34 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
         for (int i=0; i<tbl.getRowCount();i++) {
             boolean check = (Boolean) tbl.getValueAt(i, 10);
             if (!check) continue;
-
             String maSP = tbl.getValueAt(i, 0).toString();
             String maLo = tbl.getValueAt(i, 2).toString();
             String tenNcc = tbl.getValueAt(i, 3).toString();
             LocalDate sx = LocalDate.parse(QuanLyLoBUS.chuyenDinhDang(tbl.getValueAt(i, 5).toString()));
             LocalDate hh = LocalDate.parse(QuanLyLoBUS.chuyenDinhDang(tbl.getValueAt(i, 6).toString()));
-
             int slDat = Integer.parseInt(tbl.getValueAt(i, 7).toString());
             int slGiao = Integer.parseInt(tbl.getValueAt(i, 8).toString());
             double giaNhap = Double.parseDouble(tbl.getValueAt(i, 9).toString());
             String ghiChu = tbl.getValueAt(i, 11) == null ? "" : tbl.getValueAt(i, 11).toString();
-
             LoSanPham loMoi = new LoSanPham(maLo, new SanPham(maSP), slGiao, sx, hh, false);
             LoSanPham loCu = LoSanPhamDAO.timLoSanPham(maLo);
             NhaCungCap ncc = NhaCungCapDAO.getNhaCungCapTheoTen(tenNcc);
-            
             if (loCu != null){
                 LoSanPhamDAO.capNhatSoLuongLo(loCu, slGiao); 
-                LichSuLoDAO.addLichSuLo(loCu, tk.getNhanVien(), "CAP_NHAP_LO", slGiao, ghiChu);
+                LichSuLoDAO.addLichSuLo(loCu, tk.getNhanVien(), "BO_SUNG_SO_LUONG", slGiao, ghiChu);
             } else {
+                SanPham sp = SanPhamDAO.timSPTheoMa(loMoi.getSanPham().getMaSP());
+                if(QuanLyLoBUS.tongSoLuongTheoSanPham(sp.getMaSP(), loMoi)){
+                    JOptionPane.showMessageDialog(this, "Lô có sô lượng vượt quá số lượng tối đa là "
+                            +sp.getTonToiDa() +" của sản phẩm "+sp.getMaSP(), "cảnh báo", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
                 LoSanPhamDAO.themLoSanPham(loMoi); 
                 LichSuLoDAO.addLichSuLo(loMoi, tk.getNhanVien(), "NHAP_LO", slGiao, ghiChu);
             }
-
-            ChiTietPhieuNhapDAO.themChiTietPhieuNhap(
-                loMoi,       
-                pn,          
-                ncc,         
-                giaNhap,     
-                tongTien,    
-                slDat,       
-                ghiChu       
-            );
+            ChiTietPhieuNhapDAO.themChiTietPhieuNhap(loMoi, pn, ncc, giaNhap, tongTien, slDat, ghiChu);
             dsIndex.add(i);
     }
-    
     JOptionPane.showMessageDialog(this, "Thêm lô sản phẩm thành công!");
     ((DefaultTableModel) tblLoSanPham.getModel()).setRowCount(0);
     loadLaiDanhSachLo();

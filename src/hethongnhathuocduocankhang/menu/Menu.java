@@ -38,6 +38,7 @@ public class Menu extends JComponent{
         {"Tra cứu"},
         {"Thống kê", "Hóa đơn", "Sản phẩm", "Phiếu nhập", "Phiếu trả hàng"},
         {"Báo cáo"},
+        {"Trợ giúp", "Giới thiệu", "Hướng dẫn sử dụng"},
         {"Đăng xuất"}
             
     };

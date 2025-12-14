@@ -110,7 +110,19 @@ public class GiaoDienChinhGUI extends javax.swing.JFrame {
                     showPanel(new BaoCaoGUI());
                 }
                 
-                if (index == 8 && subIndex == 0) {
+                if (index == 8) {
+                    switch (subIndex){
+                        case 1 -> {
+                            AboutGUI aboutDialog = new AboutGUI(GiaoDienChinhGUI.this);
+                            aboutDialog.setVisible(true);
+                        }
+                        case 2 -> {
+                            // Hướng dẫn sử dụng
+                        }
+                    }
+                }
+                
+                if (index == 9 && subIndex == 0) {
                     dangXuat();
                 }
                 

@@ -131,19 +131,32 @@ public class QuanLyLoBUS {
         List<LoSanPham> ketQuaLoc = dsLoDaLocTheoTrangThai.stream().filter(lo -> {
             if (noiDung == null) return true; // Nếu không nhập nội dung, không cần lọc thêm
             switch(loaiTimKiem){
-                case "mã lô sản phẩm":
+                case "mã lô sản phẩm" -> {
                     return lo.getMaLoSanPham().toLowerCase().contains(noiDungLowerCase);
-                case "mã sản phẩm":
+                }
+                case "mã sản phẩm" -> {
                     return lo.getSanPham().getMaSP().toLowerCase().contains(noiDungLowerCase);
-                case "tên sản phẩm":
+                }
+                case "tên sản phẩm" -> {
                     SanPham sp = SanPhamDAO.timSPTheoMa(lo.getSanPham().getMaSP());
                     return sp != null && sp.getTen().toLowerCase().contains(noiDungLowerCase);
-                default:
-                    return true; 
+                }
+                default -> { 
+                    return true;
+                }
             }
         }).collect(Collectors.toList()); 
 
         return new ArrayList<>(ketQuaLoc);
     }
-    
+    public static boolean tongSoLuongTheoSanPham(String maSP, LoSanPham loSP){
+        ArrayList<LoSanPham> dsLo = LoSanPhamDAO.getLoSanPhamTheoMaSP(maSP);
+        int tongSL=0;
+        for(LoSanPham lo:dsLo)
+            tongSL+=lo.getSoLuong();
+        SanPham sp = SanPhamDAO.timSPTheoMa(maSP);
+        if(sp.getTonToiDa()<tongSL)
+            return true;
+        return false;
+    }
 }
