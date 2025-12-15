@@ -137,27 +137,15 @@ public class PhieuDatHangDAO {
         return tonTai;
     }
 
-    // =========================================================================
-    // PHƯƠNG THỨC QUẢN LÝ (Lấy/Tìm các Phiếu Đặt Hàng đã có)
-    // (Các hàm tôi đã tạo)
-    // =========================================================================
-    /**
-     * Hàm trợ giúp private để xây dựng đối tượng PhieuDatHang đầy đủ từ
-     * ResultSet. Tự động gọi các DAO khác để lấy đối tượng con.
-     */
     private static PhieuDatHang buildPhieuDatHangFromResultSet(ResultSet rs) throws SQLException {
         String maPDH = rs.getString("maPhieuDatHang");
 
-        // Xử lý DATE (từ CSDL) -> LocalDateTime (trong Entity)
         LocalDate ngayLapDate = rs.getDate("ngayLap").toLocalDate();
-        LocalDateTime ngayLapDateTime = ngayLapDate.atStartOfDay(); // Chuyển thành 00:00:00
-
+        LocalDateTime ngayLapDateTime = ngayLapDate.atStartOfDay(); 
         String maNCC = rs.getString("maNCC");
         String maNV = rs.getString("maNV");
         double tongTien = rs.getDouble("tongTien");
 
-        // Gọi các DAO khác để lấy đối tượng đầy đủ
-        // Giả định các DAO này có hàm tim...TheoMa()
         NhaCungCap ncc = NhaCungCapDAO.timNCCTheoMa(maNCC);
         NhanVien nv = NhanVienDAO.timNVTheoMa(maNV);
 
@@ -249,7 +237,7 @@ public class PhieuDatHangDAO {
             Connection con = ConnectDB.getConnection();
             String querry = "SELECT * FROM PhieuDatHang WHERE ngayLap = ?";
             PreparedStatement stmt = con.prepareStatement(querry);
-            stmt.setDate(1, Date.valueOf(date)); // CSDL dùng DATE
+            stmt.setDate(1, Date.valueOf(date)); 
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
                 dsPDH.add(buildPhieuDatHangFromResultSet(rs));
@@ -260,9 +248,9 @@ public class PhieuDatHangDAO {
         return dsPDH;
     }
 
-    public static int getMaPDHCuoiCungTrongNgay(String ngay) { // ngay Dạng "ddMMyy"
+    public static int getMaPDHCuoiCungTrongNgay(String ngay) { 
         int maCuoiCung = 0;
-        String maPDHFormat = "PDH-" + ngay + "-"; // Ví dụ: "PDH-071125-"
+        String maPDHFormat = "PDH-" + ngay + "-"; 
         try {
             ConnectDB.getInstance().connect();
             Connection con = ConnectDB.getConnection();
