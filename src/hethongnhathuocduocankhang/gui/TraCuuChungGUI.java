@@ -20,8 +20,10 @@ import hethongnhathuocduocankhang.entity.NhanVien;
 import hethongnhathuocduocankhang.entity.PhieuNhap;
 import hethongnhathuocduocankhang.entity.PhieuTraHang;
 import hethongnhathuocduocankhang.entity.SanPham;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import java.beans.PropertyChangeListener;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
@@ -33,6 +35,7 @@ import javax.swing.AbstractButton;
 import javax.swing.ActionMap;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
@@ -1034,6 +1037,11 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
             }
         });
         tblHoaDon.setShowVerticalLines(true);
+        tblHoaDon.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblHoaDonMouseClicked(evt);
+            }
+        });
         jScrollPane3.setViewportView(tblHoaDon);
 
         jPanel20.add(jScrollPane3);
@@ -1277,6 +1285,11 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
             }
         });
         tblPhieuTraHang.setShowVerticalLines(true);
+        tblPhieuTraHang.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblPhieuTraHangMouseClicked(evt);
+            }
+        });
         jScrollPane7.setViewportView(tblPhieuTraHang);
 
         jPanel60.add(jScrollPane7);
@@ -1575,6 +1588,16 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         String key = txtNhapPhieuTraHang.getText();
         timPhieuTraHangTheoThuocTinh(thuocTinh, key);
     }//GEN-LAST:event_btnTimPhieuTraHangActionPerformed
+
+    private void tblHoaDonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblHoaDonMouseClicked
+        // TODO add your handling code here:
+        hienThiChiTietHoaDon(evt);
+    }//GEN-LAST:event_tblHoaDonMouseClicked
+
+    private void tblPhieuTraHangMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblPhieuTraHangMouseClicked
+        // TODO add your handling code here:
+        hienThiChiTietPhieuTraHang(evt);
+    }//GEN-LAST:event_tblPhieuTraHangMouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnLocHoaDon;
@@ -2336,6 +2359,32 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         
         themHoaDonVaoBang(dsHD);
     }
+    
+    private void hienThiChiTietHoaDon(MouseEvent e) {
+        int selectRow = tblHoaDon.getSelectedRow();
+        if (selectRow != -1) {
+            String maHD = tblHoaDon.getModel().getValueAt(selectRow, 0).toString();
+            
+            // Xử lý lấy chi tiết không cần SwingWorker vì chỉ lấy 1 object, khá nhanh
+            // Tuy nhiên nếu chi tiết quá nhiều thì cũng nên dùng Worker.
+            HoaDon hdDaChon = HoaDonDAO.getHoaDonTheoMaHD(maHD);
+
+            if (hdDaChon != null && e.getClickCount() == 2) {
+                ChiTietHoaDonGUI pnlChiTiet = new ChiTietHoaDonGUI();
+                pnlChiTiet.loadData(hdDaChon);
+
+                JDialog dialog = new JDialog();
+                dialog.setTitle("Danh sách chi tiết Hóa Đơn: " + hdDaChon.getMaHoaDon());
+                dialog.setModal(true);
+                dialog.setContentPane(pnlChiTiet);
+                dialog.setPreferredSize(new Dimension(800, 400));
+                dialog.pack();
+                dialog.setLocationRelativeTo(null);
+                dialog.setVisible(true);
+            }
+        }
+    }    
+    
  
 //Khuyến mãi
     private void timKhuyenMaiTheoThuocTinh(String thuocTinh, String key) {
@@ -2525,7 +2574,30 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         
         themPhieuNhapVaoBang(dsPN);
     }
-
+//    private void hienThiChiTietPhieuNhap(MouseEvent e) {
+//        int selectRow = tblPhieuNhap.getSelectedRow();
+//        if (selectRow != -1) {
+//            String maPN = tblPhieuNhap.getModel().getValueAt(selectRow, 0).toString();
+//            
+//            // Xử lý lấy chi tiết không cần SwingWorker vì chỉ lấy 1 object, khá nhanh
+//            // Tuy nhiên nếu chi tiết quá nhiều thì cũng nên dùng Worker.
+//            PhieuNhap pnDaChon = PhieuNhapDAO.getPhieuNhapTheoMa(maPN);
+//
+//            if (pnDaChon != null && e.getClickCount() == 2) {
+//                ChiTietHoaDonGUI pnlChiTiet = new ChiTietHoaDonGUI();
+//                //pnlChiTiet.loadData(hdDaChon);
+//
+//                JDialog dialog = new JDialog();
+//                dialog.setTitle("Danh sách chi tiết Hóa Đơn: " + hdDaChon.getMaHoaDon());
+//                dialog.setModal(true);
+//                dialog.setContentPane(pnlChiTiet);
+//                dialog.setPreferredSize(new Dimension(800, 400));
+//                dialog.pack();
+//                dialog.setLocationRelativeTo(null);
+//                dialog.setVisible(true);
+//            }
+//        }
+//    }    
 //Phiếu trả hàng
     private void themPhieuTraHangVaoBang(ArrayList<PhieuTraHang> dsPTH) {
         DefaultTableModel dtm = (DefaultTableModel) tblPhieuTraHang.getModel();
@@ -2606,7 +2678,31 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         themPhieuTraHangVaoBang(dsPTH);
     }
 
+    private void hienThiChiTietPhieuTraHang(MouseEvent e) {
+        int selectRow = tblPhieuTraHang.getSelectedRow();
+        if (selectRow != -1) {
+            // Lấy Mã PTH ở CỘT 1 (Vì cột 0 là STT)
+            String maPTH = tblPhieuTraHang.getModel().getValueAt(selectRow, 0).toString(); 
+            PhieuTraHang pthDaChon = PhieuTraHangDAO.timPTHTheoMa(maPTH); 
 
+            if (pthDaChon != null && e.getClickCount() == 2) { 
+                
+                ChiTietPhieuTraHangGUI pnlChiTiet = new ChiTietPhieuTraHangGUI(); 
+                
+                pnlChiTiet.loadData(pthDaChon);
+
+                JDialog dialog = new JDialog();
+                dialog.setTitle("Danh sách chi tiết Phiếu Trả Hàng: " + pthDaChon.getMaPhieuTraHang()); 
+                dialog.setModal(true);
+                dialog.setResizable(true); 
+                dialog.setContentPane(pnlChiTiet);
+                dialog.setPreferredSize(new Dimension(900, 400));
+                dialog.pack();
+                dialog.setLocationRelativeTo(null);
+                dialog.setVisible(true);
+            }
+        }
+    }
 
     
 
