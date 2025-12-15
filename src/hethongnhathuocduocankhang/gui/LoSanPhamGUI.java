@@ -187,9 +187,12 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
         mapKeyToClickButton("F9", btnHuyLo, QuanLyLo);
         mapKeyToClickButton("F10", btnXoaTrangLo, QuanLyLo);
         mapKeyToClickButton("F10", txtLamMoi, CanhBao);
-
-        //ImageIcon iconExcel = new ImageIcon();
         
+        btnThemSanPhamTuExcel.setToolTipText("Thêm danh sách lô từ file excel");
+        btnChonTatCa.setToolTipText("Chọn hoặc hủy chọn tất cả");
+        btnXoaSanPham.setToolTipText("Xóa sản phẩm được chọn");
+        btnXacNhan.setToolTipText("Nhập lô được chọn");
+        btnTimLoHetHan.setToolTipText("Tìm danh sách lô hết hạn");
 
     }
 
@@ -598,7 +601,10 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
         jScrollPane3.setViewportView(tblThemSanPham);
 
         btnThemSanPhamTuExcel.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        btnThemSanPhamTuExcel.setText("Thêm từ Excel [F6]");
+        btnThemSanPhamTuExcel.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/excel.png")));
+        btnThemSanPhamTuExcel.setText("Excel [F6]");
+        btnThemSanPhamTuExcel.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        btnThemSanPhamTuExcel.setIconTextGap(6);
         btnThemSanPhamTuExcel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnThemSanPhamTuExcelActionPerformed(evt);
