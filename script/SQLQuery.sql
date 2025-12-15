@@ -330,7 +330,7 @@ CREATE TABLE ChiTietPhieuNhap (
     CONSTRAINT FK_CTPN_LoSanPham FOREIGN KEY (maLoSanPham) REFERENCES LoSanPham(maLoSanPham),
     CONSTRAINT FK_PhieuNhap_NhaCungCap FOREIGN KEY (maNCC) REFERENCES NhaCungCap(maNCC),
     CONSTRAINT CK_CTPN_SoLuong CHECK (soLuong > 0),
-    CONSTRAINT CK_CTPN_SoLuongYeuCau CHECK (soLuongYeuCau > 0),
+    CONSTRAINT CK_CTPN_SoLuongYeuCau CHECK (soLuongYeuCau >= 0),
     CONSTRAINT CK_CTPN_DonGia CHECK (donGia >= 0),
     CONSTRAINT CK_CTPN_ThanhTien CHECK (thanhTien >= 0)
 );
