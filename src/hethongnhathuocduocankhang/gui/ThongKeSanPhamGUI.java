@@ -33,35 +33,30 @@ public class ThongKeSanPhamGUI extends JPanel {
     private JTextField txtTopN;
     private JComboBox<String> cmbThang;
     private JComboBox<Integer> cmbNam;
-    // [MỚI] Thêm ComboBox tiêu chí thống kê
-    private JComboBox<String> cmbTieuChi; 
+    private JComboBox<String> cmbTieuChi;
     private JButton btnXemThongKe;
     private JTable table;
     private DefaultTableModel model;
     private JLabel lblTongDoanhThuTop;
     private JLabel lblThoiGianThongKe;
-    
-    // Định dạng tiền tệ Việt Nam
+
     private NumberFormat currencyFormat = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
 
     public ThongKeSanPhamGUI() {
         this.setLayout(new BorderLayout(10, 10));
         this.setBorder(new EmptyBorder(10, 10, 10, 10));
 
-        // ==========================================================================
-        // 1. PANEL NORTH (Bộ lọc thống kê)
-        // ==========================================================================
+        // ANEL NORTH (Bộ lọc thống kê)
         JPanel pnlNorth = new JPanel();
         pnlNorth.setLayout(new BorderLayout());
 
-        // --- 1.1. Panel chứa các điều kiện lọc (Top N, Tiêu chí, Tháng, Năm) ---
+        // Panel chứa các điều kiện lọc: Top N, Tiêu chí, Tháng, Năm
         JPanel pnlFilter = new JPanel(new FlowLayout(FlowLayout.LEFT, 15, 5));
         pnlFilter.setBorder(new EmptyBorder(0, 0, 10, 0));
 
         Font fontLabel = new Font("Arial", Font.BOLD, 14);
         Font fontInput = new Font("Arial", Font.PLAIN, 14);
 
-        // Nhập Top N
         JLabel lblTop = new JLabel("Top:");
         lblTop.setFont(fontLabel);
         txtTopN = new JTextField("10", 3);
@@ -71,8 +66,7 @@ public class ThongKeSanPhamGUI extends JPanel {
                 BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1),
                 new EmptyBorder(5, 5, 5, 5)
         ));
-        
-        // --- [MỚI] THÊM SỰ KIỆN FOCUS ĐỂ BÔI ĐEN TOÀN BỘ TEXT ---
+
         txtTopN.addFocusListener(new FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
@@ -80,7 +74,6 @@ public class ThongKeSanPhamGUI extends JPanel {
             }
         });
 
-        // [MỚI] Chọn Tiêu chí thống kê
         JLabel lblTieuChi = new JLabel("Thống kê theo:");
         lblTieuChi.setFont(fontLabel);
         String[] arrTieuChi = {"Số Lượng Bán"};
@@ -88,8 +81,6 @@ public class ThongKeSanPhamGUI extends JPanel {
         cmbTieuChi.setFont(fontInput);
         cmbTieuChi.setPreferredSize(new Dimension(150, 30));
 
-
-        // Chọn Tháng
         JLabel lblThang = new JLabel("Tháng:");
         lblThang.setFont(fontLabel);
         String[] arrThang = new String[13];
@@ -111,23 +102,22 @@ public class ThongKeSanPhamGUI extends JPanel {
         cmbNam = new JComboBox<>(arrNam);
         cmbNam.setFont(fontInput);
         cmbNam.setPreferredSize(new Dimension(100, 30));
-        
-        // Thêm các thành phần mới vào panel lọc
+
         pnlFilter.add(lblTop);
         pnlFilter.add(txtTopN);
-        pnlFilter.add(lblTieuChi); // [MỚI]
-        pnlFilter.add(cmbTieuChi); // [MỚI]
+        pnlFilter.add(lblTieuChi);
+        pnlFilter.add(cmbTieuChi);
         pnlFilter.add(lblThang);
         pnlFilter.add(cmbThang);
         pnlFilter.add(lblNam);
         pnlFilter.add(cmbNam);
 
-        // --- 1.2. Panel chứa các nút hành động (Xem, Xuất Excel) ---
+        // Panel chứa nút Xem
         JPanel pnlActions = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 5));
 
         btnXemThongKe = new JButton("Xem thống kê");
         btnXemThongKe.setPreferredSize(new Dimension(140, 30));
-        setupTopButton(btnXemThongKe, new Color(50, 150, 250)); // Xanh dương
+        setupTopButton(btnXemThongKe, new Color(50, 150, 250));
 
         pnlActions.add(btnXemThongKe);
 
@@ -136,9 +126,7 @@ public class ThongKeSanPhamGUI extends JPanel {
 
         this.add(pnlNorth, BorderLayout.NORTH);
 
-        // ==========================================================================
-        // 2. PANEL CENTER (Bảng dữ liệu thống kê)
-        // ==========================================================================
+        // PANEL CENTER
         JPanel centerPanel = new JPanel(new BorderLayout(0, 10));
 
         String[] columnNames = {
@@ -168,9 +156,7 @@ public class ThongKeSanPhamGUI extends JPanel {
         table = new JTable(model);
         table.setRowHeight(40);
         table.setFont(new Font("Arial", Font.PLAIN, 15));
-        // Tắt tính năng tự sắp xếp của JTable để dùng sắp xếp thủ công (Top N)
-        // Nếu không tắt, khi người dùng click vào cột, Top N sẽ bị sai
-        table.setAutoCreateRowSorter(false); 
+        table.setAutoCreateRowSorter(false);
 
         // Header bảng
         table.getTableHeader().setFont(new Font("Arial", Font.BOLD, 15));
@@ -179,7 +165,7 @@ public class ThongKeSanPhamGUI extends JPanel {
         table.setShowGrid(true);
         table.setGridColor(Color.LIGHT_GRAY);
 
-        // --- Cấu hình độ rộng cột & Căn lề ---
+        // Cấu hình độ rộng cột & Căn lề
         TableColumnModel columnModel = table.getColumnModel();
 
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
@@ -221,9 +207,7 @@ public class ThongKeSanPhamGUI extends JPanel {
         centerPanel.add(scrollPane, BorderLayout.CENTER);
         this.add(centerPanel, BorderLayout.CENTER);
 
-        // ==========================================================================
-        // 3. PANEL SOUTH (Footer tổng kết)
-        // ==========================================================================
+        // PANEL SOUTH (Footer tổng kết)
         JPanel pnlSouth = new JPanel(new BorderLayout());
         pnlSouth.setBorder(new EmptyBorder(5, 0, 0, 0));
 
@@ -234,7 +218,7 @@ public class ThongKeSanPhamGUI extends JPanel {
 
         lblTongDoanhThuTop = new JLabel("Tổng doanh thu (Top N): 0 đ");
         lblTongDoanhThuTop.setFont(fontFooter);
-        lblTongDoanhThuTop.setForeground(new Color(204, 0, 0)); 
+        lblTongDoanhThuTop.setForeground(new Color(204, 0, 0));
 
         pnlSouth.add(lblThoiGianThongKe, BorderLayout.WEST);
         pnlSouth.add(lblTongDoanhThuTop, BorderLayout.EAST);
@@ -245,19 +229,17 @@ public class ThongKeSanPhamGUI extends JPanel {
     }
 
     private void updateTable() {
-        // 1. Lấy tham số lọc
         model.setRowCount(0);
-        
+
         int thang = cmbThang.getSelectedIndex();
         int nam = Integer.valueOf(cmbNam.getSelectedItem().toString());
-        String tieuChi = (String) cmbTieuChi.getSelectedItem(); // [MỚI] Lấy tiêu chí
-        
-        // Lấy Top N từ text field
+        String tieuChi = (String) cmbTieuChi.getSelectedItem();
+
         int topN = 0;
         try {
             topN = Integer.parseInt(txtTopN.getText());
             if (topN <= 0) {
-                 JOptionPane.showMessageDialog(this, "Top N phải là số nguyên dương.");
+                JOptionPane.showMessageDialog(this, "Top N phải là số nguyên dương.");
                 txtTopN.setText("10");
                 return;
             }
@@ -266,50 +248,41 @@ public class ThongKeSanPhamGUI extends JPanel {
             return;
         }
 
-        // 2. Cập nhật Label Thời gian
         if (thang == 0) {
             lblThoiGianThongKe.setText("Thời gian: Cả năm " + nam);
         } else {
             lblThoiGianThongKe.setText("Thời gian: Tháng " + thang + "/" + nam);
         }
 
-        // 3. Lấy dữ liệu từ DAO (giữ nguyên cách gọi, giả định nó trả về tất cả và chưa sắp xếp theo tiêu chí)
         LinkedHashMap<SanPham, Number[]> dsSP = new LinkedHashMap<>();
         if (thang == 0) {
-            // Giả định hàm này lấy tất cả sản phẩm bán được trong năm
-            dsSP = SanPhamDAO.getSPBanChayTrongNam(LocalDate.of(nam, 1, 1)); 
+            dsSP = SanPhamDAO.getSPBanChayTrongNam(LocalDate.of(nam, 1, 1));
         } else {
             LocalDate ngayChon = LocalDate.of(nam, thang, 1);
-            // Giả định hàm này lấy tất cả sản phẩm bán được trong tháng
             dsSP = SanPhamDAO.getSPBanChayTrongThang(ngayChon);
         }
-        
+
         if (dsSP.isEmpty()) {
             lblTongDoanhThuTop.setText("Tổng doanh thu (Top " + topN + "): 0 đ");
             return;
         }
-        
-        // 4. [MỚI] Sắp xếp lại dữ liệu dựa trên tiêu chí
+
         List<Map.Entry<SanPham, Number[]>> list = new LinkedList<>(dsSP.entrySet());
 
-        Comparator<Map.Entry<SanPham, Number[]>> comparator;
-        if (tieuChi.equals("Số Lượng Bán")) {
-            // Sắp xếp theo Số Lượng Bán (index 0) giảm dần
-            comparator = (o1, o2) -> o2.getValue()[0].intValue() - o1.getValue()[0].intValue();
-        } else { 
-            // Sắp xếp theo Tổng Doanh Thu (index 1) giảm dần (Mặc định)
-            comparator = (o1, o2) -> Double.compare(o2.getValue()[1].doubleValue(), o1.getValue()[1].doubleValue());
-        }
-        
-        Collections.sort(list, comparator);
+//        Comparator<Map.Entry<SanPham, Number[]>> comparator;
+//        if (tieuChi.equals("Số Lượng Bán")) {
+//            comparator = (o1, o2) -> o2.getValue()[0].intValue() - o1.getValue()[0].intValue();
+//        } else { 
+//            // Sắp xếp theo Tổng Doanh Thu (index 1) giảm dần (Mặc định)
+//            comparator = (o1, o2) -> Double.compare(o2.getValue()[1].doubleValue(), o1.getValue()[1].doubleValue());
+//        }
+//        
+//        Collections.sort(list, comparator);
+        double tongDoanhThuTopN = 0;
 
-        // 5. Hiển thị dữ liệu lên bảng (chỉ lấy Top N)
-        double tongDoanhThuTopN = 0; 
-        
-        // Chỉ duyệt qua Top N sản phẩm
         for (int i = 0; i < Math.min(topN, list.size()); i++) {
             Map.Entry<SanPham, Number[]> entry = list.get(i);
-            
+
             // Lấy ĐVT Cơ bản
             DonViTinh dvtCB = null;
             ArrayList<DonViTinh> dsDVTSP = DonViTinhDAO.getDonViTinhTheoMaSP(entry.getKey().getMaSP());
@@ -319,7 +292,7 @@ public class ThongKeSanPhamGUI extends JPanel {
                     break;
                 }
             }
-            // Fallback nếu không tìm thấy ĐVT cơ bản
+
             String tenDVT = (dvtCB != null) ? dvtCB.getTenDonVi() : "N/A";
 
             // Lấy dữ liệu từ mảng Number[] của DAO
@@ -327,27 +300,25 @@ public class ThongKeSanPhamGUI extends JPanel {
             // [1]: TONGTIEN (double)
             // [2]: DONGIA_TB (double)
             Number[] values = entry.getValue();
-            
+
             int soLuong = values[0].intValue();
             double tongTien = values[1].doubleValue();
             double donGiaTB = values[2].doubleValue();
 
-            // Cộng dồn tổng doanh thu của Top N sản phẩm này
             tongDoanhThuTopN += tongTien;
 
             Object[] row = {
-                i + 1, // STT bắt đầu từ 1
+                i + 1,
                 entry.getKey().getMaSP(),
                 entry.getKey().getTen(),
                 tenDVT,
-                soLuong,    // Cột 4: Số lượng
-                donGiaTB,   // Cột 5: Giá TB
-                tongTien    // Cột 6: Tổng tiền
+                soLuong, 
+                String.format("%,.0f VND", donGiaTB), 
+                String.format("%,.0f VND", tongTien)
             };
             model.addRow(row);
         }
         
-        // 6. Cập nhật Label Tổng doanh thu (Tổng doanh thu của Top N sản phẩm)
         lblTongDoanhThuTop.setText("Tổng doanh thu (Top " + topN + "): " + currencyFormat.format(tongDoanhThuTopN));
     }
 
@@ -365,14 +336,37 @@ public class ThongKeSanPhamGUI extends JPanel {
         button.setBorderPainted(false);
         button.setOpaque(true);
     }
-    
-    // Getters ...
-    public JTextField getTxtTopN() { return txtTopN; }
-    public JComboBox<String> getCmbThang() { return cmbThang; }
-    public JComboBox<Integer> getCmbNam() { return cmbNam; }
-    public JComboBox<String> getCmbTieuChi() { return cmbTieuChi; } // [MỚI]
-    public JButton getBtnXemThongKe() { return btnXemThongKe; }
-    public JTable getTable() { return table; }
-    public DefaultTableModel getModel() { return model; }
-    public JLabel getLblTongDoanhThuTop() { return lblTongDoanhThuTop; }
+
+    // Getters 
+    public JTextField getTxtTopN() {
+        return txtTopN;
+    }
+
+    public JComboBox<String> getCmbThang() {
+        return cmbThang;
+    }
+
+    public JComboBox<Integer> getCmbNam() {
+        return cmbNam;
+    }
+
+    public JComboBox<String> getCmbTieuChi() {
+        return cmbTieuChi;
+    }
+
+    public JButton getBtnXemThongKe() {
+        return btnXemThongKe;
+    }
+
+    public JTable getTable() {
+        return table;
+    }
+
+    public DefaultTableModel getModel() {
+        return model;
+    }
+
+    public JLabel getLblTongDoanhThuTop() {
+        return lblTongDoanhThuTop;
+    }
 }

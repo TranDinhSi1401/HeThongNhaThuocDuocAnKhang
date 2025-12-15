@@ -16,6 +16,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ChiTietHoaDonDAO {
 
@@ -49,17 +51,17 @@ public class ChiTietHoaDonDAO {
         }
         return cthd;
     }
-    
+
     public static ChiTietHoaDon getChiTietHoaDonMoiNhatTrongNgay() {
         ChiTietHoaDon cthd = null;
         try {
             ConnectDB.getInstance().connect();
             Connection con = ConnectDB.getConnection();
-            String sql = "SELECT TOP 1 *\n" +
-                            "FROM ChiTietHoaDon cthd \n" +
-                            "JOIN HoaDon hd ON hd.maHoaDon = cthd.maHoaDon\n" +
-                            "WHERE CAST(hd.ngayLapHoaDon AS DATE) = CAST(GETDATE() AS DATE)\n" +
-                            "ORDER BY maChiTietHoaDon DESC";
+            String sql = "SELECT TOP 1 *\n"
+                    + "FROM ChiTietHoaDon cthd \n"
+                    + "JOIN HoaDon hd ON hd.maHoaDon = cthd.maHoaDon\n"
+                    + "WHERE CAST(hd.ngayLapHoaDon AS DATE) = CAST(GETDATE() AS DATE)\n"
+                    + "ORDER BY maChiTietHoaDon DESC";
 
             Statement statement = con.createStatement();
             ResultSet rs = statement.executeQuery(sql);
@@ -83,7 +85,7 @@ public class ChiTietHoaDonDAO {
         }
         return cthd;
     }
-    
+
     public static boolean insertChiTietHoaDon(ChiTietHoaDon cthd) {
         int n = 0;
         try {
@@ -128,7 +130,7 @@ public class ChiTietHoaDonDAO {
 
     public static ArrayList<ChiTietHoaDon> getChiTietHoaDonTheoMaHD(HoaDon hoaDon) {
         ArrayList<ChiTietHoaDon> dsCTHD = new ArrayList<>();
-        
+
         try {
             ConnectDB.getInstance().connect();
             Connection con = ConnectDB.getConnection();
@@ -146,15 +148,13 @@ public class ChiTietHoaDonDAO {
             while (rs.next()) {
                 dsCTHD.add(taoDoiTuongChiTietHoaDon(rs, hoaDon));
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        
+
         return dsCTHD;
     }
 
-    
     public static ChiTietHoaDon getChiTietHoaDonTheoMaCTHD(String maCTHD) {
         HoaDon hd = null;
 
@@ -191,7 +191,7 @@ public class ChiTietHoaDonDAO {
 
     public static ArrayList<ChiTietHoaDon> getChiTietHoaDonDaTruPTHTheoMaHD(HoaDon hoaDon) {
         ArrayList<ChiTietHoaDon> dsCTHD = new ArrayList<>();
-        
+
         try {
             ConnectDB.getInstance().connect();
             Connection con = ConnectDB.getConnection();
@@ -204,11 +204,10 @@ public class ChiTietHoaDonDAO {
             while (rs.next()) {
                 dsCTHD.add(taoDoiTuongChiTietHoaDonDaTruPTH(rs, hoaDon));
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        
+
         return dsCTHD;
     }
 
@@ -223,7 +222,7 @@ public class ChiTietHoaDonDAO {
         DonViTinh dvt = DonViTinhDAO.getDonViTinhTheoMaDVT(rs.getString("maDonViTinh"));
         dvt.setSanPham(sp);
 
-        return new ChiTietHoaDon(maCTHD, hoaDon, dvt, soLuong, donGia, giamGia, thanhTien);    
+        return new ChiTietHoaDon(maCTHD, hoaDon, dvt, soLuong, donGia, giamGia, thanhTien);
     }
 
     public static ChiTietHoaDon getChiTietHoaDonDaTungTraRoiTheoMaCTHD(String maCTHD) {
@@ -258,5 +257,37 @@ public class ChiTietHoaDonDAO {
         }
 
         return cthd;
+    }
+
+    public static Map<String, Integer> getTongSoLuongBanRaTheoThoiGian(int thang, int nam) {
+        Map<String, Integer> mapBan = new HashMap<>();
+        try {
+            ConnectDB.getInstance().connect();
+            Connection con = ConnectDB.getConnection();
+
+            String sql = "SELECT sp.maSP, SUM(cthd.soLuong) as tongBan "
+                    + "FROM ChiTietHoaDon cthd "
+                    + "JOIN HoaDon hd ON cthd.maHoaDon = hd.maHoaDon "
+                    + "JOIN DonViTinh dvt ON cthd.maDonViTinh = dvt.maDonViTinh "
+                    + "JOIN SanPham sp ON dvt.maSP = sp.maSP "
+                    + "WHERE YEAR(hd.ngayLapHoaDon) = ?";
+
+            if (thang != 0) {
+                sql += " AND MONTH(hd.ngayLapHoaDon) = " + thang;
+            }
+
+            sql += " GROUP BY sp.maSP";
+
+            PreparedStatement stmt = con.prepareStatement(sql);
+            stmt.setInt(1, nam);
+
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                mapBan.put(rs.getString("maSP"), rs.getInt("tongBan"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return mapBan;
     }
 }
