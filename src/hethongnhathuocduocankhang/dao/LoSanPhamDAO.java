@@ -211,4 +211,29 @@ public class LoSanPhamDAO {
         }
         return n>0;
     }
+    public static ArrayList<LoSanPham> dsLoTheoMaSanPham(String maSP){
+        ArrayList<LoSanPham> dsLo = new ArrayList<>();
+        String sql = "Select * from LoSanPham where maSP = ?";
+        try {
+            ConnectDB.getInstance().connect();
+            Connection con = ConnectDB.getConnection();
+            PreparedStatement st = con.prepareStatement(sql);
+            st.setString(1, maSP);
+            try(ResultSet rs = st.executeQuery()){
+                while(rs.next()){
+                    String maLo = rs.getString(1);
+                    String maSPham = rs.getString(2);
+                    int soLuong = rs.getInt(3);
+                    LocalDate ngaySX = rs.getDate(4).toLocalDate();
+                    LocalDate ngayHH = rs.getDate(5).toLocalDate();
+                    boolean tinhTrang = rs.getBoolean(6);
+                    LoSanPham lo = new LoSanPham(maLo, new SanPham(maSPham), soLuong, ngaySX, ngayHH, tinhTrang);
+                    dsLo.add(lo);
+                }
+            }
+        } catch (SQLException s) {
+            s.printStackTrace();
+        }
+        return dsLo;
+    }
 }
