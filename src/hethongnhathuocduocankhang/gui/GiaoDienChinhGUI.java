@@ -68,6 +68,8 @@ public class GiaoDienChinhGUI extends javax.swing.JFrame {
                             showPanel(new QuanLiLichSuCaLamGUI());
                         case 9 ->
                             showPanel(new QuanLiPhieuTraHangGUI());
+                        case 10 ->
+                            showPanel(new QuanLiPhieuNhapHangGUI());
                         default -> {
                         }
                     }
