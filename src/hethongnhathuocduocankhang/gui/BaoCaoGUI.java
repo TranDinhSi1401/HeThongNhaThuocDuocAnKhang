@@ -385,7 +385,7 @@ public class BaoCaoGUI extends javax.swing.JPanel {
 
         jPanel35.add(jPanel50, java.awt.BorderLayout.PAGE_END);
 
-        jTabbedPane1.addTab("tab1", jPanel35);
+        jTabbedPane1.addTab("Mẫu báo cáo", jPanel35);
 
         javax.swing.GroupLayout jPanel36Layout = new javax.swing.GroupLayout(jPanel36);
         jPanel36.setLayout(jPanel36Layout);
@@ -398,7 +398,7 @@ public class BaoCaoGUI extends javax.swing.JPanel {
             .addGap(0, 517, Short.MAX_VALUE)
         );
 
-        jTabbedPane1.addTab("tab2", jPanel36);
+        jTabbedPane1.addTab("Xuất báo cáo theo mẫu", jPanel36);
 
         add(jTabbedPane1);
     }// </editor-fold>//GEN-END:initComponents
