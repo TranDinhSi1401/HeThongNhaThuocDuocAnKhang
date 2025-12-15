@@ -4,8 +4,48 @@
  */
 package hethongnhathuocduocankhang.gui;
 
+import hethongnhathuocduocankhang.dao.HoaDonDAO;
+import hethongnhathuocduocankhang.entity.DoanhThu;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.geom.Ellipse2D;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.Year;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import javax.swing.AbstractAction;
+import javax.swing.AbstractButton;
+import javax.swing.ActionMap;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
+import javax.swing.InputMap;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.KeyStroke;
+import javax.swing.ToolTipManager;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.DateAxis;
+import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.labels.StandardCategoryToolTipGenerator;
+import org.jfree.chart.labels.StandardXYToolTipGenerator;
+import org.jfree.chart.plot.CategoryPlot;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.plot.XYPlot;
+import org.jfree.chart.renderer.category.LineAndShapeRenderer;
+import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
+import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.data.time.Day;
+import org.jfree.data.time.TimeSeries;
+import org.jfree.data.time.TimeSeriesCollection;
 
 /**
  *
@@ -18,8 +58,40 @@ public class ThongKeHoaDonGUI extends javax.swing.JPanel {
      */
     public ThongKeHoaDonGUI() {
         initComponents();
-    }
+        toggleFilter("ngày");
+        int namHienTai = Year.now().getValue();
 
+        for (int i = 0; i <= 20; i++) {
+            cbbNam.addItem(String.valueOf(namHienTai - i));
+            cbbNamBatDau.addItem(String.valueOf(namHienTai - i));
+            cbbNamKetThuc.addItem(String.valueOf(namHienTai - i));
+        }
+
+        DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
+        centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+
+        // Căn giữa cột 0 và 1
+        table.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
+        table.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);
+        // Định dạng tiền tệ cột doanh thu
+        DefaultTableCellRenderer moneyRenderer = new DefaultTableCellRenderer() {
+            private final DecimalFormat df = new DecimalFormat("#,###");
+            @Override
+            public void setValue(Object value) {
+                if (value instanceof Number) {
+                    setHorizontalAlignment(JLabel.CENTER);
+                    setText(df.format(value) + " ₫");
+                } else {
+                    setText("");
+                }
+            }
+        };
+        table.getColumnModel().getColumn(2).setCellRenderer(moneyRenderer);
+        veBieuDoTrong();
+        
+        mapKeyToClickButton("F6", btnThongKe);
+        mapKeyToClickButton("F5", btnLamMoi);
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -29,124 +101,600 @@ public class ThongKeHoaDonGUI extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
+        pLoc = new javax.swing.JPanel();
+        lblLoaiThoiGian = new javax.swing.JLabel();
+        cbbLoaiThoiGian = new javax.swing.JComboBox<>();
+        lblNam = new javax.swing.JLabel();
+        cbbNam = new javax.swing.JComboBox<>();
+        lblNamBatDau = new javax.swing.JLabel();
+        cbbNamBatDau = new javax.swing.JComboBox<>();
+        lblNamKetThuc = new javax.swing.JLabel();
+        cbbNamKetThuc = new javax.swing.JComboBox<>();
+        lblNgayBatDau = new javax.swing.JLabel();
+        txtNgayBatDau = new org.jdesktop.swingx.JXDatePicker();
+        lblNgayKetThuc = new javax.swing.JLabel();
+        txtNgayKetThuc = new org.jdesktop.swingx.JXDatePicker();
+        btnThongKe = new javax.swing.JButton();
+        btnLamMoi = new javax.swing.JButton();
+        pDuLieuTongHop = new javax.swing.JPanel();
+        pTongHop = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
-        jPanel8 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
-        jPanel9 = new javax.swing.JPanel();
-        jLabel4 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
-        jPanel10 = new javax.swing.JPanel();
-        jTextField3 = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
-        jPanel3 = new javax.swing.JPanel();
+        lblTongHoaDon = new javax.swing.JLabel();
+        jPanel6 = new javax.swing.JPanel();
+        lblTongDoanhThu = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jPanel4 = new javax.swing.JPanel();
-        jTextField1 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        pTable = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        table = new javax.swing.JTable();
+        pBieuDo = new javax.swing.JPanel();
 
-        setLayout(new java.awt.BorderLayout(0, 10));
+        setLayout(new java.awt.BorderLayout());
 
-        jPanel1.setLayout(new javax.swing.BoxLayout(jPanel1, javax.swing.BoxLayout.Y_AXIS));
+        pLoc.setBackground(new java.awt.Color(255, 255, 255));
+        pLoc.setLayout(new javax.swing.BoxLayout(pLoc, javax.swing.BoxLayout.X_AXIS));
 
-        jPanel2.setLayout(new javax.swing.BoxLayout(jPanel2, javax.swing.BoxLayout.X_AXIS));
+        lblLoaiThoiGian.setText("Loại thời gian:");
+        pLoc.add(lblLoaiThoiGian);
 
-        jPanel8.setLayout(new java.awt.BorderLayout(0, 5));
+        cbbLoaiThoiGian.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ngày", "Tháng", "Quý", "Năm" }));
+        pLoc.add(Box.createHorizontalStrut(10));
+        cbbLoaiThoiGian.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbbLoaiThoiGianActionPerformed(evt);
+            }
+        });
+        pLoc.add(cbbLoaiThoiGian);
 
-        jLabel1.setText("Loại thời gian");
-        jPanel8.add(jLabel1, java.awt.BorderLayout.PAGE_START);
+        lblNam.setText("Năm:");
+        pLoc.add(Box.createHorizontalStrut(10));
+        pLoc.add(lblNam);
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ngày", "Tháng ", "Quý", "Năm" }));
-        jPanel8.add(jComboBox1, java.awt.BorderLayout.CENTER);
+        pLoc.add(Box.createHorizontalStrut(10));
+        pLoc.add(cbbNam);
 
-        jPanel2.add(jPanel8);
+        lblNamBatDau.setText("Từ năm:");
+        pLoc.add(lblNamBatDau);
 
-        jPanel9.setLayout(new java.awt.BorderLayout(0, 5));
+        pLoc.add(Box.createHorizontalStrut(10));
+        pLoc.add(cbbNamBatDau);
 
-        jLabel4.setText("Từ ngày");
-        jPanel9.add(jLabel4, java.awt.BorderLayout.PAGE_START);
+        lblNamKetThuc.setText("Đến năm:");
+        pLoc.add(Box.createHorizontalStrut(10));
+        pLoc.add(lblNamKetThuc);
 
-        jTextField2.setText("Chọn ngày");
-        jPanel9.add(jTextField2, java.awt.BorderLayout.CENTER);
+        pLoc.add(Box.createHorizontalStrut(10));
+        pLoc.add(cbbNamKetThuc);
 
-        jPanel2.add(Box.createHorizontalStrut(10));
+        lblNgayBatDau.setText("Từ ngày:");
+        pLoc.add(Box.createHorizontalStrut(10));
+        pLoc.add(lblNgayBatDau);
 
-        jPanel2.add(jPanel9);
+        pLoc.add(Box.createHorizontalStrut(10));
+        pLoc.add(txtNgayBatDau);
 
-        jPanel10.setLayout(new java.awt.BorderLayout(0, 5));
+        lblNgayKetThuc.setText("Đến ngày:");
+        pLoc.add(Box.createHorizontalStrut(10));
+        pLoc.add(lblNgayKetThuc);
 
-        jTextField3.setText("Chọn ngày");
-        jPanel10.add(jTextField3, java.awt.BorderLayout.CENTER);
+        pLoc.add(Box.createHorizontalStrut(10));
+        pLoc.add(txtNgayKetThuc);
 
-        jLabel3.setText("Tới ngày");
-        jPanel10.add(jLabel3, java.awt.BorderLayout.PAGE_START);
+        btnThongKe.setText("Thống kê [F6]");
+        pLoc.add(Box.createHorizontalStrut(50));
+        btnThongKe.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnThongKeActionPerformed(evt);
+            }
+        });
+        pLoc.add(btnThongKe);
 
-        jPanel2.add(Box.createHorizontalStrut(10));
-
-        jPanel2.add(jPanel10);
-
-        jPanel1.add(jPanel2);
-
-        jPanel3.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 0, 5));
-
-        jLabel2.setText("Từ khóa tìm kiếm");
-        jPanel3.add(jLabel2);
-
-        jPanel1.add(jPanel3);
-
-        jPanel4.setLayout(new java.awt.BorderLayout());
-
-        jTextField1.setText("Tìm kiếm ...");
-        jPanel4.add(jTextField1, java.awt.BorderLayout.CENTER);
-
-        jButton1.setText("Tìm kiếm");
-        jPanel4.add(jButton1, java.awt.BorderLayout.LINE_END);
-
-        jPanel1.add(jPanel4);
+        btnLamMoi.setText("Làm mới [F5]");
+        pLoc.add(Box.createHorizontalStrut(10));
+        btnLamMoi.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLamMoiActionPerformed(evt);
+            }
+        });
+        pLoc.add(btnLamMoi);
 
         // padding: top, left, bottom, right
-        jPanel1.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        pLoc.setBorder(BorderFactory.createEmptyBorder(20, 10, 10, 10));
 
-        add(jPanel1, java.awt.BorderLayout.PAGE_START);
+        add(pLoc, java.awt.BorderLayout.PAGE_START);
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        pDuLieuTongHop.setBackground(new java.awt.Color(255, 255, 255));
+        pDuLieuTongHop.setPreferredSize(new java.awt.Dimension(100, 350));
+        pDuLieuTongHop.setLayout(new java.awt.BorderLayout(10, 0));
+
+        pTongHop.setBackground(new java.awt.Color(255, 255, 255));
+        pTongHop.setLayout(new javax.swing.BoxLayout(pTongHop, javax.swing.BoxLayout.Y_AXIS));
+
+        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel2.setPreferredSize(new java.awt.Dimension(200, 100));
+        jPanel2.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createLineBorder(new Color(220, 220, 220), 1),
+            BorderFactory.createEmptyBorder(20, 15, 20, 15)
+        ));
+        jPanel2.setLayout(new java.awt.BorderLayout());
+
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(102, 102, 102));
+        jLabel3.setText("Tổng số hóa đơn");
+        jPanel2.add(jLabel3, java.awt.BorderLayout.PAGE_START);
+
+        lblTongHoaDon.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
+        lblTongHoaDon.setForeground(new java.awt.Color(51, 51, 51));
+        lblTongHoaDon.setText("0");
+        jPanel2.add(lblTongHoaDon, java.awt.BorderLayout.CENTER);
+
+        pTongHop.add(jPanel2);
+
+        jPanel6.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel6.setPreferredSize(new java.awt.Dimension(200, 100));
+        jPanel6.setBorder(BorderFactory.createCompoundBorder(
+            BorderFactory.createLineBorder(new Color(220, 220, 220), 1),
+            BorderFactory.createEmptyBorder(20, 15, 20, 15)
+        ));
+        jPanel6.setLayout(new java.awt.BorderLayout());
+
+        lblTongDoanhThu.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
+        lblTongDoanhThu.setForeground(new java.awt.Color(51, 51, 51));
+        lblTongDoanhThu.setText("0 ₫");
+        jPanel6.add(lblTongDoanhThu, java.awt.BorderLayout.CENTER);
+
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(102, 102, 102));
+        jLabel2.setText("Tổng doanh thu");
+        jPanel6.add(jLabel2, java.awt.BorderLayout.PAGE_START);
+
+        pTongHop.add(Box.createVerticalStrut(10));
+
+        pTongHop.add(jPanel6);
+
+        pDuLieuTongHop.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+        pDuLieuTongHop.add(pTongHop, java.awt.BorderLayout.LINE_START);
+
+        pTable.setLayout(new java.awt.BorderLayout());
+
+        table.setBackground(new java.awt.Color(255, 255, 255));
+        table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+                "Thời gian", "Số hóa đơn", "Doanh thu"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(table);
 
-        add(jScrollPane1, java.awt.BorderLayout.CENTER);
+        pTable.add(jScrollPane1, java.awt.BorderLayout.CENTER);
+
+        pDuLieuTongHop.add(pTable, java.awt.BorderLayout.CENTER);
+
+        add(pDuLieuTongHop, java.awt.BorderLayout.PAGE_END);
+        add(pBieuDo, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnThongKeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThongKeActionPerformed
+        String loaiThoiGian = cbbLoaiThoiGian.getSelectedItem().toString();
+        if(loaiThoiGian.equalsIgnoreCase("ngày")) {
+            if (txtNgayBatDau.getDate() == null || txtNgayKetThuc.getDate() == null) {
+                JOptionPane.showMessageDialog(this,
+                        "Vui lòng chọn ngày bắt đầu và ngày kết thúc");
+                return;
+            }
 
+            LocalDate ngayBatDau = txtNgayBatDau.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            LocalDate ngayKetThuc = txtNgayKetThuc.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+            if (ngayBatDau.isAfter(ngayKetThuc)) {
+                JOptionPane.showMessageDialog(this,
+                        "Ngày bắt đầu không được lớn hơn ngày kết thúc");
+                return;
+            }
+            List<DoanhThu> data = HoaDonDAO.getDoanhThuTungNgayTrongKhoangThoiGian(ngayBatDau, ngayKetThuc);
+            veBieuDoVaBangDuLieuTheoNgay(data, ngayBatDau, ngayKetThuc);
+        } else if (loaiThoiGian.equalsIgnoreCase("tháng")) {  
+            int nam = Integer.parseInt(cbbNam.getSelectedItem().toString());
+            List<DoanhThu> data = HoaDonDAO.getDoanhThuTungThangTrongNam(nam);
+            veBieuDoVaBangDuLieuTheoThang(data, nam);
+        } else if (loaiThoiGian.equalsIgnoreCase("quý")) {
+            int nam = Integer.parseInt(cbbNam.getSelectedItem().toString());
+            List<DoanhThu> data = HoaDonDAO.getDoanhThuTungQuyTrongNam(nam);
+            veBieuDoVaBangDuLieuTheoQuy(data, nam);
+        } else if (loaiThoiGian.equalsIgnoreCase("năm")) {
+            int namBatDau = Integer.parseInt(cbbNamBatDau.getSelectedItem().toString());
+            int namKetThuc = Integer.parseInt(cbbNamKetThuc.getSelectedItem().toString());            
+            if(namBatDau > namKetThuc) {
+                JOptionPane.showMessageDialog(this,
+                        "Năm bắt đầu không được lớn hơn năm kết thúc");
+                return;
+            }           
+            List<DoanhThu> data = HoaDonDAO.getDoanhThuTungNamTheoKhoang(namBatDau, namKetThuc);
+            veBieuDoVaBangDuLieuTheoNam(data, namBatDau, namKetThuc);
+        }   
+        renderTongDoanhThuVaTongHoaDon();
+    }//GEN-LAST:event_btnThongKeActionPerformed
+    
+    private void toggleFilter(String filterType) {
+        boolean check1 = filterType.equalsIgnoreCase("ngày");
+        boolean check2 = filterType.equalsIgnoreCase("tháng");
+        boolean check3 = filterType.equalsIgnoreCase("quý");
+        boolean check4 = filterType.equalsIgnoreCase("năm");
+        lblNgayBatDau.setVisible(check1);
+        txtNgayBatDau.setVisible(check1);
+        lblNgayKetThuc.setVisible(check1);
+        txtNgayKetThuc.setVisible(check1);
+        lblNam.setVisible(check2 || check3);
+        cbbNam.setVisible(check2 || check3);
+        lblNamBatDau.setVisible(check4);
+        cbbNamBatDau.setVisible(check4);
+        lblNamKetThuc.setVisible(check4);
+        cbbNamKetThuc.setVisible(check4);  
+    }
+    
+    private void cbbLoaiThoiGianActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbbLoaiThoiGianActionPerformed
+        String type = cbbLoaiThoiGian.getSelectedItem().toString();
+        toggleFilter(type);
+    }//GEN-LAST:event_cbbLoaiThoiGianActionPerformed
+
+    private void btnLamMoiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLamMoiActionPerformed
+        veBieuDoTrong();
+        DefaultTableModel model = (DefaultTableModel)table.getModel();
+        model.setRowCount(0);
+        lblTongHoaDon.setText(0 + "");
+        lblTongDoanhThu.setText("0 ₫");
+        cbbLoaiThoiGian.setSelectedIndex(0);
+        toggleFilter("ngày");
+    }//GEN-LAST:event_btnLamMoiActionPerformed
+
+    private void veBieuDoVaBangDuLieuTheoNgay(List<DoanhThu> data, LocalDate begin, LocalDate end) {
+        TimeSeries series = new TimeSeries("Doanh thu");
+        DefaultTableModel model = (DefaultTableModel)table.getModel();
+        model.setRowCount(0);
+        
+        for (DoanhThu dto : data) {
+               LocalDate ngay = LocalDate.parse(dto.getThoiGian());
+
+               series.addOrUpdate(
+                   new Day(
+                       ngay.getDayOfMonth(),
+                       ngay.getMonthValue(),
+                       ngay.getYear()
+                   ),
+                   dto.getTongDoanhThu()
+               );
+               
+               Object[] newRow = {dto.getThoiGian(), dto.getTongHoaDon(), dto.getTongDoanhThu()};
+               model.addRow(newRow);
+        }
+
+        TimeSeriesCollection dataset = new TimeSeriesCollection();
+        dataset.addSeries(series);
+        DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+        // Tạo biểu đồ
+        JFreeChart chart = ChartFactory.createTimeSeriesChart(
+                "Doanh thu theo ngày từ " + begin.format(fmt) + " đến " + end.format(fmt),
+                "Ngày",
+                "VNĐ",
+                dataset,
+                false,
+                true,
+                false
+        );
+
+        // Format trục Y (VNĐ)
+        XYPlot plot = chart.getXYPlot();
+        DateAxis xAxis = (DateAxis) plot.getDomainAxis();
+        NumberAxis yAxis = (NumberAxis) plot.getRangeAxis();
+        xAxis.setDateFormatOverride(
+            new SimpleDateFormat("dd/MM/yyyy")
+        );
+        yAxis.setNumberFormatOverride(
+            new DecimalFormat("#,###")
+        );
+        XYLineAndShapeRenderer renderer =
+        (XYLineAndShapeRenderer) plot.getRenderer();
+
+        // Hiện điểm dữ liệu
+        renderer.setSeriesShapesVisible(0, true);
+        renderer.setSeriesShapesFilled(0, true);
+
+        // Tooltip cho TimeSeries
+        renderer.setBaseToolTipGenerator(
+            new StandardXYToolTipGenerator(
+                "Ngày: {1} Doanh thu: {2} ₫",
+                new SimpleDateFormat("dd/MM/yyyy"),
+                new DecimalFormat("#,###")
+            )
+        );
+        
+        // Hover nhanh và điểm hình tròn
+        ToolTipManager.sharedInstance().setInitialDelay(100);
+        ToolTipManager.sharedInstance().setReshowDelay(50);
+        renderer.setSeriesShape(
+            0,
+            new Ellipse2D.Double(-3, -3, 6, 6)
+        );
+        
+        // Hiển thị chart lên JPanel
+        ChartPanel chartPanel = new ChartPanel(chart);
+
+        pBieuDo.removeAll();
+        pBieuDo.setLayout(new BorderLayout());
+        pBieuDo.add(chartPanel, BorderLayout.CENTER);
+        pBieuDo.revalidate();
+        pBieuDo.repaint();
+    }
+    
+    private void veBieuDoVaBangDuLieuTheoThang(List<DoanhThu> data, int nam) {
+        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        model.setRowCount(0);
+
+        for (DoanhThu dto : data) {
+            // Biểu đồ
+            dataset.addValue(
+                dto.getTongDoanhThu(),
+                "Doanh thu",
+                dto.getThoiGian()
+            );
+
+            // Bảng
+            model.addRow(new Object[]{
+                dto.getThoiGian(),
+                dto.getTongHoaDon(),
+                dto.getTongDoanhThu()
+            });
+        }
+
+        // Tạo biểu đồ (LineChart theo tháng)
+        JFreeChart chart = ChartFactory.createLineChart(
+            "Doanh thu theo tháng năm " + nam,
+            "Tháng",
+            "VNĐ",
+            dataset,
+            PlotOrientation.VERTICAL,
+            false,
+            true,
+            false
+        );
+
+        // Format trục Y (VNĐ)
+        CategoryPlot plot = chart.getCategoryPlot();
+        NumberAxis yAxis = (NumberAxis) plot.getRangeAxis();
+        yAxis.setNumberFormatOverride(new DecimalFormat("#,###"));
+
+        cauHinhDiemTronVaHover(plot);
+        
+        // Hiển thị chart lên JPanel
+        ChartPanel chartPanel = new ChartPanel(chart);
+
+        pBieuDo.removeAll();
+        pBieuDo.setLayout(new BorderLayout());
+        pBieuDo.add(chartPanel, BorderLayout.CENTER);
+        pBieuDo.revalidate();
+        pBieuDo.repaint();
+    }
+    
+    private void veBieuDoVaBangDuLieuTheoQuy(List<DoanhThu> data, int nam) {
+        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        model.setRowCount(0);
+
+        for (DoanhThu dto : data) {
+            // Biểu đồ
+            dataset.addValue(
+                dto.getTongDoanhThu(),
+                "Doanh thu",
+                dto.getThoiGian()
+            );
+
+            // Bảng
+            model.addRow(new Object[]{
+                dto.getThoiGian(),
+                dto.getTongHoaDon(),
+                dto.getTongDoanhThu()
+            });
+        }
+
+        // Tạo biểu đồ (LineChart theo tháng)
+        JFreeChart chart = ChartFactory.createLineChart(
+            "Doanh thu theo quý năm " + nam,
+            "Tháng",
+            "VNĐ",
+            dataset,
+            PlotOrientation.VERTICAL,
+            false,
+            true,
+            false
+        );
+
+        // Format trục Y (VNĐ)
+        CategoryPlot plot = chart.getCategoryPlot();
+        NumberAxis yAxis = (NumberAxis) plot.getRangeAxis();
+        yAxis.setNumberFormatOverride(new DecimalFormat("#,###"));
+
+        cauHinhDiemTronVaHover(plot);
+        
+        // Hiển thị chart lên JPanel
+        ChartPanel chartPanel = new ChartPanel(chart);
+
+        pBieuDo.removeAll();
+        pBieuDo.setLayout(new BorderLayout());
+        pBieuDo.add(chartPanel, BorderLayout.CENTER);
+        pBieuDo.revalidate();
+        pBieuDo.repaint();
+    }
+    
+    private void veBieuDoVaBangDuLieuTheoNam(List<DoanhThu> data, int namBatDau, int namKetThuc) {
+        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+
+        DefaultTableModel model = (DefaultTableModel) table.getModel();
+        model.setRowCount(0);
+
+        for (DoanhThu dto : data) {
+            // Biểu đồ
+            dataset.addValue(
+                dto.getTongDoanhThu(),
+                "Doanh thu",
+                dto.getThoiGian()
+            );
+
+            // Bảng
+            model.addRow(new Object[]{
+                dto.getThoiGian(),
+                dto.getTongHoaDon(),
+                dto.getTongDoanhThu()
+            });
+        }
+
+        // Tạo biểu đồ (LineChart theo tháng)
+        JFreeChart chart = ChartFactory.createLineChart(
+            "Doanh thu theo năm từ năm " + namBatDau + " đến " + namKetThuc,
+            "Tháng",
+            "VNĐ",
+            dataset,
+            PlotOrientation.VERTICAL,
+            false,
+            true,
+            false
+        );
+
+        // Format trục Y (VNĐ)
+        CategoryPlot plot = chart.getCategoryPlot();
+        NumberAxis yAxis = (NumberAxis) plot.getRangeAxis();
+        yAxis.setNumberFormatOverride(new DecimalFormat("#,###"));
+        
+        cauHinhDiemTronVaHover(plot);
+        
+        // Hiển thị chart lên JPanel
+        ChartPanel chartPanel = new ChartPanel(chart);
+
+        pBieuDo.removeAll();
+        pBieuDo.setLayout(new BorderLayout());
+        pBieuDo.add(chartPanel, BorderLayout.CENTER);
+        pBieuDo.revalidate();
+        pBieuDo.repaint();
+    }
+    
+    private void renderTongDoanhThuVaTongHoaDon() {
+        double tongDoanhThu = 0.0;
+        int tongHoaDon = 0;
+        for(int i = 0; i < table.getRowCount(); i++) {
+            tongDoanhThu += Double.parseDouble(table.getValueAt(i, 2).toString());
+            tongHoaDon += Integer.parseInt(table.getValueAt(i, 1).toString());
+        }
+        DecimalFormat df = new DecimalFormat("#,###");
+        lblTongDoanhThu.setText(df.format(tongDoanhThu) + " ₫");
+        lblTongHoaDon.setText(tongHoaDon + "");
+    }
+    
+    private void veBieuDoTrong() {
+        // Dataset trống
+        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+
+        // Tạo chart (LineChart hoặc BarChart đều được)
+        JFreeChart chart = ChartFactory.createLineChart(
+            "Chưa có dữ liệu thống kê",
+            "Thời gian",
+            "VNĐ",
+            dataset,
+            PlotOrientation.VERTICAL,
+            false,
+            true,
+            false
+        );
+
+        // Format trục Y
+        CategoryPlot plot = chart.getCategoryPlot();
+        NumberAxis yAxis = (NumberAxis) plot.getRangeAxis();
+        yAxis.setNumberFormatOverride(new DecimalFormat("#,###"));
+
+        // Gắn vào panel
+        ChartPanel chartPanel = new ChartPanel(chart);
+
+        pBieuDo.removeAll();
+        pBieuDo.setLayout(new BorderLayout());
+        pBieuDo.add(chartPanel, BorderLayout.CENTER);
+        pBieuDo.revalidate();
+        pBieuDo.repaint();
+    }
+
+    private void mapKeyToClickButton(String key, AbstractButton button) {
+        InputMap im = button.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        ActionMap am = button.getActionMap();
+
+        im.put(KeyStroke.getKeyStroke(key), "click_" + key);
+        am.put("click_" + key, new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                button.doClick(); // kích hoạt sự kiện button
+            }
+        });
+    }
+    
+    private void cauHinhDiemTronVaHover(CategoryPlot plot) {
+
+        LineAndShapeRenderer renderer =
+            (LineAndShapeRenderer) plot.getRenderer();
+
+        int soSeries = plot.getDataset().getRowCount();
+
+        for (int i = 0; i < soSeries; i++) {
+            // Bật hiển thị điểm
+            renderer.setSeriesShapesVisible(i, true);
+            renderer.setSeriesShapesFilled(i, true);
+
+            // Ép điểm là HÌNH TRÒN
+            renderer.setSeriesShape(
+                i,
+                new java.awt.geom.Ellipse2D.Double(-3, -3, 6, 6)
+            );
+        }
+
+        // Tooltip khi hover
+        renderer.setBaseToolTipGenerator(
+            new StandardCategoryToolTipGenerator(
+                "Thời gian: {1} Doanh thu: {2} ₫",
+                new DecimalFormat("#,###")
+            )
+        );
+    }
+    
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JLabel jLabel1;
+    private javax.swing.JButton btnLamMoi;
+    private javax.swing.JButton btnThongKe;
+    private javax.swing.JComboBox<String> cbbLoaiThoiGian;
+    private javax.swing.JComboBox<String> cbbNam;
+    private javax.swing.JComboBox<String> cbbNamBatDau;
+    private javax.swing.JComboBox<String> cbbNamKetThuc;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel2;
-    private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
-    private javax.swing.JPanel jPanel8;
-    private javax.swing.JPanel jPanel9;
+    private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
+    private javax.swing.JLabel lblLoaiThoiGian;
+    private javax.swing.JLabel lblNam;
+    private javax.swing.JLabel lblNamBatDau;
+    private javax.swing.JLabel lblNamKetThuc;
+    private javax.swing.JLabel lblNgayBatDau;
+    private javax.swing.JLabel lblNgayKetThuc;
+    private javax.swing.JLabel lblTongDoanhThu;
+    private javax.swing.JLabel lblTongHoaDon;
+    private javax.swing.JPanel pBieuDo;
+    private javax.swing.JPanel pDuLieuTongHop;
+    private javax.swing.JPanel pLoc;
+    private javax.swing.JPanel pTable;
+    private javax.swing.JPanel pTongHop;
+    private javax.swing.JTable table;
+    private org.jdesktop.swingx.JXDatePicker txtNgayBatDau;
+    private org.jdesktop.swingx.JXDatePicker txtNgayKetThuc;
     // End of variables declaration//GEN-END:variables
 }
