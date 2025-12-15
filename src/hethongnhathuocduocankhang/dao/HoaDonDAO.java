@@ -487,7 +487,14 @@ public class HoaDonDAO {
                 double tongDoanhThu = rs.getDouble("TongDoanhThu");
                 DoanhThu doanhThuTheoThang = new DoanhThu(nam, tongHoaDon, tongDoanhThu);
                 list.add(doanhThuTheoThang);
-        public static ArrayList<HoaDon> timHDTheoKhoangNgay(LocalDate startDate, LocalDate endDate) {
+            }    
+        }catch(SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    } 
+    
+    public static ArrayList<HoaDon> timHDTheoKhoangNgay(LocalDate startDate, LocalDate endDate) {
         ArrayList<HoaDon> dsHD = new ArrayList<>();
         try {
             ConnectDB.getInstance().connect();
@@ -503,6 +510,6 @@ public class HoaDonDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return list;   
+        return dsHD;   
     }
 }
