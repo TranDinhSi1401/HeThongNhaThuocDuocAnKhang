@@ -231,4 +231,137 @@ public class PhieuTraHangDAO {
         if(ma == null) return 0;
         return Integer.parseInt(ma);
     }
-}
+    
+    public static ArrayList<PhieuTraHang> getAllPhieuTraHangTraCuu() {
+        ArrayList<PhieuTraHang> dsPTH = new ArrayList<>();
+        String sql = "SELECT pth.maPhieuTraHang, pth.ngayLapPhieuTraHang, nv.maNV, nv.hoTenDem, nv.ten, hd.maHoaDon, pth.tongTienHoanTra " +
+                     "FROM PhieuTraHang pth JOIN NhanVien nv ON pth.maNV = nv.maNV " +
+                     "JOIN HoaDon hd ON pth.maHoaDon = hd.maHoaDon " +
+                     "ORDER BY pth.ngayLapPhieuTraHang DESC";
+        try {
+            ConnectDB.getInstance().connect();
+            Connection con = ConnectDB.getConnection();
+            PreparedStatement st = con.prepareStatement(sql);
+            try (ResultSet rs = st.executeQuery()) {
+                while (rs.next()) {
+                    String maPTH = rs.getString("maPhieuTraHang");
+                    LocalDateTime ngayLap = rs.getTimestamp("ngayLapPhieuTraHang").toLocalDateTime();
+                    String maNV = rs.getString("maNV");
+                    String hoTenDem = rs.getString("hoTenDem");
+                    String ten = rs.getString("ten");
+                    String maHD = rs.getString("maHoaDon");
+                    double tongTienHoanTra = rs.getDouble("tongTienHoanTra");
+                    
+                    NhanVien nv = new NhanVien(maNV, hoTenDem, ten);
+                    HoaDon hd = new HoaDon(maHD);
+                    PhieuTraHang pth = new PhieuTraHang(maPTH, ngayLap, tongTienHoanTra, nv, hd);
+                    dsPTH.add(pth);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return dsPTH;
+    }
+    
+    public static PhieuTraHang getPhieuTraHangTheoMa(String ma) {
+        PhieuTraHang pth = null;
+        String sql = "SELECT pth.maPhieuTraHang, pth.ngayLapPhieuTraHang, nv.maNV, nv.hoTenDem, nv.ten, hd.maHoaDon, pth.tongTienHoanTra " +
+                     "FROM PhieuTraHang pth JOIN NhanVien nv ON pth.maNV = nv.maNV " +
+                     "JOIN HoaDon hd ON pth.maHoaDon = hd.maHoaDon " +
+                     "WHERE pth.maPhieuTraHang = ?";
+        try {
+            ConnectDB.getInstance().connect();
+            Connection con = ConnectDB.getConnection();
+            PreparedStatement st = con.prepareStatement(sql);
+            st.setString(1, ma);
+            try (ResultSet rs = st.executeQuery()) {
+                if (rs.next()) {
+                    String maPTH = rs.getString("maPhieuTraHang");
+                    LocalDateTime ngayLap = rs.getTimestamp("ngayLapPhieuTraHang").toLocalDateTime();
+                    String maNV = rs.getString("maNV");
+                    String hoTenDem = rs.getString("hoTenDem");
+                    String ten = rs.getString("ten");
+                    String maHD = rs.getString("maHoaDon");
+                    double tongTienHoanTra = rs.getDouble("tongTienHoanTra");
+                    
+                    NhanVien nv = new NhanVien(maNV, hoTenDem, ten);
+                    HoaDon hd = new HoaDon(maHD);
+                    pth = new PhieuTraHang(maPTH, ngayLap, tongTienHoanTra, nv, hd);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return pth;
+    }
+    
+    public static ArrayList<PhieuTraHang> timPTTheoNgayLap(LocalDate ngay) {
+        ArrayList<PhieuTraHang> dsPTH = new ArrayList<>();
+        String sql = "SELECT pth.maPhieuTraHang, pth.ngayLapPhieuTraHang, nv.maNV, nv.hoTenDem, nv.ten, hd.maHoaDon, pth.tongTienHoanTra " +
+                     "FROM PhieuTraHang pth JOIN NhanVien nv ON pth.maNV = nv.maNV " +
+                     "JOIN HoaDon hd ON pth.maHoaDon = hd.maHoaDon " +
+                     "WHERE CAST(pth.ngayLapPhieuTraHang AS DATE) = ? " +
+                     "ORDER BY pth.ngayLapPhieuTraHang DESC";
+        try {
+            ConnectDB.getInstance().connect();
+            Connection con = ConnectDB.getConnection();
+            PreparedStatement st = con.prepareStatement(sql);
+            st.setDate(1, java.sql.Date.valueOf(ngay));
+            try (ResultSet rs = st.executeQuery()) {
+                while (rs.next()) {
+                    String maPTH = rs.getString("maPhieuTraHang");
+                    LocalDateTime ngayLap = rs.getTimestamp("ngayLapPhieuTraHang").toLocalDateTime();
+                    String maNV = rs.getString("maNV");
+                    String hoTenDem = rs.getString("hoTenDem");
+                    String ten = rs.getString("ten");
+                    String maHD = rs.getString("maHoaDon");
+                    double tongTienHoanTra = rs.getDouble("tongTienHoanTra");
+                    
+                    NhanVien nv = new NhanVien(maNV, hoTenDem, ten);
+                    HoaDon hd = new HoaDon(maHD);
+                    PhieuTraHang pth = new PhieuTraHang(maPTH, ngayLap, tongTienHoanTra, nv, hd);
+                    dsPTH.add(pth);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return dsPTH;
+    }
+    
+    public static ArrayList<PhieuTraHang> timPTTheoKhoangNgay(LocalDate start, LocalDate end) {
+        ArrayList<PhieuTraHang> dsPTH = new ArrayList<>();
+        String sql = "SELECT pth.maPhieuTraHang, pth.ngayLapPhieuTraHang, nv.maNV, nv.hoTenDem, nv.ten, hd.maHoaDon, pth.tongTienHoanTra " +
+                     "FROM PhieuTraHang pth JOIN NhanVien nv ON pth.maNV = nv.maNV " +
+                     "JOIN HoaDon hd ON pth.maHoaDon = hd.maHoaDon " +
+                     "WHERE CAST(pth.ngayLapPhieuTraHang AS DATE) BETWEEN ? AND ? " +
+                     "ORDER BY pth.ngayLapPhieuTraHang DESC";
+        try {
+            ConnectDB.getInstance().connect();
+            Connection con = ConnectDB.getConnection();
+            PreparedStatement st = con.prepareStatement(sql);
+            st.setDate(1, java.sql.Date.valueOf(start));
+            st.setDate(2, java.sql.Date.valueOf(end));
+            try (ResultSet rs = st.executeQuery()) {
+                while (rs.next()) {
+                    String maPTH = rs.getString("maPhieuTraHang");
+                    LocalDateTime ngayLap = rs.getTimestamp("ngayLapPhieuTraHang").toLocalDateTime();
+                    String maNV = rs.getString("maNV");
+                    String hoTenDem = rs.getString("hoTenDem");
+                    String ten = rs.getString("ten");
+                    String maHD = rs.getString("maHoaDon");
+                    double tongTienHoanTra = rs.getDouble("tongTienHoanTra");
+                    
+                    NhanVien nv = new NhanVien(maNV, hoTenDem, ten);
+                    HoaDon hd = new HoaDon(maHD);
+                    PhieuTraHang pth = new PhieuTraHang(maPTH, ngayLap, tongTienHoanTra, nv, hd);
+                    dsPTH.add(pth);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return dsPTH;
+    }
+}    

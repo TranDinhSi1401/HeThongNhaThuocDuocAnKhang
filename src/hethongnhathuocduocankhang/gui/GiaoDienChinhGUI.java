@@ -28,6 +28,10 @@ public class GiaoDienChinhGUI extends javax.swing.JFrame {
      * @param tk
      */
     public GiaoDienChinhGUI(TaiKhoan tk) {
+        if (tk != null) {
+            GiaoDienChinhGUI.tk = tk;
+        }
+        
         initComponents();
 
         menu.setEvent(new MenuEvent() {
@@ -102,9 +106,7 @@ public class GiaoDienChinhGUI extends javax.swing.JFrame {
                 
             }
         });
-        if (tk != null) {
-            GiaoDienChinhGUI.tk = tk;
-        }
+        
         
         if (tk.isQuanLy()) {
             showPanel(new DashBoardQuanLi());

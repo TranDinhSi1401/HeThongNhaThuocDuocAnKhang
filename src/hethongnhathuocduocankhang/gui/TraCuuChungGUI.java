@@ -4,6 +4,40 @@
  */
 package hethongnhathuocduocankhang.gui;
 
+import hethongnhathuocduocankhang.dao.HoaDonDAO;
+import hethongnhathuocduocankhang.dao.KhachHangDAO;
+import hethongnhathuocduocankhang.dao.KhuyenMaiDAO;
+import hethongnhathuocduocankhang.dao.NhaCungCapDAO;
+import hethongnhathuocduocankhang.dao.NhanVienDAO;
+import hethongnhathuocduocankhang.dao.PhieuNhapDAO;
+import hethongnhathuocduocankhang.dao.PhieuTraHangDAO;
+import hethongnhathuocduocankhang.dao.SanPhamDAO;
+import hethongnhathuocduocankhang.entity.HoaDon;
+import hethongnhathuocduocankhang.entity.KhachHang;
+import hethongnhathuocduocankhang.entity.KhuyenMai;
+import hethongnhathuocduocankhang.entity.NhaCungCap;
+import hethongnhathuocduocankhang.entity.NhanVien;
+import hethongnhathuocduocankhang.entity.PhieuNhap;
+import hethongnhathuocduocankhang.entity.PhieuTraHang;
+import hethongnhathuocduocankhang.entity.SanPham;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import java.beans.PropertyChangeListener;
+import java.text.DecimalFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import javax.swing.AbstractAction;
+import javax.swing.AbstractButton;
+import javax.swing.ActionMap;
+import javax.swing.InputMap;
+import javax.swing.JComponent;
+import javax.swing.JFrame;
+import javax.swing.JTextField;
+import javax.swing.KeyStroke;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author MINH KHANG
@@ -15,6 +49,65 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
      */
     public TraCuuChungGUI() {
         initComponents();
+        //Sản phẩm
+        mapKeyToClickButton("F4", btnXemTatCaSanPham);
+        mapKeyToClickButton("F6", btnLocSanPham);
+        mapKeyToFocus("F3", txtNhapSanPham);
+        
+        //khách hàng
+        mapKeyToClickButton("F4", btnXemTatCaKhachHang);
+        mapKeyToClickButton("F6", btnLocKhachHang);
+        mapKeyToFocus("F3", txtNhapKhachHang);
+        
+        //Nhà cung cấp
+        mapKeyToClickButton("F4", btnXemTatCaNhaCungCap);
+        mapKeyToClickButton("F6", btnLocNhaCungCap);
+        mapKeyToFocus("F3", txtNhapNhaCungCap);
+        
+        //Nhân viên
+        mapKeyToClickButton("F4", btnXemTatCaNhanVien);
+        mapKeyToClickButton("F6", btnLocNhanVien);
+        mapKeyToFocus("F3", txtNhapNhanVien);
+        
+        //Hóa đơn
+        mapKeyToClickButton("F4", btnXemTatCaHoaDon);
+        mapKeyToClickButton("F6", btnLocHoaDon);
+        mapKeyToFocus("F3", txtNhapHoaDon);
+        
+        //Phiếu nhập
+        mapKeyToClickButton("F4", btnXemTatCaPhieuNhap);
+        mapKeyToClickButton("F6", btnLocPhieuNhap);
+        mapKeyToFocus("F3", txtNhapPhieuNhap);        
+        
+        //Phiếu trả
+        mapKeyToClickButton("F4", btnXemTatCaPhieuTraHang);
+        mapKeyToClickButton("F6", btnLocPhieuTraHang);
+        mapKeyToFocus("F3", txtNhapPhieuTraHang);
+        
+        // Ngăn chọn ngày lớn hơn ngày hiện tại
+        PropertyChangeListener dateListener = evt -> {
+            if ("date".equals(evt.getPropertyName())) {
+                java.util.Date selectedDate = (java.util.Date) evt.getNewValue();
+                if (selectedDate != null) {
+                    LocalDate selectedLocalDate = LocalDate.ofInstant(selectedDate.toInstant(), java.time.ZoneId.systemDefault());
+                    if (selectedLocalDate.isAfter(LocalDate.now())) {
+                        ((org.jdesktop.swingx.JXDatePicker) evt.getSource()).setDate(java.util.Date.from(LocalDate.now().atStartOfDay(java.time.ZoneId.systemDefault()).toInstant()));
+                    }
+                }
+            }
+        };
+        dpkTheoNgayHoaDon.addPropertyChangeListener(dateListener);
+        dpkThoiGianKetThucHoaDon.addPropertyChangeListener(dateListener);
+        //Phiếu nhập
+        
+        
+        //Phiếu trả
+        
+        //Khuyến mãi
+        mapKeyToClickButton("F4", btnXemTatCaKhuyenMai);
+        mapKeyToClickButton("F6", btnLocKhuyenMai);
+        mapKeyToFocus("F3", txtNhapKhuyenMai);
+        
     }
 
     /**
@@ -27,836 +120,342 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
     private void initComponents() {
 
         jTabbedPane1 = new javax.swing.JTabbedPane();
-        jPanel10 = new javax.swing.JPanel();
-        jPanel4 = new javax.swing.JPanel();
-        jComboBox1 = new javax.swing.JComboBox<>();
-        jTextField2 = new javax.swing.JTextField();
-        jPanel5 = new javax.swing.JPanel();
-        jPanel6 = new javax.swing.JPanel();
-        jPanel7 = new javax.swing.JPanel();
-        jPanel1 = new javax.swing.JPanel();
-        jCheckBox5 = new javax.swing.JCheckBox();
-        jCheckBox6 = new javax.swing.JCheckBox();
-        jCheckBox7 = new javax.swing.JCheckBox();
-        jButton1 = new javax.swing.JButton();
-        jRadioButton3 = new javax.swing.JRadioButton();
-        jPanel2 = new javax.swing.JPanel();
-        jCheckBox8 = new javax.swing.JCheckBox();
-        jCheckBox9 = new javax.swing.JCheckBox();
-        jCheckBox10 = new javax.swing.JCheckBox();
-        jCheckBox11 = new javax.swing.JCheckBox();
-        jCheckBox4 = new javax.swing.JCheckBox();
-        jButton2 = new javax.swing.JButton();
-        jRadioButton4 = new javax.swing.JRadioButton();
-        jPanel9 = new javax.swing.JPanel();
-        jPanel3 = new javax.swing.JPanel();
-        jToggleButton1 = new javax.swing.JToggleButton();
-        jLabel1 = new javax.swing.JLabel();
-        jCheckBox2 = new javax.swing.JCheckBox();
-        jPanel8 = new javax.swing.JPanel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
-        jPanel11 = new javax.swing.JPanel();
-        jPanel12 = new javax.swing.JPanel();
-        jComboBox2 = new javax.swing.JComboBox<>();
-        jTextField3 = new javax.swing.JTextField();
-        jPanel13 = new javax.swing.JPanel();
-        jPanel14 = new javax.swing.JPanel();
-        jPanel15 = new javax.swing.JPanel();
-        jPanel81 = new javax.swing.JPanel();
-        jPanel16 = new javax.swing.JPanel();
-        jXDatePicker1 = new org.jdesktop.swingx.JXDatePicker();
-        jPanel85 = new javax.swing.JPanel();
-        jXDatePicker2 = new org.jdesktop.swingx.JXDatePicker();
-        jXDatePicker7 = new org.jdesktop.swingx.JXDatePicker();
-        jPanel83 = new javax.swing.JPanel();
-        jCheckBox59 = new javax.swing.JCheckBox();
-        jCheckBox67 = new javax.swing.JCheckBox();
-        jButton17 = new javax.swing.JButton();
-        jRadioButton8 = new javax.swing.JRadioButton();
-        jPanel18 = new javax.swing.JPanel();
-        jPanel19 = new javax.swing.JPanel();
-        jToggleButton2 = new javax.swing.JToggleButton();
-        jLabel2 = new javax.swing.JLabel();
-        jCheckBox21 = new javax.swing.JCheckBox();
-        jCheckBox22 = new javax.swing.JCheckBox();
-        jCheckBox29 = new javax.swing.JCheckBox();
-        jPanel20 = new javax.swing.JPanel();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        jTable3 = new javax.swing.JTable();
-        jPanel21 = new javax.swing.JPanel();
-        jPanel22 = new javax.swing.JPanel();
-        jComboBox3 = new javax.swing.JComboBox<>();
-        jTextField4 = new javax.swing.JTextField();
-        jPanel23 = new javax.swing.JPanel();
-        jPanel24 = new javax.swing.JPanel();
-        jPanel25 = new javax.swing.JPanel();
-        jPanel26 = new javax.swing.JPanel();
-        jCheckBox24 = new javax.swing.JCheckBox();
-        jCheckBox25 = new javax.swing.JCheckBox();
-        jCheckBox26 = new javax.swing.JCheckBox();
-        jButton5 = new javax.swing.JButton();
-        jRadioButton5 = new javax.swing.JRadioButton();
-        jPanel91 = new javax.swing.JPanel();
-        jRadioButton11 = new javax.swing.JRadioButton();
-        jCheckBox30 = new javax.swing.JCheckBox();
-        jCheckBox31 = new javax.swing.JCheckBox();
-        jButton6 = new javax.swing.JButton();
-        jPanel28 = new javax.swing.JPanel();
-        jPanel29 = new javax.swing.JPanel();
-        jToggleButton3 = new javax.swing.JToggleButton();
-        jLabel3 = new javax.swing.JLabel();
-        jCheckBox32 = new javax.swing.JCheckBox();
-        jCheckBox28 = new javax.swing.JCheckBox();
-        jPanel30 = new javax.swing.JPanel();
-        jScrollPane4 = new javax.swing.JScrollPane();
-        jTable4 = new javax.swing.JTable();
-        jPanel31 = new javax.swing.JPanel();
+        pnlNhanVien = new javax.swing.JPanel();
+        jPanel62 = new javax.swing.JPanel();
+        cbbThuocTinhNhanVien = new javax.swing.JComboBox<>();
+        txtNhapNhanVien = new javax.swing.JTextField();
+        btnTimNhanVien = new javax.swing.JButton();
+        jPanel64 = new javax.swing.JPanel();
+        jPanel65 = new javax.swing.JPanel();
+        jPanel90 = new javax.swing.JPanel();
+        cbxDangHoatDongNhanVien = new javax.swing.JCheckBox();
+        cbxDaNghiViecNhanVien = new javax.swing.JCheckBox();
+        jPanel68 = new javax.swing.JPanel();
+        jPanel69 = new javax.swing.JPanel();
+        btnXemTatCaNhanVien = new javax.swing.JButton();
+        jLabel7 = new javax.swing.JLabel();
+        cbbSapXepNhanVien = new javax.swing.JComboBox<>();
+        btnLocNhanVien = new javax.swing.JButton();
+        jPanel70 = new javax.swing.JPanel();
+        jScrollPane8 = new javax.swing.JScrollPane();
+        tblNhanVien = new javax.swing.JTable();
+        pnlKhachHang = new javax.swing.JPanel();
         jPanel32 = new javax.swing.JPanel();
-        jComboBox4 = new javax.swing.JComboBox<>();
-        jTextField5 = new javax.swing.JTextField();
-        jPanel33 = new javax.swing.JPanel();
+        cbbThuocTinhKhachHang = new javax.swing.JComboBox<>();
+        txtNhapKhachHang = new javax.swing.JTextField();
+        btnTimKhachHang = new javax.swing.JButton();
         jPanel34 = new javax.swing.JPanel();
         jPanel35 = new javax.swing.JPanel();
         jPanel38 = new javax.swing.JPanel();
         jPanel39 = new javax.swing.JPanel();
-        jToggleButton4 = new javax.swing.JToggleButton();
+        btnXemTatCaKhachHang = new javax.swing.JButton();
         jLabel4 = new javax.swing.JLabel();
-        jCheckBox43 = new javax.swing.JCheckBox();
+        cbbSapXepKhachHang = new javax.swing.JComboBox<>();
+        btnLocKhachHang = new javax.swing.JButton();
         jPanel40 = new javax.swing.JPanel();
         jScrollPane5 = new javax.swing.JScrollPane();
-        jTable5 = new javax.swing.JTable();
-        jPanel41 = new javax.swing.JPanel();
+        tblKhachHang = new javax.swing.JTable();
+        pnlNhaCungCap = new javax.swing.JPanel();
+        jPanel22 = new javax.swing.JPanel();
+        cbbThuocTinhNhaCungCap = new javax.swing.JComboBox<>();
+        txtNhapNhaCungCap = new javax.swing.JTextField();
+        btnTimKiemNhaCungCap = new javax.swing.JButton();
+        jPanel24 = new javax.swing.JPanel();
+        jPanel25 = new javax.swing.JPanel();
+        jPanel28 = new javax.swing.JPanel();
+        jPanel29 = new javax.swing.JPanel();
+        btnXemTatCaNhaCungCap = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        cbbSapXepNhaCungCap = new javax.swing.JComboBox<>();
+        btnLocNhaCungCap = new javax.swing.JButton();
+        jPanel30 = new javax.swing.JPanel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        tblNhaCungCap = new javax.swing.JTable();
+        pnlSanPham = new javax.swing.JPanel();
+        jPanel4 = new javax.swing.JPanel();
+        cbbThuocTinhSanPham = new javax.swing.JComboBox<>();
+        txtNhapSanPham = new javax.swing.JTextField();
+        btnTimKiemSanPham = new javax.swing.JButton();
+        jPanel6 = new javax.swing.JPanel();
+        jPanel7 = new javax.swing.JPanel();
+        jPanel1 = new javax.swing.JPanel();
+        cbxTKKDSanPham = new javax.swing.JCheckBox();
+        cbxTKDSanPham = new javax.swing.JCheckBox();
+        cbxTPCNSanPham = new javax.swing.JCheckBox();
+        jPanel9 = new javax.swing.JPanel();
+        jPanel3 = new javax.swing.JPanel();
+        btnXemTatCaSanPham = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        cbbSapXepSanPham = new javax.swing.JComboBox<>();
+        btnLocSanPham = new javax.swing.JButton();
+        jPanel8 = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tblSanPham = new javax.swing.JTable();
+        pnlKhuyenMai = new javax.swing.JPanel();
         jPanel42 = new javax.swing.JPanel();
-        jComboBox5 = new javax.swing.JComboBox<>();
-        jTextField6 = new javax.swing.JTextField();
-        jPanel43 = new javax.swing.JPanel();
+        cbbThuocTinhKhuyenMai = new javax.swing.JComboBox<>();
+        txtNhapKhuyenMai = new javax.swing.JTextField();
+        btnTimKhuyenMai = new javax.swing.JButton();
         jPanel44 = new javax.swing.JPanel();
         jPanel45 = new javax.swing.JPanel();
         jPanel82 = new javax.swing.JPanel();
-        jPanel17 = new javax.swing.JPanel();
-        jXDatePicker3 = new org.jdesktop.swingx.JXDatePicker();
-        jPanel86 = new javax.swing.JPanel();
-        jXDatePicker4 = new org.jdesktop.swingx.JXDatePicker();
-        jXDatePicker8 = new org.jdesktop.swingx.JXDatePicker();
-        jPanel84 = new javax.swing.JPanel();
-        jCheckBox78 = new javax.swing.JCheckBox();
-        jCheckBox89 = new javax.swing.JCheckBox();
-        jButton18 = new javax.swing.JButton();
-        jRadioButton9 = new javax.swing.JRadioButton();
+        jPanel31 = new javax.swing.JPanel();
+        dpkTheoNgayKhuyenMai = new org.jdesktop.swingx.JXDatePicker();
+        jPanel93 = new javax.swing.JPanel();
+        dpkThoiGianKetThucKhuyenMai = new org.jdesktop.swingx.JXDatePicker();
         jPanel87 = new javax.swing.JPanel();
-        jRadioButton1 = new javax.swing.JRadioButton();
-        jCheckBox1 = new javax.swing.JCheckBox();
-        jCheckBox12 = new javax.swing.JCheckBox();
-        jCheckBox13 = new javax.swing.JCheckBox();
-        jButton3 = new javax.swing.JButton();
+        cbxChuaHoatDongKhuyenMai = new javax.swing.JCheckBox();
+        cbxHoatDongKhuyenMai = new javax.swing.JCheckBox();
+        cbxHetHanKhuyenMai = new javax.swing.JCheckBox();
         jPanel48 = new javax.swing.JPanel();
         jPanel49 = new javax.swing.JPanel();
-        jToggleButton5 = new javax.swing.JToggleButton();
+        btnXemTatCaKhuyenMai = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
-        jCheckBox54 = new javax.swing.JCheckBox();
-        jCheckBox14 = new javax.swing.JCheckBox();
-        jCheckBox15 = new javax.swing.JCheckBox();
-        jCheckBox20 = new javax.swing.JCheckBox();
+        cbbSapXepKhuyenMai = new javax.swing.JComboBox<>();
+        btnLocKhuyenMai = new javax.swing.JButton();
         jPanel50 = new javax.swing.JPanel();
         jScrollPane6 = new javax.swing.JScrollPane();
-        jTable6 = new javax.swing.JTable();
-        jPanel51 = new javax.swing.JPanel();
-        jPanel52 = new javax.swing.JPanel();
-        jComboBox6 = new javax.swing.JComboBox<>();
-        jTextField7 = new javax.swing.JTextField();
-        jPanel53 = new javax.swing.JPanel();
-        jPanel54 = new javax.swing.JPanel();
-        jPanel55 = new javax.swing.JPanel();
-        jPanel27 = new javax.swing.JPanel();
-        jXDatePicker5 = new org.jdesktop.swingx.JXDatePicker();
-        jPanel88 = new javax.swing.JPanel();
-        jXDatePicker6 = new org.jdesktop.swingx.JXDatePicker();
-        jXDatePicker9 = new org.jdesktop.swingx.JXDatePicker();
-        jPanel89 = new javax.swing.JPanel();
-        jCheckBox90 = new javax.swing.JCheckBox();
-        jCheckBox91 = new javax.swing.JCheckBox();
-        jButton19 = new javax.swing.JButton();
-        jRadioButton10 = new javax.swing.JRadioButton();
-        jPanel58 = new javax.swing.JPanel();
-        jPanel59 = new javax.swing.JPanel();
-        jToggleButton6 = new javax.swing.JToggleButton();
-        jLabel6 = new javax.swing.JLabel();
-        jCheckBox66 = new javax.swing.JCheckBox();
-        jCheckBox18 = new javax.swing.JCheckBox();
-        jPanel60 = new javax.swing.JPanel();
-        jScrollPane7 = new javax.swing.JScrollPane();
-        jTable7 = new javax.swing.JTable();
-        jPanel61 = new javax.swing.JPanel();
-        jPanel62 = new javax.swing.JPanel();
-        jComboBox7 = new javax.swing.JComboBox<>();
-        jTextField8 = new javax.swing.JTextField();
-        jPanel63 = new javax.swing.JPanel();
-        jPanel64 = new javax.swing.JPanel();
-        jPanel65 = new javax.swing.JPanel();
-        jPanel66 = new javax.swing.JPanel();
-        jRadioButton6 = new javax.swing.JRadioButton();
-        jCheckBox68 = new javax.swing.JCheckBox();
-        jCheckBox69 = new javax.swing.JCheckBox();
-        jButton13 = new javax.swing.JButton();
-        jPanel90 = new javax.swing.JPanel();
-        jRadioButton2 = new javax.swing.JRadioButton();
-        jCheckBox17 = new javax.swing.JCheckBox();
-        jCheckBox19 = new javax.swing.JCheckBox();
-        jButton4 = new javax.swing.JButton();
-        jPanel68 = new javax.swing.JPanel();
-        jPanel69 = new javax.swing.JPanel();
-        jToggleButton7 = new javax.swing.JToggleButton();
-        jLabel7 = new javax.swing.JLabel();
-        jCheckBox76 = new javax.swing.JCheckBox();
-        jCheckBox23 = new javax.swing.JCheckBox();
-        jPanel70 = new javax.swing.JPanel();
-        jScrollPane8 = new javax.swing.JScrollPane();
-        jTable8 = new javax.swing.JTable();
-        jPanel71 = new javax.swing.JPanel();
+        tblKhuyenMai = new javax.swing.JTable();
+        pnlHoaDon = new javax.swing.JPanel();
+        jPanel12 = new javax.swing.JPanel();
+        cbbHoaDon = new javax.swing.JComboBox<>();
+        txtNhapHoaDon = new javax.swing.JTextField();
+        btnTimKiem = new javax.swing.JButton();
+        jPanel14 = new javax.swing.JPanel();
+        jPanel15 = new javax.swing.JPanel();
+        jPanel81 = new javax.swing.JPanel();
+        jPanel16 = new javax.swing.JPanel();
+        dpkTheoNgayHoaDon = new org.jdesktop.swingx.JXDatePicker();
+        jPanel85 = new javax.swing.JPanel();
+        dpkThoiGianKetThucHoaDon = new org.jdesktop.swingx.JXDatePicker();
+        jPanel18 = new javax.swing.JPanel();
+        jPanel19 = new javax.swing.JPanel();
+        btnXemTatCaHoaDon = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        cbbSapXepHoaDon = new javax.swing.JComboBox<>();
+        btnLocHoaDon = new javax.swing.JButton();
+        jPanel20 = new javax.swing.JPanel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        tblHoaDon = new javax.swing.JTable();
+        pnlPhieuNhap = new javax.swing.JPanel();
         jPanel72 = new javax.swing.JPanel();
-        jComboBox8 = new javax.swing.JComboBox<>();
-        jTextField9 = new javax.swing.JTextField();
-        jPanel73 = new javax.swing.JPanel();
+        cbbThuocTinhPhieuNhap = new javax.swing.JComboBox<>();
+        txtNhapPhieuNhap = new javax.swing.JTextField();
+        btnTimPhieuNhap = new javax.swing.JButton();
         jPanel74 = new javax.swing.JPanel();
         jPanel75 = new javax.swing.JPanel();
-        jPanel76 = new javax.swing.JPanel();
-        jCheckBox79 = new javax.swing.JCheckBox();
-        jCheckBox80 = new javax.swing.JCheckBox();
-        jCheckBox81 = new javax.swing.JCheckBox();
-        jButton15 = new javax.swing.JButton();
-        jRadioButton7 = new javax.swing.JRadioButton();
-        jPanel77 = new javax.swing.JPanel();
-        jCheckBox82 = new javax.swing.JCheckBox();
-        jCheckBox83 = new javax.swing.JCheckBox();
-        jCheckBox84 = new javax.swing.JCheckBox();
-        jCheckBox85 = new javax.swing.JCheckBox();
-        jCheckBox86 = new javax.swing.JCheckBox();
-        jButton16 = new javax.swing.JButton();
+        jPanel21 = new javax.swing.JPanel();
+        dpkTheoNgayPhieuNhap = new org.jdesktop.swingx.JXDatePicker();
+        jPanel91 = new javax.swing.JPanel();
+        dpkThoiGianKetThucPhieuNhap = new org.jdesktop.swingx.JXDatePicker();
         jPanel78 = new javax.swing.JPanel();
         jPanel79 = new javax.swing.JPanel();
-        jToggleButton8 = new javax.swing.JToggleButton();
-        jLabel8 = new javax.swing.JLabel();
-        jCheckBox70 = new javax.swing.JCheckBox();
-        jCheckBox27 = new javax.swing.JCheckBox();
+        btnXemTatCaPhieuNhap = new javax.swing.JButton();
+        jLabel9 = new javax.swing.JLabel();
+        cbbSapXepPhieuNhap = new javax.swing.JComboBox<>();
+        btnLocPhieuNhap = new javax.swing.JButton();
         jPanel80 = new javax.swing.JPanel();
         jScrollPane9 = new javax.swing.JScrollPane();
-        jTable9 = new javax.swing.JTable();
+        tblPhieuNhap = new javax.swing.JTable();
+        pnlPhieuTraHang = new javax.swing.JPanel();
+        jPanel52 = new javax.swing.JPanel();
+        cbbThuocTinhPhieuTraHang = new javax.swing.JComboBox<>();
+        txtNhapPhieuTraHang = new javax.swing.JTextField();
+        btnTimPhieuTraHang = new javax.swing.JButton();
+        jPanel54 = new javax.swing.JPanel();
+        jPanel55 = new javax.swing.JPanel();
+        jPanel26 = new javax.swing.JPanel();
+        dpkTheoNgayPhieuTraHang = new org.jdesktop.swingx.JXDatePicker();
+        jPanel92 = new javax.swing.JPanel();
+        dpkThoiGianKetThucPhieuTraHang = new org.jdesktop.swingx.JXDatePicker();
+        jPanel58 = new javax.swing.JPanel();
+        jPanel59 = new javax.swing.JPanel();
+        btnXemTatCaPhieuTraHang = new javax.swing.JButton();
+        jLabel10 = new javax.swing.JLabel();
+        cbbSapXepPhieuTraHang = new javax.swing.JComboBox<>();
+        btnLocPhieuTraHang = new javax.swing.JButton();
+        jPanel60 = new javax.swing.JPanel();
+        jScrollPane7 = new javax.swing.JScrollPane();
+        tblPhieuTraHang = new javax.swing.JTable();
 
         setLayout(new javax.swing.BoxLayout(this, javax.swing.BoxLayout.LINE_AXIS));
 
         jTabbedPane1.setTabLayoutPolicy(javax.swing.JTabbedPane.SCROLL_TAB_LAYOUT);
-
-        jPanel10.setLayout(new java.awt.BorderLayout());
-
-        jPanel4.setMinimumSize(new java.awt.Dimension(242, 50));
-        jPanel4.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
-
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Mã sản phẩm", "Tên sản phẩm", "Tên nhà cung cấp", "..." }));
-        jComboBox1.setMinimumSize(new java.awt.Dimension(163, 22));
-        jComboBox1.setPreferredSize(new java.awt.Dimension(170, 22));
-        jComboBox1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox1ActionPerformed(evt);
-            }
-        });
-        jPanel4.add(jComboBox1);
-
-        jTextField2.setPreferredSize(new java.awt.Dimension(1000, 22));
-        jTextField2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField2ActionPerformed(evt);
-            }
-        });
-        jPanel4.add(jTextField2);
-
-        jPanel10.add(jPanel4, java.awt.BorderLayout.PAGE_START);
-
-        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
-        jPanel5.setLayout(jPanel5Layout);
-        jPanel5Layout.setHorizontalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1185, Short.MAX_VALUE)
-        );
-        jPanel5Layout.setVerticalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-        );
-
-        jPanel10.add(jPanel5, java.awt.BorderLayout.PAGE_END);
-
-        jPanel6.setPreferredSize(new java.awt.Dimension(630, 556));
-        jPanel6.setLayout(new java.awt.BorderLayout());
-
-        jPanel7.setMaximumSize(new java.awt.Dimension(170, 65534));
-        jPanel7.setPreferredSize(new java.awt.Dimension(170, 556));
-        jPanel7.setLayout(new javax.swing.BoxLayout(jPanel7, javax.swing.BoxLayout.Y_AXIS));
-
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Theo danh mục"));
-        jPanel1.setMaximumSize(new java.awt.Dimension(500, 32767));
-
-        jCheckBox5.setText("Thuốc");
-        jCheckBox5.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBox5ActionPerformed(evt);
+        jTabbedPane1.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                jTabbedPane1StateChanged(evt);
             }
         });
 
-        jCheckBox6.setText("TP chức năng");
-        jCheckBox6.addActionListener(new java.awt.event.ActionListener() {
+        pnlNhanVien.setLayout(new java.awt.BorderLayout());
+
+        jPanel62.setMinimumSize(new java.awt.Dimension(242, 50));
+        jPanel62.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+
+        cbbThuocTinhNhanVien.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tên nhân viên", "Mã nhân viên", "Số điện thoại", "CCCD" }));
+        cbbThuocTinhNhanVien.setMinimumSize(new java.awt.Dimension(163, 22));
+        cbbThuocTinhNhanVien.setPreferredSize(new java.awt.Dimension(170, 22));
+        cbbThuocTinhNhanVien.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBox6ActionPerformed(evt);
+                cbbThuocTinhNhanVienActionPerformed(evt);
             }
         });
+        jPanel62.add(cbbThuocTinhNhanVien);
 
-        jCheckBox7.setText("Khác");
-
-        jButton1.setText("Làm mới");
-
-        jRadioButton3.setText("Tất cả");
-        jRadioButton3.addActionListener(new java.awt.event.ActionListener() {
+        txtNhapNhanVien.setPreferredSize(new java.awt.Dimension(500, 22));
+        txtNhapNhanVien.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jRadioButton3ActionPerformed(evt);
+                txtNhapNhanVienActionPerformed(evt);
             }
         });
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jCheckBox5)
-                    .addComponent(jCheckBox6)
-                    .addComponent(jCheckBox7)
-                    .addComponent(jButton1)
-                    .addComponent(jRadioButton3))
-                .addContainerGap(61, Short.MAX_VALUE))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(0, 0, 0)
-                .addComponent(jRadioButton3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jCheckBox5)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jCheckBox6, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jCheckBox7)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1)
-                .addContainerGap(97, Short.MAX_VALUE))
-        );
-
-        jPanel7.add(jPanel1);
-
-        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder("Theo đơn vị tính"));
-
-        jCheckBox8.setText("Viên");
-
-        jCheckBox9.setText("Vĩ");
-        jCheckBox9.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBox9ActionPerformed(evt);
+        txtNhapNhanVien.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtNhapNhanVienKeyPressed(evt);
             }
         });
+        jPanel62.add(txtNhapNhanVien);
 
-        jCheckBox10.setText("Chai");
-        jCheckBox10.addActionListener(new java.awt.event.ActionListener() {
+        btnTimNhanVien.setText("Tìm kiếm");
+        btnTimNhanVien.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBox10ActionPerformed(evt);
+                btnTimNhanVienActionPerformed(evt);
             }
         });
+        jPanel62.add(btnTimNhanVien);
 
-        jCheckBox11.setText("Hộp");
+        pnlNhanVien.add(jPanel62, java.awt.BorderLayout.PAGE_START);
 
-        jCheckBox4.setText("Khác");
-        jCheckBox4.addActionListener(new java.awt.event.ActionListener() {
+        jPanel64.setPreferredSize(new java.awt.Dimension(630, 556));
+        jPanel64.setLayout(new java.awt.BorderLayout());
+
+        jPanel65.setMaximumSize(new java.awt.Dimension(170, 65534));
+        jPanel65.setPreferredSize(new java.awt.Dimension(170, 556));
+        jPanel65.setLayout(new javax.swing.BoxLayout(jPanel65, javax.swing.BoxLayout.Y_AXIS));
+
+        jPanel90.setBorder(javax.swing.BorderFactory.createTitledBorder("Trạng thái"));
+        jPanel90.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+
+        cbxDangHoatDongNhanVien.setText("Đang hoạt động");
+        jPanel90.add(cbxDangHoatDongNhanVien);
+
+        cbxDaNghiViecNhanVien.setText("Đã nghĩ việc");
+        cbxDaNghiViecNhanVien.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBox4ActionPerformed(evt);
+                cbxDaNghiViecNhanVienActionPerformed(evt);
             }
         });
+        jPanel90.add(cbxDaNghiViecNhanVien);
 
-        jButton2.setText("Làm mới");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        jPanel65.add(jPanel90);
+
+        jPanel64.add(jPanel65, java.awt.BorderLayout.LINE_START);
+
+        jPanel68.setLayout(new java.awt.BorderLayout());
+
+        jPanel69.setPreferredSize(new java.awt.Dimension(278, 40));
+        jPanel69.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+
+        btnXemTatCaNhanVien.setText("Xem tất cả [F4]");
+        btnXemTatCaNhanVien.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                btnXemTatCaNhanVienActionPerformed(evt);
             }
         });
+        jPanel69.add(btnXemTatCaNhanVien);
 
-        jRadioButton4.setText("Tất cả");
+        jLabel7.setText("Sắp xếp theo:");
+        jPanel69.add(jLabel7);
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jCheckBox8)
-                    .addComponent(jCheckBox9)
-                    .addComponent(jCheckBox10)
-                    .addComponent(jCheckBox11)
-                    .addComponent(jCheckBox4)
-                    .addComponent(jButton2)
-                    .addComponent(jRadioButton4))
-                .addContainerGap(78, Short.MAX_VALUE))
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jRadioButton4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jCheckBox8)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jCheckBox9)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jCheckBox10)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jCheckBox11)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jCheckBox4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton2)
-                .addContainerGap(98, Short.MAX_VALUE))
-        );
+        cbbSapXepNhanVien.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tên nhân viên", "Trạng thái" }));
+        jPanel69.add(cbbSapXepNhanVien);
 
-        jPanel7.add(jPanel2);
-
-        jPanel6.add(jPanel7, java.awt.BorderLayout.LINE_START);
-
-        jPanel9.setLayout(new java.awt.BorderLayout());
-
-        jPanel3.setPreferredSize(new java.awt.Dimension(278, 40));
-        jPanel3.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
-
-        jToggleButton1.setText("Sắp xếp tăng");
-        jPanel3.add(jToggleButton1);
-
-        jLabel1.setText("Sắp xếp theo:");
-        jPanel3.add(jLabel1);
-
-        jCheckBox2.setText("Tên sản phẩm");
-        jCheckBox2.addActionListener(new java.awt.event.ActionListener() {
+        btnLocNhanVien.setText("Lọc bảng [F6]");
+        btnLocNhanVien.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBox2ActionPerformed(evt);
+                btnLocNhanVienActionPerformed(evt);
             }
         });
-        jPanel3.add(jCheckBox2);
+        jPanel69.add(btnLocNhanVien);
 
-        jPanel9.add(jPanel3, java.awt.BorderLayout.PAGE_START);
+        jPanel68.add(jPanel69, java.awt.BorderLayout.PAGE_START);
 
-        jPanel8.setLayout(new javax.swing.BoxLayout(jPanel8, javax.swing.BoxLayout.LINE_AXIS));
+        jPanel70.setLayout(new javax.swing.BoxLayout(jPanel70, javax.swing.BoxLayout.LINE_AXIS));
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        tblNhanVien.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4", "Title 5", "Title 6", "Title 7", "Title 8", "Title 9", "Title 10", "Title 11"
+                "Mã nhân viên", "Họ tên đệm", "Tên", "Số điện thoại", "Giới tính", "Ngày sinh", "Bị khóa"
             }
-        ));
-        jTable2.setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-        jTable2.setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-        jTable2.setShowGrid(false);
-        jTable2.setShowVerticalLines(true);
-        jScrollPane2.setViewportView(jTable2);
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false
+            };
 
-        jPanel8.add(jScrollPane2);
-
-        jPanel9.add(jPanel8, java.awt.BorderLayout.CENTER);
-
-        jPanel6.add(jPanel9, java.awt.BorderLayout.CENTER);
-
-        jPanel10.add(jPanel6, java.awt.BorderLayout.CENTER);
-
-        jTabbedPane1.addTab("Sản phẩm", jPanel10);
-
-        jPanel11.setLayout(new java.awt.BorderLayout());
-
-        jPanel12.setMinimumSize(new java.awt.Dimension(242, 50));
-        jPanel12.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
-
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Mã hóa đơn", "Số điện thoại khách hàng", "..." }));
-        jComboBox2.setMinimumSize(new java.awt.Dimension(163, 22));
-        jComboBox2.setPreferredSize(new java.awt.Dimension(170, 22));
-        jComboBox2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox2ActionPerformed(evt);
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
             }
         });
-        jPanel12.add(jComboBox2);
-
-        jTextField3.setPreferredSize(new java.awt.Dimension(1000, 22));
-        jTextField3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField3ActionPerformed(evt);
+        tblNhanVien.setShowVerticalLines(true);
+        tblNhanVien.addAncestorListener(new javax.swing.event.AncestorListener() {
+            public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
+                tblNhanVienAncestorAdded(evt);
+            }
+            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
+            }
+            public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
             }
         });
-        jPanel12.add(jTextField3);
+        jScrollPane8.setViewportView(tblNhanVien);
 
-        jPanel11.add(jPanel12, java.awt.BorderLayout.PAGE_START);
+        jPanel70.add(jScrollPane8);
 
-        javax.swing.GroupLayout jPanel13Layout = new javax.swing.GroupLayout(jPanel13);
-        jPanel13.setLayout(jPanel13Layout);
-        jPanel13Layout.setHorizontalGroup(
-            jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1185, Short.MAX_VALUE)
-        );
-        jPanel13Layout.setVerticalGroup(
-            jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-        );
+        jPanel68.add(jPanel70, java.awt.BorderLayout.CENTER);
 
-        jPanel11.add(jPanel13, java.awt.BorderLayout.PAGE_END);
+        jPanel64.add(jPanel68, java.awt.BorderLayout.CENTER);
 
-        jPanel14.setPreferredSize(new java.awt.Dimension(630, 556));
-        jPanel14.setLayout(new java.awt.BorderLayout());
+        pnlNhanVien.add(jPanel64, java.awt.BorderLayout.CENTER);
 
-        jPanel15.setMaximumSize(new java.awt.Dimension(170, 65534));
-        jPanel15.setPreferredSize(new java.awt.Dimension(170, 556));
-        jPanel15.setLayout(new javax.swing.BoxLayout(jPanel15, javax.swing.BoxLayout.Y_AXIS));
+        jTabbedPane1.addTab("Nhân viên", pnlNhanVien);
 
-        jPanel81.setLayout(new javax.swing.BoxLayout(jPanel81, javax.swing.BoxLayout.Y_AXIS));
-
-        jPanel16.setBorder(javax.swing.BorderFactory.createTitledBorder("Theo ngày"));
-        jPanel16.setLayout(new javax.swing.BoxLayout(jPanel16, javax.swing.BoxLayout.PAGE_AXIS));
-        jPanel16.add(jXDatePicker1);
-
-        jPanel81.add(jPanel16);
-
-        jPanel85.setBorder(javax.swing.BorderFactory.createTitledBorder("Theo khoảng"));
-        jPanel85.setLayout(new javax.swing.BoxLayout(jPanel85, javax.swing.BoxLayout.Y_AXIS));
-        jPanel85.add(jXDatePicker2);
-        jPanel85.add(jXDatePicker7);
-
-        jPanel81.add(jPanel85);
-
-        jPanel83.setBorder(javax.swing.BorderFactory.createTitledBorder("Trạng thái\n"));
-        jPanel83.setMaximumSize(new java.awt.Dimension(500, 32767));
-
-        jCheckBox59.setText("Đã hoàn thành");
-        jCheckBox59.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBox59ActionPerformed(evt);
-            }
-        });
-
-        jCheckBox67.setText("Chưa hoàn thành");
-        jCheckBox67.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBox67ActionPerformed(evt);
-            }
-        });
-
-        jButton17.setText("Làm mới");
-
-        jRadioButton8.setText("Tất cả");
-
-        javax.swing.GroupLayout jPanel83Layout = new javax.swing.GroupLayout(jPanel83);
-        jPanel83.setLayout(jPanel83Layout);
-        jPanel83Layout.setHorizontalGroup(
-            jPanel83Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel83Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel83Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jCheckBox59)
-                    .addComponent(jCheckBox67)
-                    .addComponent(jButton17)
-                    .addComponent(jRadioButton8))
-                .addContainerGap(41, Short.MAX_VALUE))
-        );
-        jPanel83Layout.setVerticalGroup(
-            jPanel83Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel83Layout.createSequentialGroup()
-                .addGap(0, 0, 0)
-                .addComponent(jRadioButton8)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jCheckBox59)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jCheckBox67, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton17)
-                .addContainerGap(313, Short.MAX_VALUE))
-        );
-
-        jPanel81.add(jPanel83);
-
-        jPanel15.add(jPanel81);
-
-        jPanel14.add(jPanel15, java.awt.BorderLayout.LINE_START);
-
-        jPanel18.setLayout(new java.awt.BorderLayout());
-
-        jPanel19.setPreferredSize(new java.awt.Dimension(278, 40));
-        jPanel19.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
-
-        jToggleButton2.setText("Sắp xếp tăng");
-        jPanel19.add(jToggleButton2);
-
-        jLabel2.setText("Sắp xếp theo:");
-        jPanel19.add(jLabel2);
-
-        jCheckBox21.setText("Ngày mua");
-        jCheckBox21.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBox21ActionPerformed(evt);
-            }
-        });
-        jPanel19.add(jCheckBox21);
-
-        jCheckBox22.setText("Tổng tiền");
-        jCheckBox22.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBox22ActionPerformed(evt);
-            }
-        });
-        jPanel19.add(jCheckBox22);
-
-        jCheckBox29.setText("Trạng thái");
-        jPanel19.add(jCheckBox29);
-
-        jPanel18.add(jPanel19, java.awt.BorderLayout.PAGE_START);
-
-        jPanel20.setLayout(new javax.swing.BoxLayout(jPanel20, javax.swing.BoxLayout.LINE_AXIS));
-
-        jTable3.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4", "Title 5", "Title 6", "Title 7", "Title 8", "Title 9", "Title 10", "Title 11"
-            }
-        ));
-        jTable3.setShowVerticalLines(true);
-        jScrollPane3.setViewportView(jTable3);
-
-        jPanel20.add(jScrollPane3);
-
-        jPanel18.add(jPanel20, java.awt.BorderLayout.CENTER);
-
-        jPanel14.add(jPanel18, java.awt.BorderLayout.CENTER);
-
-        jPanel11.add(jPanel14, java.awt.BorderLayout.CENTER);
-
-        jTabbedPane1.addTab("Hóa đơn", jPanel11);
-
-        jPanel21.setLayout(new java.awt.BorderLayout());
-
-        jPanel22.setMinimumSize(new java.awt.Dimension(242, 50));
-        jPanel22.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
-
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Mã nhà cung cấp", "Tên nhà cung cấp", "..." }));
-        jComboBox3.setMinimumSize(new java.awt.Dimension(163, 22));
-        jComboBox3.setPreferredSize(new java.awt.Dimension(170, 22));
-        jComboBox3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox3ActionPerformed(evt);
-            }
-        });
-        jPanel22.add(jComboBox3);
-
-        jTextField4.setPreferredSize(new java.awt.Dimension(1000, 22));
-        jTextField4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField4ActionPerformed(evt);
-            }
-        });
-        jPanel22.add(jTextField4);
-
-        jPanel21.add(jPanel22, java.awt.BorderLayout.PAGE_START);
-
-        javax.swing.GroupLayout jPanel23Layout = new javax.swing.GroupLayout(jPanel23);
-        jPanel23.setLayout(jPanel23Layout);
-        jPanel23Layout.setHorizontalGroup(
-            jPanel23Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1185, Short.MAX_VALUE)
-        );
-        jPanel23Layout.setVerticalGroup(
-            jPanel23Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-        );
-
-        jPanel21.add(jPanel23, java.awt.BorderLayout.PAGE_END);
-
-        jPanel24.setPreferredSize(new java.awt.Dimension(630, 556));
-        jPanel24.setLayout(new java.awt.BorderLayout());
-
-        jPanel25.setMaximumSize(new java.awt.Dimension(170, 65534));
-        jPanel25.setPreferredSize(new java.awt.Dimension(170, 556));
-        jPanel25.setLayout(new javax.swing.BoxLayout(jPanel25, javax.swing.BoxLayout.Y_AXIS));
-
-        jPanel26.setBorder(javax.swing.BorderFactory.createTitledBorder("Theo hàng cung cấp"));
-        jPanel26.setMaximumSize(new java.awt.Dimension(500, 32767));
-
-        jCheckBox24.setText("Thuốc");
-        jCheckBox24.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBox24ActionPerformed(evt);
-            }
-        });
-
-        jCheckBox25.setText("TP chức năng");
-        jCheckBox25.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBox25ActionPerformed(evt);
-            }
-        });
-
-        jCheckBox26.setText("Khác");
-
-        jButton5.setText("Làm mới");
-
-        jRadioButton5.setText("Tất cả");
-        jRadioButton5.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jRadioButton5ActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel26Layout = new javax.swing.GroupLayout(jPanel26);
-        jPanel26.setLayout(jPanel26Layout);
-        jPanel26Layout.setHorizontalGroup(
-            jPanel26Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel26Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel26Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jCheckBox24)
-                    .addComponent(jCheckBox25)
-                    .addComponent(jCheckBox26)
-                    .addComponent(jButton5)
-                    .addComponent(jRadioButton5))
-                .addContainerGap(61, Short.MAX_VALUE))
-        );
-        jPanel26Layout.setVerticalGroup(
-            jPanel26Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel26Layout.createSequentialGroup()
-                .addGap(0, 0, 0)
-                .addComponent(jRadioButton5)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jCheckBox24)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jCheckBox25, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jCheckBox26)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton5)
-                .addGap(0, 0, Short.MAX_VALUE))
-        );
-
-        jPanel25.add(jPanel26);
-
-        jPanel91.setBorder(javax.swing.BorderFactory.createTitledBorder("Trạng thái"));
-        jPanel91.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
-
-        jRadioButton11.setText("Tất cả");
-        jPanel91.add(jRadioButton11);
-
-        jCheckBox30.setText("Đang hoạt động");
-        jPanel91.add(jCheckBox30);
-
-        jCheckBox31.setText("Đã nghĩ việc");
-        jCheckBox31.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBox31ActionPerformed(evt);
-            }
-        });
-        jPanel91.add(jCheckBox31);
-
-        jButton6.setText("Làm mới");
-        jPanel91.add(jButton6);
-
-        jPanel25.add(jPanel91);
-
-        jPanel24.add(jPanel25, java.awt.BorderLayout.LINE_START);
-
-        jPanel28.setLayout(new java.awt.BorderLayout());
-
-        jPanel29.setPreferredSize(new java.awt.Dimension(278, 40));
-        jPanel29.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
-
-        jToggleButton3.setText("Sắp xếp tăng");
-        jPanel29.add(jToggleButton3);
-
-        jLabel3.setText("Sắp xếp theo:");
-        jPanel29.add(jLabel3);
-
-        jCheckBox32.setText("Tên nhà cung cấp");
-        jCheckBox32.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBox32ActionPerformed(evt);
-            }
-        });
-        jPanel29.add(jCheckBox32);
-
-        jCheckBox28.setText("Trạng thái");
-        jPanel29.add(jCheckBox28);
-
-        jPanel28.add(jPanel29, java.awt.BorderLayout.PAGE_START);
-
-        jPanel30.setLayout(new javax.swing.BoxLayout(jPanel30, javax.swing.BoxLayout.LINE_AXIS));
-
-        jTable4.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4", "Title 5", "Title 6", "Title 7", "Title 8", "Title 9", "Title 10", "Title 11"
-            }
-        ));
-        jTable4.setShowVerticalLines(true);
-        jScrollPane4.setViewportView(jTable4);
-
-        jPanel30.add(jScrollPane4);
-
-        jPanel28.add(jPanel30, java.awt.BorderLayout.CENTER);
-
-        jPanel24.add(jPanel28, java.awt.BorderLayout.CENTER);
-
-        jPanel21.add(jPanel24, java.awt.BorderLayout.CENTER);
-
-        jTabbedPane1.addTab("Nhà cung cấp", jPanel21);
-
-        jPanel31.setLayout(new java.awt.BorderLayout());
+        pnlKhachHang.setLayout(new java.awt.BorderLayout());
 
         jPanel32.setMinimumSize(new java.awt.Dimension(242, 50));
         jPanel32.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
-        jComboBox4.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Số điện thoại", "Mã khách hàng", "..." }));
-        jComboBox4.setMinimumSize(new java.awt.Dimension(163, 22));
-        jComboBox4.setPreferredSize(new java.awt.Dimension(170, 22));
-        jComboBox4.addActionListener(new java.awt.event.ActionListener() {
+        cbbThuocTinhKhachHang.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Số điện thoại", "Tên khách hàng", "Mã khách hàng" }));
+        cbbThuocTinhKhachHang.setMinimumSize(new java.awt.Dimension(163, 22));
+        cbbThuocTinhKhachHang.setPreferredSize(new java.awt.Dimension(170, 22));
+        cbbThuocTinhKhachHang.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox4ActionPerformed(evt);
+                cbbThuocTinhKhachHangActionPerformed(evt);
             }
         });
-        jPanel32.add(jComboBox4);
+        jPanel32.add(cbbThuocTinhKhachHang);
 
-        jTextField5.setPreferredSize(new java.awt.Dimension(1000, 22));
-        jTextField5.addActionListener(new java.awt.event.ActionListener() {
+        txtNhapKhachHang.setPreferredSize(new java.awt.Dimension(500, 22));
+        txtNhapKhachHang.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField5ActionPerformed(evt);
+                txtNhapKhachHangActionPerformed(evt);
             }
         });
-        jPanel32.add(jTextField5);
+        txtNhapKhachHang.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtNhapKhachHangKeyPressed(evt);
+            }
+        });
+        jPanel32.add(txtNhapKhachHang);
 
-        jPanel31.add(jPanel32, java.awt.BorderLayout.PAGE_START);
+        btnTimKhachHang.setText("Tìm kiếm");
+        btnTimKhachHang.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTimKhachHangActionPerformed(evt);
+            }
+        });
+        jPanel32.add(btnTimKhachHang);
 
-        javax.swing.GroupLayout jPanel33Layout = new javax.swing.GroupLayout(jPanel33);
-        jPanel33.setLayout(jPanel33Layout);
-        jPanel33Layout.setHorizontalGroup(
-            jPanel33Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1185, Short.MAX_VALUE)
-        );
-        jPanel33Layout.setVerticalGroup(
-            jPanel33Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-        );
-
-        jPanel31.add(jPanel33, java.awt.BorderLayout.PAGE_END);
+        pnlKhachHang.add(jPanel32, java.awt.BorderLayout.PAGE_START);
 
         jPanel34.setPreferredSize(new java.awt.Dimension(630, 556));
         jPanel34.setLayout(new java.awt.BorderLayout());
@@ -871,34 +470,50 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         jPanel39.setPreferredSize(new java.awt.Dimension(278, 40));
         jPanel39.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
-        jToggleButton4.setText("Sắp xếp tăng");
-        jPanel39.add(jToggleButton4);
+        btnXemTatCaKhachHang.setText("Xem tất cả [F4]");
+        btnXemTatCaKhachHang.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnXemTatCaKhachHangActionPerformed(evt);
+            }
+        });
+        jPanel39.add(btnXemTatCaKhachHang);
 
         jLabel4.setText("Sắp xếp theo:");
         jPanel39.add(jLabel4);
 
-        jCheckBox43.setText("Tên ");
-        jCheckBox43.addActionListener(new java.awt.event.ActionListener() {
+        cbbSapXepKhachHang.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tên khách hàng", "Điểm tích lũy" }));
+        jPanel39.add(cbbSapXepKhachHang);
+
+        btnLocKhachHang.setText("Lọc bảng [F6]");
+        btnLocKhachHang.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBox43ActionPerformed(evt);
+                btnLocKhachHangActionPerformed(evt);
             }
         });
-        jPanel39.add(jCheckBox43);
+        jPanel39.add(btnLocKhachHang);
 
         jPanel38.add(jPanel39, java.awt.BorderLayout.PAGE_START);
 
         jPanel40.setLayout(new javax.swing.BoxLayout(jPanel40, javax.swing.BoxLayout.LINE_AXIS));
 
-        jTable5.setModel(new javax.swing.table.DefaultTableModel(
+        tblKhachHang.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4", "Title 5", "Title 6", "Title 7", "Title 8", "Title 9", "Title 10", "Title 11"
+                "Mã khách hàng", "Số điện thoại", "Họ tên đêm", "Tên khách hàng", "Điểm tích lũy"
             }
-        ));
-        jTable5.setShowVerticalLines(true);
-        jScrollPane5.setViewportView(jTable5);
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tblKhachHang.setShowVerticalLines(true);
+        jScrollPane5.setViewportView(tblKhachHang);
 
         jPanel40.add(jScrollPane5);
 
@@ -906,47 +521,308 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
 
         jPanel34.add(jPanel38, java.awt.BorderLayout.CENTER);
 
-        jPanel31.add(jPanel34, java.awt.BorderLayout.CENTER);
+        pnlKhachHang.add(jPanel34, java.awt.BorderLayout.CENTER);
 
-        jTabbedPane1.addTab("Khách hàng", jPanel31);
+        jTabbedPane1.addTab("Khách hàng", pnlKhachHang);
 
-        jPanel41.setLayout(new java.awt.BorderLayout());
+        pnlNhaCungCap.setLayout(new java.awt.BorderLayout());
+
+        jPanel22.setMinimumSize(new java.awt.Dimension(242, 50));
+        jPanel22.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+
+        cbbThuocTinhNhaCungCap.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Mã nhà cung cấp", "Tên nhà cung cấp" }));
+        cbbThuocTinhNhaCungCap.setMinimumSize(new java.awt.Dimension(163, 22));
+        cbbThuocTinhNhaCungCap.setPreferredSize(new java.awt.Dimension(170, 22));
+        cbbThuocTinhNhaCungCap.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbbThuocTinhNhaCungCapActionPerformed(evt);
+            }
+        });
+        jPanel22.add(cbbThuocTinhNhaCungCap);
+
+        txtNhapNhaCungCap.setPreferredSize(new java.awt.Dimension(500, 22));
+        txtNhapNhaCungCap.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txtNhapNhaCungCapFocusGained(evt);
+            }
+        });
+        txtNhapNhaCungCap.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtNhapNhaCungCapActionPerformed(evt);
+            }
+        });
+        jPanel22.add(txtNhapNhaCungCap);
+
+        btnTimKiemNhaCungCap.setText("Tìm kiếm");
+        btnTimKiemNhaCungCap.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTimKiemNhaCungCapActionPerformed(evt);
+            }
+        });
+        btnTimKiemNhaCungCap.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                btnTimKiemNhaCungCapKeyTyped(evt);
+            }
+        });
+        jPanel22.add(btnTimKiemNhaCungCap);
+
+        pnlNhaCungCap.add(jPanel22, java.awt.BorderLayout.PAGE_START);
+
+        jPanel24.setPreferredSize(new java.awt.Dimension(630, 556));
+        jPanel24.setLayout(new java.awt.BorderLayout());
+
+        jPanel25.setMaximumSize(new java.awt.Dimension(170, 65534));
+        jPanel25.setPreferredSize(new java.awt.Dimension(170, 556));
+        jPanel25.setLayout(new javax.swing.BoxLayout(jPanel25, javax.swing.BoxLayout.Y_AXIS));
+        jPanel24.add(jPanel25, java.awt.BorderLayout.LINE_START);
+
+        jPanel28.setLayout(new java.awt.BorderLayout());
+
+        jPanel29.setPreferredSize(new java.awt.Dimension(278, 40));
+        jPanel29.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+
+        btnXemTatCaNhaCungCap.setText("Xem tất cả [F4]");
+        btnXemTatCaNhaCungCap.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnXemTatCaNhaCungCapActionPerformed(evt);
+            }
+        });
+        jPanel29.add(btnXemTatCaNhaCungCap);
+
+        jLabel3.setText("Sắp xếp theo:");
+        jPanel29.add(jLabel3);
+
+        cbbSapXepNhaCungCap.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tên nhà cung cấp", "Mã nhà cung cấp" }));
+        jPanel29.add(cbbSapXepNhaCungCap);
+
+        btnLocNhaCungCap.setText("Lọc bảng [F6]");
+        btnLocNhaCungCap.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLocNhaCungCapActionPerformed(evt);
+            }
+        });
+        jPanel29.add(btnLocNhaCungCap);
+
+        jPanel28.add(jPanel29, java.awt.BorderLayout.PAGE_START);
+
+        jPanel30.setLayout(new javax.swing.BoxLayout(jPanel30, javax.swing.BoxLayout.LINE_AXIS));
+
+        tblNhaCungCap.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Mã NCC", "Tên NCC", "Địa chỉ", "Số điện thoại", "Email", "Loại thuốc"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tblNhaCungCap.setShowVerticalLines(true);
+        jScrollPane4.setViewportView(tblNhaCungCap);
+
+        jPanel30.add(jScrollPane4);
+
+        jPanel28.add(jPanel30, java.awt.BorderLayout.CENTER);
+
+        jPanel24.add(jPanel28, java.awt.BorderLayout.CENTER);
+
+        pnlNhaCungCap.add(jPanel24, java.awt.BorderLayout.CENTER);
+
+        jTabbedPane1.addTab("Nhà cung cấp", pnlNhaCungCap);
+
+        pnlSanPham.setLayout(new java.awt.BorderLayout());
+
+        jPanel4.setMinimumSize(new java.awt.Dimension(242, 50));
+        jPanel4.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+
+        cbbThuocTinhSanPham.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Mã sản phẩm", "Tên sản phẩm" }));
+        cbbThuocTinhSanPham.setMinimumSize(new java.awt.Dimension(163, 22));
+        cbbThuocTinhSanPham.setPreferredSize(new java.awt.Dimension(170, 22));
+        cbbThuocTinhSanPham.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbbThuocTinhSanPhamActionPerformed(evt);
+            }
+        });
+        jPanel4.add(cbbThuocTinhSanPham);
+
+        txtNhapSanPham.setPreferredSize(new java.awt.Dimension(500, 22));
+        txtNhapSanPham.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                txtNhapSanPhamFocusGained(evt);
+            }
+        });
+        txtNhapSanPham.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtNhapSanPhamActionPerformed(evt);
+            }
+        });
+        txtNhapSanPham.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtNhapSanPhamKeyPressed(evt);
+            }
+        });
+        jPanel4.add(txtNhapSanPham);
+
+        btnTimKiemSanPham.setText("Tìm kiếm");
+        btnTimKiemSanPham.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTimKiemSanPhamActionPerformed(evt);
+            }
+        });
+        jPanel4.add(btnTimKiemSanPham);
+
+        pnlSanPham.add(jPanel4, java.awt.BorderLayout.PAGE_START);
+
+        jPanel6.setPreferredSize(new java.awt.Dimension(630, 556));
+        jPanel6.setLayout(new java.awt.BorderLayout());
+
+        jPanel7.setMaximumSize(new java.awt.Dimension(170, 65534));
+        jPanel7.setPreferredSize(new java.awt.Dimension(170, 556));
+        jPanel7.setLayout(new javax.swing.BoxLayout(jPanel7, javax.swing.BoxLayout.Y_AXIS));
+
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Theo danh mục"));
+        jPanel1.setMaximumSize(new java.awt.Dimension(500, 32767));
+
+        cbxTKKDSanPham.setText("Thuốc không kê đơn");
+        cbxTKKDSanPham.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbxTKKDSanPhamActionPerformed(evt);
+            }
+        });
+
+        cbxTKDSanPham.setText("Thuốc kê đơn");
+
+        cbxTPCNSanPham.setText("TP chức năng");
+        cbxTPCNSanPham.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbxTPCNSanPhamActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(cbxTPCNSanPham)
+                    .addComponent(cbxTKKDSanPham)
+                    .addComponent(cbxTKDSanPham, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(24, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(cbxTKKDSanPham)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(cbxTKDSanPham)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(cbxTPCNSanPham, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(211, Short.MAX_VALUE))
+        );
+
+        jPanel7.add(jPanel1);
+
+        jPanel6.add(jPanel7, java.awt.BorderLayout.LINE_START);
+
+        jPanel9.setLayout(new java.awt.BorderLayout());
+
+        jPanel3.setPreferredSize(new java.awt.Dimension(278, 40));
+        jPanel3.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+
+        btnXemTatCaSanPham.setText("Xem tất cả [F4]");
+        btnXemTatCaSanPham.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnXemTatCaSanPhamActionPerformed(evt);
+            }
+        });
+        jPanel3.add(btnXemTatCaSanPham);
+
+        jLabel1.setText("Sắp xếp theo:");
+        jPanel3.add(jLabel1);
+
+        cbbSapXepSanPham.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Mã sản phẩm", "Tên sản phẩm", " " }));
+        jPanel3.add(cbbSapXepSanPham);
+
+        btnLocSanPham.setText("Lọc bảng [F6]");
+        btnLocSanPham.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLocSanPhamActionPerformed(evt);
+            }
+        });
+        jPanel3.add(btnLocSanPham);
+
+        jPanel9.add(jPanel3, java.awt.BorderLayout.PAGE_START);
+
+        jPanel8.setLayout(new javax.swing.BoxLayout(jPanel8, javax.swing.BoxLayout.LINE_AXIS));
+
+        tblSanPham.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Mã sản phẩm", "Tên sản phẩm", "Loại sản phẩm", "Mô tả", "Thành phần", "Tồn tối thiểu", "Tồn tối đa"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tblSanPham.setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        tblSanPham.setSelectionMode(javax.swing.ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        tblSanPham.setShowGrid(false);
+        tblSanPham.setShowVerticalLines(true);
+        jScrollPane2.setViewportView(tblSanPham);
+
+        jPanel8.add(jScrollPane2);
+
+        jPanel9.add(jPanel8, java.awt.BorderLayout.CENTER);
+
+        jPanel6.add(jPanel9, java.awt.BorderLayout.CENTER);
+
+        pnlSanPham.add(jPanel6, java.awt.BorderLayout.CENTER);
+
+        jTabbedPane1.addTab("Sản phẩm", pnlSanPham);
+
+        pnlKhuyenMai.setLayout(new java.awt.BorderLayout());
 
         jPanel42.setMinimumSize(new java.awt.Dimension(242, 50));
         jPanel42.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
-        jComboBox5.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Mã khuyến mãi", "Tên khuyến mãi", "..." }));
-        jComboBox5.setMinimumSize(new java.awt.Dimension(163, 22));
-        jComboBox5.setPreferredSize(new java.awt.Dimension(170, 22));
-        jComboBox5.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox5ActionPerformed(evt);
+        cbbThuocTinhKhuyenMai.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Mã khuyến mãi" }));
+        cbbThuocTinhKhuyenMai.setMinimumSize(new java.awt.Dimension(163, 22));
+        cbbThuocTinhKhuyenMai.setPreferredSize(new java.awt.Dimension(170, 22));
+        jPanel42.add(cbbThuocTinhKhuyenMai);
+
+        txtNhapKhuyenMai.setPreferredSize(new java.awt.Dimension(500, 22));
+        txtNhapKhuyenMai.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtNhapKhuyenMaiKeyPressed(evt);
             }
         });
-        jPanel42.add(jComboBox5);
+        jPanel42.add(txtNhapKhuyenMai);
 
-        jTextField6.setPreferredSize(new java.awt.Dimension(1000, 22));
-        jTextField6.addActionListener(new java.awt.event.ActionListener() {
+        btnTimKhuyenMai.setText("Tìm kiếm");
+        btnTimKhuyenMai.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField6ActionPerformed(evt);
+                btnTimKhuyenMaiActionPerformed(evt);
             }
         });
-        jPanel42.add(jTextField6);
+        jPanel42.add(btnTimKhuyenMai);
 
-        jPanel41.add(jPanel42, java.awt.BorderLayout.PAGE_START);
-
-        javax.swing.GroupLayout jPanel43Layout = new javax.swing.GroupLayout(jPanel43);
-        jPanel43.setLayout(jPanel43Layout);
-        jPanel43Layout.setHorizontalGroup(
-            jPanel43Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1185, Short.MAX_VALUE)
-        );
-        jPanel43Layout.setVerticalGroup(
-            jPanel43Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-        );
-
-        jPanel41.add(jPanel43, java.awt.BorderLayout.PAGE_END);
+        pnlKhuyenMai.add(jPanel42, java.awt.BorderLayout.PAGE_START);
 
         jPanel44.setPreferredSize(new java.awt.Dimension(630, 556));
         jPanel44.setLayout(new java.awt.BorderLayout());
@@ -957,100 +833,33 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
 
         jPanel82.setLayout(new javax.swing.BoxLayout(jPanel82, javax.swing.BoxLayout.Y_AXIS));
 
-        jPanel17.setBorder(javax.swing.BorderFactory.createTitledBorder("Theo ngày"));
-        jPanel17.setLayout(new javax.swing.BoxLayout(jPanel17, javax.swing.BoxLayout.PAGE_AXIS));
-        jPanel17.add(jXDatePicker3);
+        jPanel31.setBorder(javax.swing.BorderFactory.createTitledBorder("Theo ngày"));
+        jPanel31.setLayout(new javax.swing.BoxLayout(jPanel31, javax.swing.BoxLayout.PAGE_AXIS));
+        jPanel31.add(dpkTheoNgayKhuyenMai);
 
-        jPanel82.add(jPanel17);
+        jPanel82.add(jPanel31);
 
-        jPanel86.setBorder(javax.swing.BorderFactory.createTitledBorder("Theo khoảng"));
-        jPanel86.setLayout(new javax.swing.BoxLayout(jPanel86, javax.swing.BoxLayout.Y_AXIS));
-        jPanel86.add(jXDatePicker4);
-        jPanel86.add(jXDatePicker8);
+        jPanel93.setBorder(javax.swing.BorderFactory.createTitledBorder("Theo khoảng"));
+        jPanel93.setLayout(new javax.swing.BoxLayout(jPanel93, javax.swing.BoxLayout.Y_AXIS));
+        jPanel93.add(dpkThoiGianKetThucKhuyenMai);
 
-        jPanel82.add(jPanel86);
+        jPanel82.add(jPanel93);
 
-        jPanel84.setBorder(javax.swing.BorderFactory.createTitledBorder("Phần trăm giảm giá"));
-        jPanel84.setMaximumSize(new java.awt.Dimension(500, 32767));
-
-        jCheckBox78.setText("Đã hoàn thành");
-        jCheckBox78.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBox78ActionPerformed(evt);
-            }
-        });
-
-        jCheckBox89.setText("Chưa hoàn thành");
-        jCheckBox89.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBox89ActionPerformed(evt);
-            }
-        });
-
-        jButton18.setText("Làm mới");
-
-        jRadioButton9.setText("Tất cả");
-
-        javax.swing.GroupLayout jPanel84Layout = new javax.swing.GroupLayout(jPanel84);
-        jPanel84.setLayout(jPanel84Layout);
-        jPanel84Layout.setHorizontalGroup(
-            jPanel84Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel84Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel84Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jCheckBox78)
-                    .addComponent(jCheckBox89)
-                    .addComponent(jButton18)
-                    .addComponent(jRadioButton9))
-                .addContainerGap(41, Short.MAX_VALUE))
-        );
-        jPanel84Layout.setVerticalGroup(
-            jPanel84Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel84Layout.createSequentialGroup()
-                .addGap(0, 0, 0)
-                .addComponent(jRadioButton9)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jCheckBox78)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jCheckBox89, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton18)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-        jPanel82.add(jPanel84);
+        jPanel45.add(jPanel82);
 
         jPanel87.setBorder(javax.swing.BorderFactory.createTitledBorder("Trạng thái"));
         jPanel87.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
-        jRadioButton1.setText("Tất cả");
-        jPanel87.add(jRadioButton1);
+        cbxChuaHoatDongKhuyenMai.setText("Chưa hoạt động");
+        jPanel87.add(cbxChuaHoatDongKhuyenMai);
 
-        jCheckBox1.setText("Đang hoạt động");
-        jPanel87.add(jCheckBox1);
+        cbxHoatDongKhuyenMai.setText("Đang hoạt động");
+        jPanel87.add(cbxHoatDongKhuyenMai);
 
-        jCheckBox12.setText("Hết hạn");
-        jCheckBox12.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBox12ActionPerformed(evt);
-            }
-        });
-        jPanel87.add(jCheckBox12);
+        cbxHetHanKhuyenMai.setText("Hết hạn");
+        jPanel87.add(cbxHetHanKhuyenMai);
 
-        jCheckBox13.setText("Chưa hoạt động");
-        jCheckBox13.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBox13ActionPerformed(evt);
-            }
-        });
-        jPanel87.add(jCheckBox13);
-
-        jButton3.setText("Làm mới");
-        jPanel87.add(jButton3);
-
-        jPanel82.add(jPanel87);
-
-        jPanel45.add(jPanel82);
+        jPanel45.add(jPanel87);
 
         jPanel44.add(jPanel45, java.awt.BorderLayout.LINE_START);
 
@@ -1059,43 +868,55 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         jPanel49.setPreferredSize(new java.awt.Dimension(278, 40));
         jPanel49.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
-        jToggleButton5.setText("Sắp xếp tăng");
-        jPanel49.add(jToggleButton5);
+        btnXemTatCaKhuyenMai.setText("Xem tất cả [F4]");
+        btnXemTatCaKhuyenMai.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnXemTatCaKhuyenMaiActionPerformed(evt);
+            }
+        });
+        jPanel49.add(btnXemTatCaKhuyenMai);
 
         jLabel5.setText("Sắp xếp theo:");
         jPanel49.add(jLabel5);
 
-        jCheckBox54.setText("Tên khuyến mãi ");
-        jCheckBox54.addActionListener(new java.awt.event.ActionListener() {
+        cbbSapXepKhuyenMai.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ngày bắt đầu khuyến mãi", "Trạng thái" }));
+        cbbSapXepKhuyenMai.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBox54ActionPerformed(evt);
+                cbbSapXepKhuyenMaiActionPerformed(evt);
             }
         });
-        jPanel49.add(jCheckBox54);
+        jPanel49.add(cbbSapXepKhuyenMai);
 
-        jCheckBox14.setText("Phần trăm giảm giá");
-        jPanel49.add(jCheckBox14);
-
-        jCheckBox15.setText("Ngày");
-        jPanel49.add(jCheckBox15);
-
-        jCheckBox20.setText("Trạng thái");
-        jPanel49.add(jCheckBox20);
+        btnLocKhuyenMai.setText("Lọc [F6]");
+        btnLocKhuyenMai.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLocKhuyenMaiActionPerformed(evt);
+            }
+        });
+        jPanel49.add(btnLocKhuyenMai);
 
         jPanel48.add(jPanel49, java.awt.BorderLayout.PAGE_START);
 
         jPanel50.setLayout(new javax.swing.BoxLayout(jPanel50, javax.swing.BoxLayout.LINE_AXIS));
 
-        jTable6.setModel(new javax.swing.table.DefaultTableModel(
+        tblKhuyenMai.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4", "Title 5", "Title 6", "Title 7", "Title 8", "Title 9", "Title 10", "Title 11"
+                "Mã khuyến mãi", "Mô tả", "Phần trăm", "Loại khuyến mãi", "Ngày bắt đầu", "Ngày kết thúc", "Số lượng tối thiểu", "Số lượng tối đa", "Ngày chỉnh sửa"
             }
-        ));
-        jTable6.setShowVerticalLines(true);
-        jScrollPane6.setViewportView(jTable6);
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tblKhuyenMai.setShowVerticalLines(true);
+        jScrollPane6.setViewportView(tblKhuyenMai);
 
         jPanel50.add(jScrollPane6);
 
@@ -1103,351 +924,165 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
 
         jPanel44.add(jPanel48, java.awt.BorderLayout.CENTER);
 
-        jPanel41.add(jPanel44, java.awt.BorderLayout.CENTER);
+        pnlKhuyenMai.add(jPanel44, java.awt.BorderLayout.CENTER);
 
-        jTabbedPane1.addTab("Khuyến mãi", jPanel41);
+        jTabbedPane1.addTab("Khuyến mãi", pnlKhuyenMai);
 
-        jPanel51.setLayout(new java.awt.BorderLayout());
+        pnlHoaDon.setLayout(new java.awt.BorderLayout());
 
-        jPanel52.setMinimumSize(new java.awt.Dimension(242, 50));
-        jPanel52.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+        jPanel12.setMinimumSize(new java.awt.Dimension(242, 50));
+        jPanel12.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
-        jComboBox6.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Mã nhà cung cấp", "Tên nhà cung cấp", "..." }));
-        jComboBox6.setMinimumSize(new java.awt.Dimension(163, 22));
-        jComboBox6.setPreferredSize(new java.awt.Dimension(170, 22));
-        jComboBox6.addActionListener(new java.awt.event.ActionListener() {
+        cbbHoaDon.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Mã hóa đơn", "Số điện thoại khách hàng" }));
+        cbbHoaDon.setMinimumSize(new java.awt.Dimension(163, 22));
+        cbbHoaDon.setPreferredSize(new java.awt.Dimension(170, 22));
+        cbbHoaDon.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox6ActionPerformed(evt);
+                cbbHoaDonActionPerformed(evt);
             }
         });
-        jPanel52.add(jComboBox6);
+        jPanel12.add(cbbHoaDon);
 
-        jTextField7.setPreferredSize(new java.awt.Dimension(1000, 22));
-        jTextField7.addActionListener(new java.awt.event.ActionListener() {
+        txtNhapHoaDon.setPreferredSize(new java.awt.Dimension(500, 22));
+        txtNhapHoaDon.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField7ActionPerformed(evt);
+                txtNhapHoaDonActionPerformed(evt);
             }
         });
-        jPanel52.add(jTextField7);
+        jPanel12.add(txtNhapHoaDon);
 
-        jPanel51.add(jPanel52, java.awt.BorderLayout.PAGE_START);
-
-        javax.swing.GroupLayout jPanel53Layout = new javax.swing.GroupLayout(jPanel53);
-        jPanel53.setLayout(jPanel53Layout);
-        jPanel53Layout.setHorizontalGroup(
-            jPanel53Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1185, Short.MAX_VALUE)
-        );
-        jPanel53Layout.setVerticalGroup(
-            jPanel53Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-        );
-
-        jPanel51.add(jPanel53, java.awt.BorderLayout.PAGE_END);
-
-        jPanel54.setPreferredSize(new java.awt.Dimension(630, 556));
-        jPanel54.setLayout(new java.awt.BorderLayout());
-
-        jPanel55.setMaximumSize(new java.awt.Dimension(170, 65534));
-        jPanel55.setPreferredSize(new java.awt.Dimension(170, 556));
-        jPanel55.setLayout(new javax.swing.BoxLayout(jPanel55, javax.swing.BoxLayout.Y_AXIS));
-
-        jPanel27.setBorder(javax.swing.BorderFactory.createTitledBorder("Theo ngày"));
-        jPanel27.setLayout(new javax.swing.BoxLayout(jPanel27, javax.swing.BoxLayout.PAGE_AXIS));
-        jPanel27.add(jXDatePicker5);
-
-        jPanel55.add(jPanel27);
-
-        jPanel88.setBorder(javax.swing.BorderFactory.createTitledBorder("Theo khoảng"));
-        jPanel88.setLayout(new javax.swing.BoxLayout(jPanel88, javax.swing.BoxLayout.Y_AXIS));
-        jPanel88.add(jXDatePicker6);
-        jPanel88.add(jXDatePicker9);
-
-        jPanel55.add(jPanel88);
-
-        jPanel89.setBorder(javax.swing.BorderFactory.createTitledBorder("Trạng thái\n"));
-        jPanel89.setMaximumSize(new java.awt.Dimension(500, 32767));
-
-        jCheckBox90.setText("Đã hoàn thành");
-        jCheckBox90.addActionListener(new java.awt.event.ActionListener() {
+        btnTimKiem.setText("Tìm kiếm");
+        btnTimKiem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBox90ActionPerformed(evt);
+                btnTimKiemActionPerformed(evt);
             }
         });
+        jPanel12.add(btnTimKiem);
 
-        jCheckBox91.setText("Chưa hoàn thành");
-        jCheckBox91.addActionListener(new java.awt.event.ActionListener() {
+        pnlHoaDon.add(jPanel12, java.awt.BorderLayout.PAGE_START);
+
+        jPanel14.setPreferredSize(new java.awt.Dimension(630, 556));
+        jPanel14.setLayout(new java.awt.BorderLayout());
+
+        jPanel15.setMaximumSize(new java.awt.Dimension(170, 65534));
+        jPanel15.setPreferredSize(new java.awt.Dimension(170, 556));
+        jPanel15.setLayout(new javax.swing.BoxLayout(jPanel15, javax.swing.BoxLayout.Y_AXIS));
+
+        jPanel81.setLayout(new javax.swing.BoxLayout(jPanel81, javax.swing.BoxLayout.Y_AXIS));
+
+        jPanel16.setBorder(javax.swing.BorderFactory.createTitledBorder("Theo ngày"));
+        jPanel16.setLayout(new javax.swing.BoxLayout(jPanel16, javax.swing.BoxLayout.PAGE_AXIS));
+        jPanel16.add(dpkTheoNgayHoaDon);
+
+        jPanel81.add(jPanel16);
+
+        jPanel85.setBorder(javax.swing.BorderFactory.createTitledBorder("Theo khoảng"));
+        jPanel85.setLayout(new javax.swing.BoxLayout(jPanel85, javax.swing.BoxLayout.Y_AXIS));
+        jPanel85.add(dpkThoiGianKetThucHoaDon);
+
+        jPanel81.add(jPanel85);
+
+        jPanel15.add(jPanel81);
+
+        jPanel14.add(jPanel15, java.awt.BorderLayout.LINE_START);
+
+        jPanel18.setLayout(new java.awt.BorderLayout());
+
+        jPanel19.setPreferredSize(new java.awt.Dimension(278, 40));
+        jPanel19.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+
+        btnXemTatCaHoaDon.setText("Xem tất cả [F4]");
+        btnXemTatCaHoaDon.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBox91ActionPerformed(evt);
+                btnXemTatCaHoaDonActionPerformed(evt);
             }
         });
+        jPanel19.add(btnXemTatCaHoaDon);
 
-        jButton19.setText("Làm mới");
+        jLabel2.setText("Sắp xếp theo:");
+        jPanel19.add(jLabel2);
 
-        jRadioButton10.setText("Tất cả");
+        cbbSapXepHoaDon.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ngày tạo", "Tổng tiền" }));
+        jPanel19.add(cbbSapXepHoaDon);
 
-        javax.swing.GroupLayout jPanel89Layout = new javax.swing.GroupLayout(jPanel89);
-        jPanel89.setLayout(jPanel89Layout);
-        jPanel89Layout.setHorizontalGroup(
-            jPanel89Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel89Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel89Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jCheckBox90)
-                    .addComponent(jCheckBox91)
-                    .addComponent(jButton19)
-                    .addComponent(jRadioButton10))
-                .addContainerGap(41, Short.MAX_VALUE))
-        );
-        jPanel89Layout.setVerticalGroup(
-            jPanel89Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel89Layout.createSequentialGroup()
-                .addGap(0, 0, 0)
-                .addComponent(jRadioButton10)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jCheckBox90)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jCheckBox91, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton19)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-        jPanel55.add(jPanel89);
-
-        jPanel54.add(jPanel55, java.awt.BorderLayout.LINE_START);
-
-        jPanel58.setLayout(new java.awt.BorderLayout());
-
-        jPanel59.setPreferredSize(new java.awt.Dimension(278, 40));
-        jPanel59.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
-
-        jToggleButton6.setText("Sắp xếp tăng");
-        jPanel59.add(jToggleButton6);
-
-        jLabel6.setText("Sắp xếp theo:");
-        jPanel59.add(jLabel6);
-
-        jCheckBox66.setText("Ngày");
-        jCheckBox66.addActionListener(new java.awt.event.ActionListener() {
+        btnLocHoaDon.setText("Lọc [F6]");
+        btnLocHoaDon.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBox66ActionPerformed(evt);
+                btnLocHoaDonActionPerformed(evt);
             }
         });
-        jPanel59.add(jCheckBox66);
+        jPanel19.add(btnLocHoaDon);
 
-        jCheckBox18.setText("Trạng thái");
-        jPanel59.add(jCheckBox18);
+        jPanel18.add(jPanel19, java.awt.BorderLayout.PAGE_START);
 
-        jPanel58.add(jPanel59, java.awt.BorderLayout.PAGE_START);
+        jPanel20.setLayout(new javax.swing.BoxLayout(jPanel20, javax.swing.BoxLayout.LINE_AXIS));
 
-        jPanel60.setLayout(new javax.swing.BoxLayout(jPanel60, javax.swing.BoxLayout.LINE_AXIS));
-
-        jTable7.setModel(new javax.swing.table.DefaultTableModel(
+        tblHoaDon.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4", "Title 5", "Title 6", "Title 7", "Title 8", "Title 9", "Title 10", "Title 11"
+                "Mã hóa đơn", "Tên nhân viên", "Tên khách hàng", "Ngày lập hóa đơn", "Hình thức thanh toán", "Tổng tiền"
             }
-        ));
-        jTable7.setShowVerticalLines(true);
-        jScrollPane7.setViewportView(jTable7);
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, true, false, true
+            };
 
-        jPanel60.add(jScrollPane7);
-
-        jPanel58.add(jPanel60, java.awt.BorderLayout.CENTER);
-
-        jPanel54.add(jPanel58, java.awt.BorderLayout.CENTER);
-
-        jPanel51.add(jPanel54, java.awt.BorderLayout.CENTER);
-
-        jTabbedPane1.addTab("Phiếu trả hàng", jPanel51);
-
-        jPanel61.setLayout(new java.awt.BorderLayout());
-
-        jPanel62.setMinimumSize(new java.awt.Dimension(242, 50));
-        jPanel62.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
-
-        jComboBox7.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Mã nhà cung cấp", "Tên nhà cung cấp", "..." }));
-        jComboBox7.setMinimumSize(new java.awt.Dimension(163, 22));
-        jComboBox7.setPreferredSize(new java.awt.Dimension(170, 22));
-        jComboBox7.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox7ActionPerformed(evt);
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
             }
         });
-        jPanel62.add(jComboBox7);
+        tblHoaDon.setShowVerticalLines(true);
+        jScrollPane3.setViewportView(tblHoaDon);
 
-        jTextField8.setPreferredSize(new java.awt.Dimension(1000, 22));
-        jTextField8.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField8ActionPerformed(evt);
-            }
-        });
-        jPanel62.add(jTextField8);
+        jPanel20.add(jScrollPane3);
 
-        jPanel61.add(jPanel62, java.awt.BorderLayout.PAGE_START);
+        jPanel18.add(jPanel20, java.awt.BorderLayout.CENTER);
 
-        javax.swing.GroupLayout jPanel63Layout = new javax.swing.GroupLayout(jPanel63);
-        jPanel63.setLayout(jPanel63Layout);
-        jPanel63Layout.setHorizontalGroup(
-            jPanel63Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1185, Short.MAX_VALUE)
-        );
-        jPanel63Layout.setVerticalGroup(
-            jPanel63Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-        );
+        jPanel14.add(jPanel18, java.awt.BorderLayout.CENTER);
 
-        jPanel61.add(jPanel63, java.awt.BorderLayout.PAGE_END);
+        pnlHoaDon.add(jPanel14, java.awt.BorderLayout.CENTER);
 
-        jPanel64.setPreferredSize(new java.awt.Dimension(630, 556));
-        jPanel64.setLayout(new java.awt.BorderLayout());
+        jTabbedPane1.addTab("Hóa đơn", pnlHoaDon);
 
-        jPanel65.setMaximumSize(new java.awt.Dimension(170, 65534));
-        jPanel65.setPreferredSize(new java.awt.Dimension(170, 556));
-        jPanel65.setLayout(new javax.swing.BoxLayout(jPanel65, javax.swing.BoxLayout.Y_AXIS));
-
-        jPanel66.setBorder(javax.swing.BorderFactory.createTitledBorder("Trạng thái"));
-        jPanel66.setMaximumSize(new java.awt.Dimension(500, 32767));
-        jPanel66.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
-
-        jRadioButton6.setText("Tất cả");
-        jRadioButton6.setPreferredSize(new java.awt.Dimension(100, 21));
-        jPanel66.add(jRadioButton6);
-
-        jCheckBox68.setText("Nhân viên");
-        jCheckBox68.setPreferredSize(new java.awt.Dimension(100, 20));
-        jCheckBox68.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBox68ActionPerformed(evt);
-            }
-        });
-        jPanel66.add(jCheckBox68);
-
-        jCheckBox69.setText("Quản lý");
-        jCheckBox69.setPreferredSize(new java.awt.Dimension(100, 20));
-        jCheckBox69.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBox69ActionPerformed(evt);
-            }
-        });
-        jPanel66.add(jCheckBox69);
-
-        jButton13.setText("Làm mới");
-        jPanel66.add(jButton13);
-
-        jPanel65.add(jPanel66);
-
-        jPanel90.setBorder(javax.swing.BorderFactory.createTitledBorder("Trạng thái"));
-        jPanel90.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
-
-        jRadioButton2.setText("Tất cả");
-        jPanel90.add(jRadioButton2);
-
-        jCheckBox17.setText("Đang hoạt động");
-        jPanel90.add(jCheckBox17);
-
-        jCheckBox19.setText("Đã nghĩ việc");
-        jCheckBox19.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBox19ActionPerformed(evt);
-            }
-        });
-        jPanel90.add(jCheckBox19);
-
-        jButton4.setText("Làm mới");
-        jPanel90.add(jButton4);
-
-        jPanel65.add(jPanel90);
-
-        jPanel64.add(jPanel65, java.awt.BorderLayout.LINE_START);
-
-        jPanel68.setLayout(new java.awt.BorderLayout());
-
-        jPanel69.setPreferredSize(new java.awt.Dimension(278, 40));
-        jPanel69.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
-
-        jToggleButton7.setText("Sắp xếp tăng");
-        jPanel69.add(jToggleButton7);
-
-        jLabel7.setText("Sắp xếp theo:");
-        jPanel69.add(jLabel7);
-
-        jCheckBox76.setText("Tên nhân viên ");
-        jCheckBox76.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBox76ActionPerformed(evt);
-            }
-        });
-        jPanel69.add(jCheckBox76);
-
-        jCheckBox23.setText("Trạng thái");
-        jPanel69.add(jCheckBox23);
-
-        jPanel68.add(jPanel69, java.awt.BorderLayout.PAGE_START);
-
-        jPanel70.setLayout(new javax.swing.BoxLayout(jPanel70, javax.swing.BoxLayout.LINE_AXIS));
-
-        jTable8.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4", "Title 5", "Title 6", "Title 7", "Title 8", "Title 9", "Title 10", "Title 11"
-            }
-        ));
-        jTable8.setShowVerticalLines(true);
-        jScrollPane8.setViewportView(jTable8);
-
-        jPanel70.add(jScrollPane8);
-
-        jPanel68.add(jPanel70, java.awt.BorderLayout.CENTER);
-
-        jPanel64.add(jPanel68, java.awt.BorderLayout.CENTER);
-
-        jPanel61.add(jPanel64, java.awt.BorderLayout.CENTER);
-
-        jTabbedPane1.addTab("Nhân viên", jPanel61);
-
-        jPanel71.setLayout(new java.awt.BorderLayout());
+        pnlPhieuNhap.setLayout(new java.awt.BorderLayout());
 
         jPanel72.setMinimumSize(new java.awt.Dimension(242, 50));
         jPanel72.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
-        jComboBox8.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Mã nhà cung cấp", "Tên nhà cung cấp", "..." }));
-        jComboBox8.setMinimumSize(new java.awt.Dimension(163, 22));
-        jComboBox8.setPreferredSize(new java.awt.Dimension(170, 22));
-        jComboBox8.addActionListener(new java.awt.event.ActionListener() {
+        cbbThuocTinhPhieuNhap.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Mã phiếu nhập" }));
+        cbbThuocTinhPhieuNhap.setMinimumSize(new java.awt.Dimension(163, 22));
+        cbbThuocTinhPhieuNhap.setPreferredSize(new java.awt.Dimension(170, 22));
+        cbbThuocTinhPhieuNhap.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBox8ActionPerformed(evt);
+                cbbThuocTinhPhieuNhapActionPerformed(evt);
             }
         });
-        jPanel72.add(jComboBox8);
+        jPanel72.add(cbbThuocTinhPhieuNhap);
 
-        jTextField9.setPreferredSize(new java.awt.Dimension(1000, 22));
-        jTextField9.addActionListener(new java.awt.event.ActionListener() {
+        txtNhapPhieuNhap.setPreferredSize(new java.awt.Dimension(500, 22));
+        txtNhapPhieuNhap.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField9ActionPerformed(evt);
+                txtNhapPhieuNhapActionPerformed(evt);
             }
         });
-        jPanel72.add(jTextField9);
+        txtNhapPhieuNhap.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtNhapPhieuNhapKeyPressed(evt);
+            }
+        });
+        jPanel72.add(txtNhapPhieuNhap);
 
-        jPanel71.add(jPanel72, java.awt.BorderLayout.PAGE_START);
+        btnTimPhieuNhap.setText("Tìm kiếm");
+        btnTimPhieuNhap.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTimPhieuNhapActionPerformed(evt);
+            }
+        });
+        jPanel72.add(btnTimPhieuNhap);
 
-        javax.swing.GroupLayout jPanel73Layout = new javax.swing.GroupLayout(jPanel73);
-        jPanel73.setLayout(jPanel73Layout);
-        jPanel73Layout.setHorizontalGroup(
-            jPanel73Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1185, Short.MAX_VALUE)
-        );
-        jPanel73Layout.setVerticalGroup(
-            jPanel73Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
-        );
-
-        jPanel71.add(jPanel73, java.awt.BorderLayout.PAGE_END);
+        pnlPhieuNhap.add(jPanel72, java.awt.BorderLayout.PAGE_START);
 
         jPanel74.setPreferredSize(new java.awt.Dimension(630, 556));
         jPanel74.setLayout(new java.awt.BorderLayout());
@@ -1456,129 +1091,17 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         jPanel75.setPreferredSize(new java.awt.Dimension(170, 556));
         jPanel75.setLayout(new javax.swing.BoxLayout(jPanel75, javax.swing.BoxLayout.Y_AXIS));
 
-        jPanel76.setBorder(javax.swing.BorderFactory.createTitledBorder("Trạng thái"));
-        jPanel76.setMaximumSize(new java.awt.Dimension(500, 32767));
+        jPanel21.setBorder(javax.swing.BorderFactory.createTitledBorder("Theo ngày"));
+        jPanel21.setLayout(new javax.swing.BoxLayout(jPanel21, javax.swing.BoxLayout.PAGE_AXIS));
+        jPanel21.add(dpkTheoNgayPhieuNhap);
 
-        jCheckBox79.setText("Thuốc");
-        jCheckBox79.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBox79ActionPerformed(evt);
-            }
-        });
+        jPanel75.add(jPanel21);
 
-        jCheckBox80.setText("TP chức năng");
-        jCheckBox80.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBox80ActionPerformed(evt);
-            }
-        });
+        jPanel91.setBorder(javax.swing.BorderFactory.createTitledBorder("Theo khoảng"));
+        jPanel91.setLayout(new javax.swing.BoxLayout(jPanel91, javax.swing.BoxLayout.Y_AXIS));
+        jPanel91.add(dpkThoiGianKetThucPhieuNhap);
 
-        jCheckBox81.setText("Khác");
-
-        jButton15.setText("Làm mới");
-
-        jRadioButton7.setText("Tất cả");
-
-        javax.swing.GroupLayout jPanel76Layout = new javax.swing.GroupLayout(jPanel76);
-        jPanel76.setLayout(jPanel76Layout);
-        jPanel76Layout.setHorizontalGroup(
-            jPanel76Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel76Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel76Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jCheckBox79)
-                    .addComponent(jCheckBox80)
-                    .addComponent(jCheckBox81)
-                    .addComponent(jButton15)
-                    .addComponent(jRadioButton7))
-                .addContainerGap(61, Short.MAX_VALUE))
-        );
-        jPanel76Layout.setVerticalGroup(
-            jPanel76Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel76Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jRadioButton7)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jCheckBox79)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jCheckBox80, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jCheckBox81)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton15)
-                .addContainerGap(124, Short.MAX_VALUE))
-        );
-
-        jPanel75.add(jPanel76);
-
-        jPanel77.setBorder(javax.swing.BorderFactory.createTitledBorder("Theo đơn vị tính"));
-
-        jCheckBox82.setText("Viên");
-
-        jCheckBox83.setText("Vĩ");
-        jCheckBox83.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBox83ActionPerformed(evt);
-            }
-        });
-
-        jCheckBox84.setText("Chai");
-        jCheckBox84.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBox84ActionPerformed(evt);
-            }
-        });
-
-        jCheckBox85.setText("Hộp");
-
-        jCheckBox86.setText("Khác");
-        jCheckBox86.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBox86ActionPerformed(evt);
-            }
-        });
-
-        jButton16.setText("Làm mới");
-        jButton16.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton16ActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel77Layout = new javax.swing.GroupLayout(jPanel77);
-        jPanel77.setLayout(jPanel77Layout);
-        jPanel77Layout.setHorizontalGroup(
-            jPanel77Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel77Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel77Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jCheckBox82)
-                    .addComponent(jCheckBox83)
-                    .addComponent(jCheckBox84)
-                    .addComponent(jCheckBox85)
-                    .addComponent(jCheckBox86)
-                    .addComponent(jButton16))
-                .addContainerGap(78, Short.MAX_VALUE))
-        );
-        jPanel77Layout.setVerticalGroup(
-            jPanel77Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel77Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jCheckBox82)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jCheckBox83)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jCheckBox84)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jCheckBox85)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jCheckBox86)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton16)
-                .addContainerGap(93, Short.MAX_VALUE))
-        );
-
-        jPanel75.add(jPanel77);
+        jPanel75.add(jPanel91);
 
         jPanel74.add(jPanel75, java.awt.BorderLayout.LINE_START);
 
@@ -1587,37 +1110,55 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         jPanel79.setPreferredSize(new java.awt.Dimension(278, 40));
         jPanel79.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
-        jToggleButton8.setText("Sắp xếp tăng");
-        jPanel79.add(jToggleButton8);
-
-        jLabel8.setText("Sắp xếp theo:");
-        jPanel79.add(jLabel8);
-
-        jCheckBox70.setText("Ngày");
-        jCheckBox70.addActionListener(new java.awt.event.ActionListener() {
+        btnXemTatCaPhieuNhap.setText("Xem tất cả [F4]");
+        btnXemTatCaPhieuNhap.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBox70ActionPerformed(evt);
+                btnXemTatCaPhieuNhapActionPerformed(evt);
             }
         });
-        jPanel79.add(jCheckBox70);
+        jPanel79.add(btnXemTatCaPhieuNhap);
 
-        jCheckBox27.setText("Trạng thái");
-        jPanel79.add(jCheckBox27);
+        jLabel9.setText("Sắp xếp theo:");
+        jPanel79.add(jLabel9);
+
+        cbbSapXepPhieuNhap.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ngày tạo", "Tổng tiền" }));
+        cbbSapXepPhieuNhap.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbbSapXepPhieuNhapActionPerformed(evt);
+            }
+        });
+        jPanel79.add(cbbSapXepPhieuNhap);
+
+        btnLocPhieuNhap.setText("Lọc [F6]");
+        btnLocPhieuNhap.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLocPhieuNhapActionPerformed(evt);
+            }
+        });
+        jPanel79.add(btnLocPhieuNhap);
 
         jPanel78.add(jPanel79, java.awt.BorderLayout.PAGE_START);
 
         jPanel80.setLayout(new javax.swing.BoxLayout(jPanel80, javax.swing.BoxLayout.LINE_AXIS));
 
-        jTable9.setModel(new javax.swing.table.DefaultTableModel(
+        tblPhieuNhap.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4", "Title 5", "Title 6", "Title 7", "Title 8", "Title 9", "Title 10", "Title 11"
+                "Mã phiếu nhập", "Ngày tạo", "Tên nhân viên", "Tổng tiền", "Ghi chú"
             }
-        ));
-        jTable9.setShowVerticalLines(true);
-        jScrollPane9.setViewportView(jTable9);
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, true
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tblPhieuNhap.setShowVerticalLines(true);
+        jScrollPane9.setViewportView(tblPhieuNhap);
 
         jPanel80.add(jScrollPane9);
 
@@ -1625,401 +1166,542 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
 
         jPanel74.add(jPanel78, java.awt.BorderLayout.CENTER);
 
-        jPanel71.add(jPanel74, java.awt.BorderLayout.CENTER);
+        pnlPhieuNhap.add(jPanel74, java.awt.BorderLayout.CENTER);
 
-        jTabbedPane1.addTab("Phiếu đặt", jPanel71);
+        jTabbedPane1.addTab("Phiếu nhập", pnlPhieuNhap);
+
+        pnlPhieuTraHang.setLayout(new java.awt.BorderLayout());
+
+        jPanel52.setMinimumSize(new java.awt.Dimension(242, 50));
+        jPanel52.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+
+        cbbThuocTinhPhieuTraHang.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Mã phiếu trả" }));
+        cbbThuocTinhPhieuTraHang.setMinimumSize(new java.awt.Dimension(163, 22));
+        cbbThuocTinhPhieuTraHang.setPreferredSize(new java.awt.Dimension(170, 22));
+        cbbThuocTinhPhieuTraHang.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbbThuocTinhPhieuTraHangActionPerformed(evt);
+            }
+        });
+        jPanel52.add(cbbThuocTinhPhieuTraHang);
+
+        txtNhapPhieuTraHang.setPreferredSize(new java.awt.Dimension(500, 22));
+        txtNhapPhieuTraHang.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtNhapPhieuTraHangActionPerformed(evt);
+            }
+        });
+        jPanel52.add(txtNhapPhieuTraHang);
+
+        btnTimPhieuTraHang.setText("Tìm kiếm");
+        btnTimPhieuTraHang.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnTimPhieuTraHangActionPerformed(evt);
+            }
+        });
+        jPanel52.add(btnTimPhieuTraHang);
+
+        pnlPhieuTraHang.add(jPanel52, java.awt.BorderLayout.PAGE_START);
+
+        jPanel54.setPreferredSize(new java.awt.Dimension(630, 556));
+        jPanel54.setLayout(new java.awt.BorderLayout());
+
+        jPanel55.setMaximumSize(new java.awt.Dimension(170, 65534));
+        jPanel55.setPreferredSize(new java.awt.Dimension(170, 556));
+        jPanel55.setLayout(new javax.swing.BoxLayout(jPanel55, javax.swing.BoxLayout.Y_AXIS));
+
+        jPanel26.setBorder(javax.swing.BorderFactory.createTitledBorder("Theo ngày"));
+        jPanel26.setLayout(new javax.swing.BoxLayout(jPanel26, javax.swing.BoxLayout.PAGE_AXIS));
+        jPanel26.add(dpkTheoNgayPhieuTraHang);
+
+        jPanel55.add(jPanel26);
+
+        jPanel92.setBorder(javax.swing.BorderFactory.createTitledBorder("Theo khoảng"));
+        jPanel92.setLayout(new javax.swing.BoxLayout(jPanel92, javax.swing.BoxLayout.Y_AXIS));
+        jPanel92.add(dpkThoiGianKetThucPhieuTraHang);
+
+        jPanel55.add(jPanel92);
+
+        jPanel54.add(jPanel55, java.awt.BorderLayout.LINE_START);
+
+        jPanel58.setLayout(new java.awt.BorderLayout());
+
+        jPanel59.setPreferredSize(new java.awt.Dimension(278, 40));
+        jPanel59.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
+
+        btnXemTatCaPhieuTraHang.setText("Xem tất cả [F4]");
+        btnXemTatCaPhieuTraHang.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnXemTatCaPhieuTraHangActionPerformed(evt);
+            }
+        });
+        jPanel59.add(btnXemTatCaPhieuTraHang);
+
+        jLabel10.setText("Sắp xếp theo:");
+        jPanel59.add(jLabel10);
+
+        cbbSapXepPhieuTraHang.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ngày tạo", "Tổng tiền" }));
+        cbbSapXepPhieuTraHang.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbbSapXepPhieuTraHangActionPerformed(evt);
+            }
+        });
+        jPanel59.add(cbbSapXepPhieuTraHang);
+
+        btnLocPhieuTraHang.setText("Lọc [F6]");
+        btnLocPhieuTraHang.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLocPhieuTraHangActionPerformed(evt);
+            }
+        });
+        jPanel59.add(btnLocPhieuTraHang);
+
+        jPanel58.add(jPanel59, java.awt.BorderLayout.PAGE_START);
+
+        jPanel60.setLayout(new javax.swing.BoxLayout(jPanel60, javax.swing.BoxLayout.LINE_AXIS));
+
+        tblPhieuTraHang.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Mã phiếu trả", "Ngày lập phiếu trả hàng", "Tên nhân viên", "Mã hóa đơn", "Tổng tiền hoàn trả"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tblPhieuTraHang.setShowVerticalLines(true);
+        jScrollPane7.setViewportView(tblPhieuTraHang);
+
+        jPanel60.add(jScrollPane7);
+
+        jPanel58.add(jPanel60, java.awt.BorderLayout.CENTER);
+
+        jPanel54.add(jPanel58, java.awt.BorderLayout.CENTER);
+
+        pnlPhieuTraHang.add(jPanel54, java.awt.BorderLayout.CENTER);
+
+        jTabbedPane1.addTab("Phiếu trả hàng", pnlPhieuTraHang);
 
         add(jTabbedPane1);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton16ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton16ActionPerformed
+    private void txtNhapPhieuNhapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNhapPhieuNhapActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton16ActionPerformed
+    }//GEN-LAST:event_txtNhapPhieuNhapActionPerformed
 
-    private void jCheckBox86ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox86ActionPerformed
+    private void cbbThuocTinhPhieuNhapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbbThuocTinhPhieuNhapActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jCheckBox86ActionPerformed
+    }//GEN-LAST:event_cbbThuocTinhPhieuNhapActionPerformed
 
-    private void jCheckBox84ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox84ActionPerformed
+    private void txtNhapNhanVienActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNhapNhanVienActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jCheckBox84ActionPerformed
+    }//GEN-LAST:event_txtNhapNhanVienActionPerformed
 
-    private void jCheckBox83ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox83ActionPerformed
+    private void cbbThuocTinhNhanVienActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbbThuocTinhNhanVienActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jCheckBox83ActionPerformed
+    }//GEN-LAST:event_cbbThuocTinhNhanVienActionPerformed
 
-    private void jCheckBox80ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox80ActionPerformed
+    private void txtNhapPhieuTraHangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNhapPhieuTraHangActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jCheckBox80ActionPerformed
+    }//GEN-LAST:event_txtNhapPhieuTraHangActionPerformed
 
-    private void jCheckBox79ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox79ActionPerformed
+    private void cbbThuocTinhPhieuTraHangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbbThuocTinhPhieuTraHangActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jCheckBox79ActionPerformed
+        
+    }//GEN-LAST:event_cbbThuocTinhPhieuTraHangActionPerformed
 
-    private void jTextField9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField9ActionPerformed
+    private void txtNhapKhachHangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNhapKhachHangActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField9ActionPerformed
+    }//GEN-LAST:event_txtNhapKhachHangActionPerformed
 
-    private void jComboBox8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox8ActionPerformed
+    private void cbbThuocTinhKhachHangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbbThuocTinhKhachHangActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox8ActionPerformed
+    }//GEN-LAST:event_cbbThuocTinhKhachHangActionPerformed
 
-    private void jCheckBox76ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox76ActionPerformed
+    private void txtNhapNhaCungCapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNhapNhaCungCapActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jCheckBox76ActionPerformed
+    }//GEN-LAST:event_txtNhapNhaCungCapActionPerformed
 
-    private void jCheckBox69ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox69ActionPerformed
+    private void cbbThuocTinhNhaCungCapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbbThuocTinhNhaCungCapActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jCheckBox69ActionPerformed
+    }//GEN-LAST:event_cbbThuocTinhNhaCungCapActionPerformed
 
-    private void jCheckBox68ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox68ActionPerformed
+    private void txtNhapHoaDonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNhapHoaDonActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jCheckBox68ActionPerformed
+    }//GEN-LAST:event_txtNhapHoaDonActionPerformed
 
-    private void jTextField8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField8ActionPerformed
+    private void cbbHoaDonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbbHoaDonActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField8ActionPerformed
+    }//GEN-LAST:event_cbbHoaDonActionPerformed
 
-    private void jComboBox7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox7ActionPerformed
+    private void cbxTPCNSanPhamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxTPCNSanPhamActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox7ActionPerformed
+    }//GEN-LAST:event_cbxTPCNSanPhamActionPerformed
 
-    private void jCheckBox66ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox66ActionPerformed
+    private void cbxTKKDSanPhamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxTKKDSanPhamActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jCheckBox66ActionPerformed
+    }//GEN-LAST:event_cbxTKKDSanPhamActionPerformed
 
-    private void jTextField7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField7ActionPerformed
+    private void txtNhapSanPhamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNhapSanPhamActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField7ActionPerformed
+        
+    }//GEN-LAST:event_txtNhapSanPhamActionPerformed
 
-    private void jComboBox6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox6ActionPerformed
+    private void cbbThuocTinhSanPhamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbbThuocTinhSanPhamActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox6ActionPerformed
+    }//GEN-LAST:event_cbbThuocTinhSanPhamActionPerformed
 
-    private void jCheckBox54ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox54ActionPerformed
+    private void cbxDaNghiViecNhanVienActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxDaNghiViecNhanVienActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jCheckBox54ActionPerformed
+    }//GEN-LAST:event_cbxDaNghiViecNhanVienActionPerformed
 
-    private void jTextField6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField6ActionPerformed
+    private void btnTimKiemSanPhamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTimKiemSanPhamActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField6ActionPerformed
+        String thuocTinh = cbbThuocTinhSanPham.getSelectedItem().toString();
+        String key = txtNhapSanPham.getText();
+        timSanPhamTheoThuocTinh(thuocTinh,key);
+    }//GEN-LAST:event_btnTimKiemSanPhamActionPerformed
 
-    private void jComboBox5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox5ActionPerformed
+    private void btnLocSanPhamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLocSanPhamActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox5ActionPerformed
+        locSanPhamTheoTieuChi(getSQLSanPhamTheoThuocTinh(),cbxTKKDSanPham.isSelected(),cbxTKDSanPham.isSelected(),cbxTPCNSanPham.isSelected());
+    }//GEN-LAST:event_btnLocSanPhamActionPerformed
 
-    private void jCheckBox43ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox43ActionPerformed
+    private void jTabbedPane1StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jTabbedPane1StateChanged
         // TODO add your handling code here:
-    }//GEN-LAST:event_jCheckBox43ActionPerformed
+//        int index = jTabbedPane1.getSelectedIndex();
+//        if(index==0){
+//            themSPVaoBang(SanPhamDAO.getAllTableSanPham());
+//        }
+    }//GEN-LAST:event_jTabbedPane1StateChanged
 
-    private void jTextField5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField5ActionPerformed
+    private void txtNhapSanPhamFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtNhapSanPhamFocusGained
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField5ActionPerformed
+        txtNhapSanPham.setText("");
+    }//GEN-LAST:event_txtNhapSanPhamFocusGained
 
-    private void jComboBox4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox4ActionPerformed
+    private void txtNhapSanPhamKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNhapSanPhamKeyPressed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox4ActionPerformed
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER){
+            String key = txtNhapSanPham.getText();
+            timSanPhamTheoThuocTinh(cbbThuocTinhSanPham.getSelectedItem().toString(), key);
+        }
+    }//GEN-LAST:event_txtNhapSanPhamKeyPressed
 
-    private void jCheckBox32ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox32ActionPerformed
+    private void btnXemTatCaSanPhamActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXemTatCaSanPhamActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jCheckBox32ActionPerformed
+        themSPVaoBang(SanPhamDAO.getAllTableSanPham());
+    }//GEN-LAST:event_btnXemTatCaSanPhamActionPerformed
 
-    private void jRadioButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton5ActionPerformed
+    private void btnXemTatCaHoaDonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXemTatCaHoaDonActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jRadioButton5ActionPerformed
+        themHoaDonVaoBang(HoaDonDAO.getAllHoaDon());
+    }//GEN-LAST:event_btnXemTatCaHoaDonActionPerformed
 
-    private void jCheckBox25ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox25ActionPerformed
+    private void btnXemTatCaNhaCungCapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXemTatCaNhaCungCapActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jCheckBox25ActionPerformed
+        themNCCVaoBang(NhaCungCapDAO.getAllNhaCungCap());
+    }//GEN-LAST:event_btnXemTatCaNhaCungCapActionPerformed
 
-    private void jCheckBox24ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox24ActionPerformed
+    private void btnTimKiemNhaCungCapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTimKiemNhaCungCapActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jCheckBox24ActionPerformed
+        String thuocTinh = cbbThuocTinhNhaCungCap.getSelectedItem().toString();
+        String key = txtNhapNhaCungCap.getText();
+        timNhaCungCapTheoThuocTinh(thuocTinh,key);
+    }//GEN-LAST:event_btnTimKiemNhaCungCapActionPerformed
 
-    private void jTextField4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField4ActionPerformed
+    private void btnTimKiemNhaCungCapKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnTimKiemNhaCungCapKeyTyped
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField4ActionPerformed
+    }//GEN-LAST:event_btnTimKiemNhaCungCapKeyTyped
 
-    private void jComboBox3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox3ActionPerformed
+    private void btnLocNhaCungCapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLocNhaCungCapActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox3ActionPerformed
+        locNhaCungCapTheoTieuChi(getSQLNhaCungCapTheoThuocTinh());
+    }//GEN-LAST:event_btnLocNhaCungCapActionPerformed
 
-    private void jCheckBox22ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox22ActionPerformed
+    private void txtNhapNhaCungCapFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtNhapNhaCungCapFocusGained
         // TODO add your handling code here:
-    }//GEN-LAST:event_jCheckBox22ActionPerformed
+        txtNhapNhaCungCap.setText("");
+    }//GEN-LAST:event_txtNhapNhaCungCapFocusGained
 
-    private void jCheckBox21ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox21ActionPerformed
+    private void btnXemTatCaKhachHangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXemTatCaKhachHangActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jCheckBox21ActionPerformed
+        themKhachHangVaoBang(KhachHangDAO.getAllKhachHang());
+    }//GEN-LAST:event_btnXemTatCaKhachHangActionPerformed
 
-    private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed
+    private void btnLocKhachHangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLocKhachHangActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField3ActionPerformed
+        locKhachHangTheoTieuChi(getSQLKhachHangTheoThuocTinh());
+    }//GEN-LAST:event_btnLocKhachHangActionPerformed
 
-    private void jComboBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox2ActionPerformed
+    private void btnTimKhachHangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTimKhachHangActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox2ActionPerformed
+        String thuocTinh = cbbThuocTinhKhachHang.getSelectedItem().toString();
+        String key = txtNhapKhachHang.getText();
+        timKhachHangTheoThuocTinh(thuocTinh, key);
+    }//GEN-LAST:event_btnTimKhachHangActionPerformed
 
-    private void jCheckBox2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox2ActionPerformed
+    private void tblNhanVienAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_tblNhanVienAncestorAdded
         // TODO add your handling code here:
-    }//GEN-LAST:event_jCheckBox2ActionPerformed
+    }//GEN-LAST:event_tblNhanVienAncestorAdded
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void txtNhapKhachHangKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNhapKhachHangKeyPressed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER){
+            String key = txtNhapKhachHang.getText();
+            timKhachHangTheoThuocTinh(cbbThuocTinhKhachHang.getSelectedItem().toString(), key);
+        }
+    }//GEN-LAST:event_txtNhapKhachHangKeyPressed
 
-    private void jCheckBox4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox4ActionPerformed
+    private void btnTimNhanVienActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTimNhanVienActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jCheckBox4ActionPerformed
+        String thuocTinh = cbbThuocTinhNhanVien.getSelectedItem().toString();
+        String key = txtNhapNhanVien.getText();
+        timNhanVienTheoThuocTinh(thuocTinh, key);
+    }//GEN-LAST:event_btnTimNhanVienActionPerformed
 
-    private void jCheckBox10ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox10ActionPerformed
+    private void btnXemTatCaNhanVienActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXemTatCaNhanVienActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jCheckBox10ActionPerformed
+        themNhanVienVaoBang(NhanVienDAO.getAllNhanVien());
+    }//GEN-LAST:event_btnXemTatCaNhanVienActionPerformed
 
-    private void jCheckBox9ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox9ActionPerformed
+    private void btnLocNhanVienActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLocNhanVienActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jCheckBox9ActionPerformed
+        locNhanVienTheoTieuChi();
+    }//GEN-LAST:event_btnLocNhanVienActionPerformed
 
-    private void jRadioButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton3ActionPerformed
+    private void txtNhapNhanVienKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNhapNhanVienKeyPressed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jRadioButton3ActionPerformed
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER){
+            String key = txtNhapNhanVien.getText();
+            timSanPhamTheoThuocTinh(cbbThuocTinhNhanVien.getSelectedItem().toString(), key);
+        }
+    }//GEN-LAST:event_txtNhapNhanVienKeyPressed
 
-    private void jCheckBox6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox6ActionPerformed
+    private void btnTimKiemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTimKiemActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jCheckBox6ActionPerformed
+        String thuocTinh = cbbHoaDon.getSelectedItem().toString();
+        String key = txtNhapHoaDon.getText();
+        timHoaDonTheoThuocTinh(thuocTinh, key);
+    }//GEN-LAST:event_btnTimKiemActionPerformed
 
-    private void jCheckBox5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox5ActionPerformed
+    private void btnLocHoaDonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLocHoaDonActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jCheckBox5ActionPerformed
+        locHoaDonTheoNgay();
+    }//GEN-LAST:event_btnLocHoaDonActionPerformed
 
-    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
+    private void btnLocPhieuNhapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLocPhieuNhapActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField2ActionPerformed
+        locPhieuNhapTheoNgay();
+    }//GEN-LAST:event_btnLocPhieuNhapActionPerformed
 
-    private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
+    private void btnXemTatCaPhieuNhapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXemTatCaPhieuNhapActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jComboBox1ActionPerformed
+        themPhieuNhapVaoBang(PhieuNhapDAO.getAllPhieuNhap());
+    }//GEN-LAST:event_btnXemTatCaPhieuNhapActionPerformed
 
-    private void jCheckBox12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox12ActionPerformed
+    private void btnXemTatCaPhieuTraHangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXemTatCaPhieuTraHangActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jCheckBox12ActionPerformed
+        themPhieuTraHangVaoBang(PhieuTraHangDAO.getAllPhieuTraHangTraCuu());
+    }//GEN-LAST:event_btnXemTatCaPhieuTraHangActionPerformed
 
-    private void jCheckBox13ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox13ActionPerformed
+    private void btnLocPhieuTraHangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLocPhieuTraHangActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jCheckBox13ActionPerformed
+        locPhieuTraHangTheoNgay();
+    }//GEN-LAST:event_btnLocPhieuTraHangActionPerformed
 
-    private void jCheckBox59ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox59ActionPerformed
+    private void cbbSapXepKhuyenMaiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbbSapXepKhuyenMaiActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jCheckBox59ActionPerformed
+    }//GEN-LAST:event_cbbSapXepKhuyenMaiActionPerformed
 
-    private void jCheckBox67ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox67ActionPerformed
+    private void btnXemTatCaKhuyenMaiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXemTatCaKhuyenMaiActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jCheckBox67ActionPerformed
+        themKhuyenMaiVaoBang(KhuyenMaiDAO.getAllKhuyenMai());
+    }//GEN-LAST:event_btnXemTatCaKhuyenMaiActionPerformed
 
-    private void jCheckBox78ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox78ActionPerformed
+    private void btnLocKhuyenMaiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLocKhuyenMaiActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jCheckBox78ActionPerformed
+        locKhuyenMaiTheoNgay();
+    }//GEN-LAST:event_btnLocKhuyenMaiActionPerformed
 
-    private void jCheckBox89ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox89ActionPerformed
+    private void cbbSapXepPhieuTraHangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbbSapXepPhieuTraHangActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jCheckBox89ActionPerformed
+    }//GEN-LAST:event_cbbSapXepPhieuTraHangActionPerformed
 
-    private void jCheckBox90ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox90ActionPerformed
+    private void btnTimKhuyenMaiActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTimKhuyenMaiActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jCheckBox90ActionPerformed
+        String thuocTinh = cbbThuocTinhKhuyenMai.getSelectedItem().toString();
+        String key = txtNhapKhuyenMai.getText();
+        timKhuyenMaiTheoThuocTinh(thuocTinh, key);
+    }//GEN-LAST:event_btnTimKhuyenMaiActionPerformed
 
-    private void jCheckBox91ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox91ActionPerformed
+    private void txtNhapKhuyenMaiKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNhapKhuyenMaiKeyPressed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jCheckBox91ActionPerformed
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER){
+            String key = txtNhapKhuyenMai.getText();
+            timKhuyenMaiTheoThuocTinh(cbbThuocTinhKhuyenMai.getSelectedItem().toString(), key);
+        }
+    }//GEN-LAST:event_txtNhapKhuyenMaiKeyPressed
 
-    private void jCheckBox19ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox19ActionPerformed
+    private void txtNhapPhieuNhapKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNhapPhieuNhapKeyPressed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jCheckBox19ActionPerformed
+                if(evt.getKeyCode() == KeyEvent.VK_ENTER){
+            String key = txtNhapPhieuNhap.getText();
+            timKhuyenMaiTheoThuocTinh(cbbThuocTinhPhieuNhap.getSelectedItem().toString(), key);
+        }
+    }//GEN-LAST:event_txtNhapPhieuNhapKeyPressed
 
-    private void jCheckBox31ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox31ActionPerformed
+    private void btnTimPhieuNhapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTimPhieuNhapActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jCheckBox31ActionPerformed
+            String thuocTinh = cbbThuocTinhPhieuNhap.getSelectedItem().toString();
+            String key = txtNhapPhieuNhap.getText();
+            timPhieuNhapTheoThuocTinh(thuocTinh, key);
+    }//GEN-LAST:event_btnTimPhieuNhapActionPerformed
 
-    private void jCheckBox70ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBox70ActionPerformed
+    private void cbbSapXepPhieuNhapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbbSapXepPhieuNhapActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jCheckBox70ActionPerformed
+    }//GEN-LAST:event_cbbSapXepPhieuNhapActionPerformed
 
+    private void btnTimPhieuTraHangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTimPhieuTraHangActionPerformed
+        // TODO add your handling code here:
+        String thuocTinh = cbbThuocTinhPhieuTraHang.getSelectedItem().toString();
+        String key = txtNhapPhieuTraHang.getText();
+        timPhieuTraHangTheoThuocTinh(thuocTinh, key);
+    }//GEN-LAST:event_btnTimPhieuTraHangActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton13;
-    private javax.swing.JButton jButton15;
-    private javax.swing.JButton jButton16;
-    private javax.swing.JButton jButton17;
-    private javax.swing.JButton jButton18;
-    private javax.swing.JButton jButton19;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
-    private javax.swing.JButton jButton6;
-    private javax.swing.JCheckBox jCheckBox1;
-    private javax.swing.JCheckBox jCheckBox10;
-    private javax.swing.JCheckBox jCheckBox11;
-    private javax.swing.JCheckBox jCheckBox12;
-    private javax.swing.JCheckBox jCheckBox13;
-    private javax.swing.JCheckBox jCheckBox14;
-    private javax.swing.JCheckBox jCheckBox15;
-    private javax.swing.JCheckBox jCheckBox17;
-    private javax.swing.JCheckBox jCheckBox18;
-    private javax.swing.JCheckBox jCheckBox19;
-    private javax.swing.JCheckBox jCheckBox2;
-    private javax.swing.JCheckBox jCheckBox20;
-    private javax.swing.JCheckBox jCheckBox21;
-    private javax.swing.JCheckBox jCheckBox22;
-    private javax.swing.JCheckBox jCheckBox23;
-    private javax.swing.JCheckBox jCheckBox24;
-    private javax.swing.JCheckBox jCheckBox25;
-    private javax.swing.JCheckBox jCheckBox26;
-    private javax.swing.JCheckBox jCheckBox27;
-    private javax.swing.JCheckBox jCheckBox28;
-    private javax.swing.JCheckBox jCheckBox29;
-    private javax.swing.JCheckBox jCheckBox30;
-    private javax.swing.JCheckBox jCheckBox31;
-    private javax.swing.JCheckBox jCheckBox32;
-    private javax.swing.JCheckBox jCheckBox4;
-    private javax.swing.JCheckBox jCheckBox43;
-    private javax.swing.JCheckBox jCheckBox5;
-    private javax.swing.JCheckBox jCheckBox54;
-    private javax.swing.JCheckBox jCheckBox59;
-    private javax.swing.JCheckBox jCheckBox6;
-    private javax.swing.JCheckBox jCheckBox66;
-    private javax.swing.JCheckBox jCheckBox67;
-    private javax.swing.JCheckBox jCheckBox68;
-    private javax.swing.JCheckBox jCheckBox69;
-    private javax.swing.JCheckBox jCheckBox7;
-    private javax.swing.JCheckBox jCheckBox70;
-    private javax.swing.JCheckBox jCheckBox76;
-    private javax.swing.JCheckBox jCheckBox78;
-    private javax.swing.JCheckBox jCheckBox79;
-    private javax.swing.JCheckBox jCheckBox8;
-    private javax.swing.JCheckBox jCheckBox80;
-    private javax.swing.JCheckBox jCheckBox81;
-    private javax.swing.JCheckBox jCheckBox82;
-    private javax.swing.JCheckBox jCheckBox83;
-    private javax.swing.JCheckBox jCheckBox84;
-    private javax.swing.JCheckBox jCheckBox85;
-    private javax.swing.JCheckBox jCheckBox86;
-    private javax.swing.JCheckBox jCheckBox89;
-    private javax.swing.JCheckBox jCheckBox9;
-    private javax.swing.JCheckBox jCheckBox90;
-    private javax.swing.JCheckBox jCheckBox91;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox2;
-    private javax.swing.JComboBox<String> jComboBox3;
-    private javax.swing.JComboBox<String> jComboBox4;
-    private javax.swing.JComboBox<String> jComboBox5;
-    private javax.swing.JComboBox<String> jComboBox6;
-    private javax.swing.JComboBox<String> jComboBox7;
-    private javax.swing.JComboBox<String> jComboBox8;
+    private javax.swing.JButton btnLocHoaDon;
+    private javax.swing.JButton btnLocKhachHang;
+    private javax.swing.JButton btnLocKhuyenMai;
+    private javax.swing.JButton btnLocNhaCungCap;
+    private javax.swing.JButton btnLocNhanVien;
+    private javax.swing.JButton btnLocPhieuNhap;
+    private javax.swing.JButton btnLocPhieuTraHang;
+    private javax.swing.JButton btnLocSanPham;
+    private javax.swing.JButton btnTimKhachHang;
+    private javax.swing.JButton btnTimKhuyenMai;
+    private javax.swing.JButton btnTimKiem;
+    private javax.swing.JButton btnTimKiemNhaCungCap;
+    private javax.swing.JButton btnTimKiemSanPham;
+    private javax.swing.JButton btnTimNhanVien;
+    private javax.swing.JButton btnTimPhieuNhap;
+    private javax.swing.JButton btnTimPhieuTraHang;
+    private javax.swing.JButton btnXemTatCaHoaDon;
+    private javax.swing.JButton btnXemTatCaKhachHang;
+    private javax.swing.JButton btnXemTatCaKhuyenMai;
+    private javax.swing.JButton btnXemTatCaNhaCungCap;
+    private javax.swing.JButton btnXemTatCaNhanVien;
+    private javax.swing.JButton btnXemTatCaPhieuNhap;
+    private javax.swing.JButton btnXemTatCaPhieuTraHang;
+    private javax.swing.JButton btnXemTatCaSanPham;
+    private javax.swing.JComboBox<String> cbbHoaDon;
+    private javax.swing.JComboBox<String> cbbSapXepHoaDon;
+    private javax.swing.JComboBox<String> cbbSapXepKhachHang;
+    private javax.swing.JComboBox<String> cbbSapXepKhuyenMai;
+    private javax.swing.JComboBox<String> cbbSapXepNhaCungCap;
+    private javax.swing.JComboBox<String> cbbSapXepNhanVien;
+    private javax.swing.JComboBox<String> cbbSapXepPhieuNhap;
+    private javax.swing.JComboBox<String> cbbSapXepPhieuTraHang;
+    private javax.swing.JComboBox<String> cbbSapXepSanPham;
+    private javax.swing.JComboBox<String> cbbThuocTinhKhachHang;
+    private javax.swing.JComboBox<String> cbbThuocTinhKhuyenMai;
+    private javax.swing.JComboBox<String> cbbThuocTinhNhaCungCap;
+    private javax.swing.JComboBox<String> cbbThuocTinhNhanVien;
+    private javax.swing.JComboBox<String> cbbThuocTinhPhieuNhap;
+    private javax.swing.JComboBox<String> cbbThuocTinhPhieuTraHang;
+    private javax.swing.JComboBox<String> cbbThuocTinhSanPham;
+    private javax.swing.JCheckBox cbxChuaHoatDongKhuyenMai;
+    private javax.swing.JCheckBox cbxDaNghiViecNhanVien;
+    private javax.swing.JCheckBox cbxDangHoatDongNhanVien;
+    private javax.swing.JCheckBox cbxHetHanKhuyenMai;
+    private javax.swing.JCheckBox cbxHoatDongKhuyenMai;
+    private javax.swing.JCheckBox cbxTKDSanPham;
+    private javax.swing.JCheckBox cbxTKKDSanPham;
+    private javax.swing.JCheckBox cbxTPCNSanPham;
+    private org.jdesktop.swingx.JXDatePicker dpkTheoNgayHoaDon;
+    private org.jdesktop.swingx.JXDatePicker dpkTheoNgayKhuyenMai;
+    private org.jdesktop.swingx.JXDatePicker dpkTheoNgayPhieuNhap;
+    private org.jdesktop.swingx.JXDatePicker dpkTheoNgayPhieuTraHang;
+    private org.jdesktop.swingx.JXDatePicker dpkThoiGianKetThucHoaDon;
+    private org.jdesktop.swingx.JXDatePicker dpkThoiGianKetThucKhuyenMai;
+    private org.jdesktop.swingx.JXDatePicker dpkThoiGianKetThucPhieuNhap;
+    private org.jdesktop.swingx.JXDatePicker dpkThoiGianKetThucPhieuTraHang;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel10;
-    private javax.swing.JPanel jPanel11;
     private javax.swing.JPanel jPanel12;
-    private javax.swing.JPanel jPanel13;
     private javax.swing.JPanel jPanel14;
     private javax.swing.JPanel jPanel15;
     private javax.swing.JPanel jPanel16;
-    private javax.swing.JPanel jPanel17;
     private javax.swing.JPanel jPanel18;
     private javax.swing.JPanel jPanel19;
-    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel20;
     private javax.swing.JPanel jPanel21;
     private javax.swing.JPanel jPanel22;
-    private javax.swing.JPanel jPanel23;
     private javax.swing.JPanel jPanel24;
     private javax.swing.JPanel jPanel25;
     private javax.swing.JPanel jPanel26;
-    private javax.swing.JPanel jPanel27;
     private javax.swing.JPanel jPanel28;
     private javax.swing.JPanel jPanel29;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel30;
     private javax.swing.JPanel jPanel31;
     private javax.swing.JPanel jPanel32;
-    private javax.swing.JPanel jPanel33;
     private javax.swing.JPanel jPanel34;
     private javax.swing.JPanel jPanel35;
     private javax.swing.JPanel jPanel38;
     private javax.swing.JPanel jPanel39;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel40;
-    private javax.swing.JPanel jPanel41;
     private javax.swing.JPanel jPanel42;
-    private javax.swing.JPanel jPanel43;
     private javax.swing.JPanel jPanel44;
     private javax.swing.JPanel jPanel45;
     private javax.swing.JPanel jPanel48;
     private javax.swing.JPanel jPanel49;
-    private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel50;
-    private javax.swing.JPanel jPanel51;
     private javax.swing.JPanel jPanel52;
-    private javax.swing.JPanel jPanel53;
     private javax.swing.JPanel jPanel54;
     private javax.swing.JPanel jPanel55;
     private javax.swing.JPanel jPanel58;
     private javax.swing.JPanel jPanel59;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel60;
-    private javax.swing.JPanel jPanel61;
     private javax.swing.JPanel jPanel62;
-    private javax.swing.JPanel jPanel63;
     private javax.swing.JPanel jPanel64;
     private javax.swing.JPanel jPanel65;
-    private javax.swing.JPanel jPanel66;
     private javax.swing.JPanel jPanel68;
     private javax.swing.JPanel jPanel69;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel70;
-    private javax.swing.JPanel jPanel71;
     private javax.swing.JPanel jPanel72;
-    private javax.swing.JPanel jPanel73;
     private javax.swing.JPanel jPanel74;
     private javax.swing.JPanel jPanel75;
-    private javax.swing.JPanel jPanel76;
-    private javax.swing.JPanel jPanel77;
     private javax.swing.JPanel jPanel78;
     private javax.swing.JPanel jPanel79;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel80;
     private javax.swing.JPanel jPanel81;
     private javax.swing.JPanel jPanel82;
-    private javax.swing.JPanel jPanel83;
-    private javax.swing.JPanel jPanel84;
     private javax.swing.JPanel jPanel85;
-    private javax.swing.JPanel jPanel86;
     private javax.swing.JPanel jPanel87;
-    private javax.swing.JPanel jPanel88;
-    private javax.swing.JPanel jPanel89;
     private javax.swing.JPanel jPanel9;
     private javax.swing.JPanel jPanel90;
     private javax.swing.JPanel jPanel91;
-    private javax.swing.JRadioButton jRadioButton1;
-    private javax.swing.JRadioButton jRadioButton10;
-    private javax.swing.JRadioButton jRadioButton11;
-    private javax.swing.JRadioButton jRadioButton2;
-    private javax.swing.JRadioButton jRadioButton3;
-    private javax.swing.JRadioButton jRadioButton4;
-    private javax.swing.JRadioButton jRadioButton5;
-    private javax.swing.JRadioButton jRadioButton6;
-    private javax.swing.JRadioButton jRadioButton7;
-    private javax.swing.JRadioButton jRadioButton8;
-    private javax.swing.JRadioButton jRadioButton9;
+    private javax.swing.JPanel jPanel92;
+    private javax.swing.JPanel jPanel93;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
@@ -2029,38 +1711,962 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
     private javax.swing.JScrollPane jScrollPane8;
     private javax.swing.JScrollPane jScrollPane9;
     private javax.swing.JTabbedPane jTabbedPane1;
-    private javax.swing.JTable jTable2;
-    private javax.swing.JTable jTable3;
-    private javax.swing.JTable jTable4;
-    private javax.swing.JTable jTable5;
-    private javax.swing.JTable jTable6;
-    private javax.swing.JTable jTable7;
-    private javax.swing.JTable jTable8;
-    private javax.swing.JTable jTable9;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField6;
-    private javax.swing.JTextField jTextField7;
-    private javax.swing.JTextField jTextField8;
-    private javax.swing.JTextField jTextField9;
-    private javax.swing.JToggleButton jToggleButton1;
-    private javax.swing.JToggleButton jToggleButton2;
-    private javax.swing.JToggleButton jToggleButton3;
-    private javax.swing.JToggleButton jToggleButton4;
-    private javax.swing.JToggleButton jToggleButton5;
-    private javax.swing.JToggleButton jToggleButton6;
-    private javax.swing.JToggleButton jToggleButton7;
-    private javax.swing.JToggleButton jToggleButton8;
-    private org.jdesktop.swingx.JXDatePicker jXDatePicker1;
-    private org.jdesktop.swingx.JXDatePicker jXDatePicker2;
-    private org.jdesktop.swingx.JXDatePicker jXDatePicker3;
-    private org.jdesktop.swingx.JXDatePicker jXDatePicker4;
-    private org.jdesktop.swingx.JXDatePicker jXDatePicker5;
-    private org.jdesktop.swingx.JXDatePicker jXDatePicker6;
-    private org.jdesktop.swingx.JXDatePicker jXDatePicker7;
-    private org.jdesktop.swingx.JXDatePicker jXDatePicker8;
-    private org.jdesktop.swingx.JXDatePicker jXDatePicker9;
+    private javax.swing.JPanel pnlHoaDon;
+    private javax.swing.JPanel pnlKhachHang;
+    private javax.swing.JPanel pnlKhuyenMai;
+    private javax.swing.JPanel pnlNhaCungCap;
+    private javax.swing.JPanel pnlNhanVien;
+    private javax.swing.JPanel pnlPhieuNhap;
+    private javax.swing.JPanel pnlPhieuTraHang;
+    private javax.swing.JPanel pnlSanPham;
+    private javax.swing.JTable tblHoaDon;
+    private javax.swing.JTable tblKhachHang;
+    private javax.swing.JTable tblKhuyenMai;
+    private javax.swing.JTable tblNhaCungCap;
+    private javax.swing.JTable tblNhanVien;
+    private javax.swing.JTable tblPhieuNhap;
+    private javax.swing.JTable tblPhieuTraHang;
+    private javax.swing.JTable tblSanPham;
+    private javax.swing.JTextField txtNhapHoaDon;
+    private javax.swing.JTextField txtNhapKhachHang;
+    private javax.swing.JTextField txtNhapKhuyenMai;
+    private javax.swing.JTextField txtNhapNhaCungCap;
+    private javax.swing.JTextField txtNhapNhanVien;
+    private javax.swing.JTextField txtNhapPhieuNhap;
+    private javax.swing.JTextField txtNhapPhieuTraHang;
+    private javax.swing.JTextField txtNhapSanPham;
     // End of variables declaration//GEN-END:variables
+    
+// Tra cứu sản phẩm
+    //Lấy dữ liệu từ csdl về theo mã, tên
+    private void timSanPhamTheoThuocTinh(String thuocTinh, String key) {
+        System.out.println(key);
+        StringBuilder sql = new StringBuilder();
+        String select = "Select * from SanPham ";
+        
+        sql.append(select);
+        
+        //tìm theo thuộc tính
+        if(key.equals("Nhập...") || key.equals("")){
+            return;
+        }
+        else if(key.length()>=0){
+            sql.append("where ");
+            //tìm theo cái gì
+            switch (thuocTinh) {
+                case "Mã sản phẩm":
+                    sql.append("maSP like N'%");
+                    sql.append(key);
+                    sql.append("%',");
+                    break;
+
+                case "Tên sản phẩm":
+                    sql.append("ten like N'%");
+                    sql.append(key);
+                    sql.append("%',");
+                    break;
+
+                default:
+                    throw new AssertionError();
+            }
+            sql.deleteCharAt(sql.length()-1);
+        }
+        
+        //Đưa danh sách trả về vào bảng
+        themSPVaoBang(SanPhamDAO.getAllTableSanPham(sql.toString()));
+    }
+    
+    //lấy sql lấy dữ liệu từ csdl
+    private String getSQLSanPhamTheoThuocTinh() {
+        String thuocTinh = cbbThuocTinhSanPham.getSelectedItem().toString();
+        String key = txtNhapSanPham.getText();
+        StringBuilder sql = new StringBuilder();
+        String select = "Select * from SanPham ";
+        
+        sql.append(select);
+        
+        //tìm theo thuộc tính
+        if(key.length()>0){
+            sql.append("where ");
+            //tìm theo cái gì
+            switch (thuocTinh) {
+                case "Mã sản phẩm":
+                    sql.append("maSP like N'%");
+                    sql.append(key);
+                    sql.append("%',");
+                    break;
+
+                case "Tên sản phẩm":
+                    sql.append("ten like N'%");
+                    sql.append(key);
+                    sql.append("%',");
+                    break;
+
+                default:
+                    throw new AssertionError();
+            }
+            sql.deleteCharAt(sql.length()-1);
+        }
+        
+        //Đưa danh sách trả về vào bảng
+        return sql.toString();
+    }
+    
+    
+    //lấy sql
+    private void locSanPhamTheoTieuChi(String sqlSub ,boolean thuocKhongKeDon, boolean thuocKeDon, boolean tpChucNang) {
+        StringBuilder sql = new StringBuilder();
+        String select = "Select * from ";
+        
+        sql.append(select);
+        sql.append("(");
+        sql.append(sqlSub);
+        sql.append(") as BangTam ");
+        
+        //tìm theo tiêu chí
+        if(thuocKeDon || thuocKhongKeDon || tpChucNang){
+            StringBuilder tieuChi = new StringBuilder();
+            tieuChi.append("where loaiSanPham in(");
+
+            if(thuocKhongKeDon){
+                tieuChi.append("'THUOC_KHONG_KE_DON',");
+            }
+            if(thuocKeDon){
+                tieuChi.append("'THUOC_KE_DON',");
+            }
+            if(tpChucNang){
+                tieuChi.append("'THUC_PHAM_CHUC_NANG',");
+            }
+            //Xóa dấu , cuối cùng
+            tieuChi.deleteCharAt(tieuChi.length()-1);
+           
+            tieuChi.append(") ");
+            
+            //sort theo
+            String sapXep = cbbSapXepSanPham.getSelectedItem().toString();
+            if(sapXep.equals("Mã sản phẩm")){
+                tieuChi.append(" order by BangTam.maSP ");
+            }
+            else{
+                tieuChi.append(" order by BangTam.ten ");
+            }
+
+            //Thêm điều kiện danh mục vào sql
+            sql.append(tieuChi.toString());
+            System.out.println(tieuChi.toString());
+        }
+        else{
+            sql.insert(6, " top 0 ");
+        }
+        
+
+        //Đưa danh sách trả về vào bảng
+        themSPVaoBang(SanPhamDAO.getAllTableSanPham(sql.toString()));
+        System.out.println(sql);
+
+    }
+
+    private void themSPVaoBang(ArrayList<SanPham> allTableSanPham) {
+        DefaultTableModel dtm = (DefaultTableModel) tblSanPham.getModel();
+        dtm.setRowCount(0);
+        for(SanPham spTam : allTableSanPham){
+            Object[] sp = new Object[7];
+            sp[0] = spTam.getMaSP();
+            sp[1] = spTam.getTen();
+            sp[2] = spTam.getLoaiSanPham();
+            sp[3] = spTam.getMoTa();
+            sp[4] = spTam.getThanhPhan();
+            sp[5] = spTam.getTonToiThieu();
+            sp[6] = spTam.getTonToiDa();
+            dtm.addRow(sp);
+        }
+    }
+    
+//Hóa đơn
+//Nhà cung cấp
+    //Lấy dữ liệu từ csdl về theo mã, tên
+    private void timNhaCungCapTheoThuocTinh(String thuocTinh, String key) {
+        System.out.println(key);
+        StringBuilder sql = new StringBuilder();
+        String select = "Select * from NhaCungCap ";
+        
+        sql.append(select);
+        
+        //tìm theo thuộc tính
+        if(key.equalsIgnoreCase("Nhập [F3]") || key.equals("")){
+            return;
+        }
+        else if(key.length()>=0){
+            sql.append("where ");
+            //tìm theo cái gì
+            switch (thuocTinh) {
+                case "Mã nhà cung cấp":
+                    sql.append("maNCC like N'%");
+                    sql.append(key);
+                    sql.append("%',");
+                    break;
+
+                case "Tên nhà cung cấp":
+                    sql.append("tenNCC like N'%");
+                    sql.append(key);
+                    sql.append("%',");
+                    break;
+
+                default:
+                    throw new AssertionError();
+            }
+            sql.deleteCharAt(sql.length()-1);
+        }
+        
+        //Đưa danh sách trả về vào bảng
+        themNCCVaoBang(NhaCungCapDAO.getAllNhaCungCap(sql.toString()));
+    }
+    
+    //lấy sql lấy dữ liệu từ csdl
+    private String getSQLNhaCungCapTheoThuocTinh() {
+        String thuocTinh = cbbThuocTinhNhaCungCap.getSelectedItem().toString();
+        String key = txtNhapNhaCungCap.getText();
+        StringBuilder sql = new StringBuilder();
+        String select = "Select * from NhaCungCap ";
+        
+        sql.append(select);
+        
+        //tìm theo thuộc tính
+        if(key.length()>0){
+            sql.append("where ");
+            //tìm theo cái gì
+            switch (thuocTinh) {
+                case "Mã nhà cung cấp":
+                    sql.append("maNCC like N'%");
+                    sql.append(key);
+                    sql.append("%',");
+                    break;
+
+                case "Tên nhà cung cấp":
+                    sql.append("tenNCC like N'%");
+                    sql.append(key);
+                    sql.append("%',");
+                    break;
+
+                default:
+                    throw new AssertionError();
+            }
+            sql.deleteCharAt(sql.length()-1);
+        }
+        
+        //Đưa danh sách trả về vào bảng
+        return sql.toString();
+    }
+    
+    
+    //lấy sql
+    private void locNhaCungCapTheoTieuChi(String sqlSub) {
+        StringBuilder sql = new StringBuilder();
+        String select = "Select * from ";
+        
+        sql.append(select);
+        sql.append("(");
+        sql.append(sqlSub);
+        sql.append(") as BangTam ");
+        
+        //tìm theo tiêu chí
+        StringBuilder tieuChi = new StringBuilder();
+//        if(thuocKeDon || thuocKhongKeDon || tpChucNang){
+//            
+//            tieuChi.append("where loaiSanPham in(");
+//
+//            if(thuocKhongKeDon){
+//                tieuChi.append("'THUOC_KHONG_KE_DON',");
+//            }
+//            if(thuocKeDon){
+//                tieuChi.append("'THUOC_KE_DON',");
+//            }
+//            if(tpChucNang){
+//                tieuChi.append("'THUC_PHAM_CHUC_NANG',");
+//            }
+//            //Xóa dấu , cuối cùng
+//            tieuChi.deleteCharAt(tieuChi.length()-1);
+//           
+//            tieuChi.append(") ");
+//            
+            //sort theo
+            String sapXep = cbbSapXepNhaCungCap.getSelectedItem().toString();
+            if(sapXep.equals("Mã nhà cung cấp")){
+                tieuChi.append(" order by BangTam.maNCC ");
+            }
+            else{
+                tieuChi.append(" order by BangTam.tenNCC ");
+            }
+
+            //Thêm điều kiện danh mục vào sql
+            sql.append(tieuChi.toString());
+            System.out.println(tieuChi.toString());
+        
+        
+
+        //Đưa danh sách trả về vào bảng
+        themNCCVaoBang(NhaCungCapDAO.getAllNhaCungCap(sql.toString()));
+        System.out.println(sql);
+
+    }
+    
+    private void themNCCVaoBang(ArrayList<NhaCungCap> allTableCungCap) {
+        DefaultTableModel dtm = (DefaultTableModel) tblNhaCungCap.getModel();
+        dtm.setRowCount(0);
+        for(NhaCungCap nccTam : allTableCungCap){
+            Object[] ncc = new Object[6];
+            ncc[0] = nccTam.getMaNCC();
+            ncc[1] = nccTam.getTenNCC();
+            ncc[2] = nccTam.getDiaChi();
+            ncc[3] = nccTam.getSdt();
+            ncc[4] = nccTam.getEmail();
+            dtm.addRow(ncc);
+            System.out.println("hethongnhathuocduocankhang.gui.TraCuuChungGUI.themNCCVaoBang()");
+        }
+    }
+    
+//Khách hàng
+    //Lấy dữ liệu từ csdl về theo mã, tên
+    private void timKhachHangTheoThuocTinh(String thuocTinh, String key) {
+        System.out.println(key);
+        StringBuilder sql = new StringBuilder();
+        String select = "select kh.*, kh.hoTenDem+' '+kh.ten as hoTenDemVaTen from KhachHang kh ";
+        
+        sql.append(select);
+        
+        //tìm theo thuộc tính
+        if(key.equalsIgnoreCase("Nhập [F3]") || key.equals("")){
+            return;
+        }
+        else if(key.length()>=0){
+            sql.append("where ");
+            //tìm theo cái gì
+            switch (thuocTinh) {
+                case "Số điện thoại":
+                    sql.append("sdt like N'%");
+                    sql.append(key);
+                    sql.append("%',");
+                    break;
+
+                case "Tên khách hàng":
+                    sql.append("kh.hoTenDem+' '+kh.ten like N'%");
+                    sql.append(key);
+                    sql.append("%',");
+                    break;
+                    
+                case "Mã khách hàng":
+                    sql.append("maKH like N'%");
+                    sql.append(key);
+                    sql.append("%',");
+                    break;    
+
+                default:
+                    throw new AssertionError();
+            }
+            sql.deleteCharAt(sql.length()-1);
+        }
+        
+        //Đưa danh sách trả về vào bảng
+        themKhachHangVaoBang(KhachHangDAO.getAllKhachHang(sql.toString()));
+        System.out.println(sql);
+    }
+    
+    //lấy sql lấy dữ liệu từ csdl
+    private String getSQLKhachHangTheoThuocTinh() {
+        String thuocTinh = cbbThuocTinhKhachHang.getSelectedItem().toString();
+        String key = txtNhapKhachHang.getText();
+        StringBuilder sql = new StringBuilder();
+        String select = "select kh.*, kh.hoTenDem+' '+kh.ten as hoTenDemVaTen from KhachHang kh ";
+        
+        sql.append(select);
+        
+        //tìm theo thuộc tính
+        if(key.length()>=0){
+            sql.append("where ");
+            //tìm theo cái gì
+            switch (thuocTinh) {
+                case "Số điện thoại":
+                    sql.append("sdt like N'%");
+                    sql.append(key);
+                    sql.append("%',");
+                    break;
+
+                case "Tên khách hàng":
+                    sql.append("hoTenDemVaTen like N'%");
+                    sql.append(key);
+                    sql.append("%',");
+                    break;
+                    
+                case "Mã khách hàng":
+                    sql.append("maKH like N'%");
+                    sql.append(key);
+                    sql.append("%',");
+                    break;    
+
+                default:
+                    throw new AssertionError();
+            }
+            sql.deleteCharAt(sql.length()-1);
+        }
+        
+        //Đưa danh sách trả về vào bảng
+        return sql.toString();
+    }
+    
+    
+    //lấy sql
+    private void locKhachHangTheoTieuChi(String sqlSub) {
+        StringBuilder sql = new StringBuilder();
+        String select = "Select * from ";
+        
+        sql.append(select);
+        sql.append("(");
+        sql.append(sqlSub);
+        sql.append(") as BangTam ");
+        
+        //tìm theo tiêu chí
+        StringBuilder tieuChi = new StringBuilder();
+//        if(thuocKeDon || thuocKhongKeDon || tpChucNang){
+//            
+//            tieuChi.append("where loaiSanPham in(");
+//
+//            if(thuocKhongKeDon){
+//                tieuChi.append("'THUOC_KHONG_KE_DON',");
+//            }
+//            if(thuocKeDon){
+//                tieuChi.append("'THUOC_KE_DON',");
+//            }
+//            if(tpChucNang){
+//                tieuChi.append("'THUC_PHAM_CHUC_NANG',");
+//            }
+//            //Xóa dấu , cuối cùng
+//            tieuChi.deleteCharAt(tieuChi.length()-1);
+//           
+//            tieuChi.append(") ");
+//            
+            //sort theo
+            String sapXep = cbbSapXepKhachHang.getSelectedItem().toString();
+            if(sapXep.equals("Tên khách hàng")){
+                tieuChi.append(" order by BangTam.ten ");
+            }
+            
+            else{
+                tieuChi.append(" order by BangTam.diemTichLuy ");
+            }
+
+            //Thêm điều kiện danh mục vào sql
+            sql.append(tieuChi.toString());
+            System.out.println(tieuChi.toString());
+        
+        
+
+        //Đưa danh sách trả về vào bảng
+        themKhachHangVaoBang(KhachHangDAO.getAllKhachHang(sql.toString()));
+        System.out.println(sql);
+
+    }
+    
+    private void themKhachHangVaoBang(ArrayList<KhachHang> khachHang) {
+        DefaultTableModel dtm = (DefaultTableModel) tblKhachHang.getModel();
+        dtm.setRowCount(0);
+        for(KhachHang khTam : khachHang){
+            Object[] ncc = new Object[5];
+            ncc[0] = khTam.getMaKH();
+            ncc[1] = khTam.getSdt();
+            ncc[2] = khTam.getHoTenDem();
+            ncc[3] = khTam.getTen();
+            ncc[4] = khTam.getDiemTichLuy();
+            dtm.addRow(ncc);
+        }
+    }
+    
+    //nhân viên
+    // Nhân viên - tra cứu
+    private void timNhanVienTheoThuocTinh(String thuocTinh, String key) {
+        if(key == null || key.trim().isEmpty()) return;
+        switch (thuocTinh) {
+            case "Mã nhân viên": {
+                try {
+                    NhanVien nv = NhanVienDAO.getNhanVienTheoMaNV(key);
+                    ArrayList<NhanVien> ds = new ArrayList<>();
+                    if (nv != null) ds.add(nv);
+                    themNhanVienVaoBang(ds);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                break;
+            }
+            case "Tên nhân viên":
+                themNhanVienVaoBang(NhanVienDAO.timNVTheoTen(key));
+                break;
+            case "Số điện thoại":
+                themNhanVienVaoBang(NhanVienDAO.timNVTheoSDT(key));
+                break;
+            case "CCCD":
+                themNhanVienVaoBang(NhanVienDAO.timNVTheoCCCD(key));
+                break;
+            default:
+                break;
+        }
+    }
+
+    private void locNhanVienTheoTieuChi() {
+        ArrayList<NhanVien> ketQua = new ArrayList<>();
+        boolean dangHoatDong = cbxDangHoatDongNhanVien.isSelected();
+        boolean daNghiViec = cbxDaNghiViecNhanVien.isSelected();
+
+        if(dangHoatDong && daNghiViec){
+            ketQua = NhanVienDAO.getAllNhanVien();
+        }
+        else if(dangHoatDong){
+            ketQua = NhanVienDAO.timNVTheoTrangThai(false); // nghiViec = false => đang hoạt động
+        }
+        else if(daNghiViec){
+            ketQua = NhanVienDAO.timNVTheoTrangThai(true);
+        }
+        else{
+            // none selected => show empty
+            ketQua = new ArrayList<>();
+        }
+
+        // sắp xếp
+        String sapXep = cbbSapXepNhanVien.getSelectedItem().toString();
+        if(sapXep.equals("Tên nhân viên")){
+            ketQua.sort((a,b) -> (a.getHoTenDem()+" "+a.getTen()).compareToIgnoreCase(b.getHoTenDem()+" "+b.getTen()));
+        } else if(sapXep.equals("Trạng thái")){
+            ketQua.sort((a,b) -> Boolean.compare(a.isNghiViec(), b.isNghiViec()));
+        }
+
+        themNhanVienVaoBang(ketQua);
+    }
+
+    private void themNhanVienVaoBang(ArrayList<NhanVien> dsNV) {
+        DefaultTableModel dtm = (DefaultTableModel) tblNhanVien.getModel();
+        dtm.setRowCount(0);
+        for(NhanVien nv : dsNV){
+            Object[] row = new Object[7];
+            row[0] = nv.getMaNV();
+            row[1] = nv.getHoTenDem();
+            row[2] = nv.getTen();
+            row[3] = nv.getSdt();
+            row[4] = nv.isGioiTinh() ? "Nam" : "Nữ";
+            row[5] = nv.getNgaySinh() != null ? nv.getNgaySinh().toString() : "";
+            row[6] = nv.isNghiViec()?"Có":"Không"; // Bị khóa / nghỉ việc
+            dtm.addRow(row);
+        }
+    }
+//Hóa đơn
+        
+    private void themHoaDonVaoBang(ArrayList<HoaDon> dsHD) {
+        DefaultTableModel dtm = (DefaultTableModel) tblHoaDon.getModel();
+        dtm.setRowCount(0);
+        for (HoaDon hd : dsHD) {
+            Object[] row = new Object[6];
+            row[0] = hd.getMaHoaDon();
+            row[1] = hd.getNhanVien().getHoTenDem() + " " + hd.getNhanVien().getTen();
+            row[2] = hd.getKhachHang().getHoTenDem() + " " + hd.getKhachHang().getTen();
+            row[3] = dinhDangNgay(hd.getNgayLapHoaDon().toLocalDate().toString());
+            row[4] = hd.isChuyenKhoan() ? "Chuyển khoản" : "Tiền mặt";
+            row[5] = dinhDangTien(hd.getTongTien()) ;
+            dtm.addRow(row);
+        }
+    }
+
+    private void timHoaDonTheoThuocTinh(String thuocTinh, String key) {
+        ArrayList<HoaDon> dsHD = new ArrayList<>();
+        if (key.equals("") || key.equals("Nhập...")) {
+            return;
+        }
+        switch (thuocTinh) {
+            case "Mã hóa đơn":
+                HoaDon hd = HoaDonDAO.getHoaDonTheoMaHD(key);
+                if (hd != null) {
+                    dsHD.add(hd);
+                }
+                break;
+            case "Số điện thoại khách hàng":
+                dsHD = HoaDonDAO.timHDTheoSDTKH(key);
+                break;
+            default:
+                break;
+        }
+        themHoaDonVaoBang(dsHD);
+    }
+
+    private void locHoaDonTheoNgay() {
+        LocalDate ngayBatDau = null;
+        LocalDate ngayKetThuc = null;
+        
+        if (dpkTheoNgayHoaDon.getDate() != null) {
+            ngayBatDau = LocalDate.ofInstant(dpkTheoNgayHoaDon.getDate().toInstant(), java.time.ZoneId.systemDefault());
+        }
+        if (dpkThoiGianKetThucHoaDon.getDate() != null) {
+            ngayKetThuc = LocalDate.ofInstant(dpkThoiGianKetThucHoaDon.getDate().toInstant(), java.time.ZoneId.systemDefault());
+        }
+        
+        ArrayList<HoaDon> dsHD = new ArrayList<>();
+        
+        if (ngayBatDau != null && ngayKetThuc != null) {
+            // Tìm theo khoảng ngày
+            if (ngayBatDau.isAfter(ngayKetThuc)) {
+                // Swap nếu ngày bắt đầu > ngày kết thúc
+                LocalDate temp = ngayBatDau;
+                ngayBatDau = ngayKetThuc;
+                ngayKetThuc = temp;
+            }
+            dsHD = HoaDonDAO.timHDTheoKhoangNgay(ngayBatDau, ngayKetThuc);
+        } else if (ngayBatDau != null) {
+            // Tìm theo ngày cụ thể
+            dsHD = HoaDonDAO.timHDTheoNgayLap(ngayBatDau);
+        } else if (ngayKetThuc != null) {
+            // Nếu chỉ có ngày kết thúc, coi như tìm một ngày
+            dsHD = HoaDonDAO.timHDTheoNgayLap(ngayKetThuc);
+        }
+        else if(ngayBatDau == null && ngayKetThuc == null){
+            dsHD = HoaDonDAO.getAllHoaDon();
+        }
+        
+        // Sắp xếp
+        String sapXep = cbbSapXepHoaDon.getSelectedItem().toString();
+        if (sapXep.equals("Ngày tạo")) {
+            dsHD.sort((a, b) -> b.getNgayLapHoaDon().compareTo(a.getNgayLapHoaDon()));
+        } else if (sapXep.equals("Tổng tiền")) {
+            dsHD.sort((a, b) -> Double.compare(b.getTongTien(), a.getTongTien()));
+        }
+        
+        themHoaDonVaoBang(dsHD);
+    }
+ 
+//Khuyến mãi
+    private void timKhuyenMaiTheoThuocTinh(String thuocTinh, String key) {
+        ArrayList<KhuyenMai> dsKM = new ArrayList<>();
+        if (key.equals("") || key.equals("Nhập...")) {
+            return;
+        }
+        switch (thuocTinh) {
+            case "Mã khuyến mãi":
+                KhuyenMai km = KhuyenMaiDAO.timKMTheoMa(key);
+                if (km != null) {
+                    dsKM.add(km);
+                }
+                break;
+            case "Mô tả":
+                dsKM = KhuyenMaiDAO.timKMTheoMoTa(key);
+                break;
+            default:
+                break;
+        }
+        themKhuyenMaiVaoBang(dsKM);
+    }
+        
+    private void themKhuyenMaiVaoBang(ArrayList<KhuyenMai> khuyenMai) {
+        DefaultTableModel dtm = (DefaultTableModel) tblKhuyenMai.getModel();
+        dtm.setRowCount(0);
+        for(KhuyenMai km : khuyenMai){
+            Object[] row = new Object[8];
+            row[0] = km.getMaKhuyenMai();
+            row[1] = km.getMoTa();
+            row[2] = km.getPhanTram();
+            row[3] = km.getLoaiKhuyenMai();
+            row[4] = km.getNgayBatDau();
+            row[5] = km.getNgayKetThuc();
+            row[6] = km.getSoLuongToiThieu();
+            row[7] = km.getSoLuongToiDa();
+            dtm.addRow(row);
+        }
+    }
+
+    private void locKhuyenMaiTheoNgay() {
+        ArrayList<KhuyenMai> dsKM = KhuyenMaiDAO.getAllKhuyenMai();
+        //lọc theo ngày
+        LocalDate ngayBatDau = null;
+        LocalDate ngayKetThuc = null;
+        
+        if (dpkTheoNgayKhuyenMai.getDate() != null) {
+            ngayBatDau = LocalDate.ofInstant(dpkTheoNgayKhuyenMai.getDate().toInstant(), java.time.ZoneId.systemDefault());
+        }
+        if (dpkThoiGianKetThucKhuyenMai.getDate() != null) {
+            ngayKetThuc = LocalDate.ofInstant(dpkThoiGianKetThucKhuyenMai.getDate().toInstant(), java.time.ZoneId.systemDefault());
+        }
+        
+                // Lọc theo trạng thái
+        boolean hoatDong = cbxHoatDongKhuyenMai.isSelected();
+        boolean chuaHoatDong = cbxChuaHoatDongKhuyenMai.isSelected();
+        boolean hetHan = cbxHetHanKhuyenMai.isSelected();
+        
+        if (hoatDong || chuaHoatDong || hetHan) {
+            LocalDateTime now = LocalDateTime.now();
+            dsKM = dsKM.stream()
+                .filter(km -> {
+                    boolean isHoatDong = !km.getNgayBatDau().isAfter(now) && !km.getNgayKetThuc().isBefore(now);
+                    boolean isChuaHoatDong = km.getNgayBatDau().isAfter(now);
+                    boolean isHetHan = km.getNgayKetThuc().isBefore(now);
+                    return (hoatDong && isHoatDong) || (chuaHoatDong && isChuaHoatDong) || (hetHan && isHetHan);
+                })
+                .collect(java.util.stream.Collectors.toCollection(ArrayList::new));
+        }
+        
+        
+        // Lọc theo khoảng ngày
+        if (ngayBatDau != null && ngayKetThuc != null) {
+            if (ngayBatDau.isAfter(ngayKetThuc)) {
+                LocalDate temp = ngayBatDau;
+                ngayBatDau = ngayKetThuc;
+                ngayKetThuc = temp;
+            }
+            final LocalDate start = ngayBatDau;
+            final LocalDate end = ngayKetThuc;
+            dsKM = dsKM.stream()
+                .filter(km -> {
+                    LocalDate ngayBD = km.getNgayBatDau().toLocalDate();
+                    return !ngayBD.isBefore(start) && !ngayBD.isAfter(end);
+                })
+                .collect(java.util.stream.Collectors.toCollection(ArrayList::new));
+        } else if (ngayBatDau != null) {
+            final LocalDate start = ngayBatDau;
+            dsKM = dsKM.stream()
+                .filter(km -> km.getNgayBatDau().toLocalDate().equals(start))
+                .collect(java.util.stream.Collectors.toCollection(ArrayList::new));
+        } else if (ngayKetThuc != null) {
+            final LocalDate end = ngayKetThuc;
+            dsKM = dsKM.stream()
+                .filter(km -> km.getNgayKetThuc().toLocalDate().equals(end))
+                .collect(java.util.stream.Collectors.toCollection(ArrayList::new));
+        }
+        // Sắp xếp
+        String sapXep = cbbSapXepKhuyenMai.getSelectedItem().toString();
+        if (sapXep.equals("Ngày bắt đầu khuyến mãi")) {
+            dsKM.sort((a, b) -> b.getNgayBatDau().compareTo(a.getNgayBatDau()));
+        } else if (sapXep.equals("Trạng thái")) {
+            // Có thể sort theo trạng thái, nhưng để đơn giản, sort theo ngày kết thúc
+            dsKM.sort((a, b) -> b.getNgayKetThuc().compareTo(a.getNgayKetThuc()));
+        }
+        
+        themKhuyenMaiVaoBang(dsKM);
+    }
+
+//Phiếu nhập
+    private void themPhieuNhapVaoBang(ArrayList<PhieuNhap> dsPN) {
+        DefaultTableModel dtm = (DefaultTableModel) tblPhieuNhap.getModel();
+        dtm.setRowCount(0);
+        for (PhieuNhap pn : dsPN) {
+            Object[] row = new Object[5];
+            row[0] = pn.getMaPhieuNhap();
+            row[2] = pn.getNv().getHoTenDem() + " " + pn.getNv().getTen();
+            row[1] = dinhDangNgay(pn.getNgayTao().toString());
+            row[3] = dinhDangTien(pn.getTongTien());
+            row[4] = pn.getGhiChu();
+            dtm.addRow(row);
+        }
+    }
+
+    private void timPhieuNhapTheoThuocTinh(String thuocTinh, String key) {
+        ArrayList<PhieuNhap> dsPN = new ArrayList<>();
+        if (key.equals("") || key.equals("Nhập...")) {
+            return;
+        }
+        switch (thuocTinh) {
+            case "Mã phiếu nhập":
+                PhieuNhap pn = PhieuNhapDAO.getPhieuNhapTheoMa(key);
+                if (pn != null) {
+                    dsPN.add(pn);
+                }
+                break;
+            case "Tên nhân viên":
+                // Giả sử có phương thức tìm theo tên NV, nhưng hiện tại chưa có, có thể thêm sau
+                // dsPN = PhieuNhapDAO.timPNTheoTenNV(key);
+                break;
+            default:
+                break;
+        }
+        themPhieuNhapVaoBang(dsPN);
+    }
+
+    private void locPhieuNhapTheoNgay() {
+        LocalDate ngayBatDau = null;
+        LocalDate ngayKetThuc = null;
+        
+        if (dpkTheoNgayPhieuNhap.getDate() != null) {
+            ngayBatDau = LocalDate.ofInstant(dpkTheoNgayPhieuNhap.getDate().toInstant(), java.time.ZoneId.systemDefault());
+        }
+        if (dpkThoiGianKetThucPhieuNhap.getDate() != null) {
+            ngayKetThuc = LocalDate.ofInstant(dpkThoiGianKetThucPhieuNhap.getDate().toInstant(), java.time.ZoneId.systemDefault());
+        }
+        
+        ArrayList<PhieuNhap> dsPN = new ArrayList<>();
+        
+        if (ngayBatDau != null && ngayKetThuc != null) {
+            // Tìm theo khoảng ngày
+            if (ngayBatDau.isAfter(ngayKetThuc)) {
+                // Swap nếu ngày bắt đầu > ngày kết thúc
+                LocalDate temp = ngayBatDau;
+                ngayBatDau = ngayKetThuc;
+                ngayKetThuc = temp;
+            }
+            dsPN = PhieuNhapDAO.timPNTheoKhoangNgay(ngayBatDau, ngayKetThuc);
+        } else if (ngayBatDau != null) {
+            // Tìm theo ngày cụ thể
+            dsPN = PhieuNhapDAO.timPNTheoNgayLap(ngayBatDau);
+        } else if (ngayKetThuc != null) {
+            // Nếu chỉ có ngày kết thúc, coi như tìm một ngày
+            dsPN = PhieuNhapDAO.timPNTheoNgayLap(ngayKetThuc);
+        }
+        else if(ngayBatDau == null && ngayKetThuc == null){
+            dsPN = PhieuNhapDAO.getAllPhieuNhap();
+        }
+        
+        // Sắp xếp
+        String sapXep = cbbSapXepPhieuNhap.getSelectedItem().toString();
+        if (sapXep.equals("Ngày tạo")) {
+            dsPN.sort((a, b) -> b.getNgayTao().compareTo(a.getNgayTao()));
+        } else if (sapXep.equals("Tổng tiền")) {
+            dsPN.sort((a, b) -> Double.compare(b.getTongTien(), a.getTongTien()));
+        }
+        
+        themPhieuNhapVaoBang(dsPN);
+    }
+
+//Phiếu trả hàng
+    private void themPhieuTraHangVaoBang(ArrayList<PhieuTraHang> dsPTH) {
+        DefaultTableModel dtm = (DefaultTableModel) tblPhieuTraHang.getModel();
+        dtm.setRowCount(0);
+        for (PhieuTraHang pth : dsPTH) {
+            Object[] row = new Object[5];
+            row[0] = pth.getMaPhieuTraHang();
+            row[2] = pth.getNhanVien().getHoTenDem() + " " + pth.getNhanVien().getTen();
+            row[1] = dinhDangNgay(pth.getNgayLapPhieuTraHang().toLocalDate().toString());
+            row[4] = dinhDangTien(pth.getTongTienHoanTra());
+            row[3] = pth.getHoaDon().getMaHoaDon(); // Ghi chú - có thể thêm sau nếu có trường này
+            dtm.addRow(row);
+        }
+    }
+
+    private void timPhieuTraHangTheoThuocTinh(String thuocTinh, String key) {
+        ArrayList<PhieuTraHang> dsPTH = new ArrayList<>();
+        if (key.equals("") || key.equals("Nhập...")) {
+            return;
+        }
+        switch (thuocTinh) {
+            case "Mã phiếu trả":
+                PhieuTraHang pth = PhieuTraHangDAO.getPhieuTraHangTheoMa(key);
+                if (pth != null) {
+                    dsPTH.add(pth);
+                }
+                break;
+            case "Tên nhân viên":
+                // Giả sử có phương thức tìm theo tên NV, nhưng hiện tại chưa có, có thể thêm sau
+                // dsPTH = PhieuTraHangDAO.timPTTheoTenNV(key);
+                break;
+            default:
+                break;
+        }
+        themPhieuTraHangVaoBang(dsPTH);
+    }
+
+    private void locPhieuTraHangTheoNgay() {
+        LocalDate ngayBatDau = null;
+        LocalDate ngayKetThuc = null;
+        
+        if (dpkTheoNgayPhieuTraHang.getDate() != null) {
+            ngayBatDau = LocalDate.ofInstant(dpkTheoNgayPhieuTraHang.getDate().toInstant(), java.time.ZoneId.systemDefault());
+        }
+        if (dpkThoiGianKetThucPhieuTraHang.getDate() != null) {
+            ngayKetThuc = LocalDate.ofInstant(dpkThoiGianKetThucPhieuTraHang.getDate().toInstant(), java.time.ZoneId.systemDefault());
+        }
+        
+        ArrayList<PhieuTraHang> dsPTH = new ArrayList<>();
+        
+        if (ngayBatDau != null && ngayKetThuc != null) {
+            // Tìm theo khoảng ngày
+            if (ngayBatDau.isAfter(ngayKetThuc)) {
+                // Swap nếu ngày bắt đầu > ngày kết thúc
+                LocalDate temp = ngayBatDau;
+                ngayBatDau = ngayKetThuc;
+                ngayKetThuc = temp;
+            }
+            dsPTH = PhieuTraHangDAO.timPTTheoKhoangNgay(ngayBatDau, ngayKetThuc);
+        } else if (ngayBatDau != null) {
+            // Tìm theo ngày cụ thể
+            dsPTH = PhieuTraHangDAO.timPTTheoNgayLap(ngayBatDau);
+        } else if (ngayKetThuc != null) {
+            // Nếu chỉ có ngày kết thúc, coi như tìm một ngày
+            dsPTH = PhieuTraHangDAO.timPTTheoNgayLap(ngayKetThuc);
+        } else {
+            // Nếu không có ngày, hiển thị tất cả
+            dsPTH = PhieuTraHangDAO.getAllPhieuTraHangTraCuu();
+        }
+        // Sắp xếp
+        String sapXep = cbbSapXepPhieuTraHang.getSelectedItem().toString();
+        if (sapXep.equals("Ngày tạo")) {
+            dsPTH.sort((a, b) -> b.getNgayLapPhieuTraHang().compareTo(a.getNgayLapPhieuTraHang()));
+        } else if (sapXep.equals("Tổng tiền")) {
+            dsPTH.sort((a, b) -> Double.compare(b.getTongTienHoanTra(), a.getTongTienHoanTra()));
+        }
+        
+        themPhieuTraHangVaoBang(dsPTH);
+    }
+
+
+
+    
+
+//Định dạng tiền
+    private String dinhDangTien(double thanhTien) {
+        DecimalFormat formatter = new DecimalFormat("#,###");
+        return formatter.format(thanhTien) + " VNĐ";
+    }
+    public double boDinhDangTien(String formatted) {
+        // Bước 1: Loại bỏ "VNĐ" và khoảng trắng
+        String cleaned = formatted.replace("VNĐ", "").trim();
+
+        // Bước 2: Loại bỏ dấu phẩy
+        cleaned = cleaned.replace(",", "");
+
+        // Bước 3: Chuyển thành double
+        return Double.parseDouble(cleaned);
+    }    
+    
+//định dạng ngày
+    public static String dinhDangNgay(String ngayChuoi) {
+        // Parse chuỗi yyyy-MM-dd thành LocalDate
+        LocalDate date = LocalDate.parse(ngayChuoi);
+
+        // Định dạng lại thành dd/MM/yyyy
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        return date.format(formatter);
+    }
+
+  
+    
+//Phím tắt
+    private void mapKeyToFocus(String key, JComponent component) {
+        InputMap im = component.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        ActionMap am = component.getActionMap();
+
+        im.put(KeyStroke.getKeyStroke(key), "focus_" + key);
+        am.put("focus_" + key, new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                component.requestFocus();
+                if (component instanceof JTextField jTextField) {
+                    jTextField.selectAll();
+                }
+            }
+        });
+    }
+    
+    private void mapKeyToClickButton(String key, AbstractButton button) {
+        InputMap im = button.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        ActionMap am = button.getActionMap();
+
+        im.put(KeyStroke.getKeyStroke(key), "click_" + key);
+        am.put("click_" + key, new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                button.doClick(); // kích hoạt sự kiện button
+            }
+        });
+    }
+    
+
 }

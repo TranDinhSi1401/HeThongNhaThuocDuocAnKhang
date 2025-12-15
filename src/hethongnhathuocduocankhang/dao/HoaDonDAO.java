@@ -487,6 +487,18 @@ public class HoaDonDAO {
                 double tongDoanhThu = rs.getDouble("TongDoanhThu");
                 DoanhThu doanhThuTheoThang = new DoanhThu(nam, tongHoaDon, tongDoanhThu);
                 list.add(doanhThuTheoThang);
+        public static ArrayList<HoaDon> timHDTheoKhoangNgay(LocalDate startDate, LocalDate endDate) {
+        ArrayList<HoaDon> dsHD = new ArrayList<>();
+        try {
+            ConnectDB.getInstance().connect();
+            Connection con = ConnectDB.getConnection();
+            String querry = "SELECT * FROM HoaDon WHERE CONVERT(DATE, ngayLapHoaDon) BETWEEN ? AND ?";
+            PreparedStatement stmt = con.prepareStatement(querry);
+            stmt.setDate(1, Date.valueOf(startDate));
+            stmt.setDate(2, Date.valueOf(endDate));
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                dsHD.add(taoDoiTuongHoaDon(rs));
             }
         } catch (SQLException e) {
             e.printStackTrace();
