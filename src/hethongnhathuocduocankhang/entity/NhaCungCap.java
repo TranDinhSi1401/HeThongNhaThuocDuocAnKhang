@@ -31,6 +31,10 @@ public class NhaCungCap {
         this.maNCC = maNCC;
     }
 
+    public NhaCungCap(String maNCC, String string) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
     public String getMaNCC() {
         return maNCC;
     }
