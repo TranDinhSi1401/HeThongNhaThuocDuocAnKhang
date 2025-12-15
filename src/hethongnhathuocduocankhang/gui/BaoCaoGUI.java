@@ -4,16 +4,14 @@
  */
 package hethongnhathuocduocankhang.gui;
 
-/**
- *
- * @author MINH KHANG
- */
+import hethongnhathuocduocankhang.gui.baocao.BaoCaoDoanhThu;
 public class BaoCaoGUI extends javax.swing.JPanel {
 
     /**
      * Creates new form ThongKeGUI
      */
     public BaoCaoGUI() {
+        baoCaoDoanhThuPane = new BaoCaoDoanhThu();
         initComponents();
     }
 
@@ -91,6 +89,11 @@ public class BaoCaoGUI extends javax.swing.JPanel {
         jPanel11.setLayout(new java.awt.BorderLayout());
 
         jButton3.setText("Báo cáo 1");
+        jButton3.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                jButton3MousePressed(evt);
+            }
+        });
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
@@ -387,27 +390,28 @@ public class BaoCaoGUI extends javax.swing.JPanel {
 
         jTabbedPane1.addTab("Mẫu báo cáo", jPanel35);
 
-        javax.swing.GroupLayout jPanel36Layout = new javax.swing.GroupLayout(jPanel36);
-        jPanel36.setLayout(jPanel36Layout);
-        jPanel36Layout.setHorizontalGroup(
-            jPanel36Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 1818, Short.MAX_VALUE)
-        );
-        jPanel36Layout.setVerticalGroup(
-            jPanel36Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 517, Short.MAX_VALUE)
-        );
-
+        jPanel36.setLayout(new java.awt.BorderLayout());
         jTabbedPane1.addTab("Xuất báo cáo theo mẫu", jPanel36);
 
         add(jTabbedPane1);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
+        // Chuyển sang tab thứ hai
+        jTabbedPane1.setSelectedIndex(1);
+        // Thay thế nội dung của jPanel36
+        jPanel36.removeAll();
+        jPanel36.add(baoCaoDoanhThuPane, java.awt.BorderLayout.CENTER);
+        jPanel36.revalidate();
+        jPanel36.repaint();
     }//GEN-LAST:event_jButton3ActionPerformed
 
+    private void jButton3MousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton3MousePressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton3MousePressed
 
+
+    private BaoCaoDoanhThu baoCaoDoanhThuPane;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton10;
