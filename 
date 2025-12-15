@@ -1,0 +1,1026 @@
+[33mcommit ae42ef3619c2a2217db770c7853812697da287a0[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mBaoCao[m[33m, [m[1;31morigin/BaoCao[m[33m)[m
+Author: Khang <khangdz013@gmail.com>
+Date:   Fri Dec 12 11:27:25 2025 +0700
+
+    Tách ra làm 2 tabbed
+
+[33mcommit f18241839f9f1244daf8706e9e7921e5bffc3a1c[m
+Author: Khang <khangdz013@gmail.com>
+Date:   Fri Dec 12 00:54:54 2025 +0700
+
+    Thêm vào menu
+
+[33mcommit a69b6cfb86f2bb78de801fb35944c40b757f0d94[m
+Author: Khang <khangdz013@gmail.com>
+Date:   Thu Dec 11 01:50:05 2025 +0700
+
+    Sườn thống kê gồm 8 nút
+
+[33mcommit 983f6ebb14dccd6cb8ca24bc2045d3fa9a412307[m
+Author: Khang <khangdz013@gmail.com>
+Date:   Wed Dec 10 23:44:30 2025 +0700
+
+    Đã rebase với ver mới
+
+[33mcommit c9bfabebade4c521432d98f00773bf2efdcba85b[m
+Author: Khang <khangdz013@gmail.com>
+Date:   Wed Dec 10 23:33:25 2025 +0700
+
+    Thêm tiêu chí khoảng ngày
+
+[33mcommit c28868856f39fa9c8b35f967c65388b1c565f70d[m[33m ([m[1;31morigin/master[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmaster[m[33m)[m
+Author: Tran Dinh Si <trandinhsi1401@gmail.com>
+Date:   Tue Dec 9 21:59:21 2025 +0700
+
+    fix merge 12092025
+
+[33mcommit 121e3eeb66573704b075d6bcabd78e8175486de2[m
+Merge: bbe8e05 9bcdc95
+Author: Tran Dinh Si <trandinhsi1401@gmail.com>
+Date:   Tue Dec 9 19:23:48 2025 +0700
+
+    Merge branch 'master' of https://github.com/TranDinhSi1401/HeThongNhaThuocDuocAnKhang
+
+[33mcommit 9bcdc955ea7849066ed6ca337f440a027c179334[m
+Merge: f19a823 af113be
+Author: Trần Đình Sĩ <trandinhsi1401@gmail.com>
+Date:   Tue Dec 9 19:23:33 2025 +0700
+
+    Merge pull request #34 from TranDinhSi1401/KhanhQuan
+    
+    Khanh quan
+
+[33mcommit af113be91eeeac5a865349f1b9e17b12bcc71ed3[m[33m ([m[1;31morigin/KhanhQuan[m[33m)[m
+Merge: 1cc4b94 f19a823
+Author: Trần Đình Sĩ <trandinhsi1401@gmail.com>
+Date:   Tue Dec 9 19:22:47 2025 +0700
+
+    Merge branch 'master' into KhanhQuan
+
+[33mcommit f19a8232ab8436867fb48d2a8e26a4bc910e5368[m
+Merge: 3425629 03c39dd
+Author: Khang Hehe <23646131.khang@student.iuh.edu.vn>
+Date:   Tue Dec 9 10:35:17 2025 +0700
+
+    Merge Chức năng trả hàng
+    
+     Chưa bao gồm phím tắt
+
+[33mcommit 1cc4b9470530f23e88d9cdf05f3ba4352a49b4c2[m[33m ([m[1;31mDuocAnKhang/KhanhQuan[m[33m)[m
+Author: Quan <23655101.quan@student.iuh.edu.vn>
+Date:   Tue Dec 9 02:19:07 2025 +0700
+
+    Thay đổi điều kiện
+
+[33mcommit 82e88f8b4f943fdd5d86ce3d083d2acba5d0e3f7[m
+Author: Quan <23655101.quan@student.iuh.edu.vn>
+Date:   Tue Dec 9 01:11:44 2025 +0700
+
+    Hoàn thiện phần thêm lô
+
+[33mcommit 03c39dd86523224c59880731986d093eb1200c8d[m[33m ([m[1;31morigin/ChucNangTraHang[m[33m, [m[1;32mChucNangTraHang[m[33m)[m
+Author: Khang <khangdz013@gmail.com>
+Date:   Tue Dec 9 00:58:57 2025 +0700
+
+    Thêm phím tắt
+
+[33mcommit bbe8e05a65542af3d6a8f407fb8097e430d61ad7[m
+Author: Tran Dinh Si <trandinhsi1401@gmail.com>
+Date:   Mon Dec 8 21:56:34 2025 +0700
+
+    fix lblHoTen trong dashboardquanli
+
+[33mcommit 3425629623d2ee4e37a8bee2db8bd0e2e312373c[m
+Merge: 8c0532e ad3bb9d
+Author: Trần Đình Sĩ <trandinhsi1401@gmail.com>
+Date:   Mon Dec 8 21:07:11 2025 +0700
+
+    Merge pull request #31 from TranDinhSi1401/KhoaBise
+    
+    hoàn thiện dashboard nhân viên và quản lí
+
+[33mcommit ad3bb9da70d61c3d2d801cb675240b8c5a4b3148[m[33m ([m[1;31morigin/KhoaBise[m[33m)[m
+Merge: b1313c2 8c0532e
+Author: Trần Đình Sĩ <trandinhsi1401@gmail.com>
+Date:   Mon Dec 8 21:04:52 2025 +0700
+
+    Merge branch 'master' into KhoaBise
+
+[33mcommit 8c0532e53681d6788b730eebea6f06c97879c25b[m
+Merge: 09eefe0 ed6059f
+Author: Trần Đình Sĩ <trandinhsi1401@gmail.com>
+Date:   Mon Dec 8 20:52:26 2025 +0700
+
+    Merge pull request #33 from TranDinhSi1401/hoanThienBanHang
+    
+    Hoan thien ban hang
+
+[33mcommit ed6059f2cedede3b3f715fb230147dad446ab3ac[m
+Author: Tran Dinh Si <trandinhsi1401@gmail.com>
+Date:   Mon Dec 8 20:37:59 2025 +0700
+
+    Chỉnh sửa nút F nhanh
+
+[33mcommit 7a78a661c8ccef10c4fadb5cc6aea4d419990aaa[m
+Author: Tran Dinh Si <trandinhsi1401@gmail.com>
+Date:   Mon Dec 8 20:16:00 2025 +0700
+
+    Bỏ trạng thái hd
+
+[33mcommit b1313c2dfe3a73bb8c0ee5e85ccaee73261286ac[m
+Author: KhoaVo <votienkhoa435@gmail.com>
+Date:   Mon Dec 8 20:12:44 2025 +0700
+
+    bỏ thuộc tính trạng thái trong entity Hóa đơn
+
+[33mcommit 91b88abb83333d39bb4fbde2841296f55dca4276[m
+Author: Tran Dinh Si <trandinhsi1401@gmail.com>
+Date:   Sun Dec 7 23:02:15 2025 +0700
+
+    Gần như hoàn thành bán hàng
+
+[33mcommit a6a4d608c402754ab3b56698c6a6a552b085c596[m
+Author: Quan <23655101.quan@student.iuh.edu.vn>
+Date:   Sun Dec 7 22:40:49 2025 +0700
+
+    Bổ sung xử lý trang
+
+[33mcommit 2f6963d7f15dff7838b94609e3e036f864487e93[m
+Author: Quan <23655101.quan@student.iuh.edu.vn>
+Date:   Sun Dec 7 22:10:46 2025 +0700
+
+    Hoàn thiện lại nghiệp vụ thêm chi tiết phiếu nhập
+
+[33mcommit 769d02870d96c4b5f68dc069a95d6b66d51a85cd[m
+Author: Khang <khangdz013@gmail.com>
+Date:   Sun Dec 7 01:46:55 2025 +0700
+
+    Nếu hóa đơn mua sau 30 ngày sẽ không cho trả
+
+[33mcommit 3b0de9101e225148ed112e5ef6359cc2c2e9f7ba[m
+Author: Khang <khangdz013@gmail.com>
+Date:   Sun Dec 7 01:18:45 2025 +0700
+
+    Không cho trả hàng với sản phẩm đã trả sl còn 0
+
+[33mcommit 664abe23f73b89c360cf9848644c0602d2ab2f47[m
+Author: Khang <khangdz013@gmail.com>
+Date:   Sun Dec 7 00:54:25 2025 +0700
+
+    Trừ vào phiếu trả cũ nếu có
+
+[33mcommit 397e915708401df8a24db1244b0baaa6e17280b8[m
+Author: Quan <23655101.quan@student.iuh.edu.vn>
+Date:   Sun Dec 7 00:16:48 2025 +0700
+
+    Khắc phục phần ghi chú
+
+[33mcommit f31cd3e9720fb60090ef3f2ec325e738d5d93d25[m
+Author: Quan <23655101.quan@student.iuh.edu.vn>
+Date:   Sat Dec 6 23:51:05 2025 +0700
+
+    Hoàn thành phần ghi dữ liệu
+
+[33mcommit 8ca45437395286c3df8f3575838c092371a4ca37[m
+Author: Tran Dinh Si <trandinhsi1401@gmail.com>
+Date:   Sat Dec 6 23:21:17 2025 +0700
+
+    fix dsDVT
+
+[33mcommit f8b36de21f3ea8dd1d5c56b44a863a7752278d81[m
+Author: Quan <23655101.quan@student.iuh.edu.vn>
+Date:   Sat Dec 6 20:11:41 2025 +0700
+
+    ghi phiếu nhập
+
+[33mcommit 167a85cfbeafbf97d756a1efd2b69fdb20a66d48[m
+Author: KhoaVo <votienkhoa435@gmail.com>
+Date:   Sat Dec 6 17:00:58 2025 +0700
+
+    hoàn thiện dashboard nhân viên và quản lí
+    
+    cần test thêm và sửa lỗi
+
+[33mcommit d1ca7e3a62b26ccd5eb9cdde11eca3490139168a[m
+Author: Quan <23655101.quan@student.iuh.edu.vn>
+Date:   Sat Dec 6 00:38:18 2025 +0700
+
+    xong phần đẩy dữ liệu và xóa lô vừa được thêm
+
+[33mcommit 34a21ab2d1681ccee03765fa45f5441b241a16c3[m
+Author: Quan <23655101.quan@student.iuh.edu.vn>
+Date:   Fri Dec 5 23:33:49 2025 +0700
+
+    Them xử lý bảng thêm sản phẩm
+
+[33mcommit 416b314e82ea684705e9b4b2393733145b70c509[m
+Author: Quan <23655101.quan@student.iuh.edu.vn>
+Date:   Fri Dec 5 22:28:37 2025 +0700
+
+    Chỉnh sửa ném lỗi khi thêm lô
+
+[33mcommit fcd3d3b20f9bd362156182986c25dd7492dcdf02[m
+Author: Quan <23655101.quan@student.iuh.edu.vn>
+Date:   Fri Dec 5 21:53:58 2025 +0700
+
+    Thêm lô
+
+[33mcommit b6b06f0d38a36c5474f2a7cdee1c552d4d6ed1e8[m
+Author: Khang <khangdz013@gmail.com>
+Date:   Fri Dec 5 11:32:35 2025 +0700
+
+    //2 dòng áp dụng thư viện làm đẹp
+
+[33mcommit 682f4a10cf17c5bb10cb2cf3c65f0bfd737a6070[m
+Author: Khang <khangdz013@gmail.com>
+Date:   Fri Dec 5 02:33:08 2025 +0700
+
+    Revert lại đến cái này "commit này trc khi test các thư viện mới"
+    
+    This reverts commit accfe2c60ed08188f0a1d54667706db1eafb3ebb.
+
+[33mcommit d1de01ebee8210696962e361d6989aa281f5f5b0[m
+Author: Khang <khangdz013@gmail.com>
+Date:   Fri Dec 5 01:42:36 2025 +0700
+
+    Comit gì đó
+
+[33mcommit accfe2c60ed08188f0a1d54667706db1eafb3ebb[m
+Author: Khang <khangdz013@gmail.com>
+Date:   Thu Nov 20 11:34:31 2025 +0700
+
+    Commit này trc khi test các thư viện mới
+
+[33mcommit 09eefe0a02604241e9fc21f73b3e8b92a1ecaeca[m[33m ([m[1;31mDuocAnKhang/master[m[33m)[m
+Author: Tran Dinh Si <trandinhsi1401@gmail.com>
+Date:   Wed Dec 3 14:41:51 2025 +0700
+
+    fix conflict
+
+[33mcommit e2701a37cde3f1cc1416c0512ebb0c671ad9a0c9[m
+Merge: e62f5a9 b3cf863
+Author: Trần Đình Sĩ <trandinhsi1401@gmail.com>
+Date:   Wed Dec 3 14:06:54 2025 +0700
+
+    Merge pull request #28 from TranDinhSi1401/KhanhQuan
+    
+    Chuc nang lo san Pham
+
+[33mcommit b3cf8636e40332ef91fcf058e8df499fd3be80e0[m
+Merge: 78e4ba7 e62f5a9
+Author: Trần Đình Sĩ <trandinhsi1401@gmail.com>
+Date:   Wed Dec 3 14:06:32 2025 +0700
+
+    Merge branch 'master' into KhanhQuan
+
+[33mcommit e62f5a9ebab6ff37b4685b314c35b88b4aa1bb12[m
+Merge: b243006 7987a47
+Author: Trần Đình Sĩ <trandinhsi1401@gmail.com>
+Date:   Wed Dec 3 11:29:47 2025 +0700
+
+    Merge pull request #29 from TranDinhSi1401/KhoaBise
+    
+    sửa lỗi chức năng sửa sản phâm đơn vị tính
+
+[33mcommit 7987a4729050a05402fcc4f86e3715b10296e4e3[m
+Merge: ed41007 b243006
+Author: Trần Đình Sĩ <trandinhsi1401@gmail.com>
+Date:   Wed Dec 3 11:29:35 2025 +0700
+
+    Merge branch 'master' into KhoaBise
+
+[33mcommit b2430063556ccff220a50a9942a175d5e62a01e5[m
+Merge: 224511a c4afe44
+Author: Trần Đình Sĩ <trandinhsi1401@gmail.com>
+Date:   Wed Dec 3 10:16:56 2025 +0700
+
+    Merge pull request #27 from TranDinhSi1401/BUS-dinhsi
+    
+    Bus dinhsi
+
+[33mcommit ed4100749cdf345824cdebee3bc0f64496f728f3[m
+Author: KhoaVo <votienkhoa435@gmail.com>
+Date:   Wed Dec 3 08:43:55 2025 +0700
+
+    sửa lỗi chức năng sửa sản phẩm
+
+[33mcommit 78e4ba790b3c2337743fbc623266addb5c4b4ea5[m
+Author: Quan <23655101.quan@student.iuh.edu.vn>
+Date:   Tue Dec 2 23:02:42 2025 +0700
+
+    Bổ sung phần ghi lô(chưa xong)
+
+[33mcommit c4afe444133efa1d0c321e05b0810040ca328060[m[33m ([m[1;31morigin/BUS-dinhsi[m[33m)[m
+Author: Tran Dinh Si <trandinhsi1401@gmail.com>
+Date:   Tue Dec 2 22:00:03 2025 +0700
+
+    Chỉnh lại hàm thanh toán
+
+[33mcommit 006b0ecd3b17d70677e3f05306422cc81e97b1a8[m
+Author: Tran Dinh Si <trandinhsi1401@gmail.com>
+Date:   Tue Dec 2 20:40:04 2025 +0700
+
+    Thêm cảnh báo kê đơn
+
+[33mcommit 8dab2b17ce7e9931fa9ad14ea6a80cb66d367db0[m
+Author: Quan <23655101.quan@student.iuh.edu.vn>
+Date:   Mon Dec 1 23:05:35 2025 +0700
+
+    Sửa lỗi load lại file exce
+
+[33mcommit a80c927c56d7d208009e42bbd1bab0bcf7df9e50[m
+Author: Quan <23655101.quan@student.iuh.edu.vn>
+Date:   Mon Dec 1 22:54:08 2025 +0700
+
+    Thay đổi cách tải lô sản phẩm
+
+[33mcommit 1ad5617e0fa4f9046454dd79bb347168176082e4[m
+Author: Quan <23655101.quan@student.iuh.edu.vn>
+Date:   Mon Dec 1 22:07:33 2025 +0700
+
+    Nhận diện mã sản phẩm hệ thống
+
+[33mcommit d011a1c81809d53216ac40d0f43684f856f0b481[m
+Author: Tran Dinh Si <trandinhsi1401@gmail.com>
+Date:   Sun Nov 30 22:04:51 2025 +0700
+
+    Change icon
+
+[33mcommit a686a1d796177c3ef91891a3d8bd06edcc779f05[m
+Author: Quan <23655101.quan@student.iuh.edu.vn>
+Date:   Sun Nov 30 01:03:14 2025 +0700
+
+    Hoàn thiện còn 3 chức năng phần quản lý lô và chưa làm gì phần theo dõi và Cảnh báo
+
+[33mcommit 10a29f12086debf08fddcb5c0307017d27d24ae8[m
+Author: Quan <23655101.quan@student.iuh.edu.vn>
+Date:   Sun Nov 30 00:12:27 2025 +0700
+
+    Hoàn thiện phần cập nhập mới
+
+[33mcommit f17c4883be045f22ddc267dea6a42ccd25af5459[m
+Author: Tran Dinh Si <trandinhsi1401@gmail.com>
+Date:   Fri Nov 28 14:13:04 2025 +0700
+
+    chuyển một số hàm sang lớp bus
+
+[33mcommit 823920c004e9a890adaff0bc273af565d031f2a7[m
+Author: Quan <23655101.quan@student.iuh.edu.vn>
+Date:   Thu Nov 20 21:46:47 2025 +0700
+
+    Bổ sung thêm sự kiện
+
+[33mcommit c22a1c48a63865c2eb6713b1300b544d678b9fa9[m
+Author: Quan <23655101.quan@student.iuh.edu.vn>
+Date:   Thu Nov 20 18:26:28 2025 +0700
+
+    Thêm và chỉnh sửa 1 chút phần lô sản phẩm
+
+[33mcommit 0b191b2ed9f1f03c94ed20e41f26da4d81220c1e[m
+Author: Quan <23655101.quan@student.iuh.edu.vn>
+Date:   Tue Nov 18 00:12:18 2025 +0700
+
+    Hoàn thành thêm 1 số sự kiện nhỏ
+
+[33mcommit 2431ec1310f038ec9efb85145b19e7981fb5ec2c[m
+Author: Quan <23655101.quan@student.iuh.edu.vn>
+Date:   Mon Nov 17 23:30:39 2025 +0700
+
+    Hoanf thành thêm 1 số chức năng và cải thiện phần tải lô
+
+[33mcommit 224511a891fbcb6bb9808dbcaa5add9a6aa1f528[m
+Merge: b43b88c c6a2d40
+Author: Trần Đình Sĩ <trandinhsi1401@gmail.com>
+Date:   Mon Nov 17 21:08:51 2025 +0700
+
+    Merge pull request #25 from TranDinhSi1401/ChucNangTraHang
+    
+    Fix phát sinh mã phiếu trả hàng
+
+[33mcommit c6a2d401d5cd76fe78fde565f40b7fddeb9b0aed[m
+Author: Khang <khangdz013@gmail.com>
+Date:   Mon Nov 17 15:00:16 2025 +0700
+
+    Fix phát sinh mã phiếu trả hàng
+
+[33mcommit 958031475f032863a53c0d83df6b53c567f83132[m
+Author: KhoaVo <votienkhoa435@gmail.com>
+Date:   Mon Nov 17 12:54:04 2025 +0700
+
+    sửa tên lớp ThemNhaCungCapGUI
+
+[33mcommit e129e103f883ad3149810167d319d3f5668276c8[m
+Merge: 48bc2ce b43b88c
+Author: KhoaVo <votienkhoa435@gmail.com>
+Date:   Mon Nov 17 12:44:25 2025 +0700
+
+    Merge branch 'master' into KhoaBise
+
+[33mcommit b43b88cec410e10f29c07e3b279f79644903fee9[m
+Author: Tran Dinh Si <trandinhsi1401@gmail.com>
+Date:   Mon Nov 17 12:38:15 2025 +0700
+
+    70% chương trình 17/11/2025
+
+[33mcommit b0ef05a55580e402b782bd792d5d5e9ee5d6d791[m
+Merge: 79cdb99 4c55297
+Author: Tran Dinh Si <trandinhsi1401@gmail.com>
+Date:   Mon Nov 17 12:27:37 2025 +0700
+
+    resolve conflict
+
+[33mcommit 48bc2cec96124237245c252b0d5c0aca7ef41934[m
+Merge: 5752581 13e0ba4
+Author: KhoaVo <votienkhoa435@gmail.com>
+Date:   Mon Nov 17 12:24:55 2025 +0700
+
+    Merge branch 'KhoaBise' of https://github.com/TranDinhSi1401/HeThongNhaThuocDuocAnKhang into KhoaBise
+
+[33mcommit 57525815a55004fa607b4b2ce5000de1184e6851[m
+Author: KhoaVo <votienkhoa435@gmail.com>
+Date:   Mon Nov 17 12:24:16 2025 +0700
+
+    sửa lỗi cột thống kê
+
+[33mcommit 79cdb995bd874198dd750826a2906918b7a969d0[m
+Author: Tran Dinh Si <trandinhsi1401@gmail.com>
+Date:   Mon Nov 17 12:23:08 2025 +0700
+
+    Thêm thư viện
+
+[33mcommit 4c552978430238758870f4e09bd548c3b115da73[m
+Merge: 5f34f43 13e0ba4
+Author: Trần Đình Sĩ <trandinhsi1401@gmail.com>
+Date:   Mon Nov 17 12:22:35 2025 +0700
+
+    Merge pull request #23 from TranDinhSi1401/KhoaBise
+    
+    Vẽ biểu đồ
+
+[33mcommit 13e0ba4b718fd3df4f2e1d5e351e922d9212c11c[m
+Merge: f835dce 5f34f43
+Author: Trần Đình Sĩ <trandinhsi1401@gmail.com>
+Date:   Mon Nov 17 12:21:42 2025 +0700
+
+    Merge branch 'master' into KhoaBise
+
+[33mcommit 5f34f4373a713ee58276229bce677fe24fa94693[m
+Merge: f4229d4 9880419
+Author: Trần Đình Sĩ <trandinhsi1401@gmail.com>
+Date:   Mon Nov 17 11:48:59 2025 +0700
+
+    Merge pull request #24 from TranDinhSi1401/KhanhQuan
+    
+    them thu vien ne
+
+[33mcommit 988041953d3329c3842ca839713be8bbf9cde95f[m[33m ([m[1;32mKhanhQuan[m[33m)[m
+Author: Quan <23655101.quan@student.iuh.edu.vn>
+Date:   Mon Nov 17 11:46:46 2025 +0700
+
+    Luuw
+
+[33mcommit 53b38d35cfa861d5e110e28ba8aac5c7bf068fec[m
+Merge: 31293d7 f4229d4
+Author: Quan <23655101.quan@student.iuh.edu.vn>
+Date:   Mon Nov 17 10:46:43 2025 +0700
+
+    Thêm
+
+[33mcommit 31293d79b818957090364a72cfa0637c064d9d4f[m
+Author: Quan <23655101.quan@student.iuh.edu.vn>
+Date:   Mon Nov 17 10:43:26 2025 +0700
+
+    Them thu vien
+
+[33mcommit f4229d4668ed968c53ddc6a42717b25d2b1f4767[m
+Merge: 1929ca2 b1788e8
+Author: Trần Đình Sĩ <trandinhsi1401@gmail.com>
+Date:   Sun Nov 16 23:35:09 2025 +0700
+
+    Merge pull request #20 from TranDinhSi1401/KhanhQuan
+    
+    Giao diện lô sản phẩm
+
+[33mcommit b1788e85eec3713e4b10a476e05561721f53547b[m
+Merge: 6b5c948 1929ca2
+Author: Trần Đình Sĩ <trandinhsi1401@gmail.com>
+Date:   Sun Nov 16 23:33:49 2025 +0700
+
+    Merge branch 'master' into KhanhQuan
+
+[33mcommit f835dcef26abd1c104c1230817bda54e0b1c8e41[m
+Merge: 75e3e82 1929ca2
+Author: Trần Đình Sĩ <trandinhsi1401@gmail.com>
+Date:   Sun Nov 16 23:26:08 2025 +0700
+
+    Merge branch 'master' into KhoaBise
+
+[33mcommit 75e3e8261b5f1db41c5d9b3a79188abbd83884a8[m
+Author: KhoaVo <votienkhoa435@gmail.com>
+Date:   Sun Nov 16 22:06:43 2025 +0700
+
+    Vẽ biểu đồ
+    
+    hoàn thiện 80% dashboard quản lí
+
+[33mcommit 6b5c9480b760c8b95f4f095b7b1c12491c8273a1[m
+Author: Quan <23655101.quan@student.iuh.edu.vn>
+Date:   Sun Nov 16 19:15:11 2025 +0700
+
+    Them file sql
+
+[33mcommit e8719418823bb5ab54f28bc4292c19a2e9c078a9[m
+Author: Quan <23655101.quan@student.iuh.edu.vn>
+Date:   Sun Nov 16 19:06:33 2025 +0700
+
+    LoSanpham
+
+[33mcommit 1929ca21646e90fc0eb7388c3439b5f18e71eb16[m
+Merge: d510643 8bff428
+Author: Nguyễn Khánh Quân <23655101.quan@student.iuh.edu.vn>
+Date:   Sun Nov 16 18:31:35 2025 +0700
+
+    Merge pull request #22 from TranDinhSi1401/updateBanHang-si
+    
+    Update ban hang si
+
+[33mcommit d51064346296fe81b02bc9a0b2958efb74506ac3[m
+Merge: 7eac9a0 a5d4d8a
+Author: Trần Đình Sĩ <trandinhsi1401@gmail.com>
+Date:   Sun Nov 16 18:23:52 2025 +0700
+
+    Merge pull request #21 from TranDinhSi1401/ChucNangTraHang
+    
+    Đã xong 99%
+
+[33mcommit 8bff42821efb17ab47c5a644ae0dd458e0401462[m[33m ([m[1;31morigin/updateBanHang-si[m[33m)[m
+Author: Tran Dinh Si <trandinhsi1401@gmail.com>
+Date:   Sun Nov 16 18:16:52 2025 +0700
+
+    sua kh-99999 thanh kh-00000
+
+[33mcommit 8eac8b32bba60708e6d6c0d8a2b74485318e9c30[m
+Author: Tran Dinh Si <trandinhsi1401@gmail.com>
+Date:   Sun Nov 16 18:15:25 2025 +0700
+
+    90% ban hang va layout doi qua
+
+[33mcommit a5d4d8a2fea457d877b5019bd1d87d89cb5a511b[m
+Author: Khang <khangdz013@gmail.com>
+Date:   Sun Nov 16 16:25:17 2025 +0700
+
+    đã hoàn thành 99,9% (insert vào cơ sở dữ liệu đầy đủ. nhưng nếu khách hàng muốn đổi lần thứ 2 thì vẫn đổi đc nên cần update vá tiếp)
+
+[33mcommit 93e4e221af5737bca20f4cb99600b40a4edc0795[m
+Author: Tran Dinh Si <trandinhsi1401@gmail.com>
+Date:   Sun Nov 16 13:15:06 2025 +0700
+
+    ban hang 90%
+
+[33mcommit fb6b205cf2d123307a58909cb3589ea8d7d4929a[m
+Author: Quan <23655101.quan@student.iuh.edu.vn>
+Date:   Sat Nov 15 19:07:55 2025 +0700
+
+    Sơ sơ sự kiện lô sản phẩm
+
+[33mcommit 33ba8b697ac9ee93ad804240af33f2646ee42c73[m
+Author: Khang <khangdz013@gmail.com>
+Date:   Fri Nov 14 19:12:24 2025 +0700
+
+    Đã xong 99%, giờ chờ phương thức dao add phiếu đã tạo vào cơ sở dữ liệu nữa thôi
+
+[33mcommit e02cfc1aec083020cb760f081b934b7e832d34aa[m
+Author: KhoaVo <votienkhoa435@gmail.com>
+Date:   Thu Nov 13 16:34:07 2025 +0700
+
+    fix gd quản lí phiếu trả hàng
+    
+    sửa bảng chi tiết phiếu trả hàng, thêm phương thức trong lớp chi tiết hóa đơn dao
+
+[33mcommit 7eac9a0481dfa24e3ae1be41785ca25a36ba5806[m
+Merge: 39a5a1d 0ce1922
+Author: Trần Đình Sĩ <trandinhsi1401@gmail.com>
+Date:   Thu Nov 13 16:17:14 2025 +0700
+
+    Merge pull request #19 from TranDinhSi1401/ChucNangTraHang
+    
+    Chuc nang tra hang 96%
+
+[33mcommit 0ce19227643062da27a07953897240bb687278a3[m
+Author: Khang <khangdz013@gmail.com>
+Date:   Thu Nov 13 15:21:01 2025 +0700
+
+    ver 2 chuc nang tra hang 96%
+
+[33mcommit a1c9cd1b2e4e89c3a149d233dc97c135abc919f1[m
+Author: Quan <23655101.quan@student.iuh.edu.vn>
+Date:   Thu Nov 13 15:02:27 2025 +0700
+
+    Giao diện phần quản lý lô
+
+[33mcommit dfb7ea232be3a5ed2dac3022d4e5cf45aad86f85[m
+Merge: 6c9887c 39a5a1d
+Author: Khang Hehe <23646131.khang@student.iuh.edu.vn>
+Date:   Thu Nov 13 14:58:23 2025 +0700
+
+    Merge branch 'master' into ChucNangTraHang
+
+[33mcommit 6c9887c5e0a73ecf2a411a08ffed6e5d7426c3b1[m
+Author: Khang <khangdz013@gmail.com>
+Date:   Thu Nov 13 14:53:13 2025 +0700
+
+    96% tra hang
+
+[33mcommit 22807c765b1f769ae87e5306cf684949c419df10[m
+Author: Khang <khangdz013@gmail.com>
+Date:   Thu Nov 13 14:51:51 2025 +0700
+
+    95% trả hàng
+
+[33mcommit e4127e42d9d5448a9d8fdd03438192f9d329264b[m
+Author: Khang <khangdz013@gmail.com>
+Date:   Wed Nov 12 23:38:29 2025 +0700
+
+    90% chức năng trả hàng
+
+[33mcommit b5bb51fe6b6cfa5de4ef39dff5f8a08e3d3e7080[m
+Merge: b0469b4 39a5a1d
+Author: KhoaVo <votienkhoa435@gmail.com>
+Date:   Wed Nov 12 15:17:03 2025 +0700
+
+    Merge branch 'master' into KhoaBise
+
+[33mcommit b0469b4eb60dd570ef318ad6ed50b2ec56da4bc1[m
+Author: KhoaVo <votienkhoa435@gmail.com>
+Date:   Wed Nov 12 15:16:29 2025 +0700
+
+    .
+
+[33mcommit 987f2a9cd468e44d582704d2b840d8eb8aa2d609[m
+Author: KhoaVo <votienkhoa435@gmail.com>
+Date:   Wed Nov 12 15:12:04 2025 +0700
+
+    hoàn thiện lại một phần lớp DAO và lớp GUI
+
+[33mcommit 39a5a1d8923a3f174b81f702c94d90b4f27d9ea9[m
+Merge: 5087ace 7393d80
+Author: Trần Đình Sĩ <trandinhsi1401@gmail.com>
+Date:   Wed Nov 12 13:00:30 2025 +0700
+
+    Merge pull request #18 from TranDinhSi1401/tongQuan-dinhsi
+    
+    30% dashboard
+
+[33mcommit 7393d80429ff0df4645691ed5a3814bbc08d0d69[m[33m ([m[1;31morigin/tongQuan-dinhsi[m[33m)[m
+Author: Tran Dinh Si <trandinhsi1401@gmail.com>
+Date:   Wed Nov 12 12:52:32 2025 +0700
+
+    30% dashboard
+
+[33mcommit a1951d6a1050fdebf942eab03d98341e2f347e03[m
+Merge: bdb3598 5087ace
+Author: Quan <23655101.quan@student.iuh.edu.vn>
+Date:   Tue Nov 11 17:29:23 2025 +0700
+
+    note2
+
+[33mcommit bdb3598194505206f5fcf8f7397e4cd892d99d45[m
+Author: Quan <23655101.quan@student.iuh.edu.vn>
+Date:   Tue Nov 11 16:57:25 2025 +0700
+
+    Lưu
+
+[33mcommit 2145fffcfbb06851175c48c3d7e545036248b84a[m
+Author: KhoaVo <votienkhoa435@gmail.com>
+Date:   Tue Nov 11 13:25:55 2025 +0700
+
+    Create tamClass.java
+
+[33mcommit 5087acecdb24e872688ada12e3dafe8409c0dc54[m
+Author: Tran Dinh Si <trandinhsi1401@gmail.com>
+Date:   Tue Nov 11 13:17:18 2025 +0700
+
+    thêm focus txtTimKiem
+
+[33mcommit b539b0422b3a1517d95f993713f6e8f7439e1d01[m
+Merge: 5a9ccee ee9521f
+Author: Trần Đình Sĩ <trandinhsi1401@gmail.com>
+Date:   Tue Nov 11 12:50:08 2025 +0700
+
+    Merge pull request #17 from TranDinhSi1401/KhoaBise
+    
+    hoàn thành các lớp DAO v1
+
+[33mcommit ee9521f8c5f85f960c7634c08b26e1dca3a09ce2[m
+Author: KhoaVo <votienkhoa435@gmail.com>
+Date:   Tue Nov 11 12:26:16 2025 +0700
+
+    hoàn thành các lớp DAO v1
+    
+    hoàn thành các lớp DAO v1
+
+[33mcommit 5a9ccee1fd68e74f4e9c35ecd11504f4888901b7[m
+Merge: a3ab3b8 478f6f5
+Author: Tran Dinh Si <trandinhsi1401@gmail.com>
+Date:   Thu Nov 6 23:20:42 2025 +0700
+
+    Chỉnh lại phải đăng nhập trước khi vào và size của menu
+
+[33mcommit 478f6f5dc2e7e5e98e29bf72fe15949c48bd0d31[m
+Merge: 8f3a381 31693b6
+Author: Trần Đình Sĩ <trandinhsi1401@gmail.com>
+Date:   Thu Nov 6 22:45:52 2025 +0700
+
+    Merge pull request #16 from TranDinhSi1401/KhanhQuan
+    
+    splashScreen
+
+[33mcommit 31693b62e84f201951a071930f13dfa207af2252[m
+Merge: 9c8368d 8f3a381
+Author: Trần Đình Sĩ <trandinhsi1401@gmail.com>
+Date:   Thu Nov 6 22:45:42 2025 +0700
+
+    Merge branch 'master' into KhanhQuan
+
+[33mcommit a3ab3b856bc3aaf7babf0426edd57ade0e2f61f4[m
+Author: Tran Dinh Si <trandinhsi1401@gmail.com>
+Date:   Thu Nov 6 21:16:34 2025 +0700
+
+    fix in hoa don
+
+[33mcommit 9c8368d975c651152f5e52fea445e7cd75598143[m
+Author: Quan <23655101.quan@student.iuh.edu.vn>
+Date:   Thu Nov 6 19:29:57 2025 +0700
+
+    splash screen
+
+[33mcommit 8f3a3810fc34ea50ec0c61b9e0dccdbc60a7b781[m
+Merge: 511a101 5ed5f26
+Author: Khang <khangdz013@gmail.com>
+Date:   Wed Oct 29 08:28:40 2025 +0700
+
+    Merge branch 'master' of https://github.com/TranDinhSi1401/HeThongNhaThuocDuocAnKhang
+
+[33mcommit 696dc52451b6c6dc75a111fb39300058093f5ca1[m
+Merge: 9ffe59b 8502a80
+Author: Quan <23655101.quan@student.iuh.edu.vn>
+Date:   Wed Oct 29 07:29:16 2025 +0700
+
+    temp1
+
+[33mcommit 9ffe59b3028ed3b8f682a2d2a5015d7e7bf65e5c[m
+Author: Quan <23655101.quan@student.iuh.edu.vn>
+Date:   Wed Oct 29 07:27:04 2025 +0700
+
+    temp
+
+[33mcommit 5ed5f26682dbadb8856b3fb91918ec752650ead2[m
+Merge: 8c8f682 8502a80
+Author: Trần Đình Sĩ <trandinhsi1401@gmail.com>
+Date:   Wed Oct 29 03:05:30 2025 +0700
+
+    Merge pull request #14 from TranDinhSi1401/chucNangBanHang-trandinhsi
+    
+    Gán sự kiện nút thanh toán
+
+[33mcommit 8502a80bdaa5251f043c5c170655bc5c3f445b06[m[33m ([m[1;31morigin/chucNangBanHang-trandinhsi[m[33m)[m
+Author: Tran Dinh Si <trandinhsi1401@gmail.com>
+Date:   Wed Oct 29 01:54:20 2025 +0700
+
+    Gán sự kiện nút thanh toán
+
+[33mcommit d44ae17cbeb76a4d173e0a37fe99943cfae0f333[m
+Merge: 609e6ff 6d42a5b
+Author: Trần Đình Sĩ <trandinhsi1401@gmail.com>
+Date:   Tue Oct 28 23:31:47 2025 +0700
+
+    Merge pull request #11 from TranDinhSi1401/KhanhQuan
+    
+    thêm dữ liệu vào bảng sản phẩm
+
+[33mcommit 6d42a5b0ea284f1fc1cfeff838ad46db08d3ae9f[m
+Merge: a61a246 609e6ff
+Author: Trần Đình Sĩ <trandinhsi1401@gmail.com>
+Date:   Tue Oct 28 23:31:31 2025 +0700
+
+    Merge branch 'master' into KhanhQuan
+
+[33mcommit a61a246e12020180e5cbe039d4d72d26ba990739[m
+Merge: abd5126 8c8f682
+Author: Quan <23655101.quan@student.iuh.edu.vn>
+Date:   Tue Oct 28 23:22:05 2025 +0700
+
+    Su kien bo sung
+
+[33mcommit 609e6ffb194d24ae55512308c696da4b0d376a36[m
+Merge: 511a101 dd07d45
+Author: Trần Đình Sĩ <trandinhsi1401@gmail.com>
+Date:   Tue Oct 28 22:37:02 2025 +0700
+
+    Merge pull request #12 from TranDinhSi1401/KhoaBise
+    
+    hoàn thanh GUI ql sp, kh, nv
+
+[33mcommit dd07d450f350070873ac1acdd1e7d9a1041cb3dd[m
+Author: KhoaVo <votienkhoa435@gmail.com>
+Date:   Tue Oct 28 22:29:15 2025 +0700
+
+    Done GUI quản lí sản phẩm, nhân viên, khách hàng
+
+[33mcommit 8c8f682d493ac49ee57f2a7da412d636735a60ed[m
+Author: Tran Dinh Si <trandinhsi1401@gmail.com>
+Date:   Tue Oct 28 22:01:01 2025 +0700
+
+    85% chức năng bán hàng
+
+[33mcommit abd51266aec0c10530bf0fb574fd10d5036fe239[m
+Author: Quan <23655101.quan@student.iuh.edu.vn>
+Date:   Tue Oct 28 20:54:35 2025 +0700
+
+    Sự kiện 1 ít của phiếu đặt
+
+[33mcommit bf8d9d74db87a47fe79b286948f8ab1d94f11cfd[m
+Author: Quan <23655101.quan@student.iuh.edu.vn>
+Date:   Tue Oct 28 07:03:50 2025 +0700
+
+    Panel SanPham
+
+[33mcommit f4bffbd8f7efa579b0a46d2d242298689d366ab5[m
+Author: Tran Dinh Si <trandinhsi1401@gmail.com>
+Date:   Tue Oct 28 01:39:11 2025 +0700
+
+    70% chức năng bán hàng và chức năng đăng nhập
+
+[33mcommit 44c32b937e1cd66f29593db648fabbdb20017a6e[m
+Merge: d719b77 511a101
+Author: KhoaVo <votienkhoa435@gmail.com>
+Date:   Mon Oct 27 20:43:51 2025 +0700
+
+    Merge branch 'master' of https://github.com/TranDinhSi1401/HeThongNhaThuocDuocAnKhang into KhoaBise
+
+[33mcommit d719b778fe19e4a41fb2c76a50c53ae9af828b5d[m
+Author: KhoaVo <votienkhoa435@gmail.com>
+Date:   Mon Oct 27 20:36:26 2025 +0700
+
+    kkk
+
+[33mcommit 16ba15f3ea9cb70f901ee1c392a5a1de1e6da792[m
+Author: Quan <23655101.quan@student.iuh.edu.vn>
+Date:   Mon Oct 27 00:23:00 2025 +0700
+
+    thêm dữ liệu vào bảng sản phẩm
+
+[33mcommit 511a1016c1a659e05544dbb1565015719b0e378c[m
+Merge: b09ab4b 14327c2
+Author: Khang Hehe <23646131.khang@student.iuh.edu.vn>
+Date:   Sun Oct 26 21:31:40 2025 +0700
+
+    Merge pull request #10 from TranDinhSi1401/trahang-tracuu
+    
+    Hoan thanh tra cuu, tao phieu tra
+
+[33mcommit 14327c2318bfcba59b5a9fd4820297db6a9a567c[m[33m ([m[1;31morigin/trahang-tracuu[m[33m)[m
+Author: Khang <khangdz013@gmail.com>
+Date:   Sun Oct 26 21:30:10 2025 +0700
+
+    Hoan thanh tra cuu, tao phieu tra
+
+[33mcommit b09ab4be5f8bb62398ac9008505f7d9d732b7f20[m
+Author: Tran Dinh Si <trandinhsi1401@gmail.com>
+Date:   Sun Oct 26 16:35:25 2025 +0700
+
+    Thêm các giao diện quản lí rỗng
+
+[33mcommit 46e44e4dbfe513ff01a2eaf0af22be4103c3a168[m
+Author: Tran Dinh Si <trandinhsi1401@gmail.com>
+Date:   Sun Oct 26 15:49:35 2025 +0700
+
+    Xóa file .gitignore.txt
+
+[33mcommit 09cd886373ebc5cb8300c1189aaf46ceac6ed790[m
+Author: Tran Dinh Si <trandinhsi1401@gmail.com>
+Date:   Sun Oct 26 15:46:18 2025 +0700
+
+    Stop tracking IDE and build folders, update .gitignore
+
+[33mcommit 27a64b2ccab5725de0401ee271e05e438c7d8e05[m
+Merge: b76dfdb 83b44d7
+Author: Trần Đình Sĩ <trandinhsi1401@gmail.com>
+Date:   Sun Oct 26 15:33:46 2025 +0700
+
+    Merge pull request #6 from TranDinhSi1401/KhanhQuan
+    
+    Giao diện phần tạo phiếu đặt, thêm nhà cung cấp
+
+[33mcommit 83b44d78b0df6f9f4f0796dfe0d4c69f2fc0f3d1[m
+Merge: 6c03c53 b76dfdb
+Author: Trần Đình Sĩ <trandinhsi1401@gmail.com>
+Date:   Sun Oct 26 15:33:23 2025 +0700
+
+    Merge branch 'master' into KhanhQuan
+
+[33mcommit b76dfdbbdaf14de6c814b29bbdcd8f4609cba00a[m
+Merge: e232845 5aa307f
+Author: Trần Đình Sĩ <trandinhsi1401@gmail.com>
+Date:   Sun Oct 26 15:30:23 2025 +0700
+
+    Merge pull request #8 from TranDinhSi1401/KhoaBise
+    
+    GD Quản lí sản phẩm
+
+[33mcommit 5aa307fcfa42c22e8f6ec16881efd5f2a19ae6d9[m
+Merge: 09b8256 e232845
+Author: Trần Đình Sĩ <trandinhsi1401@gmail.com>
+Date:   Sun Oct 26 15:29:30 2025 +0700
+
+    Merge branch 'master' into KhoaBise
+
+[33mcommit 6c03c53ac1af187d5994f1160c9ce2e63e116475[m
+Merge: 431802d e232845
+Author: Trần Đình Sĩ <trandinhsi1401@gmail.com>
+Date:   Sun Oct 26 15:29:08 2025 +0700
+
+    Merge branch 'master' into KhanhQuan
+
+[33mcommit e2328459174e7da691f87162847eac0e772f4bea[m
+Merge: 46e99d2 bdc8894
+Author: Khang Hehe <23646131.khang@student.iuh.edu.vn>
+Date:   Sun Oct 26 15:16:08 2025 +0700
+
+    Merge pull request #7 from TranDinhSi1401/dangNhapGUI-trandinhsi
+    
+    Dang nhap g UI trandinhsi
+
+[33mcommit bdc8894097a55b9cf0042185f146934bfdf38255[m[33m ([m[1;31morigin/dangNhapGUI-trandinhsi[m[33m)[m
+Author: Tran Dinh Si <trandinhsi1401@gmail.com>
+Date:   Sun Oct 26 15:09:31 2025 +0700
+
+    Thêm thư viện jdbc
+
+[33mcommit 09b825652c2ce7390b48ef20b1110f86b0c8dfe3[m
+Author: KhoaVo <votienkhoa435@gmail.com>
+Date:   Sun Oct 26 14:18:11 2025 +0700
+
+    cập nhật gd quản lí giống trong hình
+
+[33mcommit 431802dd27bae143795887ca5fe3c5eba7ae542e[m
+Author: Quan <23655101.quan@student.iuh.edu.vn>
+Date:   Sun Oct 26 12:28:40 2025 +0700
+
+    Giao diện
+
+[33mcommit 0c1996bf1cab531376693461b8df6dfd28053e55[m
+Author: Tran Dinh Si <trandinhsi1401@gmail.com>
+Date:   Tue Oct 21 23:57:18 2025 +0700
+
+    hoàn thành giao diện đăng nhập
+
+[33mcommit ddf08cbfcef00fd6a0c9b9af847420d370658ce7[m
+Author: Tran Dinh Si <trandinhsi1401@gmail.com>
+Date:   Tue Oct 21 00:08:12 2025 +0700
+
+    80% giao diện bán hàng thiếu tab
+
+[33mcommit 011dd0f5db8a0c99f84b5587cf8de3e188c58e62[m
+Author: KhoaVo <votienkhoa435@gmail.com>
+Date:   Sun Oct 19 19:36:23 2025 +0700
+
+    sửa lại đường dẫn icon
+
+[33mcommit 32843da3637464e982e7276f46b20ffed6212c96[m
+Author: KhoaVo <votienkhoa435@gmail.com>
+Date:   Sun Oct 19 19:30:09 2025 +0700
+
+    QuanLiSanPhamGUI
+    
+    hoàn thiện giao diện quản lí sản phẩm
+
+[33mcommit a2ec82bb42b15f5409602e07e6c895a117a226bd[m
+Author: Tran Dinh Si <trandinhsi1401@gmail.com>
+Date:   Sat Oct 18 22:55:19 2025 +0700
+
+    hoàn thành giao diện đăng nhập
+
+[33mcommit 46e99d22b37c0b318906f9b28dff345686413e13[m
+Author: Tran Dinh Si <trandinhsi1401@gmail.com>
+Date:   Thu Oct 16 19:44:28 2025 +0700
+
+    fix jdk 24
+
+[33mcommit a265870abfed3d907fb4ae5d844c2e694a32348d[m
+Author: Tran Dinh Si <trandinhsi1401@gmail.com>
+Date:   Thu Oct 16 18:02:26 2025 +0700
+
+    Thêm file .gitignore
+
+[33mcommit c524ab43c87998bde3ce5ce58895e750b1a76675[m
+Author: Tran Dinh Si <trandinhsi1401@gmail.com>
+Date:   Thu Oct 16 17:58:05 2025 +0700
+
+    Thêm entity
+
+[33mcommit 855af6192974a3f90425ec1300e2c8718ce12772[m
+Author: Tran Dinh Si <trandinhsi1401@gmail.com>
+Date:   Thu Oct 16 17:50:37 2025 +0700
+
+    Hoàn thành 70% giao diện chính

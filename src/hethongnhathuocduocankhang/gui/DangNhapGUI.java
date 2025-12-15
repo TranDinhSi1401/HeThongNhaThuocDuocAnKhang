@@ -72,8 +72,8 @@ public class DangNhapGUI extends javax.swing.JFrame {
         setVisible(true);
 
         // Mặc định để đỡ phải đăng nhập mỗi lần test
-        txtTaiKhoan.setText("NV-0001");
-        txtMatKhau.setText("Votienkhoa123@");
+        txtTaiKhoan.setText("NV-0002");
+        txtMatKhau.setText("Hominhkhang123@");
     }
 
     /**
