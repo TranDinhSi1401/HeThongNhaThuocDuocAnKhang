@@ -75,7 +75,7 @@ public class BaoCaoGUI extends javax.swing.JPanel {
         jPanel50 = new javax.swing.JPanel();
         jPanel36 = new javax.swing.JPanel();
 
-        setLayout(new java.awt.BorderLayout());
+        setLayout(new javax.swing.BoxLayout(this, javax.swing.BoxLayout.LINE_AXIS));
 
         jPanel35.setLayout(new java.awt.BorderLayout());
 
@@ -400,7 +400,7 @@ public class BaoCaoGUI extends javax.swing.JPanel {
 
         jTabbedPane1.addTab("tab2", jPanel36);
 
-        add(jTabbedPane1, java.awt.BorderLayout.LINE_END);
+        add(jTabbedPane1);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed

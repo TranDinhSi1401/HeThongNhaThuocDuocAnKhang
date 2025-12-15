@@ -31,6 +31,12 @@ public class GiaoDienChinhGUI extends javax.swing.JFrame {
      * @param tk
      */
     public GiaoDienChinhGUI(TaiKhoan tk) {
+        
+        
+        if (tk != null) {
+            GiaoDienChinhGUI.tk = tk;
+        }
+        
         initComponents();
         // assign static reference early so handlers can safely read it
         if (tk != null) {
@@ -128,9 +134,9 @@ public class GiaoDienChinhGUI extends javax.swing.JFrame {
                 
             }
         });
-        // ensure we choose a default dashboard safely
-        TaiKhoan current = GiaoDienChinhGUI.getTk();
-        if (current != null && current.isQuanLy()) {
+        
+        
+        if (tk.isQuanLy()) {
             showPanel(new DashBoardQuanLi());
         } else {
             showPanel(new DashBoardNhanVien());
