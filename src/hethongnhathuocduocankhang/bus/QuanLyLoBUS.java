@@ -8,6 +8,7 @@ import hethongnhathuocduocankhang.dao.LoSanPhamDAO;
 import hethongnhathuocduocankhang.dao.NhaCungCapDAO;
 import hethongnhathuocduocankhang.dao.SanPhamCungCapDAO;
 import hethongnhathuocduocankhang.dao.SanPhamDAO;
+import hethongnhathuocduocankhang.entity.DonViTinh;
 import hethongnhathuocduocankhang.entity.LoSanPham;
 import hethongnhathuocduocankhang.entity.NhaCungCap;
 import hethongnhathuocduocankhang.entity.SanPham;
@@ -25,6 +26,31 @@ import java.util.stream.Collectors;
  * @author admin
  */
 public class QuanLyLoBUS {    
+        public ArrayList<LoSanPham> getLoKhongHuy(){
+        ArrayList<LoSanPham> all = hethongnhathuocduocankhang.dao.LoSanPhamDAO.dsLoSanPham();
+        ArrayList<LoSanPham> kq = new ArrayList<>();
+        if(all!=null){
+            for(LoSanPham lo: all){
+                if(!lo.isDaHuy()){
+                    kq.add(lo);
+                }
+            }
+        }
+        return kq;
+    }
+
+    public Object[] toTableRow(LoSanPham lo){
+        DonViTinh donVi = hethongnhathuocduocankhang.dao.DonViTinhDAO.getMotDonViTinhTheoMaSP(lo.getSanPham().getMaSP());
+        SanPham sp = SanPhamDAO.timSPTheoMa(lo.getSanPham().getMaSP());
+        return new Object[]{
+            lo.getSanPham().getMaSP(),
+            sp!=null? sp.getTen():"",
+            lo.getMaLoSanPham(),
+            donVi!=null? donVi.getTenDonVi():"",
+            lo.getSoLuong()
+        };
+    }
+
         public String tinhTrangThaiLo(LoSanPham lo) {
         if (lo.isDaHuy()) {
             return "Đã hủy";
