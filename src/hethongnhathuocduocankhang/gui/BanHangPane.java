@@ -4,6 +4,7 @@
  */
 package hethongnhathuocduocankhang.gui;
 
+import com.kitfox.svg.app.beans.SVGIcon;
 import hethongnhathuocduocankhang.bus.BanHangBUS;
 import hethongnhathuocduocankhang.connectDB.ConnectDB;
 import hethongnhathuocduocankhang.dao.DonViTinhDAO;
@@ -419,7 +420,7 @@ public class BanHangPane extends javax.swing.JPanel {
         lblSdtKH.setText("SĐT khách hàng:");
         p1.add(lblSdtKH);
 
-        btnThemKH.setText("+ [F9]");
+        btnThemKH.setText("Thêm mới [F9]");
         btnThemKH.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnThemKHActionPerformed(evt);
@@ -691,7 +692,7 @@ public class BanHangPane extends javax.swing.JPanel {
         jScrollPane.setBorder(BorderFactory.createEmptyBorder());
         jScrollPane.setBackground(new java.awt.Color(255, 255, 255));
 
-        tblCTHD.setBackground(new java.awt.Color(245, 245, 245));
+        tblCTHD.setBackground(new java.awt.Color(255, 255, 255));
         tblCTHD.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -746,8 +747,9 @@ public class BanHangPane extends javax.swing.JPanel {
 
         btnTimKiem.setBackground(new java.awt.Color(255, 255, 255));
         btnTimKiem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/search.png"))); // NOI18N
+        btnTimKiem.setIcon(getIconSVG("search"));
         btnTimKiem.setPreferredSize(new java.awt.Dimension(38, 40));
-        btnTimKiem.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+        btnTimKiem.setBorder(BorderFactory.createMatteBorder(1, 0, 1, 1, Color.BLACK));
 
         btnTimKiem.setCursor(new Cursor(Cursor.HAND_CURSOR));
         btnTimKiem.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -760,7 +762,7 @@ public class BanHangPane extends javax.swing.JPanel {
         txtTimKiem.setText("Nhập mã sản phẩm [F1]");
         txtTimKiem.setPreferredSize(new java.awt.Dimension(119, 40));
         txtTimKiem.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(Color.BLACK, 1, true),
+            BorderFactory.createMatteBorder(1, 1, 1, 0, Color.BLACK),
             BorderFactory.createEmptyBorder(0, 10, 0, 0)
         ));
         txtTimKiem.addFocusListener(new java.awt.event.FocusAdapter() {
@@ -1163,6 +1165,25 @@ public class BanHangPane extends javax.swing.JPanel {
         column.setResizable(false);
     }
     
+    private Icon getIconSVG(String o) {
+        try {
+            String path = "/resources/images/"+ o +".svg";
+            SVGIcon svgIcon = new SVGIcon();
+            svgIcon.setSvgURI(getClass().getResource(path).toURI());
+
+            svgIcon.setAutosize(0);
+            svgIcon.setScaleToFit(true);
+
+            //chỉnh kích thước
+            svgIcon.setPreferredSize(new java.awt.Dimension(30, 30));
+
+            return svgIcon;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnGoiY1;
     private javax.swing.JButton btnGoiY2;
@@ -1216,4 +1237,6 @@ public class BanHangPane extends javax.swing.JPanel {
     private javax.swing.JTextField txtTienKhachDua;
     private javax.swing.JTextField txtTimKiem;
     // End of variables declaration//GEN-END:variables
+
+
 }

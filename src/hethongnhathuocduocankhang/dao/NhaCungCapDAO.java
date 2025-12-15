@@ -37,6 +37,29 @@ public class NhaCungCapDAO {
         }
         return dsNCC;
     }
+    
+    public static ArrayList<NhaCungCap> getAllNhaCungCap(String sql) {
+        ArrayList<NhaCungCap> dsNCC = new ArrayList<>();
+        try {
+            ConnectDB.getInstance().connect();
+            Connection con = ConnectDB.getConnection();
+            Statement statement = con.createStatement();
+            ResultSet rs = statement.executeQuery(sql);
+            while (rs.next()) {
+                String maNCC = rs.getString("maNCC");
+                String tenNCC = rs.getString("tenNCC");
+                String diaChi = rs.getString("diaChi");
+                String sdt = rs.getString("sdt");
+                String email = rs.getString("email");
+
+                NhaCungCap ncc = new NhaCungCap(maNCC, tenNCC, diaChi, sdt, email);
+                dsNCC.add(ncc);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return dsNCC;
+    }
 
     public static boolean themNhaCungCap(NhaCungCap ncc) {
         int n = 0;

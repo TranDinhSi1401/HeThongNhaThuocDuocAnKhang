@@ -85,6 +85,27 @@ public class ChiTietPhieuTraHangGUI extends JPanel {
                 ct.getGiaTriHoanTra(),
                 String.format("%,.0f", ct.getThanhTienHoanTra())
             };
+            if(row[4].equals("HANG_LOI_DO_NHA_SAN_XUAT")){
+                row[4] = "Hàng lỗi do nhà sản xuất";
+            }
+            else if(row[4].equals("DI_UNG_MAN_CAM")){
+                row[4] = "Khách hàng dị ứng, mẫn cảm";
+            }
+            else{
+                row[4] = "Nhu cầu khách hàng";
+            }
+            
+            if(row[5].equals("HANG_NGUYEN_VEN")){
+                row[5] = "Hàng nguyên vẹn";
+            }
+            else if(row[5].equals("HANG_KHONG_NGUYEN_VEN")){
+                row[5] = "Hàng không nguyên vẹn";
+            }
+            else{
+                row[5] = "Hàng đã sử dụng";
+            }
+            
+            
             model.addRow(row);
         }
     }

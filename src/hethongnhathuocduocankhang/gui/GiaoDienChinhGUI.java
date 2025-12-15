@@ -9,6 +9,9 @@ import hethongnhathuocduocankhang.menu.MenuEvent;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.net.URL;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -28,14 +31,27 @@ public class GiaoDienChinhGUI extends javax.swing.JFrame {
      * @param tk
      */
     public GiaoDienChinhGUI(TaiKhoan tk) {
+        
+        
+        if (tk != null) {
+            GiaoDienChinhGUI.tk = tk;
+        }
+        
         initComponents();
+        // assign static reference early so handlers can safely read it
+        if (tk != null) {
+            GiaoDienChinhGUI.tk = tk;
+        }
 
         menu.setEvent(new MenuEvent() {
             @Override
             public void selected(int index, int subIndex) {
+                // use the stored static account and guard against null
+                TaiKhoan currentTk = GiaoDienChinhGUI.getTk();
+                boolean isQuanLy = currentTk != null && currentTk.isQuanLy();
 
                 if (index == 0 && subIndex == 0) {
-                    if (tk.isQuanLy()) {
+                    if (isQuanLy) {
                         showPanel(new DashBoardQuanLi());
                     } else {
                         showPanel(new DashBoardNhanVien());
@@ -72,7 +88,11 @@ public class GiaoDienChinhGUI extends javax.swing.JFrame {
                     showPanel(new TraHangGUI());
                 }
                 if (index == 4 && subIndex == 0) {
-                    showPanel(new LoSanPhamGUI());
+                    try {
+                        showPanel(new LoSanPhamGUI());
+                    } catch (SQLException ex) {
+                        Logger.getLogger(GiaoDienChinhGUI.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 } 
                 if (index == 5 && subIndex == 0) {
                     showPanel(new TraCuuChungGUI());
@@ -96,15 +116,25 @@ public class GiaoDienChinhGUI extends javax.swing.JFrame {
                     showPanel(new BaoCaoGUI());
                 }
                 
-                if (index == 8 && subIndex == 0) {
+                if (index == 8) {
+                    switch (subIndex){
+                        case 1 -> {
+                            AboutGUI aboutDialog = new AboutGUI(GiaoDienChinhGUI.this);
+                            aboutDialog.setVisible(true);
+                        }
+                        case 2 -> {
+                            // Hướng dẫn sử dụng
+                        }
+                    }
+                }
+                
+                if (index == 9 && subIndex == 0) {
                     dangXuat();
                 }
                 
             }
         });
-        if (tk != null) {
-            GiaoDienChinhGUI.tk = tk;
-        }
+        
         
         if (tk.isQuanLy()) {
             showPanel(new DashBoardQuanLi());

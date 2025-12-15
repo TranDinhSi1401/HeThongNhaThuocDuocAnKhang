@@ -468,4 +468,34 @@ public class SanPhamDAO {
         }
         return null;
     }
+    
+    //Tra cứu chung
+    public static ArrayList<SanPham> getAllTableSanPham(String sql) {
+        ArrayList<SanPham> dsSP = new ArrayList<>();
+        try {
+            ConnectDB.getInstance().connect();
+            Connection con = ConnectDB.getConnection();
+            Statement statement = con.createStatement();
+            ResultSet rs = statement.executeQuery(sql);
+
+            while (rs.next()) {
+                String maSP = rs.getString("maSP");
+                String tenSP = rs.getString("ten");
+                String moTa = rs.getString("moTa");
+                String thanhPhan = rs.getString("thanhPhan");
+                LoaiSanPhamEnum loaiSanPham = LoaiSanPhamEnum.valueOf(rs.getString("loaiSanPham"));
+                int tonToiThieu = rs.getInt("tonToiThieu");
+                int tonToiDa = rs.getInt("tonToiDa");
+                boolean daXoa = rs.getBoolean("daXoa");
+                
+                //SanPham sp = new SanPham(maSP, tenSP, moTa, thanhPhan, loaiSanPham, tonToiThieu, tonToiDa);
+                SanPham sp = new SanPham(maSP, tenSP, moTa, thanhPhan, loaiSanPham, tonToiThieu, tonToiDa, daXoa);
+                dsSP.add(sp);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return dsSP;
+    }
 }

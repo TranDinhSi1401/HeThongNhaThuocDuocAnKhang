@@ -45,6 +45,12 @@ public class NhanVien {
         this.diaChi = diaChi;
         this.nghiViec = nghiViec;
     }
+    
+    public NhanVien(String maNV, String hoTenDem, String ten) {
+        this.maNV = maNV;
+        this.hoTenDem = hoTenDem;
+        this.ten = ten;
+    }
 
     // Constructor chỉ có mã
     public NhanVien(String maNV) {
