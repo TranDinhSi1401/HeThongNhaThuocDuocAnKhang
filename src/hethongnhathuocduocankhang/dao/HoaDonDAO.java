@@ -5,6 +5,7 @@
 package hethongnhathuocduocankhang.dao;
 
 import hethongnhathuocduocankhang.connectDB.ConnectDB;
+import hethongnhathuocduocankhang.entity.DoanhThu;
 import hethongnhathuocduocankhang.entity.HoaDon;
 import hethongnhathuocduocankhang.entity.KhachHang;
 import hethongnhathuocduocankhang.entity.NhanVien;
@@ -17,8 +18,11 @@ import java.sql.Timestamp;
 import java.sql.Date;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 public class HoaDonDAO {
@@ -198,7 +202,7 @@ public class HoaDonDAO {
 
         return doanhthuTungNgay;
     }
-
+       
     public static double getDoanhThuTheoThang(LocalDate date) {
         double doanhThu = 0.0;
 
@@ -227,7 +231,7 @@ public class HoaDonDAO {
 
         return doanhthuTungThang;
     }
-
+    
     public static ArrayList<HoaDon> timHDTheoSDTKH(String sdt) {
         ArrayList<HoaDon> dsHD = new ArrayList<>();
         try {
@@ -327,6 +331,162 @@ public class HoaDonDAO {
         return soPTH;
     }
     
+    public static List<DoanhThu> getDoanhThuTungNgayTrongKhoangThoiGian(LocalDate begin, LocalDate end) {
+        List<DoanhThu> list = new ArrayList<>();
+
+        if (begin == null || end == null || begin.isAfter(end)) {
+            return list;
+        }
+        
+        String sql = """
+            SELECT
+                CAST(ngayLapHoaDon AS DATE) AS Ngay,
+                COUNT(DISTINCT MaHoaDon) AS TongHoaDon,
+                SUM(TongTien) AS TongDoanhThu
+            FROM HoaDon
+            WHERE ngayLapHoaDon >= ?
+              AND ngayLapHoaDon <  ?
+            GROUP BY CAST(ngayLapHoaDon AS DATE)
+            ORDER BY Ngay;
+        """;
+        
+        try {
+            ConnectDB.getInstance().connect();
+            Connection con = ConnectDB.getConnection();
+            PreparedStatement ps = con.prepareStatement(sql);
+
+            ps.setDate(1, Date.valueOf(begin));
+            ps.setDate(2, Date.valueOf(end));
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                String ngay = rs.getDate("Ngay").toString();
+                int tongHoaDon = rs.getInt("TongHoaDon");
+                double tongDoanhThu = rs.getDouble("TongDoanhThu");
+                DoanhThu doanhThuTheoNgay = new DoanhThu(ngay, tongHoaDon, tongDoanhThu);
+                list.add(doanhThuTheoNgay);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;   
+    }
+    
+    public static List<DoanhThu> getDoanhThuTungThangTrongNam(int nam) {
+        List<DoanhThu> list = new ArrayList<>();
+        
+        String sql = """
+            WITH Thang AS (
+                SELECT 1 AS Thang UNION ALL SELECT 2 UNION ALL SELECT 3
+                UNION ALL SELECT 4 UNION ALL SELECT 5 UNION ALL SELECT 6
+                UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9
+                UNION ALL SELECT 10 UNION ALL SELECT 11 UNION ALL SELECT 12
+            )
+            SELECT
+                t.Thang,
+                ISNULL(COUNT(DISTINCT h.MaHoaDon), 0) AS TongHoaDon,
+                ISNULL(SUM(h.TongTien), 0) AS TongDoanhThu
+            FROM Thang t
+            LEFT JOIN HoaDon h
+                ON MONTH(h.ngayLapHoaDon) = t.Thang
+               AND YEAR(h.ngayLapHoaDon) = ?
+            GROUP BY t.Thang
+            ORDER BY t.Thang;
+        """;
+        
+        try {
+            ConnectDB.getInstance().connect();
+            Connection con = ConnectDB.getConnection();
+            PreparedStatement ps = con.prepareStatement(sql);
+
+            ps.setInt(1, nam);
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                String thang = String.valueOf(rs.getInt("Thang"));
+                int tongHoaDon = rs.getInt("TongHoaDon");
+                double tongDoanhThu = rs.getDouble("TongDoanhThu");
+                DoanhThu doanhThuTheoThang = new DoanhThu(thang + "/" + nam, tongHoaDon, tongDoanhThu);
+                list.add(doanhThuTheoThang);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;   
+    }
+    
+    public static List<DoanhThu> getDoanhThuTungQuyTrongNam(int nam) {
+        List<DoanhThu> list = new ArrayList<>();
+        
+        String sql = """
+            WITH Quy AS (
+                SELECT 1 AS Quy
+                UNION ALL SELECT 2
+                UNION ALL SELECT 3
+                UNION ALL SELECT 4
+            )
+            SELECT
+                q.Quy,
+                ISNULL(COUNT(DISTINCT h.MaHoaDon), 0) AS TongHoaDon,
+                ISNULL(SUM(h.TongTien), 0) AS TongDoanhThu
+            FROM Quy q
+            LEFT JOIN HoaDon h
+                ON DATEPART(QUARTER, h.ngayLapHoaDon) = q.Quy
+               AND YEAR(h.ngayLapHoaDon) = ?
+            GROUP BY q.Quy
+            ORDER BY q.Quy;
+        """;
+        
+        try {
+            ConnectDB.getInstance().connect();
+            Connection con = ConnectDB.getConnection();
+            PreparedStatement ps = con.prepareStatement(sql);
+
+            ps.setInt(1, nam);
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                String quy = String.valueOf(rs.getInt("Quy"));
+                int tongHoaDon = rs.getInt("TongHoaDon");
+                double tongDoanhThu = rs.getDouble("TongDoanhThu");
+                DoanhThu doanhThuTheoThang = new DoanhThu("Quý " + quy + "/" + nam, tongHoaDon, tongDoanhThu);
+                list.add(doanhThuTheoThang);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;   
+    }
+    
+    public static List<DoanhThu> getDoanhThuTungNamTheoKhoang(int namBatDau, int namKetThuc) {
+        List<DoanhThu> list = new ArrayList<>();
+        
+        String sql = """
+            SELECT
+                YEAR(ngayLapHoaDon) AS Nam,
+                COUNT(DISTINCT MaHoaDon) AS TongHoaDon,
+                SUM(TongTien) AS TongDoanhThu
+            FROM HoaDon
+            WHERE YEAR(ngayLapHoaDon) >= ? AND YEAR(ngayLapHoaDon) <= ?
+            GROUP BY YEAR(ngayLapHoaDon)
+            ORDER BY Nam
+        """;
+        
+        try {
+            ConnectDB.getInstance().connect();
+            Connection con = ConnectDB.getConnection();
+            PreparedStatement ps = con.prepareStatement(sql);
+
+            ps.setInt(1, namBatDau);
+            ps.setInt(2, namKetThuc);
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                String nam = String.valueOf(rs.getInt("Nam"));
+                int tongHoaDon = rs.getInt("TongHoaDon");
+                double tongDoanhThu = rs.getDouble("TongDoanhThu");
+                DoanhThu doanhThuTheoThang = new DoanhThu(nam, tongHoaDon, tongDoanhThu);
+                list.add(doanhThuTheoThang);
         public static ArrayList<HoaDon> timHDTheoKhoangNgay(LocalDate startDate, LocalDate endDate) {
         ArrayList<HoaDon> dsHD = new ArrayList<>();
         try {
@@ -343,6 +503,6 @@ public class HoaDonDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return dsHD;
+        return list;   
     }
 }
