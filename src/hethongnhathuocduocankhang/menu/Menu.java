@@ -110,12 +110,6 @@ public class Menu extends JComponent{
         if(icon != null) {
             item.setIcon(icon);
         }
-        
-//        //icon SVG
-//        Icon icon = getIconSVG(index);
-//        if(icon != null) {
-//            item.setIcon(icon);
-//        }
 
         item.addActionListener(new ActionListener() {
             @Override
