@@ -19,17 +19,13 @@ import hethongnhathuocduocankhang.entity.NhanVien;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-/**
- *
- * @author trand
- */
 public class NhanVienDAO {
 
     public static NhanVien getNhanVienTheoMaNV(String maNV) throws SQLException {
         NhanVien nv = null;
         try {
             Connection con = ConnectDB.getConnection();
-            String sql = "SELECT * FROM NhanVien WHERE maNV = ?";
+            String sql = "SELECT * FROM NhanVien WHERE maNV = ? AND nghiViec = 0";
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, maNV);
             ResultSet rs = ps.executeQuery();
@@ -145,7 +141,7 @@ public class NhanVienDAO {
         try {
             ConnectDB.getInstance().connect();
             Connection con = ConnectDB.getConnection();
-            String query = "SELECT * FROM NhanVien WHERE maNV = ?";
+            String query = "SELECT * FROM NhanVien WHERE maNV = ? AND nghiViec = 0";
             PreparedStatement stmt = con.prepareStatement(query);
             stmt.setString(1, ma);
             ResultSet rs = stmt.executeQuery();
@@ -173,7 +169,7 @@ public class NhanVienDAO {
         try {
             ConnectDB.getInstance().connect();
             Connection con = ConnectDB.getConnection();
-            String query = "SELECT * FROM NhanVien WHERE hoTenDem + ' ' + ten LIKE ?";
+            String query = "SELECT * FROM NhanVien WHERE hoTenDem + ' ' + ten LIKE ? AND nghiViec = 0";
             PreparedStatement stmt = con.prepareStatement(query);
             stmt.setString(1, "%" + tenNV + "%");
             ResultSet rs = stmt.executeQuery();
@@ -202,7 +198,7 @@ public class NhanVienDAO {
         try {
             ConnectDB.getInstance().connect();
             Connection con = ConnectDB.getConnection();
-            String query = "SELECT * FROM NhanVien WHERE sdt = ?";
+            String query = "SELECT * FROM NhanVien WHERE sdt = ? AND nghiViec = 0";
             PreparedStatement stmt = con.prepareStatement(query);
             stmt.setString(1, sdtNV);
             ResultSet rs = stmt.executeQuery();
@@ -231,7 +227,7 @@ public class NhanVienDAO {
         try {
             ConnectDB.getInstance().connect();
             Connection con = ConnectDB.getConnection();
-            String query = "SELECT * FROM NhanVien WHERE cccd = ?";
+            String query = "SELECT * FROM NhanVien WHERE cccd = ? AND nghiViec = 0";
             PreparedStatement stmt = con.prepareStatement(query);
             stmt.setString(1, cccdNV);
             ResultSet rs = stmt.executeQuery();

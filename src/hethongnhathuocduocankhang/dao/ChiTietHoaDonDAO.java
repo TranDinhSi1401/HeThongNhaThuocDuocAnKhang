@@ -17,9 +17,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-/**
- * @author GIGABYTE
- */
 public class ChiTietHoaDonDAO {
 
     public static ChiTietHoaDon getChiTietHoaDonMoiNhat() {

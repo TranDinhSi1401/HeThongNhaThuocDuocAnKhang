@@ -29,7 +29,7 @@ public class ThemNhanVienGUI extends javax.swing.JPanel {
     public ThemNhanVienGUI() {
         initComponents();
 
-        // --- CÁC SỰ KIỆN NÚT BẤM ---
+        // CÁC SỰ KIỆN NÚT BẤM
         btnXacNhan.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -57,7 +57,7 @@ public class ThemNhanVienGUI extends javax.swing.JPanel {
             }
         });
 
-        // --- KIỂM TRA DỮ LIỆU ---
+        // KIỂM TRA DỮ LIỆU
         txtHoTenDem.addActionListener(e -> kiemTraHoTenDem());
         txtTen.addActionListener(e -> kiemTraTen());
         txtSdt.addActionListener(e -> kiemTraSDT());
@@ -96,7 +96,6 @@ public class ThemNhanVienGUI extends javax.swing.JPanel {
         cmbGioiTinh = new javax.swing.JComboBox<>();
         jLabel9 = new javax.swing.JLabel();
         txtDiaChi = new javax.swing.JTextField();
-        // Đã xóa chkNghiViec
         lblMatKhau = new javax.swing.JLabel();
         txtMatKhau = new javax.swing.JPasswordField();
         btnHienMatKhau = new javax.swing.JToggleButton();
@@ -105,7 +104,6 @@ public class ThemNhanVienGUI extends javax.swing.JPanel {
         lblTenDangNhap = new javax.swing.JLabel();
         txtTenDangNhap = new javax.swing.JTextField();
         chkQuanLy = new javax.swing.JCheckBox();
-        // Đã xóa chkBiKhoa
         lblNgayTao = new javax.swing.JLabel();
         txtNgayTao = new javax.swing.JTextField();
 
@@ -113,7 +111,7 @@ public class ThemNhanVienGUI extends javax.swing.JPanel {
 
         jPanel1.setBorder(javax.swing.BorderFactory.createEtchedBorder());
 
-        lblTieuDe.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        lblTieuDe.setFont(new java.awt.Font("Segoe UI", 0, 18));
         lblTieuDe.setText("Thông tin nhân viên");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -161,7 +159,6 @@ public class ThemNhanVienGUI extends javax.swing.JPanel {
 
         jLabel9.setText("Địa chỉ:");
 
-        // chkNghiViec và chkBiKhoa không được khai báo hay sử dụng ở đây
         lblMatKhau.setText("Mật khẩu:");
 
         btnHienMatKhau.setText("👁");
@@ -469,7 +466,6 @@ public class ThemNhanVienGUI extends javax.swing.JPanel {
         this.txtNgayTao.setText(ngayTao);
     }
 
-    //Các hàm khác
     private void showError(String message, JComponent component) {
         JOptionPane.showMessageDialog(this, message, "Lỗi nhập liệu", JOptionPane.ERROR_MESSAGE);
         if (component != null) {
@@ -663,7 +659,6 @@ public class ThemNhanVienGUI extends javax.swing.JPanel {
         return true;
     }
 
-    // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JToggleButton btnHienMatKhau;
     private javax.swing.JCheckBox chkBiKhoa;
     private javax.swing.JCheckBox chkQuanLy;
@@ -697,5 +692,4 @@ public class ThemNhanVienGUI extends javax.swing.JPanel {
     private javax.swing.JTextField txtTenDangNhap;
     private javax.swing.JLabel lblNgayTao;
     private javax.swing.JTextField txtNgayTao;
-    // End of variables declaration//GEN-END:variables
 }

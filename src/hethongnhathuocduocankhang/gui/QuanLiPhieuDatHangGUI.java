@@ -198,13 +198,10 @@ public class QuanLiPhieuDatHangGUI extends JPanel {
 
             if (pdhDaChon != null && e.getClickCount() == 2) {
 
-                // 1. Tạo GUI mới (chứa JTable chi tiết)
                 ChiTietPhieuDatHangGUI pnlChiTiet = new ChiTietPhieuDatHangGUI();
 
-                // 2. Tải dữ liệu vào GUI
                 pnlChiTiet.loadData(pdhDaChon);
 
-                // 3. Tạo JDialog để chứa GUI
                 JDialog dialog = new JDialog();
                 dialog.setTitle("Danh sách chi tiết Phiếu Đặt: " + pdhDaChon.getMaPhieuDat());
                 dialog.setModal(true);

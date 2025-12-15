@@ -21,64 +21,16 @@ import java.util.List;
 public class SanPhamBUS {
 
     private final QuanLiSanPhamGUI QLSanPhamGUI;
-
-    // Các danh sách tạm để lưu dữ liệu khi đang thao tác trên Form Thêm/Sửa
     private List<DonViTinh> listTempDVT = new ArrayList<>();
     private List<SanPhamCungCap> listTempSPCC = new ArrayList<>();
     private List<KhuyenMai> listTempKM = new ArrayList<>();
 
     public SanPhamBUS(QuanLiSanPhamGUI view) {
         this.QLSanPhamGUI = view;
-
-        // 1. Load dữ liệu ban đầu lên bảng
         loadDataToTable(SanPhamDAO.getAllTableSanPham());
-
-        // 2. Gán sự kiện cho các nút trên màn hình chính
         addMainEvents();
     }
 
-    // ========================================================================
-    // A. XỬ LÝ SỰ KIỆN MÀN HÌNH QuanLiSanPhamGUI
-    // ========================================================================
-    private void addMainEvents() {
-        // Nút Thêm
-        QLSanPhamGUI.getBtnThem().addActionListener(e -> hienThiFormThemSanPham());
-
-        // Nút Xóa
-        QLSanPhamGUI.getBtnXoa().addActionListener(e -> xuLyXoaSanPham());
-
-        // Nút Sửa
-        QLSanPhamGUI.getBtnSua().addActionListener(e -> hienThiFormSuaSanPham());
-
-        // Tìm kiếm, hỗ trợ người dùng khi chọn vào một tiêu chí tìm kiếm thì tự focus vào txt tìm kiếm
-        QLSanPhamGUI.getTxtTimKiem().addActionListener(e -> xuLyTimKiem());
-        QLSanPhamGUI.getCmbTieuChiTimKiem().addActionListener(e -> {
-            QLSanPhamGUI.getTxtTimKiem().setText("");
-            QLSanPhamGUI.getTxtTimKiem().requestFocus();
-        });
-
-        // Lọc
-        QLSanPhamGUI.getCmbBoLoc().addActionListener(e -> xuLyLoc());
-
-        // Sự kiện click bảng (Double click để xem chi tiết)
-        QLSanPhamGUI.getTable().addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                if (e.getClickCount() == 2) {
-                    hienThiChiTietSanPham();
-                }
-            }
-        });
-
-        // Đếm số dòng đang chọn
-        QLSanPhamGUI.getTable().getSelectionModel().addListSelectionListener(e -> {
-            if (!e.getValueIsAdjusting()) {
-                QLSanPhamGUI.getLblSoDongChon().setText("Đang chọn: " + QLSanPhamGUI.getTable().getSelectedRowCount());
-            }
-        });
-    }
-
-    //Xóa bảng cũ và tải danh sách sản phẩm truyền vào lên bảng
     private void loadDataToTable(ArrayList<SanPham> dsSP) {
         DefaultTableModel model = QLSanPhamGUI.getModel();
         model.setRowCount(0);
@@ -103,6 +55,121 @@ public class SanPhamBUS {
             });
         }
         QLSanPhamGUI.getLblTongSoDong().setText("Tổng số sản phẩm: " + dsSP.size());
+    }
+
+    // XỬ LÝ SỰ KIỆN CỦA GIAO DIỆN QuanLiSanPhamGUI
+    private void addMainEvents() {
+        QLSanPhamGUI.getBtnThem().addActionListener(e -> hienThiFormThemSanPham());
+        QLSanPhamGUI.getBtnXoa().addActionListener(e -> xuLyXoaSanPham());
+        QLSanPhamGUI.getBtnSua().addActionListener(e -> hienThiFormSuaSanPham());
+
+        // Khi chọn vào một tiêu chí tìm kiếm thì tự focus vào txt tìm kiếm
+        QLSanPhamGUI.getTxtTimKiem().addActionListener(e -> xuLyTimKiem());
+        QLSanPhamGUI.getCmbTieuChiTimKiem().addActionListener(e -> {
+            QLSanPhamGUI.getTxtTimKiem().selectAll();
+            QLSanPhamGUI.getTxtTimKiem().requestFocus();
+        });
+
+        QLSanPhamGUI.getCmbBoLoc().addActionListener(e -> xuLyLoc());
+
+        // Double click để xem chi tiết
+        QLSanPhamGUI.getTable().addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (e.getClickCount() == 2) {
+                    hienThiChiTietSanPham();
+                }
+            }
+        });
+
+        // Đếm số dòng đang chọn
+        QLSanPhamGUI.getTable().getSelectionModel().addListSelectionListener(e -> {
+            if (!e.getValueIsAdjusting()) {
+                QLSanPhamGUI.getLblSoDongChon().setText("Đang chọn: " + QLSanPhamGUI.getTable().getSelectedRowCount());
+            }
+        });
+    }
+
+    private void hienThiFormThemSanPham() {
+        ThemSanPhamGUI pnlThemSP = new ThemSanPhamGUI();
+
+        listTempDVT.clear();
+        listTempSPCC.clear();
+        listTempKM.clear();
+
+        int maSPCuoi = SanPhamDAO.getMaSPCuoiCung();
+        String maSPNew = String.format("SP-%04d", maSPCuoi + 1);
+        pnlThemSP.getTxtMaSanPham().setText(maSPNew);
+        pnlThemSP.getTxtMaSanPham().setEditable(false);
+
+        JDialog dialog = createDialog(pnlThemSP, "Thêm sản phẩm mới");
+        setupSuKienTrenThemSanPhamGUI(pnlThemSP, dialog, false); // isEditMode = false, là chế độ thêm không phải chế độ sửa
+        dialog.setVisible(true);
+    }
+
+    private void xuLyXoaSanPham() {
+        int[] selectedRows = QLSanPhamGUI.getTable().getSelectedRows();
+        if (selectedRows.length == 0) {
+            JOptionPane.showMessageDialog(QLSanPhamGUI, "Vui lòng chọn sản phẩm cần xóa.");
+            return;
+        }
+
+        if (JOptionPane.showConfirmDialog(QLSanPhamGUI, "Bạn có chắc muốn xóa các sản phẩm đã chọn?", "Xác nhận xóa", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
+            int count = 0;
+            for (int row : selectedRows) {
+                String maSP = QLSanPhamGUI.getModel().getValueAt(row, 1).toString();
+                if (SanPhamDAO.xoaSanPham(maSP)) {
+                    count++;
+                }
+            }
+            if (count > 0) {
+                JOptionPane.showMessageDialog(QLSanPhamGUI, "Đã xóa thành công " + count + " sản phẩm.");
+                loadDataToTable(SanPhamDAO.getAllTableSanPham());
+                QLSanPhamGUI.getLblSoDongChon().setText("Đang chọn: 0");
+            } else {
+                JOptionPane.showMessageDialog(QLSanPhamGUI, "Xóa thất bại.", "Lỗi", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
+
+    private void hienThiFormSuaSanPham() {
+        int selectedRow = QLSanPhamGUI.getTable().getSelectedRow();
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(QLSanPhamGUI, "Vui lòng chọn sản phẩm cần sửa.");
+            return;
+        }
+
+        String maSP = QLSanPhamGUI.getModel().getValueAt(selectedRow, 1).toString();
+        SanPham sp = SanPhamDAO.timSPTheoMa(maSP);
+        if (sp == null) {
+            return;
+        }
+
+        ThemSanPhamGUI pnlSuaSP = new ThemSanPhamGUI();
+        JDialog dialog = createDialog(pnlSuaSP, "Sửa sản phẩm: " + sp.getTen());
+
+        loadDataToForm(pnlSuaSP, sp);
+
+        setupSuKienTrenThemSanPhamGUI(pnlSuaSP, dialog, true); // isEditMode = true, là chế độ sửa không phải chế độ thêm
+
+        dialog.setVisible(true);
+    }
+
+    private void hienThiChiTietSanPham() {
+        int selectedRow = QLSanPhamGUI.getTable().getSelectedRow();
+        String maSP = QLSanPhamGUI.getModel().getValueAt(selectedRow, 1).toString();
+        SanPham sp = SanPhamDAO.timSPTheoMa(maSP);
+
+        ThemSanPhamGUI pnlChiTietSP = new ThemSanPhamGUI();
+        JDialog dialog = createDialog(pnlChiTietSP, "Chi tiết: " + sp.getTen());
+
+        loadDataToForm(pnlChiTietSP, sp);
+        khoaGiaoDienChiTiet(pnlChiTietSP);
+
+        pnlChiTietSP.getBtnHuy().setText("Đóng");
+        pnlChiTietSP.getBtnHuy().addActionListener(e -> dialog.dispose());
+
+        dialog.setVisible(true);
     }
 
     private void xuLyTimKiem() {
@@ -150,103 +217,7 @@ public class SanPhamBUS {
         }
     }
 
-    private void xuLyXoaSanPham() {
-        int[] selectedRows = QLSanPhamGUI.getTable().getSelectedRows();
-        if (selectedRows.length == 0) {
-            JOptionPane.showMessageDialog(QLSanPhamGUI, "Vui lòng chọn sản phẩm cần xóa.");
-            return;
-        }
-
-        if (JOptionPane.showConfirmDialog(QLSanPhamGUI, "Bạn có chắc muốn xóa các sản phẩm đã chọn?", "Xác nhận xóa", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
-            int count = 0;
-            for (int row : selectedRows) {
-                String maSP = QLSanPhamGUI.getModel().getValueAt(row, 1).toString();
-                if (SanPhamDAO.xoaSanPham(maSP)) {
-                    count++;
-                }
-            }
-            if (count > 0) {
-                JOptionPane.showMessageDialog(QLSanPhamGUI, "Đã xóa thành công " + count + " sản phẩm.");
-                loadDataToTable(SanPhamDAO.getAllTableSanPham());
-                QLSanPhamGUI.getLblSoDongChon().setText("Đang chọn: 0");
-            } else {
-                JOptionPane.showMessageDialog(QLSanPhamGUI, "Xóa thất bại.", "Lỗi", JOptionPane.ERROR_MESSAGE);
-            }
-        }
-    }
-
-    // ========================================================================
-    // B. XỬ LÝ FORM THÊM / SỬA / XEM CHI TIẾT TỪ ThemSanPhamGUI
-    // ========================================================================
-    // --- 1. MỞ FORM THÊM MỚI ---
-    private void hienThiFormThemSanPham() {
-        ThemSanPhamGUI pnlThemSP = new ThemSanPhamGUI();
-
-        // Reset list tạm
-        listTempDVT.clear();
-        listTempSPCC.clear();
-        listTempKM.clear();
-
-        // Tự động sinh mã SP mới
-        int maSPCuoi = SanPhamDAO.getMaSPCuoiCung();
-        String maSPNew = String.format("SP-%04d", maSPCuoi + 1);
-        pnlThemSP.getTxtMaSanPham().setText(maSPNew);
-        pnlThemSP.getTxtMaSanPham().setEditable(false);
-
-        // Tạo Dialog
-        JDialog dialog = createDialog(pnlThemSP, "Thêm sản phẩm mới");
-
-        // Gán sự kiện cho form
-        setupSuKienTrenThemSanPhamGUI(pnlThemSP, dialog, false); // isEditMode = false, là chế độ thêm không phải chế độ sửa
-
-        dialog.setVisible(true);
-    }
-
-    // --- 2. MỞ FORM SỬA ---
-    private void hienThiFormSuaSanPham() {
-        int selectedRow = QLSanPhamGUI.getTable().getSelectedRow();
-        if (selectedRow == -1) {
-            JOptionPane.showMessageDialog(QLSanPhamGUI, "Vui lòng chọn sản phẩm cần sửa.");
-            return;
-        }
-
-        String maSP = QLSanPhamGUI.getModel().getValueAt(selectedRow, 1).toString();
-        SanPham sp = SanPhamDAO.timSPTheoMa(maSP);
-        if (sp == null) {
-            return;
-        }
-
-        ThemSanPhamGUI pnlSuaSP = new ThemSanPhamGUI();
-        JDialog dialog = createDialog(pnlSuaSP, "Sửa sản phẩm: " + sp.getTen());
-
-        // Load dữ liệu cũ từ DB vào Form và List tạm
-        loadDataToForm(pnlSuaSP, sp);
-
-        // Gán sự kiện
-        setupSuKienTrenThemSanPhamGUI(pnlSuaSP, dialog, true); // isEditMode = true, là chế độ sửa không phải chế độ thêm
-
-        dialog.setVisible(true);
-    }
-
-    // --- 3. MỞ FORM CHI TIẾT (VIEW ONLY) ---
-    private void hienThiChiTietSanPham() {
-        int selectedRow = QLSanPhamGUI.getTable().getSelectedRow();
-        String maSP = QLSanPhamGUI.getModel().getValueAt(selectedRow, 1).toString();
-        SanPham sp = SanPhamDAO.timSPTheoMa(maSP);
-
-        ThemSanPhamGUI pnlChiTietSP = new ThemSanPhamGUI();
-        JDialog dialog = createDialog(pnlChiTietSP, "Chi tiết: " + sp.getTen());
-
-        loadDataToForm(pnlChiTietSP, sp);
-        khoaGiaoDienChiTiet(pnlChiTietSP);
-
-        pnlChiTietSP.getBtnHuy().setText("Đóng");
-        pnlChiTietSP.getBtnHuy().addActionListener(e -> dialog.dispose());
-
-        dialog.setVisible(true);
-    }
-
-    // --- 4. CÁC HÀM HỖ TRỢ FORM ---
+    // CÁC HÀM HỖ TRỢ FORM
     private JDialog createDialog(JPanel content, String title) {
         JDialog dialog = new JDialog();
         dialog.setTitle(title);
@@ -258,10 +229,7 @@ public class SanPhamBUS {
     }
 
     private void setupSuKienTrenThemSanPhamGUI(ThemSanPhamGUI pnlThemSP, JDialog dialog, boolean isEditMode) {
-        // Nút Hủy
         pnlThemSP.getBtnHuy().addActionListener(e -> dialog.dispose());
-
-        // Nút Lưu
         pnlThemSP.getBtnXacNhan().addActionListener(e -> {
             if (checkHopLeVaLuu(pnlThemSP, isEditMode)) {
                 dialog.dispose();
@@ -269,7 +237,7 @@ public class SanPhamBUS {
             }
         });
 
-        // --- SỰ KIỆN BARCODE ---
+        // SỰ KIỆN BARCODE
         pnlThemSP.getBtnThemBarcode().addActionListener(e -> {
             String code = pnlThemSP.getTxtInputBarcode().getText().trim();
             if (code.isEmpty()) {
@@ -297,7 +265,7 @@ public class SanPhamBUS {
             }
         });
 
-        // --- SỰ KIỆN ĐƠN VỊ TÍNH ---
+        // SỰ KIỆN ĐƠN VỊ TÍNH
         pnlThemSP.getChkDonViCoBan().addActionListener(e -> {
             boolean isCoBan = pnlThemSP.getChkDonViCoBan().isSelected();
             if (isCoBan) {
@@ -340,7 +308,6 @@ public class SanPhamBUS {
                     maDVT, tenDV, heSo, String.format("%,.0f", gia), isCoBan ? "Có" : "Không"
                 });
 
-                // Clear input
                 pnlThemSP.getTxtTenDonVi().setText("");
                 pnlThemSP.getTxtGiaBanDonVi().setText("");
                 pnlThemSP.getChkDonViCoBan().setSelected(false);
@@ -367,7 +334,7 @@ public class SanPhamBUS {
             }
         });
 
-        // --- SỰ KIỆN NHÀ CUNG CẤP ---
+        // SỰ KIỆN NHÀ CUNG CẤP
         pnlThemSP.getBtnTimNCC().addActionListener(e -> {
             String timNCC = pnlThemSP.getTxtTimNCC().getText().trim();
             pnlThemSP.getModelTimKiemNCC().setRowCount(0);
@@ -415,7 +382,7 @@ public class SanPhamBUS {
             }
         });
 
-        // --- SỰ KIỆN KHUYẾN MÃI ---
+        // SỰ KIỆN KHUYẾN MÃI
         pnlThemSP.getBtnTimKM().addActionListener(e -> {
             String timKM = pnlThemSP.getTxtTimKM().getText().trim();
             pnlThemSP.getModelKQTimKiemKM().setRowCount(0);
@@ -502,7 +469,6 @@ public class SanPhamBUS {
             } else // là chế độ sửa
             {
                 if (SanPhamDAO.suaSanPham(sp.getMaSP(), sp)) {
-                    // Xóa liên kết cũ (Cách đơn giản nhất để cập nhật list con)
                     String maSP = sp.getMaSP();
                     MaVachSanPhamDAO.xoaMaVachTheoMaSP(maSP);
                     // Lưu ý: DVT thường không xóa hết rồi thêm lại vì dính khóa ngoại Invoice,
@@ -585,14 +551,12 @@ public class SanPhamBUS {
 //            }
 //        }
 
-        // 2. Lưu Barcode
         for (int i = 0; i < form.getModelBarcode().getRowCount(); i++) {
             String code = form.getModelBarcode().getValueAt(i, 0).toString();
             MaVachSanPham mv = new MaVachSanPham(sp, code);
             MaVachSanPhamDAO.themMaVach(mv);
         }
 
-        // 3. Lưu NCC
         for (SanPhamCungCap spcc : listTempSPCC) {
             try {
                 spcc.setSanPham(sp);
@@ -601,7 +565,6 @@ public class SanPhamBUS {
             }
         }
 
-        // 4. Lưu KM
         for (KhuyenMai km : listTempKM) {
             KhuyenMaiSanPham kmsp = new KhuyenMaiSanPham();
             kmsp.setSanPham(sp);
@@ -615,9 +578,8 @@ public class SanPhamBUS {
     }
 
     private void loadDataToForm(ThemSanPhamGUI form, SanPham sp) {
-        // 1. Info cơ bản
         form.getTxtMaSanPham().setText(sp.getMaSP());
-        form.getTxtMaSanPham().setEditable(false); // Khóa mã
+        form.getTxtMaSanPham().setEditable(false);
         form.getTxtTenSanPham().setText(sp.getTen());
         form.getTxtMoTa().setText(sp.getMoTa());
         form.getTxtThanhPhan().setText(sp.getThanhPhan());
@@ -633,13 +595,11 @@ public class SanPhamBUS {
             form.getCmbLoaiSanPham().setSelectedIndex(2);
         }
 
-        // 2. Load Barcode
         ArrayList<String> barcodes = MaVachSanPhamDAO.getDsMaVachTheoMaSP(sp.getMaSP());
         for (String code : barcodes) {
             form.getModelBarcode().addRow(new Object[]{code});
         }
 
-        // 3. Load DVT vào listTemp và Table
         listTempDVT = DonViTinhDAO.getDonViTinhTheoMaSP(sp.getMaSP());
         for (DonViTinh dvt : listTempDVT) {
             form.getModelDVT().addRow(new Object[]{
@@ -649,7 +609,6 @@ public class SanPhamBUS {
             });
         }
 
-        // 4. Load NCC
         listTempSPCC = SanPhamCungCapDAO.getSanPhamCungCapTheoMaSP(sp.getMaSP());
         for (SanPhamCungCap spcc : listTempSPCC) {
             form.getModelNCCChon().addRow(new Object[]{
@@ -659,7 +618,6 @@ public class SanPhamBUS {
             });
         }
 
-        // 5. Load KM
         listTempKM = KhuyenMaiDAO.getKhuyenMaiTheoMaSP(sp.getMaSP());
         for (KhuyenMai km : listTempKM) {
             form.getModelKMChon().addRow(new Object[]{

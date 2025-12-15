@@ -9,10 +9,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
-/**
- *
- * @author GIGABYTE
- */
 public class HoaDon {
 
     private String maHoaDon;
@@ -72,13 +68,6 @@ public class HoaDon {
         return chuyenKhoan;
     }
 
-//    public void setMaHoaDon(String maHoaDon){
-//       if(maHoaDon == null) 
-//           throw new IllegalArgumentException("Hóa đơn không được rỗng");
-//        DateTimeFormatter =
-//    }
-//    Không được rỗng, không trùng, phải theo định dạng HD-[DD][MM][YY]-[XXXX]. 
-//    Với [DD][MM][YY] là ngày tháng năm hiện tại, [X] là số nguyên từ 0–9.
     public void setNhanVien(NhanVien nhanVien) {
         if (nhanVien == null) {
             throw new IllegalArgumentException("Nhân viên không được rỗng");
@@ -104,7 +93,7 @@ public class HoaDon {
         this.chuyenKhoan = hinhThucThanhToan;
     }
 
-    public void setTongTien(double tongTien){
+    public void setTongTien(double tongTien) {
         if (tongTien <= 0) {
             throw new IllegalArgumentException("Tổng tiền phải là số thực lớn hơn 0");
         }
@@ -137,5 +126,4 @@ public class HoaDon {
     public String toString() {
         return "HoaDon{" + "maHoaDon=" + maHoaDon + ", nhanVien=" + nhanVien + ", ngayLapHoaDon=" + ngayLapHoaDon + ", khachHang=" + khachHang + ", chuyenKhoan=" + chuyenKhoan + ", tongTien=" + tongTien + '}';
     }
-
 }

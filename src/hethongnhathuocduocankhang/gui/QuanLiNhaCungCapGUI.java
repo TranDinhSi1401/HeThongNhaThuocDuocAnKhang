@@ -4,7 +4,9 @@
  */
 package hethongnhathuocduocankhang.gui;
 
+import hethongnhathuocduocankhang.dao.KhachHangDAO;
 import hethongnhathuocduocankhang.dao.NhaCungCapDAO;
+import hethongnhathuocduocankhang.entity.KhachHang;
 import hethongnhathuocduocankhang.entity.NhaCungCap;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -36,19 +38,22 @@ public class QuanLiNhaCungCapGUI extends JPanel {
         this.setLayout(new BorderLayout(10, 10));
         this.setBorder(new EmptyBorder(10, 10, 10, 10));
 
-        // --- 1. PANEL NORTH ---
+        // PANEL NORTH
         JPanel pnlNorth = new JPanel();
         pnlNorth.setLayout(new BorderLayout());
 
-        // 1.1. Chức năng
+        // Chức năng
         JPanel pnlNorthLeft = new JPanel();
         pnlNorthLeft.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 0));
         pnlNorthLeft.setBorder(new EmptyBorder(0, 0, 10, 0));
 
-        btnThem = new JButton("Thêm");
-        btnXoa = new JButton("Xóa");
-        btnSua = new JButton("Sửa");
+        btnThem = new JButton("Thêm - F6");
+        btnXoa = new JButton("Xóa - Del");
+        btnSua = new JButton("Sửa - F2");
 
+        mapKeyToClickButton("F6", btnThem);
+        mapKeyToClickButton("DELETE", btnXoa);
+        mapKeyToClickButton("F2", btnSua);
         setupTopButton(btnThem, new Color(50, 150, 250));
         setupTopButton(btnXoa, new Color(250, 100, 100));
         setupTopButton(btnSua, Color.LIGHT_GRAY);
@@ -59,7 +64,6 @@ public class QuanLiNhaCungCapGUI extends JPanel {
 
         pnlNorth.add(pnlNorthLeft, BorderLayout.WEST);
 
-        // 1.2. Tìm kiếm
         JPanel pnlNorthRight = new JPanel();
         pnlNorthRight.setLayout(new FlowLayout(FlowLayout.RIGHT, 10, 5));
 
@@ -86,10 +90,9 @@ public class QuanLiNhaCungCapGUI extends JPanel {
         pnlNorth.add(pnlNorthRight, BorderLayout.EAST);
         this.add(pnlNorth, BorderLayout.NORTH);
 
-        // --- 2. PANEL CENTER (TABLE) ---
+        // PANEL CENTER (TABLE)
         JPanel centerPanel = new JPanel(new BorderLayout(0, 10));
 
-        // Thêm cột STT vào đầu
         String[] columnNames = {"STT", "Mã NCC", "Tên NCC", "Địa chỉ", "Số điện thoại", "Email"};
         Object[][] data = {};
 
@@ -109,7 +112,7 @@ public class QuanLiNhaCungCapGUI extends JPanel {
         table.setShowGrid(true);
         table.setGridColor(Color.LIGHT_GRAY);
 
-        // --- CẤU HÌNH KÍCH THƯỚC & CĂN CHỈNH CỘT ---
+        // CẤU HÌNH KÍCH THƯỚC & CĂN CHỈNH CỘT
         TableColumnModel columnModel = table.getColumnModel();
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(JLabel.CENTER);
@@ -124,41 +127,41 @@ public class QuanLiNhaCungCapGUI extends JPanel {
         columnModel.getColumn(1).setMaxWidth(120);
         columnModel.getColumn(1).setCellRenderer(centerRenderer);
 
-        // 2. Tên NCC (Rộng)
+        // 2. Tên NCC
         columnModel.getColumn(2).setPreferredWidth(200);
 
-        // 3. Địa chỉ (Rộng)
+        // 3. Địa chỉ
         columnModel.getColumn(3).setPreferredWidth(250);
 
-        // 4. Số điện thoại (Căn giữa)
+        // 4. Số điện thoại
         columnModel.getColumn(4).setPreferredWidth(100);
         columnModel.getColumn(4).setCellRenderer(centerRenderer);
 
-        // 5. Email (Rộng)
+        // 5. Email
         columnModel.getColumn(5).setPreferredWidth(150);
 
         JScrollPane scrollPane = new JScrollPane(table);
         centerPanel.add(scrollPane, BorderLayout.CENTER);
         this.add(centerPanel, BorderLayout.CENTER);
 
-        // --- 3. PANEL SOUTH (FOOTER) ---
+        // PANEL SOUTH (FOOTER)
         JPanel pnlSouth = new JPanel(new FlowLayout(FlowLayout.LEFT, 20, 5));
         pnlSouth.setBorder(new EmptyBorder(5, 0, 0, 0));
-        
+
         Font fontFooter = new Font("Arial", Font.BOLD, 13);
-        
+
         lblTongSoDong = new JLabel("Tổng số nhà cung cấp: 0");
         lblTongSoDong.setFont(fontFooter);
         lblTongSoDong.setForeground(new Color(0, 102, 204));
-        
+
         lblSoDongChon = new JLabel("Đang chọn: 0");
         lblSoDongChon.setFont(fontFooter);
         lblSoDongChon.setForeground(new Color(204, 0, 0));
-        
+
         pnlSouth.add(lblTongSoDong);
         pnlSouth.add(new JSeparator(JSeparator.VERTICAL));
         pnlSouth.add(lblSoDongChon);
-        
+
         this.add(pnlSouth, BorderLayout.SOUTH);
 
         updateTable();
@@ -204,9 +207,9 @@ public class QuanLiNhaCungCapGUI extends JPanel {
         btnXoa.addActionListener(e -> xuLyXoa());
         btnSua.addActionListener(e -> xuLySua());
         txtTimKiem.addActionListener(e -> xuLyTimKiem());
-        
+
         cmbTieuChiTimKiem.addActionListener(e -> {
-            txtTimKiem.setText("");
+            txtTimKiem.selectAll();
             txtTimKiem.requestFocus();
         });
 
@@ -216,7 +219,7 @@ public class QuanLiNhaCungCapGUI extends JPanel {
                 hienThiChiTietNhaCungCap(e);
             }
         });
-        
+
         // Sự kiện đếm dòng chọn
         table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
@@ -272,16 +275,27 @@ public class QuanLiNhaCungCapGUI extends JPanel {
         String maNCCNew = String.format("NCC-%04d", maNCCCUoiCung);
         pnlThemNCC.setTxtMaNCC(maNCCNew);
 
-        dialog.setVisible(true);
+        boolean isSuccess = false;
 
-        NhaCungCap nccNew = pnlThemNCC.getNhaCungCapMoi();
+        while (!isSuccess) {
+            dialog.setVisible(true);
 
-        if (nccNew != null) {
+            NhaCungCap nccNew = pnlThemNCC.getNhaCungCapMoi();
+
+            if (nccNew == null) {
+                break;
+            }
+
             if (NhaCungCapDAO.themNhaCungCap(nccNew)) {
                 JOptionPane.showMessageDialog(this, "Thêm nhà cung cấp thành công!");
                 updateTable();
+                isSuccess = true;
+                dialog.dispose();
             } else {
-                JOptionPane.showMessageDialog(this, "Thêm nhà cung cấp thất bại (SĐT hoặc Email có thể đã tồn tại).");
+                JOptionPane.showMessageDialog(this,
+                        "Thêm nhà cung cấp thất bại (SĐT hoặc Email có thể đã tồn tại).",
+                        "Lỗi",
+                        JOptionPane.ERROR_MESSAGE);
             }
         }
     }
@@ -295,7 +309,6 @@ public class QuanLiNhaCungCapGUI extends JPanel {
 
         String message;
         if (selectedRows.length == 1) {
-            // Lấy Tên NCC ở cột 2 (cột 0 là STT, cột 1 là Mã)
             String tenNCC = model.getValueAt(selectedRows[0], 2).toString();
             message = "Bạn có chắc muốn xóa nhà cung cấp '" + tenNCC + "' không?";
         } else {
@@ -308,7 +321,6 @@ public class QuanLiNhaCungCapGUI extends JPanel {
             int soLuongXoaThanhCong = 0;
             for (int i = selectedRows.length - 1; i >= 0; i--) {
                 int row = selectedRows[i];
-                // Lấy Mã NCC ở cột 1
                 String maNCC = model.getValueAt(row, 1).toString();
                 if (NhaCungCapDAO.xoaNhaCungCap(maNCC)) {
                     soLuongXoaThanhCong++;
@@ -333,7 +345,6 @@ public class QuanLiNhaCungCapGUI extends JPanel {
             return;
         }
 
-        // Lấy Mã NCC ở cột 1
         String maNCC = model.getValueAt(selectedRow, 1).toString();
         NhaCungCap nccCanSua = NhaCungCapDAO.timNCCTheoMa(maNCC);
 
@@ -357,16 +368,27 @@ public class QuanLiNhaCungCapGUI extends JPanel {
         pnlThemNCC.setTxtSDT(nccCanSua.getSdt());
         pnlThemNCC.setTxtEmail(nccCanSua.getEmail());
 
-        dialog.setVisible(true);
+        boolean isSuccess = false;
 
-        NhaCungCap nccNew = pnlThemNCC.getNhaCungCapMoi();
+        while (!isSuccess) {
+            dialog.setVisible(true);
 
-        if (nccNew != null) {
+            NhaCungCap nccNew = pnlThemNCC.getNhaCungCapMoi();
+
+            if (nccNew == null) {
+                break;
+            }
+
             if (NhaCungCapDAO.suaNhaCungCap(maNCC, nccNew)) {
                 JOptionPane.showMessageDialog(this, "Sửa thông tin nhà cung cấp thành công!");
                 updateTable();
+                isSuccess = true;
+                dialog.dispose();
             } else {
-                JOptionPane.showMessageDialog(this, "Sửa thông tin nhà cung cấp thất bại (SĐT hoặc Email có thể đã tồn tại).");
+                JOptionPane.showMessageDialog(this,
+                        "Sửa thông tin nhà cung cấp thất bại (SĐT hoặc Email có thể đã tồn tại).",
+                        "Lỗi",
+                        JOptionPane.ERROR_MESSAGE);
             }
         }
     }
@@ -374,7 +396,6 @@ public class QuanLiNhaCungCapGUI extends JPanel {
     public void hienThiChiTietNhaCungCap(MouseEvent e) {
         int selectRow = table.getSelectedRow();
         if (selectRow != -1) {
-            // Lấy Mã NCC ở cột 1
             String maNCC = model.getValueAt(selectRow, 1).toString();
             NhaCungCap nccDaChon = NhaCungCapDAO.timNCCTheoMa(maNCC);
 
@@ -406,5 +427,34 @@ public class QuanLiNhaCungCapGUI extends JPanel {
                 dialog.setVisible(true);
             }
         }
+    }
+
+    private void mapKeyToFocus(String key, JComponent component) {
+        InputMap im = component.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        ActionMap am = component.getActionMap();
+
+        im.put(KeyStroke.getKeyStroke(key), "focus_" + key);
+        am.put("focus_" + key, new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                component.requestFocus();
+                if (component instanceof JTextField jTextField) {
+                    jTextField.selectAll();
+                }
+            }
+        });
+    }
+
+    private void mapKeyToClickButton(String key, AbstractButton button) {
+        InputMap im = button.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        ActionMap am = button.getActionMap();
+
+        im.put(KeyStroke.getKeyStroke(key), "click_" + key);
+        am.put("click_" + key, new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                button.doClick(); // kích hoạt sự kiện button
+            }
+        });
     }
 }

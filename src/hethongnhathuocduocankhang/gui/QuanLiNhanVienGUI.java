@@ -31,8 +31,6 @@ public class QuanLiNhanVienGUI extends JPanel {
     private JComboBox<String> cmbTieuChiTimKiem;
     private JComboBox<String> cmbBoLoc;
     private DefaultTableModel model;
-
-    // Label hiển thị số lượng ở footer
     private JLabel lblTongSoDong;
     private JLabel lblSoDongChon;
 
@@ -40,18 +38,21 @@ public class QuanLiNhanVienGUI extends JPanel {
         this.setLayout(new BorderLayout(10, 10));
         this.setBorder(new EmptyBorder(10, 10, 10, 10));
 
-        // --- 1. PANEL NORTH ---
+        // PANEL NORTH
         JPanel pnlNorth = new JPanel();
         pnlNorth.setLayout(new BorderLayout());
 
-        // 1.1. Chức năng
         JPanel pnlNorthLeft = new JPanel();
         pnlNorthLeft.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 0));
         pnlNorthLeft.setBorder(new EmptyBorder(0, 0, 10, 0));
 
-        btnThem = new JButton("Thêm");
-        btnXoa = new JButton("Xóa");
-        btnSua = new JButton("Sửa");
+        btnThem = new JButton("Thêm - F6");
+        btnXoa = new JButton("Xóa - Del");
+        btnSua = new JButton("Sửa - F2");
+
+        mapKeyToClickButton("F6", btnThem);
+        mapKeyToClickButton("DELETE", btnXoa);
+        mapKeyToClickButton("F2", btnSua);
 
         setupTopButton(btnThem, new Color(50, 150, 250));
         setupTopButton(btnXoa, new Color(250, 100, 100));
@@ -63,7 +64,6 @@ public class QuanLiNhanVienGUI extends JPanel {
 
         pnlNorth.add(pnlNorthLeft, BorderLayout.WEST);
 
-        // 1.2. Tìm kiếm & Lọc
         JPanel pnlNorthRight = new JPanel();
         pnlNorthRight.setLayout(new FlowLayout(FlowLayout.RIGHT, 10, 5));
 
@@ -97,10 +97,9 @@ public class QuanLiNhanVienGUI extends JPanel {
 
         this.add(pnlNorth, BorderLayout.NORTH);
 
-        // --- 2. PANEL CENTER (TABLE) ---
+        // PANEL CENTER (TABLE)
         JPanel centerPanel = new JPanel(new BorderLayout(0, 10));
 
-        // Thêm cột STT vào đầu
         String[] columnNames = {"STT", "Mã NV", "Họ tên đệm", "Tên", "SĐT", "CCCD", "Giới tính", "Ngày sinh", "Địa chỉ", "Trạng thái"};
         Object[][] data = {};
 
@@ -123,25 +122,24 @@ public class QuanLiNhanVienGUI extends JPanel {
         table.setShowGrid(true);
         table.setGridColor(Color.LIGHT_GRAY);
 
-        // --- CẤU HÌNH KÍCH THƯỚC & CĂN CHỈNH CỘT ---
         TableColumnModel columnModel = table.getColumnModel();
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(JLabel.CENTER);
 
-        // 0. STT: Nhỏ, Căn giữa
+        // 0. STT: Căn giữa
         columnModel.getColumn(0).setPreferredWidth(40);
         columnModel.getColumn(0).setMaxWidth(40);
         columnModel.getColumn(0).setCellRenderer(centerRenderer);
 
-        // 1. Mã NV: Vừa phải, Căn giữa
+        // 1. Mã NV: Căn giữa
         columnModel.getColumn(1).setPreferredWidth(80);
         columnModel.getColumn(1).setMaxWidth(100);
         columnModel.getColumn(1).setCellRenderer(centerRenderer);
 
-        // 2. Họ tên đệm: Rộng
+        // 2. Họ tên đệm
         columnModel.getColumn(2).setPreferredWidth(150);
 
-        // 3. Tên: Vừa phải
+        // 3. Tên
         columnModel.getColumn(3).setPreferredWidth(80);
 
         // 4. SĐT: Căn giữa
@@ -152,7 +150,7 @@ public class QuanLiNhanVienGUI extends JPanel {
         columnModel.getColumn(5).setPreferredWidth(110);
         columnModel.getColumn(5).setCellRenderer(centerRenderer);
 
-        // 6. Giới tính: Nhỏ, Căn giữa
+        // 6. Giới tính: Căn giữa
         columnModel.getColumn(6).setPreferredWidth(70);
         columnModel.getColumn(6).setMaxWidth(80);
         columnModel.getColumn(6).setCellRenderer(centerRenderer);
@@ -172,7 +170,7 @@ public class QuanLiNhanVienGUI extends JPanel {
         centerPanel.add(scrollPane, BorderLayout.CENTER);
         this.add(centerPanel, BorderLayout.CENTER);
 
-        // --- 3. PANEL SOUTH (FOOTER) ---
+        // PANEL SOUTH (FOOTER)
         JPanel pnlSouth = new JPanel(new FlowLayout(FlowLayout.LEFT, 20, 5));
         pnlSouth.setBorder(new EmptyBorder(5, 0, 0, 0));
 
@@ -192,7 +190,7 @@ public class QuanLiNhanVienGUI extends JPanel {
 
         this.add(pnlSouth, BorderLayout.SOUTH);
 
-        // Event
+        // Sự kiện
         updateTable();
         addEvents();
     }
@@ -243,7 +241,7 @@ public class QuanLiNhanVienGUI extends JPanel {
         cmbBoLoc.addActionListener(e -> xuLyLoc());
 
         cmbTieuChiTimKiem.addActionListener(e -> {
-            txtTimKiem.setText("");
+            txtTimKiem.selectAll();
             txtTimKiem.requestFocus();
         });
 
@@ -254,7 +252,7 @@ public class QuanLiNhanVienGUI extends JPanel {
             }
         });
 
-        // Sự kiện đếm dòng chọn (hỗ trợ shift/ctrl)
+        // Sự kiện đếm dòng chọn có hỗ trợ shift/ctrl
         table.getSelectionModel().addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting()) {
                 lblSoDongChon.setText("Đang chọn: " + table.getSelectedRowCount());
@@ -317,23 +315,23 @@ public class QuanLiNhanVienGUI extends JPanel {
         pnlThemNV.setTxtTenDangNhap(maNVNew);
         pnlThemNV.setTxtNgayTao(LocalDateTime.now());
 
-        boolean isSuccess = false; 
+        boolean isSuccess = false;
 
         while (!isSuccess) {
-            dialog.setVisible(true); 
+            dialog.setVisible(true);
 
             NhanVien nvNew = pnlThemNV.getNhanVienMoi();
             TaiKhoan tkNew = pnlThemNV.getTaiKhoanMoi();
 
             if (nvNew == null || tkNew == null) {
-                break; 
+                break;
             }
 
             if (NhanVienDAO.themNhanVien(nvNew) && TaiKhoanDAO.themTaiKhoan(tkNew)) {
                 JOptionPane.showMessageDialog(this, "Thêm nhân viên thành công!");
                 updateTable();
-                isSuccess = true; 
-                dialog.dispose(); 
+                isSuccess = true;
+                dialog.dispose();
             } else {
                 JOptionPane.showMessageDialog(this,
                         "Thêm nhân viên thất bại.\nCó thể do trùng CCCD hoặc SĐT.\nVui lòng kiểm tra lại thông tin!",
@@ -351,14 +349,12 @@ public class QuanLiNhanVienGUI extends JPanel {
         }
 
         String message = (selectedRows.length == 1)
-                ? "Bạn có chắc muốn xóa nhân viên '" + model.getValueAt(selectedRows[0], 3).toString() + "' không?"
-                : // Index 3 là Tên
-                "Bạn có chắc muốn xóa " + selectedRows.length + " nhân viên đã chọn không?";
+                ? "Bạn có chắc muốn xóa nhân viên '" + model.getValueAt(selectedRows[0], 3).toString() + " không?"
+                : "Bạn có chắc muốn xóa " + selectedRows.length + " nhân viên đã chọn không?";
 
         if (JOptionPane.showConfirmDialog(this, message, "Xác nhận xóa", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION) {
             int count = 0;
             for (int i = selectedRows.length - 1; i >= 0; i--) {
-                // Lấy mã NV ở cột 1 (cột 0 là STT)
                 String maNV = model.getValueAt(selectedRows[i], 1).toString();
                 if (NhanVienDAO.xoaNhanVien(maNV) && TaiKhoanDAO.xoaTaiKhoan(maNV)) {
                     count++;
@@ -415,15 +411,28 @@ public class QuanLiNhanVienGUI extends JPanel {
         pnlThemNV.setTxtEmail(tkCanSua.getEmail());
         pnlThemNV.setTxtNgayTao(tkCanSua.getNgayTao());
 
-        dialog.setVisible(true);
-        NhanVien nvNew = pnlThemNV.getNhanVienMoi();
-        TaiKhoan tkNew = pnlThemNV.getTaiKhoanMoi();
-        if (nvNew != null && tkNew != null) {
+        boolean isSuccess = false;
+
+        while (!isSuccess) {
+            dialog.setVisible(true);
+
+            NhanVien nvNew = pnlThemNV.getNhanVienMoi();
+            TaiKhoan tkNew = pnlThemNV.getTaiKhoanMoi();
+
+            if (nvNew == null || tkNew == null) {
+                break;
+            }
+
             if (NhanVienDAO.suaNhanVien(maNV, nvNew) && TaiKhoanDAO.capNhatTaiKhoan(tkNew)) {
                 JOptionPane.showMessageDialog(this, "Sửa thông tin nhân viên thành công!");
                 updateTable();
+                isSuccess = true;
+                dialog.dispose();
             } else {
-                JOptionPane.showMessageDialog(this, "Sửa thông tin nhân viên thất bại.");
+                JOptionPane.showMessageDialog(this,
+                        "Sửa thông tin nhân viên thất bại.",
+                        "Lỗi",
+                        JOptionPane.ERROR_MESSAGE);
             }
         }
     }
@@ -431,7 +440,6 @@ public class QuanLiNhanVienGUI extends JPanel {
     private void hienThiChiTietNhanVien(MouseEvent e) {
         int selectRow = table.getSelectedRow();
         if (selectRow != -1 && e.getClickCount() == 2) {
-            // Lấy mã NV ở cột 1
             String maNV = model.getValueAt(selectRow, 1).toString();
             NhanVien nvDaChon = NhanVienDAO.timNVTheoMa(maNV);
 
@@ -477,5 +485,34 @@ public class QuanLiNhanVienGUI extends JPanel {
 
             dialog.setVisible(true);
         }
+    }
+
+    private void mapKeyToFocus(String key, JComponent component) {
+        InputMap im = component.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        ActionMap am = component.getActionMap();
+
+        im.put(KeyStroke.getKeyStroke(key), "focus_" + key);
+        am.put("focus_" + key, new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                component.requestFocus();
+                if (component instanceof JTextField jTextField) {
+                    jTextField.selectAll();
+                }
+            }
+        });
+    }
+
+    private void mapKeyToClickButton(String key, AbstractButton button) {
+        InputMap im = button.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        ActionMap am = button.getActionMap();
+
+        im.put(KeyStroke.getKeyStroke(key), "click_" + key);
+        am.put("click_" + key, new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                button.doClick(); // kích hoạt sự kiện button
+            }
+        });
     }
 }

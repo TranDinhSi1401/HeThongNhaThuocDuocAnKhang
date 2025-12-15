@@ -16,17 +16,13 @@ import hethongnhathuocduocankhang.connectDB.ConnectDB;
 import hethongnhathuocduocankhang.entity.KhachHang;
 import java.util.ArrayList;
 
-/**
- *
- * @author trand
- */
 public class KhachHangDAO {
 
     public static KhachHang getKhachHangTheoSdt(String sdt) throws SQLException {
         KhachHang kh = null;
         try {
             Connection con = ConnectDB.getConnection();
-            String sql = "SELECT * FROM KhachHang WHERE sdt = ?";
+            String sql = "SELECT * FROM KhachHang WHERE sdt = ? AND daXoa = 0";
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, sdt);
             ResultSet rs = ps.executeQuery();
@@ -48,7 +44,7 @@ public class KhachHangDAO {
         try {
             ConnectDB.getInstance().connect();
             Connection con = ConnectDB.getConnection();
-            String sql = "SELECT * FROM KhachHang";
+            String sql = "SELECT * FROM KhachHang WHERE daXoa = 0";
             Statement statement = con.createStatement();
             ResultSet rs = statement.executeQuery(sql);
             while (rs.next()) {
@@ -91,7 +87,7 @@ public class KhachHangDAO {
         try {
             ConnectDB.getInstance().connect();
             Connection con = ConnectDB.getConnection();
-            String querry = "DELETE FROM KhachHang WHERE maKH = ?";
+            String querry = "UPDATE KhachHang SET daXoa = 1 WHERE maKH = ?";
             PreparedStatement stmt = con.prepareStatement(querry);
             stmt.setString(1, maKH);
             n = stmt.executeUpdate();
@@ -126,7 +122,7 @@ public class KhachHangDAO {
         try {
             ConnectDB.getInstance().connect();
             Connection con = ConnectDB.getConnection();
-            String querry = "SELECT * FROM KhachHang WHERE maKH = ?";
+            String querry = "SELECT * FROM KhachHang WHERE maKH = ? AND daXoa = 0";
             PreparedStatement stmt = con.prepareStatement(querry);
             stmt.setString(1, ma);
             ResultSet rs = stmt.executeQuery();
@@ -149,7 +145,7 @@ public class KhachHangDAO {
         int rows = 0;
         try {
             Connection con = ConnectDB.getConnection();
-            String sql = "UPDATE KhachHang SET diemTichLuy = diemTichLuy + ? WHERE maKH = ?";
+            String sql = "UPDATE KhachHang SET diemTichLuy = diemTichLuy + ? WHERE maKH = ? AND daXoa = 0";
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setInt(1, diemTichLuy);
             ps.setString(2, maKH);
@@ -165,7 +161,7 @@ public class KhachHangDAO {
         try {
             ConnectDB.getInstance().connect();
             Connection con = ConnectDB.getConnection();
-            String querry = "SELECT * FROM KhachHang WHERE hoTenDem + ' ' + ten LIKE ?";
+            String querry = "SELECT * FROM KhachHang WHERE hoTenDem + ' ' + ten LIKE ? AND daXoa = 0";
             PreparedStatement stmt = con.prepareStatement(querry);
             stmt.setString(1, "%" + tenKH + "%");
             ResultSet rs = stmt.executeQuery();
@@ -190,7 +186,7 @@ public class KhachHangDAO {
         try {
             ConnectDB.getInstance().connect();
             Connection con = ConnectDB.getConnection();
-            String querry = "SELECT * FROM KhachHang WHERE sdt = ?";
+            String querry = "SELECT * FROM KhachHang WHERE sdt = ? AND daXoa = 0";
             PreparedStatement stmt = con.prepareStatement(querry);
             stmt.setString(1, sdtKH);
             ResultSet rs = stmt.executeQuery();

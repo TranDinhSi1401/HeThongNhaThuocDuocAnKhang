@@ -5,8 +5,12 @@
 package hethongnhathuocduocankhang.gui;
 
 import hethongnhathuocduocankhang.dao.KhuyenMaiDAO;
+import hethongnhathuocduocankhang.dao.NhanVienDAO;
+import hethongnhathuocduocankhang.dao.TaiKhoanDAO;
 import hethongnhathuocduocankhang.entity.KhuyenMai;
 import hethongnhathuocduocankhang.entity.LoaiKhuyenMaiEnum;
+import hethongnhathuocduocankhang.entity.NhanVien;
+import hethongnhathuocduocankhang.entity.TaiKhoan;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -31,8 +35,6 @@ public class QuanLiKhuyenMaiGUI extends JPanel {
     private JComboBox<String> cmbBoLoc;
     private DefaultTableModel model;
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
-
-    // Label hiển thị số lượng (Footer)
     private JLabel lblTongSoDong;
     private JLabel lblSoDongChon;
 
@@ -40,18 +42,22 @@ public class QuanLiKhuyenMaiGUI extends JPanel {
         this.setLayout(new BorderLayout(10, 10));
         this.setBorder(new EmptyBorder(10, 10, 10, 10));
 
-        // --- 1. PANEL NORTH ---
+        // PANEL NORTH
         JPanel pnlNorth = new JPanel();
         pnlNorth.setLayout(new BorderLayout());
 
-        // 1.1. Chức năng
+        // Chức năng
         JPanel pnlNorthLeft = new JPanel();
         pnlNorthLeft.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 0));
         pnlNorthLeft.setBorder(new EmptyBorder(0, 0, 10, 0));
 
-        btnThem = new JButton("Thêm");
-        btnXoa = new JButton("Xóa");
-        btnSua = new JButton("Sửa");
+        btnThem = new JButton("Thêm - F6");
+        btnXoa = new JButton("Xóa - Del");
+        btnSua = new JButton("Sửa - F2");
+
+        mapKeyToClickButton("F6", btnThem);
+        mapKeyToClickButton("DELETE", btnXoa);
+        mapKeyToClickButton("F2", btnSua);
 
         setupTopButton(btnThem, new Color(50, 150, 250));
         setupTopButton(btnXoa, new Color(250, 100, 100));
@@ -63,7 +69,7 @@ public class QuanLiKhuyenMaiGUI extends JPanel {
 
         pnlNorth.add(pnlNorthLeft, BorderLayout.WEST);
 
-        // 1.2. Tìm kiếm & Lọc
+        // Tìm kiếm & Lọc
         JPanel pnlNorthRight = new JPanel();
         pnlNorthRight.setLayout(new FlowLayout(FlowLayout.RIGHT, 10, 5));
 
@@ -96,10 +102,9 @@ public class QuanLiKhuyenMaiGUI extends JPanel {
         pnlNorth.add(pnlNorthRight, BorderLayout.EAST);
         this.add(pnlNorth, BorderLayout.NORTH);
 
-        // --- 2. PANEL CENTER (TABLE) ---
+        // PANEL CENTER (TABLE)
         JPanel centerPanel = new JPanel(new BorderLayout(0, 10));
 
-        // Thêm cột STT vào đầu
         String[] columnNames = {"STT", "Mã KM", "Mô tả", "Phần trăm", "Loại KM", "Bắt đầu", "Kết thúc", "SL Tối thiểu", "SL Tối đa"};
         Object[][] data = {};
 
@@ -119,7 +124,7 @@ public class QuanLiKhuyenMaiGUI extends JPanel {
         table.setShowGrid(true);
         table.setGridColor(Color.LIGHT_GRAY);
 
-        // --- CẤU HÌNH KÍCH THƯỚC & CĂN CHỈNH CỘT ---
+        // CẤU HÌNH KÍCH THƯỚC & CĂN CHỈNH CỘT
         TableColumnModel columnModel = table.getColumnModel();
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(JLabel.CENTER);
@@ -161,24 +166,24 @@ public class QuanLiKhuyenMaiGUI extends JPanel {
         centerPanel.add(scrollPane, BorderLayout.CENTER);
         this.add(centerPanel, BorderLayout.CENTER);
 
-        // --- 3. PANEL SOUTH (FOOTER) ---
+        // PANEL SOUTH (FOOTER)
         JPanel pnlSouth = new JPanel(new FlowLayout(FlowLayout.LEFT, 20, 5));
         pnlSouth.setBorder(new EmptyBorder(5, 0, 0, 0));
-        
+
         Font fontFooter = new Font("Arial", Font.BOLD, 13);
-        
+
         lblTongSoDong = new JLabel("Tổng số khuyến mãi: 0");
         lblTongSoDong.setFont(fontFooter);
         lblTongSoDong.setForeground(new Color(0, 102, 204));
-        
+
         lblSoDongChon = new JLabel("Đang chọn: 0");
         lblSoDongChon.setFont(fontFooter);
         lblSoDongChon.setForeground(new Color(204, 0, 0));
-        
+
         pnlSouth.add(lblTongSoDong);
         pnlSouth.add(new JSeparator(JSeparator.VERTICAL));
         pnlSouth.add(lblSoDongChon);
-        
+
         this.add(pnlSouth, BorderLayout.SOUTH);
 
         updateTable();
@@ -202,7 +207,7 @@ public class QuanLiKhuyenMaiGUI extends JPanel {
         int stt = 1;
         for (KhuyenMai km : dsKM) {
             Object[] row = {
-                stt++, // STT
+                stt++,
                 km.getMaKhuyenMai(),
                 km.getMoTa(),
                 String.format("%.2f%%", km.getPhanTram()),
@@ -243,7 +248,7 @@ public class QuanLiKhuyenMaiGUI extends JPanel {
                 hienThiChiTietKhuyenMai(e);
             }
         });
-        
+
         // Sự kiện đếm số dòng chọn
         table.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
@@ -289,7 +294,6 @@ public class QuanLiKhuyenMaiGUI extends JPanel {
                 ArrayList<KhuyenMai> dsDaLoc = KhuyenMaiDAO.timKMTheoLoai(loai);
                 updateTable(dsDaLoc);
             } catch (IllegalArgumentException e) {
-                // Xử lý trường hợp Enum không khớp (nếu có)
                 updateTable();
             }
         }
@@ -310,16 +314,27 @@ public class QuanLiKhuyenMaiGUI extends JPanel {
         String maKMNew = String.format("KM-%04d", maKMCuoiCung);
         pnlThemKM.setTxtMaKhuyenMai(maKMNew);
 
-        dialog.setVisible(true);
+        boolean isSuccess = false;
 
-        KhuyenMai kmNew = pnlThemKM.getKhuyenMaiMoi();
+        while (!isSuccess) {
+            dialog.setVisible(true);
 
-        if (kmNew != null) {
+            KhuyenMai kmNew = pnlThemKM.getKhuyenMaiMoi();
+
+            if (kmNew == null) {
+                break;
+            }
+
             if (KhuyenMaiDAO.themKhuyenMai(kmNew)) {
                 JOptionPane.showMessageDialog(this, "Thêm khuyến mãi thành công!");
                 updateTable();
+                isSuccess = true;
+                dialog.dispose();
             } else {
-                JOptionPane.showMessageDialog(this, "Thêm khuyến mãi thất bại.");
+                JOptionPane.showMessageDialog(this,
+                        "Thêm khuyến mãi thất bại.",
+                        "Lỗi",
+                        JOptionPane.ERROR_MESSAGE);
             }
         }
     }
@@ -333,7 +348,6 @@ public class QuanLiKhuyenMaiGUI extends JPanel {
 
         String message;
         if (selectedRows.length == 1) {
-            // Lấy Mô tả ở cột 2 (vì cột 0 là STT, cột 1 là Mã)
             String tenKM = model.getValueAt(selectedRows[0], 2).toString();
             message = "Bạn có chắc muốn xóa khuyến mãi '" + tenKM + "' không?";
         } else {
@@ -346,7 +360,6 @@ public class QuanLiKhuyenMaiGUI extends JPanel {
             int soLuongXoaThanhCong = 0;
             for (int i = selectedRows.length - 1; i >= 0; i--) {
                 int row = selectedRows[i];
-                // Lấy Mã KM ở cột 1 (vì cột 0 là STT)
                 String maKM = model.getValueAt(row, 1).toString();
                 if (KhuyenMaiDAO.xoaKhuyenMai(maKM)) {
                     soLuongXoaThanhCong++;
@@ -371,7 +384,6 @@ public class QuanLiKhuyenMaiGUI extends JPanel {
             return;
         }
 
-        // Lấy Mã KM ở cột 1
         String maKM = model.getValueAt(selectedRow, 1).toString();
         KhuyenMai kmCanSua = KhuyenMaiDAO.timKMTheoMa(maKM);
 
@@ -398,16 +410,27 @@ public class QuanLiKhuyenMaiGUI extends JPanel {
         pnlThemKM.setTxtSoLuongToiThieu(kmCanSua.getSoLuongToiThieu());
         pnlThemKM.setTxtSoLuongToiDa(kmCanSua.getSoLuongToiDa());
 
-        dialog.setVisible(true);
+        boolean isSuccess = false;
 
-        KhuyenMai kmNew = pnlThemKM.getKhuyenMaiMoi();
+        while (!isSuccess) {
+            dialog.setVisible(true);
 
-        if (kmNew != null) {
+            KhuyenMai kmNew = pnlThemKM.getKhuyenMaiMoi();
+
+            if (kmNew == null) {
+                break;
+            }
+
             if (KhuyenMaiDAO.suaKhuyenMai(maKM, kmNew)) {
                 JOptionPane.showMessageDialog(this, "Sửa khuyến mãi thành công!");
                 updateTable();
+                isSuccess = true;
+                dialog.dispose();
             } else {
-                JOptionPane.showMessageDialog(this, "Sửa khuyến mãi thất bại.");
+                JOptionPane.showMessageDialog(this,
+                        "Sửa khuyến mãi thất bại.",
+                        "Lỗi",
+                        JOptionPane.ERROR_MESSAGE);
             }
         }
     }
@@ -415,7 +438,6 @@ public class QuanLiKhuyenMaiGUI extends JPanel {
     private void hienThiChiTietKhuyenMai(MouseEvent e) {
         int selectRow = table.getSelectedRow();
         if (selectRow != -1) {
-            // Lấy Mã KM ở cột 1
             String maKM = model.getValueAt(selectRow, 1).toString();
             KhuyenMai kmDaChon = KhuyenMaiDAO.timKMTheoMa(maKM);
 
@@ -452,5 +474,34 @@ public class QuanLiKhuyenMaiGUI extends JPanel {
                 dialog.setVisible(true);
             }
         }
+    }
+
+    private void mapKeyToFocus(String key, JComponent component) {
+        InputMap im = component.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        ActionMap am = component.getActionMap();
+
+        im.put(KeyStroke.getKeyStroke(key), "focus_" + key);
+        am.put("focus_" + key, new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                component.requestFocus();
+                if (component instanceof JTextField jTextField) {
+                    jTextField.selectAll();
+                }
+            }
+        });
+    }
+
+    private void mapKeyToClickButton(String key, AbstractButton button) {
+        InputMap im = button.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        ActionMap am = button.getActionMap();
+
+        im.put(KeyStroke.getKeyStroke(key), "click_" + key);
+        am.put("click_" + key, new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                button.doClick(); // kích hoạt sự kiện button
+            }
+        });
     }
 }

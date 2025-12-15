@@ -23,12 +23,6 @@ import java.util.ArrayList;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-/**
- *
- * @author GIGABYTE
- * GUI này quản lý danh sách Phiếu Trả Hàng (Master).
- * Không có chức năng Thêm/Xóa/Sửa.
- */
 public class QuanLiPhieuTraHangGUI extends JPanel { 
 
     private JTextField txtTimKiem;
@@ -36,8 +30,6 @@ public class QuanLiPhieuTraHangGUI extends JPanel {
     private JComboBox<String> cmbTieuChiTimKiem;
     private DefaultTableModel model;
     private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
-
-    // Label hiển thị số lượng (Footer)
     private JLabel lblTongSoDong;
     private JLabel lblSoDongChon;
 
@@ -45,17 +37,17 @@ public class QuanLiPhieuTraHangGUI extends JPanel {
         this.setLayout(new BorderLayout(10, 10));
         this.setBorder(new EmptyBorder(10, 10, 10, 10));
 
-        // --- 1. PANEL NORTH ---
+        // PANEL NORTH
         JPanel pnlNorth = new JPanel();
         pnlNorth.setLayout(new BorderLayout());
 
-        // 1.1. Panel Chức năng (LEFT - Rỗng, giữ layout)
+        // Panel Chức năng
         JPanel pnlNorthLeft = new JPanel();
         pnlNorthLeft.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 0));
         pnlNorthLeft.setBorder(new EmptyBorder(0, 0, 10, 0));
         pnlNorth.add(pnlNorthLeft, BorderLayout.WEST);
         
-        // 1.2. Panel Tìm kiếm
+        // Panel Tìm kiếm
         JPanel pnlNorthRight = new JPanel();
         pnlNorthRight.setLayout(new FlowLayout(FlowLayout.RIGHT, 10, 5));
 
@@ -87,10 +79,9 @@ public class QuanLiPhieuTraHangGUI extends JPanel {
         pnlNorth.add(pnlNorthRight, BorderLayout.EAST);
         this.add(pnlNorth, BorderLayout.NORTH);
 
-        // --- 2. PANEL CENTER (TABLE) ---
+        // PANEL CENTER (TABLE)
         JPanel centerPanel = new JPanel(new BorderLayout(0, 10));
 
-        // Thêm cột STT
         String[] columnNames = {"STT", "Mã Phiếu Trả", "Mã Hóa Đơn Gốc", "Nhân Viên Lập", "Ngày Lập", "Tổng Tiền Hoàn Trả"};
         Object[][] data = {};
 
@@ -110,7 +101,7 @@ public class QuanLiPhieuTraHangGUI extends JPanel {
         table.setShowGrid(true);
         table.setGridColor(Color.LIGHT_GRAY);
 
-        // --- CẤU HÌNH KÍCH THƯỚC & CĂN CHỈNH CỘT ---
+        // CẤU HÌNH KÍCH THƯỚC & CĂN CHỈNH CỘT
         TableColumnModel columnModel = table.getColumnModel();
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(JLabel.CENTER);
@@ -133,14 +124,14 @@ public class QuanLiPhieuTraHangGUI extends JPanel {
         columnModel.getColumn(2).setMaxWidth(120);
         columnModel.getColumn(2).setCellRenderer(centerRenderer);
 
-        // 3. Nhân Viên Lập (Rộng)
+        // 3. Nhân Viên Lập 
         columnModel.getColumn(3).setPreferredWidth(200);
 
         // 4. Ngày Lập
         columnModel.getColumn(4).setPreferredWidth(120);
         columnModel.getColumn(4).setCellRenderer(centerRenderer);
         
-        // 5. Tổng Tiền Hoàn Trả (Căn phải)
+        // 5. Tổng Tiền Hoàn Trả 
         columnModel.getColumn(5).setPreferredWidth(120);
         columnModel.getColumn(5).setCellRenderer(rightRenderer);
 
@@ -148,7 +139,7 @@ public class QuanLiPhieuTraHangGUI extends JPanel {
         centerPanel.add(scrollPane, BorderLayout.CENTER);
         this.add(centerPanel, BorderLayout.CENTER);
         
-        // --- 3. PANEL SOUTH (FOOTER) ---
+        // PANEL SOUTH (FOOTER)
         JPanel pnlSouth = new JPanel(new FlowLayout(FlowLayout.LEFT, 20, 5));
         pnlSouth.setBorder(new EmptyBorder(5, 0, 0, 0));
         
@@ -185,7 +176,7 @@ public class QuanLiPhieuTraHangGUI extends JPanel {
                            : pth.getNhanVien().getMaNV(); 
 
             Object[] row = {
-                stt++, // STT
+                stt++,
                 pth.getMaPhieuTraHang(),
                 pth.getHoaDon().getMaHoaDon(),
                 tenNV,
@@ -273,7 +264,6 @@ public class QuanLiPhieuTraHangGUI extends JPanel {
     private void hienThiChiTietPhieuTraHang(MouseEvent e) {
         int selectRow = table.getSelectedRow();
         if (selectRow != -1) {
-            // Lấy Mã PTH ở CỘT 1 (Vì cột 0 là STT)
             String maPTH = model.getValueAt(selectRow, 1).toString(); 
             PhieuTraHang pthDaChon = PhieuTraHangDAO.timPTHTheoMa(maPTH); 
 

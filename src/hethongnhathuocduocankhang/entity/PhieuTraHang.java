@@ -7,10 +7,6 @@ package hethongnhathuocduocankhang.entity;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-/**
- *
- * @author trand
- */
 public class PhieuTraHang {
     private String maPhieuTraHang;
     private LocalDateTime ngayLapPhieuTraHang;

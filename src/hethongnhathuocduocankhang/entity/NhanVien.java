@@ -7,10 +7,6 @@ package hethongnhathuocduocankhang.entity;
 import java.time.LocalDate;
 import java.util.Objects;
 
-/**
- *
- * @author GIGABYTE
- */
 public class NhanVien {
 
     private String maNV;
@@ -22,8 +18,8 @@ public class NhanVien {
     private LocalDate ngaySinh;
     private String diaChi;
     private boolean nghiViec;
-    private boolean daXoa;
 
+    // Constructor copy
     public NhanVien(NhanVien other) {
         this.maNV = other.maNV;
         this.hoTenDem = other.hoTenDem;
@@ -34,9 +30,9 @@ public class NhanVien {
         this.ngaySinh = other.ngaySinh;
         this.diaChi = other.diaChi;
         this.nghiViec = other.nghiViec;
-        this.daXoa = other.daXoa;
     }
 
+    // Constructor đầy đủ tham số (đã bỏ daXoa)
     public NhanVien(String maNV, String hoTenDem, String ten, String sdt, String cccd, boolean gioiTinh,
             LocalDate ngaySinh, String diaChi, boolean nghiViec) {
         this.maNV = maNV;
@@ -48,13 +44,14 @@ public class NhanVien {
         this.ngaySinh = ngaySinh;
         this.diaChi = diaChi;
         this.nghiViec = nghiViec;
-        this.daXoa = false;
     }
 
+    // Constructor chỉ có mã
     public NhanVien(String maNV) {
         this.maNV = maNV;
     }
 
+    // Constructor rỗng
     public NhanVien() {
 
     }
@@ -127,14 +124,6 @@ public class NhanVien {
         this.gioiTinh = gioiTinh;
     }
 
-    public boolean isDaXoa() {
-        return daXoa;
-    }
-
-    public void setDaXoa(boolean daXoa) {
-        this.daXoa = daXoa;
-    }
-
     public LocalDate getNgaySinh() {
         return ngaySinh;
     }
@@ -154,11 +143,10 @@ public class NhanVien {
             throw new IllegalArgumentException("Chưa đủ 18 tuổi");
         }
         this.ngaySinh = ngaySinh;
-
     }
 
     public void setMatKhau(String matKhau) {
-
+        // Code xử lý mật khẩu (nếu có)
     }
 
     public String getDiaChi() {
@@ -213,7 +201,7 @@ public class NhanVien {
 
     @Override
     public String toString() {
-        return "NhanVien{" + "maNV=" + maNV + ", hoTenDem=" + hoTenDem + ", ten=" + ten + ", sdt=" + sdt + ", cccd=" + cccd + ", gioiTinh=" + gioiTinh + ", ngaySinh=" + ngaySinh + ", diaChi=" + diaChi + ", nghiViec=" + nghiViec + ", daXoa=" + daXoa + '}';
+        return "NhanVien{" + "maNV=" + maNV + ", hoTenDem=" + hoTenDem + ", ten=" + ten + ", sdt=" + sdt + ", cccd=" + cccd + ", gioiTinh=" + gioiTinh + ", ngaySinh=" + ngaySinh + ", diaChi=" + diaChi + ", nghiViec=" + nghiViec + '}';
     }
 
 }

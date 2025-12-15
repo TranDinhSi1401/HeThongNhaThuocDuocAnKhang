@@ -31,8 +31,6 @@ public class QuanLiLichSuCaLamGUI extends JPanel {
     private DefaultTableModel model;
     private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     private final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-
-    // Label hiển thị số lượng (Footer)
     private JLabel lblTongSoDong;
     private JLabel lblSoDongChon;
 
@@ -40,17 +38,17 @@ public class QuanLiLichSuCaLamGUI extends JPanel {
         this.setLayout(new BorderLayout(10, 10));
         this.setBorder(new EmptyBorder(10, 10, 10, 10));
 
-        // --- 1. PANEL NORTH ---
+        // PANEL NORTH
         JPanel pnlNorth = new JPanel();
         pnlNorth.setLayout(new BorderLayout());
 
-        // 1.1. Panel Chức năng (LEFT - TRỐNG nhưng giữ layout)
+        // anel Chức năng
         JPanel pnlNorthLeft = new JPanel();
         pnlNorthLeft.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 0));
         pnlNorthLeft.setBorder(new EmptyBorder(0, 0, 10, 0));
         pnlNorth.add(pnlNorthLeft, BorderLayout.WEST);
 
-        // 1.2. Panel Tìm kiếm (RIGHT)
+        // Panel Tìm kiếm
         JPanel pnlNorthRight = new JPanel();
         pnlNorthRight.setLayout(new FlowLayout(FlowLayout.RIGHT, 10, 5));
 
@@ -82,10 +80,9 @@ public class QuanLiLichSuCaLamGUI extends JPanel {
         pnlNorth.add(pnlNorthRight, BorderLayout.EAST);
         this.add(pnlNorth, BorderLayout.NORTH);
 
-        // --- 2. PANEL CENTER (TABLE) ---
+        // PANEL CENTER (TABLE)
         JPanel centerPanel = new JPanel(new BorderLayout(0, 10));
 
-        // Thêm cột STT
         String[] columnNames = {"STT", "Mã NV", "Tên Nhân Viên", "Ngày Làm", "Mã Ca", "Giờ Vào", "Giờ Ra", "Ghi Chú"};
         Object[][] data = {};
 
@@ -105,7 +102,7 @@ public class QuanLiLichSuCaLamGUI extends JPanel {
         table.setShowGrid(true);
         table.setGridColor(Color.LIGHT_GRAY);
 
-        // --- CẤU HÌNH KÍCH THƯỚC & CĂN CHỈNH CỘT ---
+        // CẤU HÌNH KÍCH THƯỚC & CĂN CHỈNH CỘT
         TableColumnModel columnModel = table.getColumnModel();
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(JLabel.CENTER);
@@ -120,7 +117,7 @@ public class QuanLiLichSuCaLamGUI extends JPanel {
         columnModel.getColumn(1).setMaxWidth(100);
         columnModel.getColumn(1).setCellRenderer(centerRenderer);
 
-        // 2. Tên Nhân Viên (Rộng)
+        // 2. Tên Nhân Viên 
         columnModel.getColumn(2).setPreferredWidth(200);
 
         // 3. Ngày Làm
@@ -137,14 +134,14 @@ public class QuanLiLichSuCaLamGUI extends JPanel {
         columnModel.getColumn(6).setPreferredWidth(100);
         columnModel.getColumn(6).setCellRenderer(centerRenderer);
         
-        // 7. Ghi chú (Rộng)
+        // 7. Ghi chú
         columnModel.getColumn(7).setPreferredWidth(150);
 
         JScrollPane scrollPane = new JScrollPane(table);
         centerPanel.add(scrollPane, BorderLayout.CENTER);
         this.add(centerPanel, BorderLayout.CENTER);
         
-        // --- 3. PANEL SOUTH (FOOTER) ---
+        // PANEL SOUTH (FOOTER)
         JPanel pnlSouth = new JPanel(new FlowLayout(FlowLayout.LEFT, 20, 5));
         pnlSouth.setBorder(new EmptyBorder(5, 0, 0, 0));
         
@@ -187,7 +184,7 @@ public class QuanLiLichSuCaLamGUI extends JPanel {
                     : "Chưa ra ca";
 
             Object[] row = {
-                stt++, // STT
+                stt++,
                 ls.getNhanVien().getMaNV(),
                 tenNV,
                 ls.getNgayLamViec().format(dateFormatter),
@@ -284,7 +281,6 @@ public class QuanLiLichSuCaLamGUI extends JPanel {
             dialog.pack();
             dialog.setLocationRelativeTo(null);
 
-            // Lấy dữ liệu String từ bảng (Chú ý: Cột 0 là STT, nên dữ liệu bắt đầu từ 1)
             String maNV = model.getValueAt(selectRow, 1).toString();
             String tenNV = model.getValueAt(selectRow, 2).toString();
             String ngayLam = model.getValueAt(selectRow, 3).toString();
@@ -294,7 +290,6 @@ public class QuanLiLichSuCaLamGUI extends JPanel {
             Object ghiChuObj = model.getValueAt(selectRow, 7);
             String ghiChu = (ghiChuObj != null) ? ghiChuObj.toString() : "";
 
-            // Đổ dữ liệu
             pnlChiTiet.setTxtMaNhanVien(maNV);
             pnlChiTiet.setTxtTenNhanVien(tenNV);
             pnlChiTiet.setTxtNgayLam(ngayLam);
@@ -303,7 +298,6 @@ public class QuanLiLichSuCaLamGUI extends JPanel {
             pnlChiTiet.setTxtGioRa(gioRa);
             pnlChiTiet.setTxtGhiChu(ghiChu);
 
-            // Cấu hình nút Đóng
             pnlChiTiet.getBtnHuy().setVisible(false);
             pnlChiTiet.getBtnXacNhan().setVisible(true);
             pnlChiTiet.getBtnXacNhan().setText("Đóng");

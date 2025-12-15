@@ -33,32 +33,26 @@ public class QuanLiHoaDonGUI extends JPanel {
     private JComboBox<String> cmbTieuChiTimKiem;
     private JComboBox<String> cmbBoLoc;
     private DefaultTableModel model;
-
-    // Label hiển thị số lượng (Footer)
     private JLabel lblTongSoDong;
     private JLabel lblSoDongChon;
-    
-    // Thanh tiến trình loading
-    private JProgressBar progressBar;
-    
-    // Format ngày giờ dùng chung
-    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+    private JProgressBar progressBar; // Thanh tiến trình loading
+    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");  // Format ngày giờ
 
     public QuanLiHoaDonGUI() {
         this.setLayout(new BorderLayout(10, 10));
         this.setBorder(new EmptyBorder(10, 10, 10, 10));
 
-        // --- 1. PANEL NORTH ---
+        // PANEL NORTH
         JPanel pnlNorth = new JPanel();
         pnlNorth.setLayout(new BorderLayout());
 
-        // 1.1. Panel Chức năng (LEFT)
+        // Panel Chức năng (LEFT)
         JPanel pnlNorthLeft = new JPanel();
         pnlNorthLeft.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 0));
         pnlNorthLeft.setBorder(new EmptyBorder(0, 0, 10, 0));
         pnlNorth.add(pnlNorthLeft, BorderLayout.WEST);
 
-        // 1.2. Panel Tìm kiếm và Lọc
+        // Panel Tìm kiếm và Lọc
         JPanel pnlNorthRight = new JPanel();
         pnlNorthRight.setLayout(new FlowLayout(FlowLayout.RIGHT, 10, 5));
 
@@ -103,7 +97,7 @@ public class QuanLiHoaDonGUI extends JPanel {
         pnlNorth.add(pnlNorthRight, BorderLayout.EAST);
         this.add(pnlNorth, BorderLayout.NORTH);
 
-        // --- 2. PANEL CENTER (TABLE) ---
+        // PANEL CENTER (TABLE)
         JPanel centerPanel = new JPanel(new BorderLayout(0, 10));
 
         // Cột hiển thị
@@ -126,23 +120,23 @@ public class QuanLiHoaDonGUI extends JPanel {
         };
 
         table = new JTable(model);
-        table.setRowHeight(30); // Tăng chiều cao dòng lên xíu cho thoáng
+        table.setRowHeight(30); 
         table.setFont(new Font("Arial", Font.PLAIN, 13));
         table.getTableHeader().setFont(new Font("Arial", Font.BOLD, 13));
         table.getTableHeader().setBackground(new Color(230, 230, 230));
         table.getTableHeader().setReorderingAllowed(false);
         table.setShowGrid(true);
         table.setGridColor(new Color(230, 230, 230));
-        table.setSelectionBackground(new Color(220, 240, 255)); // Màu chọn dòng nhẹ nhàng
+        table.setSelectionBackground(new Color(220, 240, 255)); 
 
-        // --- CẤU HÌNH KÍCH THƯỚC & CĂN CHỈNH CỘT ---
+        // CẤU HÌNH KÍCH THƯỚC & CĂN CHỈNH CỘT
         TableColumnModel columnModel = table.getColumnModel();
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(JLabel.CENTER);
         
         DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
-        rightRenderer.setHorizontalAlignment(JLabel.RIGHT); // Dùng cho cột tiền
-        rightRenderer.setBorder(new EmptyBorder(0,0,0,5)); // Padding phải
+        rightRenderer.setHorizontalAlignment(JLabel.RIGHT); 
+        rightRenderer.setBorder(new EmptyBorder(0,0,0,5));
 
         // 0. STT
         columnModel.getColumn(0).setPreferredWidth(40);
@@ -171,15 +165,13 @@ public class QuanLiHoaDonGUI extends JPanel {
         // 6. Hình thức TT
         columnModel.getColumn(6).setPreferredWidth(120);
         columnModel.getColumn(6).setCellRenderer(centerRenderer);
-        
-        // LƯU Ý: Đã xóa cấu hình cột 7 vì model chỉ có 0-6 cột
 
         JScrollPane scrollPane = new JScrollPane(table);
         centerPanel.add(scrollPane, BorderLayout.CENTER);
 
         this.add(centerPanel, BorderLayout.CENTER);
         
-        // --- 3. PANEL SOUTH (FOOTER) ---
+        // PANEL SOUTH (FOOTER)
         JPanel pnlSouth = new JPanel(new BorderLayout());
         pnlSouth.setBorder(new EmptyBorder(5, 0, 0, 0));
         
@@ -230,15 +222,12 @@ public class QuanLiHoaDonGUI extends JPanel {
         
         // Hiển thị thanh loading
         progressBar.setVisible(true);
-        progressBar.setIndeterminate(true); // Chạy qua lại vô tận
+        progressBar.setIndeterminate(true); // Khi bắt đầu tải thanh load sẽ chạy qua chạy lại liên tục
         
         // Khởi tạo Worker
         SwingWorker<ArrayList<HoaDon>, HoaDon> worker = new SwingWorker<ArrayList<HoaDon>, HoaDon>() {
             @Override
-            protected ArrayList<HoaDon> doInBackground() throws Exception {
-                // Giả lập độ trễ nhỏ nếu cần để thấy hiệu ứng loading (Optional)
-                // Thread.sleep(500); 
-                
+            protected ArrayList<HoaDon> doInBackground() throws Exception {             
                 // 1. Lấy dữ liệu từ DAO (Thực hiện ngầm)
                 ArrayList<HoaDon> list = dataSupplier.get();
                 
@@ -246,8 +235,6 @@ public class QuanLiHoaDonGUI extends JPanel {
                 if (list != null) {
                     for (HoaDon hd : list) {
                         publish(hd);
-                        // Ngủ cực ngắn để tạo hiệu ứng "rơi" từ từ nếu muốn
-                        // Thread.sleep(1); 
                     }
                 }
                 return list;
@@ -255,7 +242,6 @@ public class QuanLiHoaDonGUI extends JPanel {
 
             @Override
             protected void process(List<HoaDon> chunks) {
-                // Hàm này chạy trên EDT, an toàn để update UI
                 for (HoaDon hd : chunks) {
                     addHoaDonToTable(hd);
                 }
@@ -264,7 +250,7 @@ public class QuanLiHoaDonGUI extends JPanel {
             @Override
             protected void done() {
                 try {
-                    ArrayList<HoaDon> result = get(); // Lấy kết quả cuối cùng
+                    ArrayList<HoaDon> result = get();
                     lblTongSoDong.setText("Tổng số hóa đơn: " + (result != null ? result.size() : 0));
                 } catch (InterruptedException | ExecutionException e) {
                     e.printStackTrace();
@@ -292,7 +278,7 @@ public class QuanLiHoaDonGUI extends JPanel {
         }
 
         Object[] row = {
-            model.getRowCount() + 1, // STT tự tăng dựa trên số dòng hiện tại
+            model.getRowCount() + 1,
             hd.getMaHoaDon(),
             tenNV,
             tenKH,
@@ -321,7 +307,7 @@ public class QuanLiHoaDonGUI extends JPanel {
         cmbTieuChiTimKiem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                txtTimKiem.setText("");
+                txtTimKiem.selectAll();
                 txtTimKiem.requestFocus();
             }
         });
@@ -375,9 +361,6 @@ public class QuanLiHoaDonGUI extends JPanel {
                         break;
                 }
             } catch (DateTimeParseException e) {
-                 // Lưu ý: Trong doInBackground không được show Dialog trực tiếp, 
-                 // nhưng ở đây ta chỉ catch lỗi parse ngày đơn giản.
-                 // Nếu muốn show lỗi chuẩn, cần xử lý ở done() hoặc process()
                  System.err.println("Lỗi định dạng ngày: " + e.getMessage());
             }
             return dsKetQua;
@@ -392,8 +375,6 @@ public class QuanLiHoaDonGUI extends JPanel {
                 case "Tất cả":
                     return HoaDonDAO.getAllHoaDon();
                 case "Đã thanh toán":
-                    // Giả sử bảng DB của bạn vẫn giữ logic cũ về boolean trạng thái
-                    // Nếu đã bỏ cột TrangThai, bạn cần sửa lại DAO method tương ứng
                     return HoaDonDAO.timHDTheoTrangThai(true); 
                 case "Chưa thanh toán":
                     return HoaDonDAO.timHDTheoTrangThai(false);
@@ -411,9 +392,6 @@ public class QuanLiHoaDonGUI extends JPanel {
         int selectRow = table.getSelectedRow();
         if (selectRow != -1) {
             String maHD = model.getValueAt(selectRow, 1).toString();
-            
-            // Xử lý lấy chi tiết không cần SwingWorker vì chỉ lấy 1 object, khá nhanh
-            // Tuy nhiên nếu chi tiết quá nhiều thì cũng nên dùng Worker.
             HoaDon hdDaChon = HoaDonDAO.getHoaDonTheoMaHD(maHD);
 
             if (hdDaChon != null && e.getClickCount() == 2) {

@@ -17,10 +17,6 @@ import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
-/**
- *
- * @author GIGABYTE
- */
 public class ThemKhuyenMaiGUI extends javax.swing.JPanel { 
 
     private KhuyenMai khuyenMaiMoi = null; 
@@ -48,7 +44,7 @@ public class ThemKhuyenMaiGUI extends javax.swing.JPanel {
         jTextField8.addActionListener(e -> validateSLToiDa());
     }
 
-    // Getters cho các nút
+    // Getters
     public javax.swing.JButton getBtnHuy() {
         return jButton1;
     }
@@ -57,8 +53,6 @@ public class ThemKhuyenMaiGUI extends javax.swing.JPanel {
         return jButton2;
     }
 
-    // Getters/Setters cho các trường dữ liệu
-    
     public javax.swing.JTextField getTxtMaKhuyenMai() {
         return jTextField1;
     }
@@ -116,8 +110,7 @@ public class ThemKhuyenMaiGUI extends javax.swing.JPanel {
             jTextField6.setText("");
         }
     }
-    
-    // *** BỔ SUNG GETTER BỊ THIẾU ***
+
     public javax.swing.JTextField getTxtSoLuongToiThieu() {
         return jTextField7;
     }
@@ -125,8 +118,7 @@ public class ThemKhuyenMaiGUI extends javax.swing.JPanel {
     public void setTxtSoLuongToiThieu(int sl) {
         jTextField7.setText(String.valueOf(sl));
     }
-    
-    // *** BỔ SUNG GETTER BỊ THIẾU ***
+
     public javax.swing.JTextField getTxtSoLuongToiDa() {
         return jTextField8;
     }
@@ -319,7 +311,6 @@ public class ThemKhuyenMaiGUI extends javax.swing.JPanel {
         return this.khuyenMaiMoi;
     }
 
-    // CÁC HÀM VALIDATE MỚI
     private boolean validateMoTa() {
         String moTa = jTextField2.getText().trim();
         if (moTa.length() > 255) {
@@ -481,8 +472,7 @@ public class ThemKhuyenMaiGUI extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
-    // Khai báo biến cho component mới
-    //private javax.swing.JLabel jLabel9;
+
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JTextField jTextField1;
@@ -491,7 +481,6 @@ public class ThemKhuyenMaiGUI extends javax.swing.JPanel {
     private javax.swing.JTextField jTextField4;
     private javax.swing.JTextField jTextField6;
     private javax.swing.JTextField jTextField7;
-    // Khai báo biến cho component mới
     //private javax.swing.JTextField jTextField8;
     // End of variables declaration//GEN-END:variables
 }

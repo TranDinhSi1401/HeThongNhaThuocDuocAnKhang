@@ -9,10 +9,6 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Objects;
 
-/**
- *
- * @author GIGABYTE
- */
 public class LichSuCaLam {
 
     private NhanVien nhanVien;
