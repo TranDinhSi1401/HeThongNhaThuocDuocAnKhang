@@ -13,6 +13,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 
+//đang sửa
 public class QuanLiSanPhamGUI extends JPanel {
 
     private JButton btnThem, btnXoa, btnSua;
