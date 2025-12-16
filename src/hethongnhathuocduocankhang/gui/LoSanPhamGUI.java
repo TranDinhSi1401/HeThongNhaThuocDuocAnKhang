@@ -163,7 +163,8 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
         
         SwingUtilities.invokeLater(() -> {
             tblTab.requestFocusInWindow();
-            txtMaLoSP.requestFocusInWindow();
+            cmbTimKiemTheo.requestFocusInWindow();
+            cmbTimKiemTheo.setSelectedIndex(0);
         });
 
 
@@ -1327,11 +1328,11 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
         DefaultTableModel tbl = (DefaultTableModel) tblKetQua.getModel();
         QuanLyLoBUS busLo = new QuanLyLoBUS();
         ArrayList<LoSanPham> dsKetQua = busLo.timKiemLoVoiNhieuDieuKien(tieuChi, noiDung, trangThai);
-        tbl.setRowCount(0);
-        if (dsKetQua.isEmpty()) {
+        if (dsKetQua==null || dsKetQua.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Không tìm thấy lô sản phẩm nào khớp với tiêu chí.", "Thông báo", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
+        tbl.setRowCount(0);
         SwingWorker<Void, Object[]>worker = new SwingWorker<>() {
             @Override
             protected Void doInBackground() throws Exception {
@@ -1384,6 +1385,13 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
         else{
             txtMaLoSP.setEnabled(true);
         }
+        if(cmbTimKiemTheo.getSelectedIndex()!=0){
+            txtMaLoSP.setText("");
+            txtMaLoSP.requestFocus();
+        }
+            
+        
+        
         // TODO add your handling code here:
     }//GEN-LAST:event_cmbTimKiemTheoActionPerformed
 

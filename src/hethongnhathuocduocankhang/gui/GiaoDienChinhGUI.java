@@ -123,7 +123,7 @@ public class GiaoDienChinhGUI extends javax.swing.JFrame {
                             aboutDialog.setVisible(true);
                         }
                         case 2 -> {
-                            // Hướng dẫn sử dụng
+                            showPanel(new HuongDanSuDungGUI());
                         }
                     }
                 }
