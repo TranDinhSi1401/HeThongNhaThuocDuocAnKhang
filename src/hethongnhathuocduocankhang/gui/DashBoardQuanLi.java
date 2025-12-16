@@ -6,12 +6,16 @@ package hethongnhathuocduocankhang.gui;
 
 import com.orsoncharts.util.TextAnchor;
 import hethongnhathuocduocankhang.bus.QuanLyLoBUS;
+import hethongnhathuocduocankhang.dao.CaLamDAO;
 import hethongnhathuocduocankhang.dao.DonViTinhDAO;
 import hethongnhathuocduocankhang.dao.HoaDonDAO;
+import hethongnhathuocduocankhang.dao.LichSuCaLamDAO;
 import hethongnhathuocduocankhang.dao.LoSanPhamDAO;
 import hethongnhathuocduocankhang.dao.NhanVienDAO;
 import hethongnhathuocduocankhang.dao.SanPhamDAO;
+import hethongnhathuocduocankhang.entity.CaLam;
 import hethongnhathuocduocankhang.entity.DonViTinh;
+import hethongnhathuocduocankhang.entity.LichSuCaLam;
 import hethongnhathuocduocankhang.entity.LoSanPham;
 import hethongnhathuocduocankhang.entity.NhanVien;
 import hethongnhathuocduocankhang.entity.SanPham;
@@ -28,6 +32,7 @@ import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.text.NumberFormat;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Map;
@@ -43,6 +48,7 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -64,10 +70,6 @@ import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.ui.RectangleInsets;
 
-/**
- *
- * @author trand
- */
 public class DashBoardQuanLi extends javax.swing.JPanel {
 
     private final JPanel pnlCenter;
@@ -76,13 +78,10 @@ public class DashBoardQuanLi extends javax.swing.JPanel {
     private JComboBox<String> cmbThang;
     private JComboBox<String> cmbNam;
     private JPanel pnlNutTaiLai;
-
     private DefaultTableModel dtmSPSapHetHang;
     private JTable tblSPSapHetHang;
-
     private DefaultTableModel dtmLoSapHetHan;
     private JTable tblLoSapHetHan;
-
     private JLabel lblDongHo;
     private JLabel lblTenCa;
     private JLabel lblGioVaoCa;
@@ -105,7 +104,6 @@ public class DashBoardQuanLi extends javax.swing.JPanel {
         startRealTimeClock();
 
         pnlBieuDo.setLayout(new BorderLayout());
-
         pnlBieuDo.setLayout(new BorderLayout());
         pnlCenter = new JPanel(new BorderLayout());
         pnlBieuDo.add(pnlCenter, BorderLayout.CENTER);
@@ -113,11 +111,9 @@ public class DashBoardQuanLi extends javax.swing.JPanel {
         initBieuDo();
         initTableSPSapHetHang();
         initTableLoSapHetHan();
-
         initPanelThongKeNgay();
-
         veBieuDo(LocalDate.now().getMonthValue(), LocalDate.now().getYear(), "tháng");
-        
+
     }
 
     private void initBieuDo() {
@@ -130,8 +126,8 @@ public class DashBoardQuanLi extends javax.swing.JPanel {
 
         String[] cacThang = {"Tháng 1", "Tháng 2", "Tháng 3", "Tháng 4", "Tháng 5", "Tháng 6", "Tháng 7", "Tháng 8", "Tháng 9", "Tháng 10", "Tháng 11", "Tháng 12"};
 
-        int startYear = 2025;
-        int endYear = 2045;
+        int startYear = HoaDonDAO.getNamHoaDonCuNhatVaMoiNhat().get("namCuNhat");
+        int endYear = HoaDonDAO.getNamHoaDonCuNhatVaMoiNhat().get("namMoiNhat");
         int arrayLength = endYear - startYear + 1;
         String[] cacNam = new String[arrayLength];
         for (int i = 0; i < arrayLength; i++) {
@@ -182,13 +178,107 @@ public class DashBoardQuanLi extends javax.swing.JPanel {
             pnlNutTaiLai.repaint();
         });
 
-        btnVaoCa.addActionListener(e -> {
-            if (btnVaoCa.getText().equals("Vào Ca")) {
+        // XỬ LÝ TRẠNG THÁI NÚT KHI KHỞI ĐỘNG
+        // Kiểm tra xem nhân viên có đang trong ca không để set màu nút
+        try {
+            String maNVHienTai = GiaoDienChinhGUI.getTk().getTenDangNhap().trim();
+            LichSuCaLamDAO dao = new LichSuCaLamDAO();
+            if (dao.kiemTraNhanVienDangLamViec(maNVHienTai, LocalDate.now())) {
                 btnVaoCa.setText("Ra Ca");
                 btnVaoCa.setBackground(Color.RED);
             } else {
                 btnVaoCa.setText("Vào Ca");
                 btnVaoCa.setBackground(Color.GREEN);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        // SỰ KIỆN CLICK NÚT
+        btnVaoCa.addActionListener(e -> {
+            try {
+                String maNV = GiaoDienChinhGUI.getTk().getTenDangNhap().trim();
+                NhanVien nv = NhanVienDAO.getNhanVienTheoMaNV(maNV);
+                LocalDate ngayHienTai = LocalDate.now();
+                LocalTime gioHienTai = LocalTime.now();
+
+                String maCa = "";
+                if (gioHienTai.getHour() >= 6 && gioHienTai.getHour() < 14) {
+                    maCa = "SANG";
+                } else {
+                    maCa = "TOI";
+                }
+
+                CaLam caLam = CaLamDAO.timCaLamTheoMa(maCa);
+                if (caLam == null) {
+                    JOptionPane.showMessageDialog(this, "Không xác định được Ca Làm hiện tại (Mã ca: " + maCa + " không tồn tại)!");
+                    return;
+                }
+
+                LichSuCaLamDAO lsDAO = new LichSuCaLamDAO();
+
+                if (btnVaoCa.getText().equals("Vào Ca")) {
+                    // LOGIC VÀO CA
+                    LichSuCaLam ls = new LichSuCaLam(nv, ngayHienTai, caLam, gioHienTai, null, "");
+
+                    if (lsDAO.themLichSuCaLam(ls)) {
+                        JOptionPane.showMessageDialog(this, "Vào ca thành công lúc " + gioHienTai.format(DateTimeFormatter.ofPattern("HH:mm:ss")));
+                        btnVaoCa.setText("Ra Ca");
+                        btnVaoCa.setBackground(Color.RED);
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Lỗi: Không thể vào ca (Có thể bạn đã chấm công rồi).");
+                    }
+
+                } else {
+                    // LOGIC RA CA
+                    // Tạo giao diện nhập ghi chú
+                    JPanel pnlGhiChu = new JPanel(new BorderLayout(5, 5));
+                    pnlGhiChu.setPreferredSize(new Dimension(400, 150));
+
+                    JLabel lblLoiNhan = new JLabel("Nhập ghi chú ra ca (nếu có):");
+                    lblLoiNhan.setFont(new Font("Segoe UI", Font.BOLD, 14));
+
+                    JTextArea txtGhiChu = new JTextArea(5, 20);
+                    txtGhiChu.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+                    txtGhiChu.setLineWrap(true);
+                    txtGhiChu.setWrapStyleWord(true);
+
+                    JScrollPane scrollGhiChu = new JScrollPane(txtGhiChu);
+
+                    pnlGhiChu.add(lblLoiNhan, BorderLayout.NORTH);
+                    pnlGhiChu.add(scrollGhiChu, BorderLayout.CENTER);
+
+                    // Hiển thị hộp thoại nhập
+                    int inputResult = JOptionPane.showConfirmDialog(
+                            this, pnlGhiChu, "Ghi chú Ra Ca",
+                            JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE
+                    );
+
+                    // Nếu bấm Cancel thì thoát
+                    if (inputResult != JOptionPane.OK_OPTION) {
+                        return;
+                    }
+
+                    String ghiChu = txtGhiChu.getText().trim();
+
+                    // Hiện hộp thoại xác nhận cuối cùng
+                    int confirm = JOptionPane.showConfirmDialog(this,
+                            "Bạn có chắc chắn muốn kết thúc ca làm việc?",
+                            "Xác nhận ra ca", JOptionPane.YES_NO_OPTION);
+
+                    if (confirm == JOptionPane.YES_OPTION) {
+                        if (lsDAO.capNhatRaCa(maNV, maCa, ngayHienTai, gioHienTai, ghiChu)) {
+                            JOptionPane.showMessageDialog(this, "Ra ca thành công!");
+                            btnVaoCa.setText("Vào Ca");
+                            btnVaoCa.setBackground(Color.GREEN);
+                        } else {
+                            JOptionPane.showMessageDialog(this, "Lỗi: Không tìm thấy phiên làm việc để ra ca.");
+                        }
+                    }
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(this, "Lỗi kết nối cơ sở dữ liệu!");
             }
         });
     }
@@ -198,7 +288,7 @@ public class DashBoardQuanLi extends javax.swing.JPanel {
         jPanel17.setLayout(new BorderLayout());
         jPanel17.setBackground(Color.WHITE);
 
-        // 1. Panel Đồng hồ
+        // Panel Đồng hồ
         JPanel pnlClock = new JPanel(new FlowLayout(FlowLayout.CENTER));
         pnlClock.setBackground(Color.WHITE);
         lblDongHo = new JLabel("00:00:00");
@@ -206,50 +296,40 @@ public class DashBoardQuanLi extends javax.swing.JPanel {
         lblDongHo.setForeground(new Color(0, 153, 51));
         pnlClock.add(lblDongHo);
 
-        // 2. Panel Thông tin chi tiết
+        // Panel Thông tin chi tiết
         JPanel pnlInfo = new JPanel();
         pnlInfo.setLayout(new BoxLayout(pnlInfo, BoxLayout.Y_AXIS));
         pnlInfo.setBackground(Color.WHITE);
         pnlInfo.setBorder(BorderFactory.createEmptyBorder(0, 15, 10, 0));
 
-        // --- LABEL NGÀY ---
         lblNgay = new JLabel("Đang tải ngày...");
         styleLabelCaLam(lblNgay);
         lblNgay.setFont(new Font("Segoe UI", Font.BOLD, 16));
         lblNgay.setForeground(new Color(0, 102, 204));
 
-        // --- LABEL CA VÀ GIỜ ---
         lblTenCa = new JLabel("Ca: ...");
         lblGioVaoCa = new JLabel("Bắt đầu: ...");
         styleLabelCaLam(lblTenCa);
         styleLabelCaLam(lblGioVaoCa);
 
-        // --- [MỚI] LABEL NHÂN VIÊN ---
-        // Lấy tên từ label hiển thị thông tin (nếu có)
         String tenNV = "";
         if (lblHoTen != null) {
             tenNV = lblHoTen.getText();
         }
-//        // Fallback nếu chưa có dữ liệu hoặc là tên mẫu
-//        if (tenNV == null || tenNV.isEmpty() || tenNV.equals("Nguyễn Văn A")) {
-//            tenNV = "Võ Tiến Khoa";
-//        }
 
         lblNhanVienTruc = new JLabel("NV: " + tenNV);
         styleLabelCaLam(lblNhanVienTruc);
         lblNhanVienTruc.setFont(new Font("Segoe UI", Font.BOLD, 15)); // Chữ đậm
         lblNhanVienTruc.setForeground(new Color(204, 0, 0)); // Màu đỏ nổi bật
 
-        // --- THÊM VÀO PANEL THEO THỨ TỰ ---
-        pnlInfo.add(lblNgay);           // 1. Ngày
+        pnlInfo.add(lblNgay);
         pnlInfo.add(Box.createVerticalStrut(5));
-        pnlInfo.add(lblTenCa);          // 2. Tên ca
+        pnlInfo.add(lblTenCa);
         pnlInfo.add(Box.createVerticalStrut(5));
-        pnlInfo.add(lblGioVaoCa);       // 3. Giờ vào ca
+        pnlInfo.add(lblGioVaoCa);
         pnlInfo.add(Box.createVerticalStrut(5));
-        pnlInfo.add(lblNhanVienTruc);   // 4. Nhân viên trực [MỚI]
+        pnlInfo.add(lblNhanVienTruc);
 
-        // 3. Add vào jPanel17
         jPanel17.add(pnlClock, BorderLayout.NORTH);
         jPanel17.add(pnlInfo, BorderLayout.CENTER);
 
@@ -264,19 +344,16 @@ public class DashBoardQuanLi extends javax.swing.JPanel {
     }
 
     private void startRealTimeClock() {
-        // --- [MỚI] Định dạng ngày tháng tiếng Việt ---
-        // Ví dụ: "Thứ Bảy, 06/12/2025"
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("EEEE, dd/MM/yyyy", new java.util.Locale("vi", "VN"));
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
 
         timer = new javax.swing.Timer(1000, e -> {
-            // Dùng LocalDateTime để lấy cả ngày và giờ
             java.time.LocalDateTime now = java.time.LocalDateTime.now();
 
             // Cập nhật đồng hồ
             lblDongHo.setText(now.format(timeFormatter));
 
-            // --- [MỚI] Cập nhật Ngày ---
+            // Cập nhật Ngày
             lblNgay.setText(now.format(dateFormatter));
 
             // Logic xác định ca
@@ -295,9 +372,6 @@ public class DashBoardQuanLi extends javax.swing.JPanel {
         timer.start();
     }
 
-    /**
-     * Khởi tạo Bảng: SẢN PHẨM SẮP HẾT HÀNG (gán vào jPanel19)
-     */
     private void initTableSPSapHetHang() {
         JPanel pnlCardSPSapHetHang = new JPanel(new BorderLayout());
         pnlCardSPSapHetHang.setBackground(Color.WHITE);
@@ -311,7 +385,7 @@ public class DashBoardQuanLi extends javax.swing.JPanel {
         lblTieuDe.setFont(new Font("Segoe UI", Font.BOLD, 16));
         pnlTieuDe.add(lblTieuDe, BorderLayout.WEST);
 
-        String[] tenCot = {"STT", "Mã SP", "Tên SP", "ĐVT", "Tồn Kho", "Tồn max"};
+        String[] tenCot = {"STT", "Mã SP", "Tên SP", "ĐVT", "Tồn Kho", "Tồn min"};
         dtmSPSapHetHang = new DefaultTableModel(new Object[][]{}, tenCot) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -346,13 +420,12 @@ public class DashBoardQuanLi extends javax.swing.JPanel {
         DefaultTableCellRenderer rendererTonKhoDo = new DefaultTableCellRenderer() {
             @Override
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-                // 1. Gọi super để lấy component (thường là JLabel)
                 Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 
-                // 2. Định dạng màu sắc: LUÔN ĐẶT MÀU ĐỎ
+                // MÀU ĐỎ
                 c.setForeground(Color.RED);
 
-                // 3. Định dạng hiển thị (Căn phải, Định dạng số)
+                // Định dạng hiển thị (Căn phải, Định dạng số)
                 if (value instanceof Number) {
                     int sl = ((Number) value).intValue();
                     setText(String.format("%,d", sl)); // Định dạng số có dấu phẩy
@@ -375,10 +448,9 @@ public class DashBoardQuanLi extends javax.swing.JPanel {
         tblSPSapHetHang.getColumnModel().getColumn(1).setCellRenderer(getLeftRenderer());
         tblSPSapHetHang.getColumnModel().getColumn(2).setCellRenderer(getLeftRenderer());
         tblSPSapHetHang.getColumnModel().getColumn(3).setCellRenderer(getRightRenderer());
-        tblSPSapHetHang.getColumnModel().getColumn(4).setCellRenderer(rendererTonKhoDo); // <--- SỬA DỤNG RENDERER MỚI
+        tblSPSapHetHang.getColumnModel().getColumn(4).setCellRenderer(rendererTonKhoDo);
         tblSPSapHetHang.getColumnModel().getColumn(5).setCellRenderer(getRightRenderer());
 
-        // Giả sử: 
         tblSPSapHetHang.getColumnModel().getColumn(0).setPreferredWidth(10);   // STT
         tblSPSapHetHang.getColumnModel().getColumn(1).setPreferredWidth(50);  // Mã SP
         tblSPSapHetHang.getColumnModel().getColumn(2).setPreferredWidth(200);  // Tên SP
@@ -394,16 +466,12 @@ public class DashBoardQuanLi extends javax.swing.JPanel {
         pnlCardSPSapHetHang.add(scrollPane, BorderLayout.CENTER);
 
         jPanel19.removeAll();
-        //jPanel19.setPreferredSize(new Dimension(120, 0));
         jPanel19.setLayout(new BorderLayout());
         jPanel19.add(pnlCardSPSapHetHang, BorderLayout.CENTER);
         jPanel19.revalidate();
-        jPanel19.repaint();      
+        jPanel19.repaint();
     }
 
-    /**
-     * Khởi tạo Bảng: LÔ SẮP HẾT HẠN (gán vào jPanel20)
-     */
     private void initTableLoSapHetHan() {
         JPanel pnlCardLoSapHetHan = new JPanel(new BorderLayout());
         pnlCardLoSapHetHan.setBackground(Color.WHITE);
@@ -473,11 +541,6 @@ public class DashBoardQuanLi extends javax.swing.JPanel {
                 Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
                 if (value instanceof Number) {
                     int sl = ((Number) value).intValue();
-//                    if (sl < 1000) {
-//                        c.setForeground(Color.RED);
-//                    } else {
-//                        c.setForeground(isSelected ? table.getSelectionForeground() : table.getForeground());
-//                    }
                     setText(String.format("%,d", sl));
                 }
                 setHorizontalAlignment(JLabel.RIGHT);
@@ -509,22 +572,21 @@ public class DashBoardQuanLi extends javax.swing.JPanel {
         pnlCardLoSapHetHan.add(pnlTieuDe, BorderLayout.NORTH);
         pnlCardLoSapHetHan.add(scrollPane, BorderLayout.CENTER);
 
-        // Add vào Container chính (jPanel20)
         jPanel20.removeAll();
-        jPanel20.setPreferredSize(new Dimension(500, 0)); // Set độ rộng mong muốn nếu dùng BorderLayout bên ngoài
+        jPanel20.setPreferredSize(new Dimension(500, 0));
         jPanel20.setLayout(new BorderLayout());
         jPanel20.add(pnlCardLoSapHetHan, BorderLayout.CENTER);
         jPanel20.revalidate();
         jPanel20.repaint();
     }
 
-    // --- CÁC HÀM TIỆN ÍCH STYLE CHUNG CHO TABLE ---
+    // CÁC HÀM TIỆN ÍCH STYLE CHUNG CHO TABLE
     private void styleTable(JTable table) {
         table.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         table.setRowHeight(35);
         table.setShowGrid(false);
         table.setIntercellSpacing(new Dimension(0, 0));
-        table.setSelectionBackground(new Color(230, 245, 255));
+        table.setSelectionBackground(new Color(153, 204, 255)); // màu sắc dòng được chọn
 
         JTableHeader header = table.getTableHeader();
         header.setFont(new Font("Segoe UI", Font.BOLD, 14));
@@ -568,9 +630,8 @@ public class DashBoardQuanLi extends javax.swing.JPanel {
             // B3: Tạo đối tượng JFreeChart đã tùy chỉnh
             JFreeChart chart = taoBieuDoCoBan(dataset, tieuChi, thang, nam);
 
-            // B4: TẠO CHARTPANEL (Đây là bước "cầu nối")
-            // ChartPanel là một component Swing (giống JPanel)
-            // dùng để chứa đối tượng JFreeChart
+            // B4: TẠO CHARTPANEL
+            // ChartPanel là một component Swing (giống JPanel)dùng để chứa đối tượng JFreeChart
             ChartPanel chartPanel = new ChartPanel(chart);
 
             // B5: THÊM CHARTPANEL VÀO PNLCENTER
@@ -590,9 +651,8 @@ public class DashBoardQuanLi extends javax.swing.JPanel {
             // B3: Tạo đối tượng JFreeChart đã tùy chỉnh
             JFreeChart chart = taoBieuDoCoBan(dataset, tieuChi, thang, nam);
 
-            // B4: TẠO CHARTPANEL (Đây là bước "cầu nối")
-            // ChartPanel là một component Swing (giống JPanel)
-            // dùng để chứa đối tượng JFreeChart
+            // B4: TẠO CHARTPANEL
+            // ChartPanel là một component Swing (giống JPanel) dùng để chứa đối tượng JFreeChart
             ChartPanel chartPanel = new ChartPanel(chart);
 
             // B5: THÊM CHARTPANEL VÀO PNLCENTER
@@ -604,7 +664,7 @@ public class DashBoardQuanLi extends javax.swing.JPanel {
         }
     }
 
-    private double giaTriKPI = 3000000;
+    private double giaTriKPI = 0.0;
 
     private DefaultCategoryDataset taoDataset(Map<Integer, Double> data) {
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
@@ -617,8 +677,6 @@ public class DashBoardQuanLi extends javax.swing.JPanel {
     }
 
     private JFreeChart taoBieuDoCoBan(CategoryDataset dataset, String tieuChi, int thang, int nam) {
-        // Dòng NumberFormat đã được xóa, vì listener sẽ tự quản lý
-
         if (tieuChi.equals("tháng")) {
 
             // Tạo biểu đồ cơ bản
@@ -643,18 +701,16 @@ public class DashBoardQuanLi extends javax.swing.JPanel {
 //                    1.0f, new float[]{6.0f, 6.0f}, 0.0f
 //            ));
 //            plot.addRangeMarker(kpiMarker); // Thêm đường KPI vào trục Y (Range)
-            // *** GÁN RENDERER (CHỈ CẦN 2 DÒNG NÀY) ***
             ToMauCot rendererThang = new ToMauCot(giaTriKPI); //Tạo renderer
             plot.setRenderer(rendererThang); // Gán renderer cho plot
 
-            // Toàn bộ code về "StandardCategoryToolTipGenerator" đã được XÓA ở đây.
             return barChart;
 
         } else if (tieuChi.equals("năm")) {
             // Tạo biểu đồ cơ bản
             JFreeChart barChart = ChartFactory.createBarChart(
                     "Doanh thu " + tieuChi + " " + nam,
-                    "Tháng", "Doanh thu (VND)", // Sửa trục X
+                    "Tháng", "Doanh thu (VND)",
                     dataset,
                     PlotOrientation.VERTICAL,
                     false, true, false // Tắt Legend, Bật Tooltips
@@ -665,9 +721,6 @@ public class DashBoardQuanLi extends javax.swing.JPanel {
             plot.setBackgroundPaint(Color.WHITE);
             plot.setRangeGridlinePaint(Color.LIGHT_GRAY);
 
-            // Bạn có thể muốn có một KPI khác cho năm
-            double kpiNam = giaTriKPI * 25; // Ví dụ: KPI năm = KPI ngày * 25 ngày làm việc
-
 //            // Thêm đường KPI (ValueMarker)
 //            ValueMarker kpiMarker = new ValueMarker(kpiNam); // Dùng KPI năm
 //            kpiMarker.setPaint(Color.BLUE);
@@ -677,10 +730,9 @@ public class DashBoardQuanLi extends javax.swing.JPanel {
 //            ));
 //            plot.addRangeMarker(kpiMarker);
             // *** GÁN RENDERER (CHỈ CẦN 2 DÒNG NÀY) ***
-            ToMauCot rendererNam = new ToMauCot(kpiNam); // Dùng KPI năm
+            ToMauCot rendererNam = new ToMauCot(giaTriKPI);
             plot.setRenderer(rendererNam); // Gán renderer cho plot
 
-            // Toàn bộ code về "StandardCategoryToolTipGenerator" đã được XÓA ở đây.
             return barChart;
         }
         return null;
@@ -1014,13 +1066,13 @@ public class DashBoardQuanLi extends javax.swing.JPanel {
     // End of variables declaration//GEN-END:variables
 
     /**
-     * Lớp lắng nghe di chuột mới Dùng Annotation (chú thích) thay vì Marker
+     * Lớp lắng nghe di chuột Dùng Annotation (chú thích)
      */
     class CustomChartMouseListener implements ChartMouseListener {
 
         private JFreeChart chart;
         private CategoryPlot plot;
-        private String tieuChi; // ("tháng" hoặc "năm")
+        private String tieuChi;
 
         // Lưu lại annotation cũ để xóa
         private CategoryTextAnnotation lastAnnotation;
@@ -1056,13 +1108,13 @@ public class DashBoardQuanLi extends javax.swing.JPanel {
                         itemEntity.getColumnKey()
                 );
 
-                // *** TẠO VÀ ĐỊNH DẠNG "BẢNG NHỎ" (Annotation) ***
-                // 1. Tạo nội dung (ví dụ: "Ngày 1: 5.000.000 ₫")
+                // TẠO VÀ ĐỊNH DẠNG BẢNG NHỎ (Annotation)
+                // 1. Tạo nội dung (ví dụ: Ngày 1: 5.000.000 đ)
                 String prefix = this.tieuChi.equals("tháng") ? "Ngày " : "Tháng ";
                 String text = prefix + categoryKey.toString() + ": "
                         + currencyFormat.format(value.doubleValue());
 
-                // 2. Tạo Annotation (cái "bảng nhỏ")
+                // Tạo Annotation (bảng nhỏ)
                 // Nó sẽ xuất hiện tại tọa độ (categoryKey, value)
                 CategoryTextAnnotation annotation = new CategoryTextAnnotation(
                         text, // Nội dung
@@ -1070,22 +1122,19 @@ public class DashBoardQuanLi extends javax.swing.JPanel {
                         value.doubleValue() // Value (Doanh thu)
                 );
 
-                // 3. Tùy chỉnh "bảng nhỏ"
+                // Tùy chỉnh bảng nhỏ
                 annotation.setFont(new Font("Segoe UI", Font.BOLD, 12));
                 annotation.setPaint(Color.BLACK); // Màu chữ
                 // Màu nền xám nhạt, hơi trong suốt
                 annotation.setPaint(new Color(50, 50, 50, 230));
-                //annotation.setOutlineVisible(true); // Bật viền
-                //annotation.setOutlinePaint(Color.GRAY); // Màu viền
-                //annotation.setdding(5, 5, 5, 5); // Đệm 5px
 
-                // 4. Định vị (Quan trọng!)
-                // Đặt neo của "bảng" ở giữa category
+                // Định vị
+                // Đặt neo của bảng ở giữa category
                 annotation.setCategoryAnchor(CategoryAnchor.MIDDLE);
-                // Đặt text ở vị trí BOTTOM_CENTER (để cái "bảng" xuất hiện BÊN TRÊN điểm dữ liệu)
+                // Đặt text ở vị trí BOTTOM_CENTER (để cái bảng xuất hiện BÊN TRÊN điểm dữ liệu)
                 annotation.setTextAnchor(org.jfree.ui.TextAnchor.BASELINE_CENTER.BOTTOM_CENTER);
 
-                // 5. Thêm "bảng nhỏ" vào biểu đồ
+                // Thêm bảng nhỏ vào biểu đồ
                 plot.addAnnotation(annotation);
                 lastAnnotation = annotation; // Lưu lại để xóa lần sau
             }
@@ -1093,22 +1142,18 @@ public class DashBoardQuanLi extends javax.swing.JPanel {
 
         @Override
         public void chartMouseClicked(ChartMouseEvent event) {
-            // Không cần làm gì
+
         }
     }
 
-    /**
-     * ĐÃ SỬA: Chỉ còn 2 phần (Doanh thu & Hóa đơn)
-     */
     private void initPanelThongKeNgay() {
         jPanel21.removeAll();
-        jPanel21.setPreferredSize(new Dimension(200, 0)); // Chiều rộng đã giảm
+        jPanel21.setPreferredSize(new Dimension(200, 0));
         jPanel21.setBackground(Color.WHITE);
         jPanel21.setLayout(new java.awt.GridLayout(2, 1, 0, 15));
         jPanel21.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
 
-        // --- PHẦN 1: DOANH THU ---
-        // TODO: Thay bằng dữ liệu thật từ DAO
+        // DOANH THU
         LocalDate homNay = LocalDate.now();
         LocalDate homQua = homNay.minusDays(1);
 
@@ -1121,11 +1166,9 @@ public class DashBoardQuanLi extends javax.swing.JPanel {
             phanTramDoanhThu = ((doanhThuHomNay - doanhThuHomQua) / doanhThuHomQua) * 100;
         }
 
-        // Gọi hàm tạo panel với tham số %
         JPanel pnlDoanhThu = taoPanelThongKeCon("Doanh thu hôm nay", doanhThuHomNay, phanTramDoanhThu, true);
 
-        // --- PHẦN 2: HÓA ĐƠN ---
-        // TODO: Thay bằng dữ liệu thật từ DAO
+        // HÓA ĐƠN
         int hoaDonHomNay = HoaDonDAO.timHDTheoNgayLap(homNay).size();
         int hoaDonHomQua = HoaDonDAO.timHDTheoNgayLap(homQua).size();
 
@@ -1143,9 +1186,6 @@ public class DashBoardQuanLi extends javax.swing.JPanel {
         jPanel21.repaint();
     }
 
-    /**
-     * Hàm vẽ giao diện cho 1 ô thống kê
-     */
     private JPanel taoPanelThongKeCon(String tieuDe, double giaTri, double phanTramTang, boolean isTienTe) {
         JPanel pnl = new JPanel(new BorderLayout());
         pnl.setBackground(Color.WHITE);
@@ -1154,12 +1194,12 @@ public class DashBoardQuanLi extends javax.swing.JPanel {
                 BorderFactory.createEmptyBorder(10, 15, 10, 15)
         ));
 
-        // 1. Tiêu đề
+        // Tiêu đề
         JLabel lblTieuDe = new JLabel(tieuDe);
         lblTieuDe.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         lblTieuDe.setForeground(Color.GRAY);
 
-        // 2. Giá trị chính
+        // Giá trị chính
         JLabel lblGiaTri = new JLabel();
         lblGiaTri.setFont(new Font("Segoe UI", Font.BOLD, 20));
         if (isTienTe) {
@@ -1170,7 +1210,7 @@ public class DashBoardQuanLi extends javax.swing.JPanel {
             lblGiaTri.setText(String.valueOf((int) giaTri));
         }
 
-        // 3. Dòng so sánh (Mới thêm)
+        // Dòng so sánh
         JLabel lblSoSanh = new JLabel();
         lblSoSanh.setFont(new Font("Segoe UI", Font.PLAIN, 13));
 
@@ -1184,13 +1224,6 @@ public class DashBoardQuanLi extends javax.swing.JPanel {
             lblSoSanh.setForeground(new Color(220, 53, 69)); // Màu đỏ (Giảm)
         }
 
-        // 4. Icon bên phải
-//        JLabel lblIcon = new JLabel();
-//        lblIcon.setFont(new Font("Segoe UI", Font.PLAIN, 24));
-//        if (tieuDe.contains("Doanh thu")) lblIcon.setText("💰");
-//        else lblIcon.setText("🧾");
-        // --- Layout ---
-        // Panel chứa text (dùng GridLayout 3 dòng: Tiêu đề, Giá trị, So sánh)
         JPanel pnlText = new JPanel(new java.awt.GridLayout(3, 1, 0, 2));
         pnlText.setBackground(Color.WHITE);
         pnlText.add(lblTieuDe);
@@ -1198,7 +1231,6 @@ public class DashBoardQuanLi extends javax.swing.JPanel {
         pnlText.add(lblSoSanh);
 
         pnl.add(pnlText, BorderLayout.CENTER);
-        //pnl.add(lblIcon, BorderLayout.EAST);
 
         return pnl;
     }

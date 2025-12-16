@@ -177,61 +177,204 @@ public class HoaDonDAO {
         return dsHD;
     }
 
+    public static Map<String, Integer> getNamHoaDonCuNhatVaMoiNhat() {
+        Map<String, Integer> namHoaDon = new HashMap<>();
+        try {
+            ConnectDB.getInstance().connect();
+            Connection con = ConnectDB.getConnection();
+
+            String sql = "SELECT MIN(YEAR(ngayLapHoaDon)) AS namCuNhat, "
+                    + "MAX(YEAR(ngayLapHoaDon)) AS namMoiNhat "
+                    + "FROM HoaDon";
+
+            Statement statement = con.createStatement();
+            ResultSet rs = statement.executeQuery(sql);
+
+            if (rs.next()) {
+                int namCuNhat = rs.getInt("namCuNhat");
+                int namMoiNhat = rs.getInt("namMoiNhat");
+
+                if (namCuNhat != 0 && namMoiNhat != 0) {
+                    namHoaDon.put("namCuNhat", namCuNhat);
+                    namHoaDon.put("namMoiNhat", namMoiNhat);
+                }
+            }
+            rs.close();
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return namHoaDon;
+    }
+
+//    public static double getDoanhThuTheoNgay(LocalDate date) {
+//        double doanhThu = 0.0;
+//        ArrayList<HoaDon> dsHD = timHDTheoNgayLap(date);
+//
+//        for (HoaDon hoaDon : dsHD) {
+//            doanhThu += hoaDon.getTongTien();
+//        }
+//
+//        return doanhThu;
+//    }
+//
+//    public static Map<Integer, Double> getDoanhThuTungNgayTrongThang(LocalDate date) {
+//        Map<Integer, Double> doanhthuTungNgay = new HashMap<>();
+//
+//        int soNgayTrongThang = date.lengthOfMonth();
+//        int nam = date.getYear();
+//        int thang = date.getMonthValue();
+//
+//        for (int i = 1; i <= soNgayTrongThang; i++) {
+//            LocalDate ngayHienTai = LocalDate.of(nam, thang, i);
+//            doanhthuTungNgay.put(i, getDoanhThuTheoNgay(ngayHienTai));
+//        }
+//
+//        return doanhthuTungNgay;
+//    }
+//
+//    public static double getDoanhThuTheoThang(LocalDate date) {
+//        double doanhThu = 0.0;
+//
+//        int soNgayTrongThang = date.lengthOfMonth();
+//        int nam = date.getYear();
+//        int thang = date.getMonthValue();
+//
+//        for (int i = 1; i <= soNgayTrongThang; i++) {
+//            LocalDate ngayHienTai = LocalDate.of(nam, thang, i);
+//            doanhThu += getDoanhThuTheoNgay(ngayHienTai);
+//        }
+//
+//        return doanhThu;
+//    }
+//
+//    public static Map<Integer, Double> getDoanhThuTungThangTrongNam(LocalDate date) {
+//        Map<Integer, Double> doanhthuTungThang = new HashMap<>();
+//
+//        int nam = date.getYear();
+//        int thang = date.getMonthValue();
+//
+//        for (int i = 1; i <= 12; i++) {
+//            LocalDate thangHienTai = LocalDate.of(nam, i, 1);
+//            doanhthuTungThang.put(i, getDoanhThuTheoThang(thangHienTai));
+//        }
+//
+//        return doanhthuTungThang;
+//    }
     public static double getDoanhThuTheoNgay(LocalDate date) {
         double doanhThu = 0.0;
-        ArrayList<HoaDon> dsHD = timHDTheoNgayLap(date);
+        try {
+            ConnectDB.getInstance().connect();
+            Connection con = ConnectDB.getConnection();
+            String query = "SELECT SUM(tongTien) as TongDoanhThu FROM HoaDon WHERE CAST(ngayLapHoaDon AS DATE) = ?";
 
-        for (HoaDon hoaDon : dsHD) {
-            doanhThu += hoaDon.getTongTien();
+            PreparedStatement stmt = con.prepareStatement(query);
+            stmt.setDate(1, Date.valueOf(date));
+
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                doanhThu = rs.getDouble("TongDoanhThu");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-
         return doanhThu;
     }
 
     public static Map<Integer, Double> getDoanhThuTungNgayTrongThang(LocalDate date) {
         Map<Integer, Double> doanhthuTungNgay = new HashMap<>();
 
-        int soNgayTrongThang = date.lengthOfMonth();
-        int nam = date.getYear();
         int thang = date.getMonthValue();
+        int nam = date.getYear();
+        int soNgayTrongThang = date.lengthOfMonth();
 
         for (int i = 1; i <= soNgayTrongThang; i++) {
-            LocalDate ngayHienTai = LocalDate.of(nam, thang, i);
-            doanhthuTungNgay.put(i, getDoanhThuTheoNgay(ngayHienTai));
+            doanhthuTungNgay.put(i, 0.0);
         }
 
+        try {
+            ConnectDB.getInstance().connect();
+            Connection con = ConnectDB.getConnection();
+
+            String query = "SELECT DAY(ngayLapHoaDon) as Ngay, SUM(tongTien) as TongTien "
+                    + "FROM HoaDon "
+                    + "WHERE MONTH(ngayLapHoaDon) = ? AND YEAR(ngayLapHoaDon) = ? "
+                    + "GROUP BY DAY(ngayLapHoaDon)";
+
+            PreparedStatement stmt = con.prepareStatement(query);
+            stmt.setInt(1, thang);
+            stmt.setInt(2, nam);
+
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                int ngay = rs.getInt("Ngay");
+                double tien = rs.getDouble("TongTien");
+                doanhthuTungNgay.put(ngay, tien);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return doanhthuTungNgay;
     }
-       
+
     public static double getDoanhThuTheoThang(LocalDate date) {
         double doanhThu = 0.0;
-
-        int soNgayTrongThang = date.lengthOfMonth();
-        int nam = date.getYear();
         int thang = date.getMonthValue();
+        int nam = date.getYear();
 
-        for (int i = 1; i <= soNgayTrongThang; i++) {
-            LocalDate ngayHienTai = LocalDate.of(nam, thang, i);
-            doanhThu += getDoanhThuTheoNgay(ngayHienTai);
+        try {
+            ConnectDB.getInstance().connect();
+            Connection con = ConnectDB.getConnection();
+
+            String query = "SELECT SUM(tongTien) as TongDoanhThu FROM HoaDon "
+                    + "WHERE MONTH(ngayLapHoaDon) = ? AND YEAR(ngayLapHoaDon) = ?";
+
+            PreparedStatement stmt = con.prepareStatement(query);
+            stmt.setInt(1, thang);
+            stmt.setInt(2, nam);
+
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                doanhThu = rs.getDouble("TongDoanhThu");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-
         return doanhThu;
     }
 
     public static Map<Integer, Double> getDoanhThuTungThangTrongNam(LocalDate date) {
         Map<Integer, Double> doanhthuTungThang = new HashMap<>();
-
         int nam = date.getYear();
-        int thang = date.getMonthValue();
 
         for (int i = 1; i <= 12; i++) {
-            LocalDate thangHienTai = LocalDate.of(nam, i, 1);
-            doanhthuTungThang.put(i, getDoanhThuTheoThang(thangHienTai));
+            doanhthuTungThang.put(i, 0.0);
         }
 
+        try {
+            ConnectDB.getInstance().connect();
+            Connection con = ConnectDB.getConnection();
+
+            String query = "SELECT MONTH(ngayLapHoaDon) as Thang, SUM(tongTien) as TongTien "
+                    + "FROM HoaDon "
+                    + "WHERE YEAR(ngayLapHoaDon) = ? "
+                    + "GROUP BY MONTH(ngayLapHoaDon)";
+
+            PreparedStatement stmt = con.prepareStatement(query);
+            stmt.setInt(1, nam);
+
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                int thang = rs.getInt("Thang");
+                double tien = rs.getDouble("TongTien");
+                doanhthuTungThang.put(thang, tien);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return doanhthuTungThang;
     }
-    
+
     public static ArrayList<HoaDon> timHDTheoSDTKH(String sdt) {
         ArrayList<HoaDon> dsHD = new ArrayList<>();
         try {
@@ -330,14 +473,14 @@ public class HoaDonDAO {
         }
         return soPTH;
     }
-    
+
     public static List<DoanhThu> getDoanhThuTungNgayTrongKhoangThoiGian(LocalDate begin, LocalDate end) {
         List<DoanhThu> list = new ArrayList<>();
 
         if (begin == null || end == null || begin.isAfter(end)) {
             return list;
         }
-        
+
         String sql = """
             SELECT
                 CAST(ngayLapHoaDon AS DATE) AS Ngay,
@@ -349,7 +492,7 @@ public class HoaDonDAO {
             GROUP BY CAST(ngayLapHoaDon AS DATE)
             ORDER BY Ngay;
         """;
-        
+
         try {
             ConnectDB.getInstance().connect();
             Connection con = ConnectDB.getConnection();
@@ -369,12 +512,12 @@ public class HoaDonDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return list;   
+        return list;
     }
-    
+
     public static List<DoanhThu> getDoanhThuTungThangTrongNam(int nam) {
         List<DoanhThu> list = new ArrayList<>();
-        
+
         String sql = """
             WITH Thang AS (
                 SELECT 1 AS Thang UNION ALL SELECT 2 UNION ALL SELECT 3
@@ -393,7 +536,7 @@ public class HoaDonDAO {
             GROUP BY t.Thang
             ORDER BY t.Thang;
         """;
-        
+
         try {
             ConnectDB.getInstance().connect();
             Connection con = ConnectDB.getConnection();
@@ -412,12 +555,12 @@ public class HoaDonDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return list;   
+        return list;
     }
-    
+
     public static List<DoanhThu> getDoanhThuTungQuyTrongNam(int nam) {
         List<DoanhThu> list = new ArrayList<>();
-        
+
         String sql = """
             WITH Quy AS (
                 SELECT 1 AS Quy
@@ -436,7 +579,7 @@ public class HoaDonDAO {
             GROUP BY q.Quy
             ORDER BY q.Quy;
         """;
-        
+
         try {
             ConnectDB.getInstance().connect();
             Connection con = ConnectDB.getConnection();
@@ -455,12 +598,12 @@ public class HoaDonDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return list;   
+        return list;
     }
-    
+
     public static List<DoanhThu> getDoanhThuTungNamTheoKhoang(int namBatDau, int namKetThuc) {
         List<DoanhThu> list = new ArrayList<>();
-        
+
         String sql = """
             SELECT
                 YEAR(ngayLapHoaDon) AS Nam,
@@ -471,7 +614,7 @@ public class HoaDonDAO {
             GROUP BY YEAR(ngayLapHoaDon)
             ORDER BY Nam
         """;
-        
+
         try {
             ConnectDB.getInstance().connect();
             Connection con = ConnectDB.getConnection();
@@ -487,13 +630,13 @@ public class HoaDonDAO {
                 double tongDoanhThu = rs.getDouble("TongDoanhThu");
                 DoanhThu doanhThuTheoThang = new DoanhThu(nam, tongHoaDon, tongDoanhThu);
                 list.add(doanhThuTheoThang);
-            }    
-        }catch(SQLException e) {
+            }
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return list;
-    } 
-    
+    }
+
     public static ArrayList<HoaDon> timHDTheoKhoangNgay(LocalDate startDate, LocalDate endDate) {
         ArrayList<HoaDon> dsHD = new ArrayList<>();
         try {
@@ -510,6 +653,6 @@ public class HoaDonDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return dsHD;   
+        return dsHD;
     }
 }

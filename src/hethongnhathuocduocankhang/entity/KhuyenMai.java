@@ -8,10 +8,7 @@ import java.util.Objects;
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-/**
- *
- * @author trand
- */
+
 public class KhuyenMai {
 
     private String maKhuyenMai;

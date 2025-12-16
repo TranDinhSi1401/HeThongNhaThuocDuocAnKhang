@@ -13,6 +13,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 
+//đang sửa
 public class QuanLiSanPhamGUI extends JPanel {
 
     private JButton btnThem, btnXoa, btnSua;
@@ -28,13 +29,11 @@ public class QuanLiSanPhamGUI extends JPanel {
         this.setLayout(new BorderLayout(10, 10));
         this.setBorder(new EmptyBorder(10, 10, 10, 10));
 
-        // ==========================================================================
-        // 1. PANEL NORTH (Chức năng & Tìm kiếm)
-        // ==========================================================================
+        // PANEL NORTH (Chức năng & Tìm kiếm)
         JPanel pnlNorth = new JPanel();
         pnlNorth.setLayout(new BorderLayout());
 
-        // --- 1.1. Bên Trái: Các nút chức năng (Thêm, Xóa, Sửa) ---
+        // Bên Trái: Các nút Thêm, Xóa, Sửa
         JPanel pnlNorthLeft = new JPanel();
         pnlNorthLeft.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 0));
         pnlNorthLeft.setBorder(new EmptyBorder(0, 0, 10, 0));
@@ -42,11 +41,11 @@ public class QuanLiSanPhamGUI extends JPanel {
         btnThem = new JButton("Thêm - F6");
         btnXoa = new JButton("Xóa - Del");
         btnSua = new JButton("Sửa - F2");
-        
+
         mapKeyToClickButton("F6", btnThem);
         mapKeyToClickButton("DELETE", btnXoa);
         mapKeyToClickButton("F2", btnSua);
-        
+
         // Trang trí nút bấm
         setupTopButton(btnThem, new Color(50, 150, 250)); // Xanh dương
         setupTopButton(btnXoa, new Color(250, 100, 100)); // Đỏ
@@ -58,7 +57,7 @@ public class QuanLiSanPhamGUI extends JPanel {
 
         pnlNorth.add(pnlNorthLeft, BorderLayout.WEST);
 
-        // --- 1.2. Bên Phải: Tìm kiếm & Lọc ---
+        // Bên Phải: Tìm kiếm & Lọc
         JPanel pnlNorthRight = new JPanel();
         pnlNorthRight.setLayout(new FlowLayout(FlowLayout.RIGHT, 10, 5));
 
@@ -81,12 +80,10 @@ public class QuanLiSanPhamGUI extends JPanel {
                 new EmptyBorder(5, 5, 5, 5)
         ));
 
-        // Panel con chứa Label + Textfield tìm kiếm
         JPanel pnlTimKiem = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 0));
         pnlTimKiem.add(new JLabel("Tìm kiếm:"));
         pnlTimKiem.add(txtTimKiem);
 
-        // Add các thành phần vào panel phải
         pnlNorthRight.add(new JLabel("Tìm theo:"));
         pnlNorthRight.add(cmbTieuChiTimKiem);
         pnlNorthRight.add(pnlTimKiem);
@@ -97,9 +94,7 @@ public class QuanLiSanPhamGUI extends JPanel {
 
         this.add(pnlNorth, BorderLayout.NORTH);
 
-        // ==========================================================================
-        // 2. PANEL CENTER (Bảng dữ liệu)
-        // ==========================================================================
+        // PANEL CENTER (Bảng dữ liệu)
         JPanel centerPanel = new JPanel(new BorderLayout(0, 10));
 
         String[] columnNames = {
@@ -107,7 +102,7 @@ public class QuanLiSanPhamGUI extends JPanel {
             "Thành phần", "Loại sản phẩm", "Tồn tối thiểu", "Tồn tối đa", "Trạng thái"
         };
 
-        // Khởi tạo Model bảng (chặn edit trực tiếp trên ô)
+        // Tạo Model bảng và chặn edit trực tiếp trên ô
         model = new DefaultTableModel(new Object[][]{}, columnNames) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -168,9 +163,7 @@ public class QuanLiSanPhamGUI extends JPanel {
         centerPanel.add(scrollPane, BorderLayout.CENTER);
         this.add(centerPanel, BorderLayout.CENTER);
 
-        // ==========================================================================
-        // 3. PANEL SOUTH (Footer thống kê)
-        // ==========================================================================
+        // PANEL SOUTH (Footer thống kê)
         JPanel pnlSouth = new JPanel(new FlowLayout(FlowLayout.LEFT, 20, 5));
         pnlSouth.setBorder(new EmptyBorder(5, 0, 0, 0));
 
@@ -222,9 +215,7 @@ public class QuanLiSanPhamGUI extends JPanel {
         });
     }
 
-    /**
-     * Hàm hỗ trợ setup style cho button
-     */
+    // setup style cho button
     private void setupTopButton(JButton button, Color bgColor) {
         button.setBackground(bgColor);
         button.setForeground(Color.BLACK);
@@ -233,9 +224,7 @@ public class QuanLiSanPhamGUI extends JPanel {
         button.setPreferredSize(new Dimension(100, 30));
     }
 
-    // ==========================================================================
-    // CÁC HÀM GETTER (Để lớp BUS truy cập và xử lý sự kiện)
-    // ==========================================================================
+    // GETTER
     public JButton getBtnThem() {
         return btnThem;
     }

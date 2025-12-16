@@ -1,11 +1,13 @@
 package hethongnhathuocduocankhang.dao;
 
+import java.sql.*;
 import hethongnhathuocduocankhang.connectDB.ConnectDB;
+import hethongnhathuocduocankhang.entity.DonViTinh;
+import hethongnhathuocduocankhang.entity.SanPham;
 import hethongnhathuocduocankhang.entity.LoaiSanPhamEnum;
 import hethongnhathuocduocankhang.entity.MaVachSanPham;
-import hethongnhathuocduocankhang.entity.SanPham;
-import java.sql.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -31,7 +33,7 @@ public class SanPhamDAO {
                 int tonToiThieu = rs.getInt("tonToiThieu");
                 int tonToiDa = rs.getInt("tonToiDa");
                 boolean daXoa = rs.getBoolean("daXoa");
-                
+
                 //SanPham sp = new SanPham(maSP, tenSP, moTa, thanhPhan, loaiSanPham, tonToiThieu, tonToiDa);
                 SanPham sp = new SanPham(maSP, tenSP, moTa, thanhPhan, loaiSanPham, tonToiThieu, tonToiDa, daXoa);
                 dsSP.add(sp);
@@ -64,6 +66,95 @@ public class SanPhamDAO {
         return n > 0;
     }
 
+    public static LinkedHashMap<SanPham, Number[]> getSPBanChayTrongThang(LocalDate tg) {
+        LinkedHashMap<SanPham, Number[]> dsSP = new LinkedHashMap<>();
+        try {
+            ConnectDB.getInstance().connect();
+            Connection con = ConnectDB.getConnection();
+            // 1. Thêm DONGIA_TB = AVG(CTHD.donGia) vào SQL
+            String query = "SELECT SP.[maSP], [ten], [moTa], [thanhPhan], [loaiSanPham], [tonToiThieu], [tonToiDa], SP.[daXoa], "
+                    + "SLBAN = SUM(CTHD.soLuong * DVT.heSoQuyDoi), "
+                    + "TONGTIEN = SUM(CTHD.soLuong * CTHD.donGia), "
+                    + "DONGIA_TB = AVG(CTHD.donGia) " // Thêm dòng này
+                    + "FROM ChiTietHoaDon CTHD JOIN DonViTinh DVT "
+                    + "ON CTHD.maDonViTinh = DVT.maDonViTinh JOIN SanPham SP "
+                    + "ON SP.maSP = DVT.maSP JOIN HoaDon HD "
+                    + "ON CTHD.maHoaDon = HD.maHoaDon "
+                    + "WHERE MONTH(HD.ngayLapHoaDon) = ? AND YEAR(HD.ngayLapHoaDon) = ? AND SP.daXoa = 0"
+                    + "GROUP BY SP.[maSP], [ten], [moTa], [thanhPhan], [loaiSanPham], [tonToiThieu], [tonToiDa], SP.[daXoa] "
+                    + "ORDER BY SLBAN DESC";
+            PreparedStatement stmt = con.prepareStatement(query);
+            stmt.setInt(1, tg.getMonthValue());
+            stmt.setInt(2, tg.getYear());
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                String maSP = rs.getString("maSP");
+                String ten = rs.getString("ten");
+                String moTa = rs.getString("moTa");
+                String thanhPhan = rs.getString("thanhPhan");
+                LoaiSanPhamEnum loaiSanPham = LoaiSanPhamEnum.valueOf(rs.getString("loaiSanPham"));
+                int tonToiThieu = rs.getInt("tonToiThieu");
+                int tonToiDa = rs.getInt("tonToiDa");
+                boolean daXoa = rs.getBoolean("daXoa");
+                SanPham sp = new SanPham(maSP, ten, moTa, thanhPhan, loaiSanPham, tonToiThieu, tonToiDa, daXoa);
+                
+                // 2. Sửa Number[2] thành Number[3]
+                Number[] thongSo = new Number[3];
+                thongSo[0] = rs.getInt("SLBAN");
+                thongSo[1] = rs.getDouble("TONGTIEN");
+                thongSo[2] = rs.getDouble("DONGIA_TB"); // 3. Lấy dữ liệu vào cột thứ 3
+                dsSP.put(sp, thongSo);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return dsSP;
+    }
+
+    public static LinkedHashMap<SanPham, Number[]> getSPBanChayTrongNam(LocalDate tg) {
+        LinkedHashMap<SanPham, Number[]> dsSP = new LinkedHashMap<>();
+        try {
+            ConnectDB.getInstance().connect();
+            Connection con = ConnectDB.getConnection();
+            // 1. Thêm DONGIA_TB = AVG(CTHD.donGia) vào SQL
+            String query = "SELECT SP.[maSP], [ten], [moTa], [thanhPhan], [loaiSanPham], [tonToiThieu], [tonToiDa], SP.[daXoa], "
+                    + "SLBAN = SUM(CTHD.soLuong * DVT.heSoQuyDoi), "
+                    + "TONGTIEN = SUM(CTHD.soLuong * CTHD.donGia), "
+                    + "DONGIA_TB = AVG(CTHD.donGia) "
+                    + "FROM ChiTietHoaDon CTHD JOIN DonViTinh DVT "
+                    + "ON CTHD.maDonViTinh = DVT.maDonViTinh JOIN SanPham SP "
+                    + "ON SP.maSP = DVT.maSP JOIN HoaDon HD "
+                    + "ON CTHD.maHoaDon = HD.maHoaDon "
+                    + "WHERE YEAR(HD.ngayLapHoaDon) = ? AND SP.daXoa = 0"
+                    + "GROUP BY SP.[maSP], [ten], [moTa], [thanhPhan], [loaiSanPham], [tonToiThieu], [tonToiDa], SP.[daXoa] "
+                    + "ORDER BY SLBAN DESC";
+            PreparedStatement stmt = con.prepareStatement(query);
+            stmt.setInt(1, tg.getYear());
+            ResultSet rs = stmt.executeQuery();
+            while (rs.next()) {
+                String maSP = rs.getString("maSP");
+                String ten = rs.getString("ten");
+                String moTa = rs.getString("moTa");
+                String thanhPhan = rs.getString("thanhPhan");
+                LoaiSanPhamEnum loaiSanPham = LoaiSanPhamEnum.valueOf(rs.getString("loaiSanPham"));
+                int tonToiThieu = rs.getInt("tonToiThieu");
+                int tonToiDa = rs.getInt("tonToiDa");
+                boolean daXoa = rs.getBoolean("daXoa");
+                SanPham sp = new SanPham(maSP, ten, moTa, thanhPhan, loaiSanPham, tonToiThieu, tonToiDa, daXoa);
+                
+                // 2. Sửa Number[2] thành Number[3]
+                Number[] thongSo = new Number[3];
+                thongSo[0] = rs.getInt("SLBAN");
+                thongSo[1] = rs.getDouble("TONGTIEN");
+                thongSo[2] = rs.getDouble("DONGIA_TB"); // 3. Lấy dữ liệu vào cột thứ 3
+                dsSP.put(sp, thongSo);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return dsSP;
+    }
+
     // [SOFT DELETE]
     public static boolean xoaSanPham(String maSP) {
         int n = 0;
@@ -88,7 +179,7 @@ public class SanPhamDAO {
         try {
             ConnectDB.getInstance().connect();
             Connection con = ConnectDB.getConnection();
-            String query = "UPDATE SanPham SET ten = ?, moTa = ?, thanhPhan = ?, loaiSanPham = ?, tonToiThieu = ?, tonToiDa = ? WHERE maSP = ?";
+            String query = "UPDATE SanPham SET ten = ?, moTa = ?, thanhPhan = ?, loaiSanPham = ?, tonToiThieu = ?, tonToiDa = ? WHERE maSP = ? AND daXoa = 0";
             PreparedStatement stmt = con.prepareStatement(query);
             stmt.setString(1, spNew.getTen());
             stmt.setString(2, spNew.getMoTa());
@@ -337,7 +428,7 @@ public class SanPhamDAO {
                     + "from LoSanPham lsp join SanPham sp\n"
                     + "on lsp.maSP = sp.maSP\n"
                     + "group by sp.maSP, sp.ten, sp.moTa, sp.thanhPhan, sp.loaiSanPham, sp.tonToiThieu, sp.tonToiDa, sp.daXoa\n"
-                    + "having sum(soLuong) <= tonToiDa";
+                    + "having sum(soLuong) <= sp.tonToiThieu";
             PreparedStatement stmt = con.prepareStatement(query);
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
@@ -402,95 +493,6 @@ public class SanPhamDAO {
                 dsSP.add(sp);
             }
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return dsSP;
-    }
-
-        public static LinkedHashMap<SanPham, Number[]> getSPBanChayTrongThang(LocalDate tg) {
-        LinkedHashMap<SanPham, Number[]> dsSP = new LinkedHashMap<>();
-        try {
-            ConnectDB.getInstance().connect();
-            Connection con = ConnectDB.getConnection();
-            // 1. Thêm DONGIA_TB = AVG(CTHD.donGia) vào SQL
-            String query = "SELECT SP.[maSP], [ten], [moTa], [thanhPhan], [loaiSanPham], [tonToiThieu], [tonToiDa], SP.[daXoa], "
-                    + "SLBAN = SUM(CTHD.soLuong * DVT.heSoQuyDoi), "
-                    + "TONGTIEN = SUM(CTHD.soLuong * CTHD.donGia), "
-                    + "DONGIA_TB = AVG(CTHD.donGia) " // Thêm dòng này
-                    + "FROM ChiTietHoaDon CTHD JOIN DonViTinh DVT "
-                    + "ON CTHD.maDonViTinh = DVT.maDonViTinh JOIN SanPham SP "
-                    + "ON SP.maSP = DVT.maSP JOIN HoaDon HD "
-                    + "ON CTHD.maHoaDon = HD.maHoaDon "
-                    + "WHERE MONTH(HD.ngayLapHoaDon) = ? AND YEAR(HD.ngayLapHoaDon) = ? AND SP.daXoa = 0"
-                    + "GROUP BY SP.[maSP], [ten], [moTa], [thanhPhan], [loaiSanPham], [tonToiThieu], [tonToiDa], SP.[daXoa] "
-                    + "ORDER BY SLBAN DESC";
-            PreparedStatement stmt = con.prepareStatement(query);
-            stmt.setInt(1, tg.getMonthValue());
-            stmt.setInt(2, tg.getYear());
-            ResultSet rs = stmt.executeQuery();
-            while (rs.next()) {
-                String maSP = rs.getString("maSP");
-                String ten = rs.getString("ten");
-                String moTa = rs.getString("moTa");
-                String thanhPhan = rs.getString("thanhPhan");
-                LoaiSanPhamEnum loaiSanPham = LoaiSanPhamEnum.valueOf(rs.getString("loaiSanPham"));
-                int tonToiThieu = rs.getInt("tonToiThieu");
-                int tonToiDa = rs.getInt("tonToiDa");
-                boolean daXoa = rs.getBoolean("daXoa");
-                SanPham sp = new SanPham(maSP, ten, moTa, thanhPhan, loaiSanPham, tonToiThieu, tonToiDa, daXoa);
-                
-                // 2. Sửa Number[2] thành Number[3]
-                Number[] thongSo = new Number[3];
-                thongSo[0] = rs.getInt("SLBAN");
-                thongSo[1] = rs.getDouble("TONGTIEN");
-                thongSo[2] = rs.getDouble("DONGIA_TB"); // 3. Lấy dữ liệu vào cột thứ 3
-                dsSP.put(sp, thongSo);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return dsSP;
-    }
-
-    public static LinkedHashMap<SanPham, Number[]> getSPBanChayTrongNam(LocalDate tg) {
-        LinkedHashMap<SanPham, Number[]> dsSP = new LinkedHashMap<>();
-        try {
-            ConnectDB.getInstance().connect();
-            Connection con = ConnectDB.getConnection();
-            // 1. Thêm DONGIA_TB = AVG(CTHD.donGia) vào SQL
-            String query = "SELECT SP.[maSP], [ten], [moTa], [thanhPhan], [loaiSanPham], [tonToiThieu], [tonToiDa], SP.[daXoa], "
-                    + "SLBAN = SUM(CTHD.soLuong * DVT.heSoQuyDoi), "
-                    + "TONGTIEN = SUM(CTHD.soLuong * CTHD.donGia), "
-                    + "DONGIA_TB = AVG(CTHD.donGia) "
-                    + "FROM ChiTietHoaDon CTHD JOIN DonViTinh DVT "
-                    + "ON CTHD.maDonViTinh = DVT.maDonViTinh JOIN SanPham SP "
-                    + "ON SP.maSP = DVT.maSP JOIN HoaDon HD "
-                    + "ON CTHD.maHoaDon = HD.maHoaDon "
-                    + "WHERE YEAR(HD.ngayLapHoaDon) = ? AND SP.daXoa = 0"
-                    + "GROUP BY SP.[maSP], [ten], [moTa], [thanhPhan], [loaiSanPham], [tonToiThieu], [tonToiDa], SP.[daXoa] "
-                    + "ORDER BY SLBAN DESC";
-            PreparedStatement stmt = con.prepareStatement(query);
-            stmt.setInt(1, tg.getYear());
-            ResultSet rs = stmt.executeQuery();
-            while (rs.next()) {
-                String maSP = rs.getString("maSP");
-                String ten = rs.getString("ten");
-                String moTa = rs.getString("moTa");
-                String thanhPhan = rs.getString("thanhPhan");
-                LoaiSanPhamEnum loaiSanPham = LoaiSanPhamEnum.valueOf(rs.getString("loaiSanPham"));
-                int tonToiThieu = rs.getInt("tonToiThieu");
-                int tonToiDa = rs.getInt("tonToiDa");
-                boolean daXoa = rs.getBoolean("daXoa");
-                SanPham sp = new SanPham(maSP, ten, moTa, thanhPhan, loaiSanPham, tonToiThieu, tonToiDa, daXoa);
-                
-                // 2. Sửa Number[2] thành Number[3]
-                Number[] thongSo = new Number[3];
-                thongSo[0] = rs.getInt("SLBAN");
-                thongSo[1] = rs.getDouble("TONGTIEN");
-                thongSo[2] = rs.getDouble("DONGIA_TB"); // 3. Lấy dữ liệu vào cột thứ 3
-                dsSP.put(sp, thongSo);
-            }
         } catch (SQLException e) {
             e.printStackTrace();
         }

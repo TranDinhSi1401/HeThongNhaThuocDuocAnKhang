@@ -38,7 +38,7 @@ public class KhuyenMaiDAO {
                          ON sp.maSP = kmsp.maSP
                          JOIN KhuyenMai km
                          ON km.maKhuyenMai = kmsp.maKhuyenMai
-                         WHERE sp.maSP = ? AND NgayBatDau <= GETDATE() AND ngayKetThuc >= GETDATE()
+                         WHERE sp.maSP = ? AND NgayBatDau <= GETDATE() AND ngayKetThuc >= GETDATE() AND kmsp.daXoa = 0
                          """;
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, maSp);
@@ -62,7 +62,7 @@ public class KhuyenMaiDAO {
         try {
             ConnectDB.getInstance().connect();
             Connection con = ConnectDB.getConnection();
-            String sql = "SELECT * FROM KhuyenMai";
+            String sql = "SELECT * FROM KhuyenMai WHERE daXoa = 0";
             Statement statement = con.createStatement();
             ResultSet rs = statement.executeQuery(sql);
             while (rs.next()) {
@@ -103,7 +103,7 @@ public class KhuyenMaiDAO {
         try {
             ConnectDB.getInstance().connect();
             Connection con = ConnectDB.getConnection();
-            String querry = "DELETE FROM KhuyenMai WHERE maKhuyenMai = ?";
+            String querry = "UPDATE KhuyenMai SET daXoa = 1 WHERE maKhuyenMai = ?";
             PreparedStatement stmt = con.prepareStatement(querry);
             stmt.setString(1, maKM);
             n = stmt.executeUpdate();
@@ -143,7 +143,7 @@ public class KhuyenMaiDAO {
         try {
             ConnectDB.getInstance().connect();
             Connection con = ConnectDB.getConnection();
-            String querry = "SELECT * FROM KhuyenMai WHERE maKhuyenMai = ?";
+            String querry = "SELECT * FROM KhuyenMai WHERE maKhuyenMai = ? AND daXoa = 0";
             PreparedStatement stmt = con.prepareStatement(querry);
             stmt.setString(1, ma);
             ResultSet rs = stmt.executeQuery();
@@ -161,7 +161,7 @@ public class KhuyenMaiDAO {
         try {
             ConnectDB.getInstance().connect();
             Connection con = ConnectDB.getConnection();
-            String querry = "SELECT * FROM KhuyenMai WHERE moTa LIKE ?";
+            String querry = "SELECT * FROM KhuyenMai WHERE moTa LIKE ? AND daXoa = 0";
             PreparedStatement stmt = con.prepareStatement(querry);
             stmt.setString(1, "%" + moTa + "%");
             ResultSet rs = stmt.executeQuery();
@@ -179,7 +179,7 @@ public class KhuyenMaiDAO {
         try {
             ConnectDB.getInstance().connect();
             Connection con = ConnectDB.getConnection();
-            String querry = "SELECT * FROM KhuyenMai WHERE loaiKhuyenMai = ?";
+            String querry = "SELECT * FROM KhuyenMai WHERE loaiKhuyenMai = ? AND daXoa = 0";
             PreparedStatement stmt = con.prepareStatement(querry);
             stmt.setString(1, loai.toString());
             ResultSet rs = stmt.executeQuery();

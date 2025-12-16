@@ -11,10 +11,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-/**
- *
- * @author GIGABYTE
- */
 public class ChiTietPhieuTraDAO {
 
     public static boolean insertChiTietPhieuTra(ChiTietPhieuTraHang ctpth) {

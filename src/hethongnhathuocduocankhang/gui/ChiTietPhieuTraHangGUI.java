@@ -24,7 +24,7 @@ public class ChiTietPhieuTraHangGUI extends JPanel {
         this.setLayout(new BorderLayout(10, 10));
         this.setBorder(new EmptyBorder(10, 10, 10, 10));
 
-        // 1. Panel Thông tin chung
+        // Panel Thông tin chung
         JPanel pnlNorth = new JPanel(new GridLayout(2, 2, 5, 5));
         lblMaPhieuTra = new JLabel("Mã Phiếu Trả: ");
         lblTongTienHoan = new JLabel("Tổng Tiền Hoàn Trả: ");
@@ -36,7 +36,6 @@ public class ChiTietPhieuTraHangGUI extends JPanel {
         pnlNorth.add(lblTongTienHoan);
         this.add(pnlNorth, BorderLayout.NORTH);
 
-        // 2. Panel Bảng (Danh sách chi tiết)
         String[] columnNames = {
             "Mã CTHD",
             "Sản Phẩm",
@@ -69,14 +68,11 @@ public class ChiTietPhieuTraHangGUI extends JPanel {
     public void loadData(PhieuTraHang phieuTraHang) {
         if (phieuTraHang == null) return;
 
-        // Cập nhật thông tin chung
         lblMaPhieuTra.setText("Mã Phiếu Trả: " + phieuTraHang.getMaPhieuTraHang());
         lblTongTienHoan.setText("Tổng Tiền Hoàn Trả: " + String.format("%,.0f VND", phieuTraHang.getTongTienHoanTra()));
 
-        // Gọi DAO để lấy danh sách chi tiết
         ArrayList<ChiTietPhieuTraHang> dsChiTiet = PhieuTraHangDAO.getChiTietTheoMaPTH(phieuTraHang);
 
-        // Đổ dữ liệu vào bảng
         model.setRowCount(0);
         for (ChiTietPhieuTraHang ct : dsChiTiet) {
             Object[] row = {

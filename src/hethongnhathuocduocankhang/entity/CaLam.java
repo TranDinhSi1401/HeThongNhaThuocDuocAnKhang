@@ -7,10 +7,6 @@ package hethongnhathuocduocankhang.entity;
 import java.time.LocalTime;
 import java.util.Objects;
 
-/**
- *
- * @author GIGABYTE
- */
 public class CaLam {
 
     private String maCa;

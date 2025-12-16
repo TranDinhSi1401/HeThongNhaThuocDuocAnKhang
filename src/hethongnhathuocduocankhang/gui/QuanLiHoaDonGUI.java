@@ -4,6 +4,7 @@
  */
 package hethongnhathuocduocankhang.gui;
 
+import com.toedter.calendar.JDateChooser; // Import thư viện lịch
 import hethongnhathuocduocankhang.dao.HoaDonDAO;
 import hethongnhathuocduocankhang.entity.HoaDon;
 import javax.swing.*;
@@ -16,10 +17,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.beans.PropertyChangeEvent; // Import để bắt sự kiện chọn ngày
+import java.beans.PropertyChangeListener; // Import Listener cho Property
 import java.time.LocalDate;
+import java.time.ZoneId; // Import để chuyển đổi Date sang LocalDate
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
+import java.util.Date; // Import Date
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.function.Supplier;
@@ -29,36 +34,32 @@ import javax.swing.event.ListSelectionListener;
 public class QuanLiHoaDonGUI extends JPanel {
 
     private JTextField txtTimKiem;
+    private JDateChooser chonLichNgayTimKiem; 
+    private JPanel pnlNhapLieuTiimKiem; 
     private JTable table;
     private JComboBox<String> cmbTieuChiTimKiem;
     private JComboBox<String> cmbBoLoc;
     private DefaultTableModel model;
-
-    // Label hiển thị số lượng (Footer)
     private JLabel lblTongSoDong;
     private JLabel lblSoDongChon;
-    
-    // Thanh tiến trình loading
-    private JProgressBar progressBar;
-    
-    // Format ngày giờ dùng chung
-    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+    private JProgressBar progressBar; 
+    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");  
 
     public QuanLiHoaDonGUI() {
         this.setLayout(new BorderLayout(10, 10));
         this.setBorder(new EmptyBorder(10, 10, 10, 10));
 
-        // --- 1. PANEL NORTH ---
+        // PANEL NORTH
         JPanel pnlNorth = new JPanel();
         pnlNorth.setLayout(new BorderLayout());
 
-        // 1.1. Panel Chức năng (LEFT)
+        // Panel Chức năng (LEFT)
         JPanel pnlNorthLeft = new JPanel();
         pnlNorthLeft.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 0));
         pnlNorthLeft.setBorder(new EmptyBorder(0, 0, 10, 0));
         pnlNorth.add(pnlNorthLeft, BorderLayout.WEST);
 
-        // 1.2. Panel Tìm kiếm và Lọc
+        // Panel Tìm kiếm và Lọc
         JPanel pnlNorthRight = new JPanel();
         pnlNorthRight.setLayout(new FlowLayout(FlowLayout.RIGHT, 10, 5));
 
@@ -90,9 +91,20 @@ public class QuanLiHoaDonGUI extends JPanel {
                 new EmptyBorder(5, 5, 5, 5)
         ));
 
+        // Khởi tạo DateChooser và cấu hình định dạng ngày
+        chonLichNgayTimKiem = new JDateChooser();
+        chonLichNgayTimKiem.setDateFormatString("yyyy-MM-dd");
+        chonLichNgayTimKiem.setPreferredSize(new Dimension(200, 30));
+        chonLichNgayTimKiem.setFont(new Font("Arial", Font.PLAIN, 14));
+
+        // Tạo Panel CardLayout để chứa cả TextField và DateChooser
+        pnlNhapLieuTiimKiem = new JPanel(new CardLayout());
+        pnlNhapLieuTiimKiem.add(txtTimKiem, "text"); // Thẻ hiển thị text
+        pnlNhapLieuTiimKiem.add(chonLichNgayTimKiem, "date"); // Thẻ hiển thị lịch
+
         JPanel pnlTimKiem = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 0));
         pnlTimKiem.add(new JLabel("Tìm kiếm"));
-        pnlTimKiem.add(txtTimKiem);
+        pnlTimKiem.add(pnlNhapLieuTiimKiem);
 
         pnlNorthRight.add(new JLabel("Tìm theo"));
         pnlNorthRight.add(cmbTieuChiTimKiem);
@@ -103,7 +115,7 @@ public class QuanLiHoaDonGUI extends JPanel {
         pnlNorth.add(pnlNorthRight, BorderLayout.EAST);
         this.add(pnlNorth, BorderLayout.NORTH);
 
-        // --- 2. PANEL CENTER (TABLE) ---
+        // PANEL CENTER (TABLE)
         JPanel centerPanel = new JPanel(new BorderLayout(0, 10));
 
         // Cột hiển thị
@@ -126,23 +138,23 @@ public class QuanLiHoaDonGUI extends JPanel {
         };
 
         table = new JTable(model);
-        table.setRowHeight(30); // Tăng chiều cao dòng lên xíu cho thoáng
+        table.setRowHeight(30); 
         table.setFont(new Font("Arial", Font.PLAIN, 13));
         table.getTableHeader().setFont(new Font("Arial", Font.BOLD, 13));
         table.getTableHeader().setBackground(new Color(230, 230, 230));
         table.getTableHeader().setReorderingAllowed(false);
         table.setShowGrid(true);
         table.setGridColor(new Color(230, 230, 230));
-        table.setSelectionBackground(new Color(220, 240, 255)); // Màu chọn dòng nhẹ nhàng
+        table.setSelectionBackground(new Color(220, 240, 255)); 
 
-        // --- CẤU HÌNH KÍCH THƯỚC & CĂN CHỈNH CỘT ---
+        // CẤU HÌNH KÍCH THƯỚC & CĂN CHỈNH CỘT
         TableColumnModel columnModel = table.getColumnModel();
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(JLabel.CENTER);
         
         DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
-        rightRenderer.setHorizontalAlignment(JLabel.RIGHT); // Dùng cho cột tiền
-        rightRenderer.setBorder(new EmptyBorder(0,0,0,5)); // Padding phải
+        rightRenderer.setHorizontalAlignment(JLabel.RIGHT); 
+        rightRenderer.setBorder(new EmptyBorder(0,0,0,5));
 
         // 0. STT
         columnModel.getColumn(0).setPreferredWidth(40);
@@ -171,15 +183,13 @@ public class QuanLiHoaDonGUI extends JPanel {
         // 6. Hình thức TT
         columnModel.getColumn(6).setPreferredWidth(120);
         columnModel.getColumn(6).setCellRenderer(centerRenderer);
-        
-        // LƯU Ý: Đã xóa cấu hình cột 7 vì model chỉ có 0-6 cột
 
         JScrollPane scrollPane = new JScrollPane(table);
         centerPanel.add(scrollPane, BorderLayout.CENTER);
 
         this.add(centerPanel, BorderLayout.CENTER);
         
-        // --- 3. PANEL SOUTH (FOOTER) ---
+        // PANEL SOUTH (FOOTER)
         JPanel pnlSouth = new JPanel(new BorderLayout());
         pnlSouth.setBorder(new EmptyBorder(5, 0, 0, 0));
         
@@ -230,15 +240,12 @@ public class QuanLiHoaDonGUI extends JPanel {
         
         // Hiển thị thanh loading
         progressBar.setVisible(true);
-        progressBar.setIndeterminate(true); // Chạy qua lại vô tận
+        progressBar.setIndeterminate(true); // Khi bắt đầu tải thanh load sẽ chạy qua chạy lại liên tục
         
         // Khởi tạo Worker
         SwingWorker<ArrayList<HoaDon>, HoaDon> worker = new SwingWorker<ArrayList<HoaDon>, HoaDon>() {
             @Override
-            protected ArrayList<HoaDon> doInBackground() throws Exception {
-                // Giả lập độ trễ nhỏ nếu cần để thấy hiệu ứng loading (Optional)
-                // Thread.sleep(500); 
-                
+            protected ArrayList<HoaDon> doInBackground() throws Exception {             
                 // 1. Lấy dữ liệu từ DAO (Thực hiện ngầm)
                 ArrayList<HoaDon> list = dataSupplier.get();
                 
@@ -246,8 +253,6 @@ public class QuanLiHoaDonGUI extends JPanel {
                 if (list != null) {
                     for (HoaDon hd : list) {
                         publish(hd);
-                        // Ngủ cực ngắn để tạo hiệu ứng "rơi" từ từ nếu muốn
-                        // Thread.sleep(1); 
                     }
                 }
                 return list;
@@ -255,7 +260,6 @@ public class QuanLiHoaDonGUI extends JPanel {
 
             @Override
             protected void process(List<HoaDon> chunks) {
-                // Hàm này chạy trên EDT, an toàn để update UI
                 for (HoaDon hd : chunks) {
                     addHoaDonToTable(hd);
                 }
@@ -264,7 +268,7 @@ public class QuanLiHoaDonGUI extends JPanel {
             @Override
             protected void done() {
                 try {
-                    ArrayList<HoaDon> result = get(); // Lấy kết quả cuối cùng
+                    ArrayList<HoaDon> result = get();
                     lblTongSoDong.setText("Tổng số hóa đơn: " + (result != null ? result.size() : 0));
                 } catch (InterruptedException | ExecutionException e) {
                     e.printStackTrace();
@@ -292,7 +296,7 @@ public class QuanLiHoaDonGUI extends JPanel {
         }
 
         Object[] row = {
-            model.getRowCount() + 1, // STT tự tăng dựa trên số dòng hiện tại
+            model.getRowCount() + 1,
             hd.getMaHoaDon(),
             tenNV,
             tenKH,
@@ -310,6 +314,14 @@ public class QuanLiHoaDonGUI extends JPanel {
                 xuLyTimKiem();
             }
         });
+        
+        // Thêm sự kiện khi chọn ngày trên lịch thì tự động tìm kiếm
+        chonLichNgayTimKiem.addPropertyChangeListener("date", new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                xuLyTimKiem();
+            }
+        });
 
         cmbBoLoc.addActionListener(new ActionListener() {
             @Override
@@ -321,8 +333,18 @@ public class QuanLiHoaDonGUI extends JPanel {
         cmbTieuChiTimKiem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                txtTimKiem.setText("");
-                txtTimKiem.requestFocus();
+                // Lấy CardLayout từ panel nhập liệu
+                CardLayout cl = (CardLayout) pnlNhapLieuTiimKiem.getLayout();
+                String tieuChi = cmbTieuChiTimKiem.getSelectedItem().toString();
+
+                if (tieuChi.equals("Ngày lập (yyyy-MM-dd)")) {
+                    cl.show(pnlNhapLieuTiimKiem, "date"); // Hiển thị lịch
+                    chonLichNgayTimKiem.requestFocusInWindow();
+                } else {
+                    cl.show(pnlNhapLieuTiimKiem, "text"); // Hiển thị ô text
+                    txtTimKiem.selectAll();
+                    txtTimKiem.requestFocus();
+                }
             }
         });
 
@@ -344,40 +366,51 @@ public class QuanLiHoaDonGUI extends JPanel {
     }
 
     private void xuLyTimKiem() {
-        String tuKhoa = txtTimKiem.getText().trim();
+        // Kiểm tra xem đang dùng lịch hay dùng textfield
+        String tuKhoa = "";
         String tieuChi = cmbTieuChiTimKiem.getSelectedItem().toString();
+
+        if (tieuChi.equals("Ngày lập (yyyy-MM-dd)")) {
+            // Lấy ngày từ DateChooser và convert sang String chuẩn yyyy-MM-dd
+            Date date = chonLichNgayTimKiem.getDate();
+            if (date != null) {
+                LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                tuKhoa = localDate.toString();
+            }
+        } else {
+            tuKhoa = txtTimKiem.getText().trim();
+        }
+        
+        String tuKhoaFinal = tuKhoa;
 
         // Sử dụng Supplier để truyền logic lấy dữ liệu vào Worker
         reloadTableData(() -> {
             ArrayList<HoaDon> dsKetQua = new ArrayList<>();
-            if (tuKhoa.isEmpty()) {
+            if (tuKhoaFinal.isEmpty()) {
                 return HoaDonDAO.getAllHoaDon();
             }
             
             try {
                 switch (tieuChi) {
                     case "Mã Hóa Đơn":
-                        HoaDon hd = HoaDonDAO.getHoaDonTheoMaHD(tuKhoa);
+                        HoaDon hd = HoaDonDAO.getHoaDonTheoMaHD(tuKhoaFinal);
                         if (hd != null) dsKetQua.add(hd);
                         break;
                     case "Mã Nhân Viên":
-                        dsKetQua = HoaDonDAO.timHDTheoMaNV(tuKhoa);
+                        dsKetQua = HoaDonDAO.timHDTheoMaNV(tuKhoaFinal);
                         break;
                     case "Mã Khách Hàng":
-                        dsKetQua = HoaDonDAO.timHDTheoMaKH(tuKhoa);
+                        dsKetQua = HoaDonDAO.timHDTheoMaKH(tuKhoaFinal);
                         break;
                     case "SĐT Khách Hàng":
-                        dsKetQua = HoaDonDAO.timHDTheoSDTKH(tuKhoa);
+                        dsKetQua = HoaDonDAO.timHDTheoSDTKH(tuKhoaFinal);
                         break;
                     case "Ngày lập (yyyy-MM-dd)":
-                        LocalDate date = LocalDate.parse(tuKhoa);
+                        LocalDate date = LocalDate.parse(tuKhoaFinal);
                         dsKetQua = HoaDonDAO.timHDTheoNgayLap(date);
                         break;
                 }
             } catch (DateTimeParseException e) {
-                 // Lưu ý: Trong doInBackground không được show Dialog trực tiếp, 
-                 // nhưng ở đây ta chỉ catch lỗi parse ngày đơn giản.
-                 // Nếu muốn show lỗi chuẩn, cần xử lý ở done() hoặc process()
                  System.err.println("Lỗi định dạng ngày: " + e.getMessage());
             }
             return dsKetQua;
@@ -392,8 +425,6 @@ public class QuanLiHoaDonGUI extends JPanel {
                 case "Tất cả":
                     return HoaDonDAO.getAllHoaDon();
                 case "Đã thanh toán":
-                    // Giả sử bảng DB của bạn vẫn giữ logic cũ về boolean trạng thái
-                    // Nếu đã bỏ cột TrangThai, bạn cần sửa lại DAO method tương ứng
                     return HoaDonDAO.timHDTheoTrangThai(true); 
                 case "Chưa thanh toán":
                     return HoaDonDAO.timHDTheoTrangThai(false);
@@ -411,9 +442,6 @@ public class QuanLiHoaDonGUI extends JPanel {
         int selectRow = table.getSelectedRow();
         if (selectRow != -1) {
             String maHD = model.getValueAt(selectRow, 1).toString();
-            
-            // Xử lý lấy chi tiết không cần SwingWorker vì chỉ lấy 1 object, khá nhanh
-            // Tuy nhiên nếu chi tiết quá nhiều thì cũng nên dùng Worker.
             HoaDon hdDaChon = HoaDonDAO.getHoaDonTheoMaHD(maHD);
 
             if (hdDaChon != null && e.getClickCount() == 2) {

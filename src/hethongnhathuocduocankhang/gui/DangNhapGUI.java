@@ -74,6 +74,8 @@ public class DangNhapGUI extends javax.swing.JFrame {
         // Mặc định để đỡ phải đăng nhập mỗi lần test
         txtTaiKhoan.setText("NV-0002");
         txtMatKhau.setText("Hominhkhang123@");
+//        txtTaiKhoan.setText("NV-0001");
+//        txtMatKhau.setText("Votienkhoa123@");
     }
 
     /**
@@ -184,7 +186,7 @@ public class DangNhapGUI extends javax.swing.JFrame {
     private void dangNhap() {
         String tenDangNhap = txtTaiKhoan.getText().trim();
         String matKhau = new String(txtMatKhau.getPassword()).trim();
-        
+
         if (tenDangNhap.isEmpty() || matKhau.isEmpty()) {
             javax.swing.JOptionPane.showMessageDialog(this,
                     "Vui lòng nhập đầy đủ tài khoản và mật khẩu!",
@@ -195,20 +197,20 @@ public class DangNhapGUI extends javax.swing.JFrame {
 
         TaiKhoan tk = DangNhapBUS.dangNhap(tenDangNhap, matKhau);
         if (tk != null) {
-            if(tk.isBiKhoa()) {
+            if (tk.isBiKhoa()) {
                 JOptionPane.showMessageDialog(this,
-                    "Tài khoản đã bị khóa",
-                    "Đăng nhập thất bại",
-                    javax.swing.JOptionPane.ERROR_MESSAGE);
+                        "Tài khoản đã bị khóa",
+                        "Đăng nhập thất bại",
+                        javax.swing.JOptionPane.ERROR_MESSAGE);
             } else {
                 new GiaoDienChinhGUI(tk);
                 this.dispose();
-            }           
+            }
         } else {
             JOptionPane.showMessageDialog(this,
-                "Sai tài khoản hoặc mật khẩu!",
-                "Đăng nhập thất bại",
-                javax.swing.JOptionPane.ERROR_MESSAGE);
+                    "Sai tài khoản hoặc mật khẩu!",
+                    "Đăng nhập thất bại",
+                    javax.swing.JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -224,7 +226,7 @@ public class DangNhapGUI extends javax.swing.JFrame {
 
         // Label hướng dẫn
         JLabel lblGuide = new JLabel(
-            "Vui lòng nhập tài khoản và email đã đăng ký để đặt lại mật khẩu mới"
+                "Vui lòng nhập tài khoản và email đã đăng ký để đặt lại mật khẩu mới"
         );
         lblGuide.setFont(lblGuide.getFont().deriveFont(Font.BOLD));
         lblGuide.setForeground(new Color(0x19, 0x76, 0xD2));
@@ -242,7 +244,8 @@ public class DangNhapGUI extends javax.swing.JFrame {
         JLabel lblUser = new JLabel("Tài khoản:");
         JTextField txtUser = new JTextField(15);
 
-        gbc.gridy = 1; gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.gridx = 0;
         panel.add(lblUser, gbc);
 
         gbc.gridx = 1;
@@ -252,7 +255,8 @@ public class DangNhapGUI extends javax.swing.JFrame {
         JLabel lblEmail = new JLabel("Email:");
         JTextField txtEmail = new JTextField(15);
 
-        gbc.gridy = 2; gbc.gridx = 0;
+        gbc.gridy = 2;
+        gbc.gridx = 0;
         panel.add(lblEmail, gbc);
 
         gbc.gridx = 1;
@@ -348,7 +352,7 @@ public class DangNhapGUI extends javax.swing.JFrame {
             txtMatKhau.setEchoChar('•');
         }
     }
-       
+
     /**
      * @param args the command line arguments
      */

@@ -4,10 +4,6 @@
  */
 package hethongnhathuocduocankhang.entity;
 
-/**
- *
- * @author admin
- */
 public class NhaCungCap {
 
     private String maNCC;
@@ -15,8 +11,19 @@ public class NhaCungCap {
     private String diaChi;
     private String sdt;
     private String email;
+    private boolean daXoa; 
 
     public NhaCungCap() {
+        this.daXoa = false; 
+    }
+
+    public NhaCungCap(String maNCC, String tenNCC, String diaChi, String sdt, String email, boolean daXoa) {
+        this.maNCC = maNCC;
+        this.tenNCC = tenNCC;
+        this.diaChi = diaChi;
+        this.sdt = sdt;
+        this.email = email;
+        this.daXoa = daXoa;
     }
 
     public NhaCungCap(String maNCC, String tenNCC, String diaChi, String sdt, String email) {
@@ -25,6 +32,7 @@ public class NhaCungCap {
         this.diaChi = diaChi;
         this.sdt = sdt;
         this.email = email;
+        this.daXoa = false;
     }
 
     public NhaCungCap(String maNCC) {
@@ -53,6 +61,14 @@ public class NhaCungCap {
 
     public String getEmail() {
         return email;
+    }
+
+    public boolean isDaXoa() {
+        return daXoa;
+    }
+
+    public void setDaXoa(boolean daXoa) {
+        this.daXoa = daXoa;
     }
 
     public void setMaNCC(String maNCC) {
@@ -92,7 +108,7 @@ public class NhaCungCap {
 
     @Override
     public String toString() {
-        return "NhaCungCap{" + "maNCC=" + maNCC + ", tenNCC=" + tenNCC + ", diaChi=" + diaChi + ", sdt=" + sdt + ", email=" + email + '}';
+        return "NhaCungCap{" + "maNCC=" + maNCC + ", tenNCC=" + tenNCC + ", diaChi=" + diaChi + ", sdt=" + sdt + ", email=" + email + ", daXoa=" + daXoa + '}';
     }
 
 }

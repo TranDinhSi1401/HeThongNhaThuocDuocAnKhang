@@ -4,6 +4,7 @@
  */
 package hethongnhathuocduocankhang.gui;
 
+import com.toedter.calendar.JDateChooser; // Import lịch
 import hethongnhathuocduocankhang.dao.LichSuCaLamDAO;
 import hethongnhathuocduocankhang.entity.LichSuCaLam;
 import javax.swing.*;
@@ -16,23 +17,27 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.beans.PropertyChangeEvent; // Import sự kiện property
+import java.beans.PropertyChangeListener;
 import java.time.LocalDate;
+import java.time.ZoneId; // Import convert zone
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 public class QuanLiLichSuCaLamGUI extends JPanel {
 
     private JTextField txtTimKiem;
+    private JDateChooser dcsNgayTimKiem; // Khai báo DateChooser
+    private JPanel pnlNhapLieu; // Panel chứa CardLayout
     private JTable table;
     private JComboBox<String> cmbTieuChiTimKiem;
     private DefaultTableModel model;
     private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     private final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-
-    // Label hiển thị số lượng (Footer)
     private JLabel lblTongSoDong;
     private JLabel lblSoDongChon;
 
@@ -40,17 +45,17 @@ public class QuanLiLichSuCaLamGUI extends JPanel {
         this.setLayout(new BorderLayout(10, 10));
         this.setBorder(new EmptyBorder(10, 10, 10, 10));
 
-        // --- 1. PANEL NORTH ---
+        // PANEL NORTH
         JPanel pnlNorth = new JPanel();
         pnlNorth.setLayout(new BorderLayout());
 
-        // 1.1. Panel Chức năng (LEFT - TRỐNG nhưng giữ layout)
+        // anel Chức năng
         JPanel pnlNorthLeft = new JPanel();
         pnlNorthLeft.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 0));
         pnlNorthLeft.setBorder(new EmptyBorder(0, 0, 10, 0));
         pnlNorth.add(pnlNorthLeft, BorderLayout.WEST);
 
-        // 1.2. Panel Tìm kiếm (RIGHT)
+        // Panel Tìm kiếm
         JPanel pnlNorthRight = new JPanel();
         pnlNorthRight.setLayout(new FlowLayout(FlowLayout.RIGHT, 10, 5));
 
@@ -71,9 +76,23 @@ public class QuanLiLichSuCaLamGUI extends JPanel {
                 new EmptyBorder(5, 5, 5, 5)
         ));
 
+        // --- BẮT ĐẦU PHẦN THÊM MỚI ---
+        // 1. Khởi tạo JDateChooser
+        dcsNgayTimKiem = new JDateChooser();
+        dcsNgayTimKiem.setDateFormatString("yyyy-MM-dd");
+        dcsNgayTimKiem.setPreferredSize(new Dimension(200, 30));
+        dcsNgayTimKiem.setFont(new Font("Arial", Font.PLAIN, 14));
+
+        // 2. Tạo Panel CardLayout để chứa text và date
+        pnlNhapLieu = new JPanel(new CardLayout());
+        pnlNhapLieu.add(txtTimKiem, "text");
+        pnlNhapLieu.add(dcsNgayTimKiem, "date");
+        // --- KẾT THÚC PHẦN THÊM MỚI ---
+
         JPanel pnlTimKiem = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 0));
         pnlTimKiem.add(new JLabel("Tìm kiếm"));
-        pnlTimKiem.add(txtTimKiem);
+        // Thay thế txtTimKiem bằng pnlNhapLieu
+        pnlTimKiem.add(pnlNhapLieu);
 
         pnlNorthRight.add(new JLabel("Tìm theo"));
         pnlNorthRight.add(cmbTieuChiTimKiem);
@@ -82,10 +101,9 @@ public class QuanLiLichSuCaLamGUI extends JPanel {
         pnlNorth.add(pnlNorthRight, BorderLayout.EAST);
         this.add(pnlNorth, BorderLayout.NORTH);
 
-        // --- 2. PANEL CENTER (TABLE) ---
+        // PANEL CENTER (TABLE)
         JPanel centerPanel = new JPanel(new BorderLayout(0, 10));
 
-        // Thêm cột STT
         String[] columnNames = {"STT", "Mã NV", "Tên Nhân Viên", "Ngày Làm", "Mã Ca", "Giờ Vào", "Giờ Ra", "Ghi Chú"};
         Object[][] data = {};
 
@@ -105,7 +123,7 @@ public class QuanLiLichSuCaLamGUI extends JPanel {
         table.setShowGrid(true);
         table.setGridColor(Color.LIGHT_GRAY);
 
-        // --- CẤU HÌNH KÍCH THƯỚC & CĂN CHỈNH CỘT ---
+        // CẤU HÌNH KÍCH THƯỚC & CĂN CHỈNH CỘT
         TableColumnModel columnModel = table.getColumnModel();
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(JLabel.CENTER);
@@ -120,7 +138,7 @@ public class QuanLiLichSuCaLamGUI extends JPanel {
         columnModel.getColumn(1).setMaxWidth(100);
         columnModel.getColumn(1).setCellRenderer(centerRenderer);
 
-        // 2. Tên Nhân Viên (Rộng)
+        // 2. Tên Nhân Viên 
         columnModel.getColumn(2).setPreferredWidth(200);
 
         // 3. Ngày Làm
@@ -137,14 +155,14 @@ public class QuanLiLichSuCaLamGUI extends JPanel {
         columnModel.getColumn(6).setPreferredWidth(100);
         columnModel.getColumn(6).setCellRenderer(centerRenderer);
         
-        // 7. Ghi chú (Rộng)
+        // 7. Ghi chú
         columnModel.getColumn(7).setPreferredWidth(150);
 
         JScrollPane scrollPane = new JScrollPane(table);
         centerPanel.add(scrollPane, BorderLayout.CENTER);
         this.add(centerPanel, BorderLayout.CENTER);
         
-        // --- 3. PANEL SOUTH (FOOTER) ---
+        // PANEL SOUTH (FOOTER)
         JPanel pnlSouth = new JPanel(new FlowLayout(FlowLayout.LEFT, 20, 5));
         pnlSouth.setBorder(new EmptyBorder(5, 0, 0, 0));
         
@@ -187,7 +205,7 @@ public class QuanLiLichSuCaLamGUI extends JPanel {
                     : "Chưa ra ca";
 
             Object[] row = {
-                stt++, // STT
+                stt++,
                 ls.getNhanVien().getMaNV(),
                 tenNV,
                 ls.getNgayLamViec().format(dateFormatter),
@@ -214,11 +232,29 @@ public class QuanLiLichSuCaLamGUI extends JPanel {
             }
         });
 
+        // Bắt sự kiện chọn ngày trên lịch
+        dcsNgayTimKiem.addPropertyChangeListener("date", new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                xuLyTimKiem();
+            }
+        });
+
         cmbTieuChiTimKiem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                txtTimKiem.setText("");
-                txtTimKiem.requestFocus();
+                // Xử lý chuyển đổi giao diện nhập liệu
+                CardLayout cl = (CardLayout) pnlNhapLieu.getLayout();
+                String tieuChi = cmbTieuChiTimKiem.getSelectedItem().toString();
+                
+                if (tieuChi.equals("Ngày Làm (yyyy-MM-dd)")) {
+                    cl.show(pnlNhapLieu, "date"); // Hiện lịch
+                    dcsNgayTimKiem.requestFocusInWindow();
+                } else {
+                    cl.show(pnlNhapLieu, "text"); // Hiện text
+                    txtTimKiem.setText("");
+                    txtTimKiem.requestFocus();
+                }
             }
         });
 
@@ -241,8 +277,20 @@ public class QuanLiLichSuCaLamGUI extends JPanel {
     }
 
     private void xuLyTimKiem() {
-        String tuKhoa = txtTimKiem.getText().trim();
         String tieuChi = cmbTieuChiTimKiem.getSelectedItem().toString();
+        String tuKhoa = "";
+
+        // Logic lấy từ khóa đa hình
+        if (tieuChi.equals("Ngày Làm (yyyy-MM-dd)")) {
+            Date date = dcsNgayTimKiem.getDate();
+            if (date != null) {
+                LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                tuKhoa = localDate.toString();
+            }
+        } else {
+            tuKhoa = txtTimKiem.getText().trim();
+        }
+
         ArrayList<LichSuCaLam> dsKetQua = new ArrayList<>();
 
         if (tuKhoa.isEmpty()) {
@@ -284,7 +332,6 @@ public class QuanLiLichSuCaLamGUI extends JPanel {
             dialog.pack();
             dialog.setLocationRelativeTo(null);
 
-            // Lấy dữ liệu String từ bảng (Chú ý: Cột 0 là STT, nên dữ liệu bắt đầu từ 1)
             String maNV = model.getValueAt(selectRow, 1).toString();
             String tenNV = model.getValueAt(selectRow, 2).toString();
             String ngayLam = model.getValueAt(selectRow, 3).toString();
@@ -294,7 +341,6 @@ public class QuanLiLichSuCaLamGUI extends JPanel {
             Object ghiChuObj = model.getValueAt(selectRow, 7);
             String ghiChu = (ghiChuObj != null) ? ghiChuObj.toString() : "";
 
-            // Đổ dữ liệu
             pnlChiTiet.setTxtMaNhanVien(maNV);
             pnlChiTiet.setTxtTenNhanVien(tenNV);
             pnlChiTiet.setTxtNgayLam(ngayLam);
@@ -303,7 +349,6 @@ public class QuanLiLichSuCaLamGUI extends JPanel {
             pnlChiTiet.setTxtGioRa(gioRa);
             pnlChiTiet.setTxtGhiChu(ghiChu);
 
-            // Cấu hình nút Đóng
             pnlChiTiet.getBtnHuy().setVisible(false);
             pnlChiTiet.getBtnXacNhan().setVisible(true);
             pnlChiTiet.getBtnXacNhan().setText("Đóng");

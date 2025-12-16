@@ -24,7 +24,7 @@ public class ChiTietHoaDonGUI extends JPanel {
         this.setLayout(new BorderLayout(10, 10));
         this.setBorder(new EmptyBorder(10, 10, 10, 10));
 
-        // 1. Panel Thông tin chung (Hiển thị Mã HD và Tổng Tiền)
+        // Panel Thông tin chung
         JPanel pnlNorth = new JPanel(new GridLayout(2, 2, 5, 5));
         lblMaHoaDon = new JLabel("Mã Hóa Đơn: ");
         lblTongTien = new JLabel("Tổng Tiền Hóa Đơn: ");
@@ -36,7 +36,7 @@ public class ChiTietHoaDonGUI extends JPanel {
         pnlNorth.add(lblTongTien);
         this.add(pnlNorth, BorderLayout.NORTH);
 
-        // 2. Panel Bảng (Danh sách chi tiết)
+        // Panel Bảng
         String[] columnNames = {
             "Mã CTHD",
             "Sản Phẩm",
@@ -67,15 +67,11 @@ public class ChiTietHoaDonGUI extends JPanel {
 
     public void loadData(HoaDon hoaDon) {
         if (hoaDon == null) return;
-
-        // Cập nhật thông tin chung
         lblMaHoaDon.setText("Mã Hóa Đơn: " + hoaDon.getMaHoaDon());
         lblTongTien.setText("Tổng Tiền Hóa Đơn: " + String.format("%,.0f VND", hoaDon.getTongTien()));
-
-        // Gọi DAO để lấy danh sách chi tiết
+        
         ArrayList<ChiTietHoaDon> dsCTHD = ChiTietHoaDonDAO.getChiTietHoaDonTheoMaHD(hoaDon);
-
-        // Đổ dữ liệu vào bảng
+        
         model.setRowCount(0);
         for (ChiTietHoaDon cthd : dsCTHD) {
             Object[] row = {
