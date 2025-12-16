@@ -1597,6 +1597,9 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
         }
         for(LichSuLo i:ds){
             NhanVien nv = NhanVienDAO.getNhanVienTheoMaNV(i.getNv().getMaNV());
+            if(nv == null){
+                return;
+            }
             tbl.addRow(new Object[]{i.getLo().getMaLoSanPham(), 
                                     i.getThoiGian(), 
                                     i.getHanhDong(), 
