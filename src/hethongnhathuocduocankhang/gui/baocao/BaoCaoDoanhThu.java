@@ -9,7 +9,6 @@ import hethongnhathuocduocankhang.dao.PhieuTraHangDAO;
 import hethongnhathuocduocankhang.entity.HoaDon;
 import hethongnhathuocduocankhang.entity.PhieuTraHang;
 import java.awt.*;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeListener;
@@ -24,23 +23,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.Date;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JDialog;
-import javax.swing.JFileChooser;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JProgressBar;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.SwingUtilities;
-import javax.swing.SwingWorker;
+import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
-import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import com.toedter.calendar.JDateChooser;
+import org.jdesktop.swingx.JXDatePicker;
 
 /**
  *
@@ -48,8 +34,8 @@ import com.toedter.calendar.JDateChooser;
  */
 public class BaoCaoDoanhThu extends javax.swing.JPanel {
 
-    private JDateChooser datePickerTuNgay;
-    private JDateChooser datePickerDenNgay;
+    private JXDatePicker datePickerTuNgay;
+    private JXDatePicker datePickerDenNgay;
     private JComboBox<Integer> cmbTuThang;
     private JComboBox<Integer> cmbDenThang;
     private JComboBox<Integer> cmbTuQuy;
@@ -62,6 +48,8 @@ public class BaoCaoDoanhThu extends javax.swing.JPanel {
     private JTable table;
     private DefaultTableModel model;
     private JLabel lblTongDoanhThu;
+    private JScrollPane scrollPane;
+    private JPanel pnlCenter;
 
     /**
      * Creates new form BaoCaoDoanhThu
@@ -145,12 +133,31 @@ public class BaoCaoDoanhThu extends javax.swing.JPanel {
 
         JPanel pnlFilter = new JPanel(new FlowLayout(FlowLayout.LEFT, 15, 5));
         pnlFilter.setBorder(new EmptyBorder(0, 0, 10, 0));
+
         Font fontLabel = new Font("Arial", Font.BOLD, 14);
         Font fontInput = new Font("Arial", Font.PLAIN, 14);
+        
+        JLabel lblTuThang = new JLabel("Từ tháng:");
+        lblTuThang.setFont(fontLabel);
+
+        JLabel lblDenThang = new JLabel("Đến tháng:");
+        lblDenThang.setFont(fontLabel);
+
+        JLabel lblTuQuy = new JLabel("Từ quý:");
+        lblTuQuy.setFont(fontLabel);
+
+        JLabel lblDenQuy = new JLabel("Đến quý:");
+        lblDenQuy.setFont(fontLabel);
+
+        JLabel lblTuNam = new JLabel("Từ năm:");
+        lblTuNam.setFont(fontLabel);
+
+        JLabel lblDenNam = new JLabel("Đến năm:");
+        lblDenNam.setFont(fontLabel);
 
         JLabel lblTuNgay = new JLabel("Từ ngày:");
         lblTuNgay.setFont(fontLabel);
-        datePickerTuNgay = new JDateChooser();
+        datePickerTuNgay = new JXDatePicker();
         datePickerTuNgay.setFont(fontInput);
         datePickerTuNgay.setDate(java.util.Date.from(LocalDate.now().minusMonths(1).atStartOfDay(java.time.ZoneId.systemDefault()).toInstant())); // Mặc định 1 tháng trước
 
@@ -170,7 +177,7 @@ public class BaoCaoDoanhThu extends javax.swing.JPanel {
 
         JLabel lblDenNgay = new JLabel("Đến ngày:");
         lblDenNgay.setFont(fontLabel);
-        datePickerDenNgay = new JDateChooser();
+        datePickerDenNgay = new JXDatePicker();
         datePickerDenNgay.setFont(fontInput);
         datePickerDenNgay.setDate(java.util.Date.from(LocalDate.now().atStartOfDay(java.time.ZoneId.systemDefault()).toInstant())); // Mặc định hôm nay
 
@@ -206,13 +213,19 @@ public class BaoCaoDoanhThu extends javax.swing.JPanel {
             lblDenNgay.setVisible(isTheoNgay);
             datePickerDenNgay.setVisible(isTheoNgay);
 
+            lblTuThang.setVisible(isTheoThang);
             cmbTuThang.setVisible(isTheoThang);
+            lblDenThang.setVisible(isTheoThang);
             cmbDenThang.setVisible(isTheoThang);
 
+            lblTuQuy.setVisible(isTheoQuy);
             cmbTuQuy.setVisible(isTheoQuy);
+            lblDenQuy.setVisible(isTheoQuy);
             cmbDenQuy.setVisible(isTheoQuy);
 
+            lblTuNam.setVisible(isTheoNam);
             cmbTuNam.setVisible(isTheoNam);
+            lblDenNam.setVisible(isTheoNam);
             cmbDenNam.setVisible(isTheoNam);
 
             pnlFilter.revalidate();
@@ -281,18 +294,28 @@ public class BaoCaoDoanhThu extends javax.swing.JPanel {
 
         btnXuatFile = new JButton("Xuất file báo cáo");
         btnXuatFile.setFont(fontLabel);
-        btnXuatFile.addActionListener(e -> xuatBaoCaoExcel());
+        // TODO: Thêm logic xuất file sau
 
         pnlFilter.add(lblTuNgay);
         pnlFilter.add(datePickerTuNgay);
         pnlFilter.add(lblDenNgay);
         pnlFilter.add(datePickerDenNgay);
+        
+        pnlFilter.add(lblTuThang);
         pnlFilter.add(cmbTuThang);
+        pnlFilter.add(lblDenThang);
         pnlFilter.add(cmbDenThang);
+
+        pnlFilter.add(lblTuQuy);
         pnlFilter.add(cmbTuQuy);
+        pnlFilter.add(lblDenQuy);
         pnlFilter.add(cmbDenQuy);
+
+        pnlFilter.add(lblTuNam);
         pnlFilter.add(cmbTuNam);
+        pnlFilter.add(lblDenNam);
         pnlFilter.add(cmbDenNam);
+        
         pnlFilter.add(lblLoai);
         pnlFilter.add(cmbLoaiThongKe);
         pnlFilter.add(btnXemBaoCao);
@@ -301,13 +324,13 @@ public class BaoCaoDoanhThu extends javax.swing.JPanel {
         pnlNorth.add(pnlFilter, BorderLayout.CENTER);
 
         // Panel CENTER (Table)
-        JPanel pnlCenter = new JPanel(new BorderLayout());
+        pnlCenter = new JPanel(new BorderLayout());
         String[] columnNames = {"Thời gian", "Tổng hóa đơn", "Tổng phiếu trả", "Doanh thu"};
         model = new DefaultTableModel(columnNames, 0);
         table = new JTable(model);
         table.setFont(new Font("Arial", Font.PLAIN, 14));
         table.getTableHeader().setFont(new Font("Arial", Font.BOLD, 14));
-        JScrollPane scrollPane = new JScrollPane(table);
+        scrollPane = new JScrollPane(table);
         pnlCenter.add(scrollPane, BorderLayout.CENTER);
 
         // Panel SOUTH (Tổng doanh thu)
@@ -334,25 +357,13 @@ public class BaoCaoDoanhThu extends javax.swing.JPanel {
     }
 
     private void xemBaoCao() {
-        // Tạo dialog loading
-        JDialog loadingDialog = new JDialog((java.awt.Frame) SwingUtilities.getWindowAncestor(this), "Đang tải dữ liệu", true);
-        loadingDialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
-        loadingDialog.setSize(300, 100);
-        loadingDialog.setLocationRelativeTo(this);
+    // Show loading
+    showLoadingDialog();
 
-        JPanel panel = new JPanel(new BorderLayout());
-        panel.add(new JLabel("Đang tải dữ liệu báo cáo, vui lòng chờ...", JLabel.CENTER), BorderLayout.CENTER);
-        JProgressBar progressBar = new JProgressBar();
-        progressBar.setIndeterminate(true);
-        panel.add(progressBar, BorderLayout.SOUTH);
-        loadingDialog.add(panel);
-
-        SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
-            private List<String> allKeysResult;
-            private double tongDoanhThuResult;
-
-            @Override
-            protected Void doInBackground() throws Exception {
+    SwingWorker<Void, Void> worker = new SwingWorker<>() {
+        @Override
+        protected Void doInBackground() throws Exception {
+            try {
                 String loaiThongKe = (String) cmbLoaiThongKe.getSelectedItem();
 
                 // Query DB
@@ -404,11 +415,10 @@ public class BaoCaoDoanhThu extends javax.swing.JPanel {
                     }
                 }
 
-                allKeysResult = allKeys;
-                tongDoanhThuResult = 0;
-
-                // Tính doanh thu
+                // Tính doanh thu và cập nhật table
                 model.setRowCount(0);
+                double tongDoanhThu = 0;
+
                 for (String key : allKeys) {
                     double tongHD = hoaDons.stream()
                         .filter(hd -> getKey(hd, loaiThongKe).equals(key))
@@ -420,139 +430,25 @@ public class BaoCaoDoanhThu extends javax.swing.JPanel {
                         .sum();
                     double doanhThu = tongHD - tongPT;
                     model.addRow(new Object[]{key, dinhDangTien(tongHD), dinhDangTien(tongPT), dinhDangTien(doanhThu)});
-                    tongDoanhThuResult += doanhThu;
+                    tongDoanhThu += doanhThu;
                 }
 
-                return null;
+                lblTongDoanhThu.setText("Tổng doanh thu: " + dinhDangTien(tongDoanhThu));
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "Lỗi khi xem báo cáo: " + e.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
             }
-
-            @Override
-            protected void done() {
-                loadingDialog.dispose();
-                lblTongDoanhThu.setText("Tổng doanh thu: " + dinhDangTien(tongDoanhThuResult));
-            }
-        };
-
-        worker.execute();
-        loadingDialog.setVisible(true);
-    }
-
-    private void xuatBaoCaoExcel() {
-        if (model.getRowCount() == 0) {
-            JOptionPane.showMessageDialog(this, "Không có dữ liệu để xuất!", "Thông báo", JOptionPane.WARNING_MESSAGE);
-            return;
+            return null;
         }
 
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setSelectedFile(new java.io.File("BaoCaoDoanhThu.xlsx"));
-        if (fileChooser.showSaveDialog(this) != JFileChooser.APPROVE_OPTION) {
-            return;
+        @Override
+        protected void done() {
+            // Hide loading
+            disposeLoadingDialog();
         }
+    };
 
-        java.io.File file = fileChooser.getSelectedFile();
-        if (!file.getName().endsWith(".xlsx")) {
-            file = new java.io.File(file.getAbsolutePath() + ".xlsx");
-        }
-
-        try (Workbook workbook = new XSSFWorkbook()) {
-            Sheet sheet = workbook.createSheet("Báo cáo doanh thu");
-
-            // Font cho title
-            org.apache.poi.ss.usermodel.Font titleFont = workbook.createFont();
-            titleFont.setBold(true);
-            titleFont.setFontHeightInPoints((short) 16);
-
-            CellStyle titleStyle = workbook.createCellStyle();
-            titleStyle.setFont(titleFont);
-            titleStyle.setAlignment(HorizontalAlignment.CENTER);
-
-            // Font cho normal
-            org.apache.poi.ss.usermodel.Font normalFont = workbook.createFont();
-            normalFont.setFontHeightInPoints((short) 12);
-
-            CellStyle normalStyle = workbook.createCellStyle();
-            normalStyle.setFont(normalFont);
-
-            CellStyle headerStyle = workbook.createCellStyle();
-            headerStyle.setFont(normalFont);
-            headerStyle.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
-            headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-
-            int rowNum = 0;
-
-            // Title
-            String loaiThongKe = (String) cmbLoaiThongKe.getSelectedItem();
-            Row titleRow = sheet.createRow(rowNum++);
-            Cell titleCell = titleRow.createCell(0);
-            titleCell.setCellValue("Báo cáo theo " + loaiThongKe.toLowerCase());
-            titleCell.setCellStyle(titleStyle);
-            sheet.addMergedRegion(new org.apache.poi.ss.util.CellRangeAddress(0, 0, 0, 3));
-
-            // Date created
-            Row dateRow = sheet.createRow(rowNum++);
-            Cell dateCell = dateRow.createCell(0);
-            dateCell.setCellValue("Ngày tạo: " + java.time.LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")));
-            dateCell.setCellStyle(normalStyle);
-
-            // Range info
-            Row rangeRow = sheet.createRow(rowNum++);
-            Cell rangeCell = rangeRow.createCell(0);
-            String rangeText = "Thời gian từ ";
-            if ("Theo ngày".equals(loaiThongKe)) {
-                Date tuNgay = datePickerTuNgay.getDate();
-                Date denNgay = datePickerDenNgay.getDate();
-                rangeText += tuNgay.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-                rangeText += " đến " + denNgay.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-            } else if ("Theo tháng".equals(loaiThongKe)) {
-                rangeText += cmbTuThang.getSelectedItem() + "/" + cmbTuNam.getSelectedItem();
-                rangeText += " đến " + cmbDenThang.getSelectedItem() + "/" + cmbDenNam.getSelectedItem();
-            } else if ("Theo quý".equals(loaiThongKe)) {
-                rangeText += "Quý " + cmbTuQuy.getSelectedItem() + " năm " + cmbTuNam.getSelectedItem();
-                rangeText += " đến Quý " + cmbDenQuy.getSelectedItem() + " năm " + cmbDenNam.getSelectedItem();
-            } else if ("Theo năm".equals(loaiThongKe)) {
-                rangeText += "Năm " + cmbTuNam.getSelectedItem();
-                rangeText += " đến Năm " + cmbDenNam.getSelectedItem();
-            }
-            rangeCell.setCellValue(rangeText);
-            rangeCell.setCellStyle(normalStyle);
-
-            // Empty row
-            rowNum++;
-
-            // Headers
-            Row headerRow = sheet.createRow(rowNum++);
-            for (int i = 0; i < model.getColumnCount(); i++) {
-                Cell cell = headerRow.createCell(i);
-                cell.setCellValue(model.getColumnName(i));
-                cell.setCellStyle(headerStyle);
-            }
-
-            // Data
-            for (int i = 0; i < model.getRowCount(); i++) {
-                Row row = sheet.createRow(rowNum++);
-                for (int j = 0; j < model.getColumnCount(); j++) {
-                    Cell cell = row.createCell(j);
-                    cell.setCellValue(model.getValueAt(i, j).toString());
-                    cell.setCellStyle(normalStyle);
-                }
-            }
-
-            // Auto size columns
-            for (int i = 0; i < model.getColumnCount(); i++) {
-                sheet.autoSizeColumn(i);
-            }
-
-            // Write to file
-            try (java.io.FileOutputStream fos = new java.io.FileOutputStream(file)) {
-                workbook.write(fos);
-            }
-
-            JOptionPane.showMessageDialog(this, "Xuất file Excel thành công: " + file.getAbsolutePath(), "Thành công", JOptionPane.INFORMATION_MESSAGE);
-
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Lỗi khi xuất file: " + e.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
-        }
-    }
+    worker.execute();
+}
 
     // Định dạng tiền như TraHangGUI
     private String dinhDangTien(double thanhTien) {
@@ -590,6 +486,43 @@ public class BaoCaoDoanhThu extends javax.swing.JPanel {
         }
         return "";
     }
+
+private JDialog loadingDialog;
+
+private void showLoadingDialog() {
+    loadingDialog = new JDialog(
+        (java.awt.Frame) SwingUtilities.getWindowAncestor(this),
+        "Đang tải", 
+        false
+    );
+    loadingDialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+
+    // Panel chứa label + progress bar
+    JPanel panel = new JPanel(new BorderLayout(10, 10));
+    JLabel label = new JLabel("Đang thống kê dữ liệu...", SwingConstants.CENTER);
+    label.setFont(new Font("Arial", Font.BOLD, 14));
+    panel.add(label, BorderLayout.NORTH);
+
+    // Thanh loading
+    JProgressBar progressBar = new JProgressBar();
+    progressBar.setIndeterminate(true); // chạy qua lại
+    panel.add(progressBar, BorderLayout.CENTER);
+
+    loadingDialog.getContentPane().add(panel);
+    loadingDialog.pack(); // tự động tính kích thước
+    loadingDialog.setLocationRelativeTo(this);
+
+    this.setEnabled(false);
+    loadingDialog.setVisible(true);
+}
+
+private void disposeLoadingDialog() {
+    if (loadingDialog != null) {
+        loadingDialog.dispose();
+        loadingDialog = null;
+    }
+    this.setEnabled(true);
+}
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel jPanel1;
