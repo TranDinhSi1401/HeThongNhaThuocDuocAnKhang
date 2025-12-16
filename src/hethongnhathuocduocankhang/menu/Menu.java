@@ -40,7 +40,7 @@ public class Menu extends JComponent{
         {"Trả hàng"},
         {"Quản lý lô"},
         {"Tra cứu"},
-        {"Thống kê", "Hóa đơn", "Sản phẩm", "Phiếu nhập", "Phiếu trả hàng"},
+        {"Thống kê doanh thu"},
         {"Báo cáo"},
         {"Trợ giúp", "Giới thiệu", "Hướng dẫn sử dụng"},
         {"Đăng xuất"}
