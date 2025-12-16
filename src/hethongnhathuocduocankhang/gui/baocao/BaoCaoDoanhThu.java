@@ -198,6 +198,10 @@ public class BaoCaoDoanhThu extends javax.swing.JPanel {
 
             pnlFilter.revalidate();
             pnlFilter.repaint();
+
+            // 👉 Reset table và tổng doanh thu
+            model.setRowCount(0);
+            lblTongDoanhThu.setText("Tổng doanh thu: 0 VND");
         });
 
         // Mặc định chọn "Theo ngày" và hiện JDatePicker
