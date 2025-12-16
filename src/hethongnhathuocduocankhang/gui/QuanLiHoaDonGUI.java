@@ -4,6 +4,7 @@
  */
 package hethongnhathuocduocankhang.gui;
 
+import com.toedter.calendar.JDateChooser; // Import thư viện lịch
 import hethongnhathuocduocankhang.dao.HoaDonDAO;
 import hethongnhathuocduocankhang.entity.HoaDon;
 import javax.swing.*;
@@ -16,10 +17,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.beans.PropertyChangeEvent; // Import để bắt sự kiện chọn ngày
+import java.beans.PropertyChangeListener; // Import Listener cho Property
 import java.time.LocalDate;
+import java.time.ZoneId; // Import để chuyển đổi Date sang LocalDate
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
+import java.util.Date; // Import Date
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.function.Supplier;
@@ -29,14 +34,16 @@ import javax.swing.event.ListSelectionListener;
 public class QuanLiHoaDonGUI extends JPanel {
 
     private JTextField txtTimKiem;
+    private JDateChooser chonLichNgayTimKiem; 
+    private JPanel pnlNhapLieuTiimKiem; 
     private JTable table;
     private JComboBox<String> cmbTieuChiTimKiem;
     private JComboBox<String> cmbBoLoc;
     private DefaultTableModel model;
     private JLabel lblTongSoDong;
     private JLabel lblSoDongChon;
-    private JProgressBar progressBar; // Thanh tiến trình loading
-    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");  // Format ngày giờ
+    private JProgressBar progressBar; 
+    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");  
 
     public QuanLiHoaDonGUI() {
         this.setLayout(new BorderLayout(10, 10));
@@ -84,9 +91,20 @@ public class QuanLiHoaDonGUI extends JPanel {
                 new EmptyBorder(5, 5, 5, 5)
         ));
 
+        // Khởi tạo DateChooser và cấu hình định dạng ngày
+        chonLichNgayTimKiem = new JDateChooser();
+        chonLichNgayTimKiem.setDateFormatString("yyyy-MM-dd");
+        chonLichNgayTimKiem.setPreferredSize(new Dimension(200, 30));
+        chonLichNgayTimKiem.setFont(new Font("Arial", Font.PLAIN, 14));
+
+        // Tạo Panel CardLayout để chứa cả TextField và DateChooser
+        pnlNhapLieuTiimKiem = new JPanel(new CardLayout());
+        pnlNhapLieuTiimKiem.add(txtTimKiem, "text"); // Thẻ hiển thị text
+        pnlNhapLieuTiimKiem.add(chonLichNgayTimKiem, "date"); // Thẻ hiển thị lịch
+
         JPanel pnlTimKiem = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 0));
         pnlTimKiem.add(new JLabel("Tìm kiếm"));
-        pnlTimKiem.add(txtTimKiem);
+        pnlTimKiem.add(pnlNhapLieuTiimKiem);
 
         pnlNorthRight.add(new JLabel("Tìm theo"));
         pnlNorthRight.add(cmbTieuChiTimKiem);
@@ -296,6 +314,14 @@ public class QuanLiHoaDonGUI extends JPanel {
                 xuLyTimKiem();
             }
         });
+        
+        // Thêm sự kiện khi chọn ngày trên lịch thì tự động tìm kiếm
+        chonLichNgayTimKiem.addPropertyChangeListener("date", new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                xuLyTimKiem();
+            }
+        });
 
         cmbBoLoc.addActionListener(new ActionListener() {
             @Override
@@ -307,8 +333,18 @@ public class QuanLiHoaDonGUI extends JPanel {
         cmbTieuChiTimKiem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                txtTimKiem.selectAll();
-                txtTimKiem.requestFocus();
+                // Lấy CardLayout từ panel nhập liệu
+                CardLayout cl = (CardLayout) pnlNhapLieuTiimKiem.getLayout();
+                String tieuChi = cmbTieuChiTimKiem.getSelectedItem().toString();
+
+                if (tieuChi.equals("Ngày lập (yyyy-MM-dd)")) {
+                    cl.show(pnlNhapLieuTiimKiem, "date"); // Hiển thị lịch
+                    chonLichNgayTimKiem.requestFocusInWindow();
+                } else {
+                    cl.show(pnlNhapLieuTiimKiem, "text"); // Hiển thị ô text
+                    txtTimKiem.selectAll();
+                    txtTimKiem.requestFocus();
+                }
             }
         });
 
@@ -330,33 +366,47 @@ public class QuanLiHoaDonGUI extends JPanel {
     }
 
     private void xuLyTimKiem() {
-        String tuKhoa = txtTimKiem.getText().trim();
+        // Kiểm tra xem đang dùng lịch hay dùng textfield
+        String tuKhoa = "";
         String tieuChi = cmbTieuChiTimKiem.getSelectedItem().toString();
+
+        if (tieuChi.equals("Ngày lập (yyyy-MM-dd)")) {
+            // Lấy ngày từ DateChooser và convert sang String chuẩn yyyy-MM-dd
+            Date date = chonLichNgayTimKiem.getDate();
+            if (date != null) {
+                LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                tuKhoa = localDate.toString();
+            }
+        } else {
+            tuKhoa = txtTimKiem.getText().trim();
+        }
+        
+        String tuKhoaFinal = tuKhoa;
 
         // Sử dụng Supplier để truyền logic lấy dữ liệu vào Worker
         reloadTableData(() -> {
             ArrayList<HoaDon> dsKetQua = new ArrayList<>();
-            if (tuKhoa.isEmpty()) {
+            if (tuKhoaFinal.isEmpty()) {
                 return HoaDonDAO.getAllHoaDon();
             }
             
             try {
                 switch (tieuChi) {
                     case "Mã Hóa Đơn":
-                        HoaDon hd = HoaDonDAO.getHoaDonTheoMaHD(tuKhoa);
+                        HoaDon hd = HoaDonDAO.getHoaDonTheoMaHD(tuKhoaFinal);
                         if (hd != null) dsKetQua.add(hd);
                         break;
                     case "Mã Nhân Viên":
-                        dsKetQua = HoaDonDAO.timHDTheoMaNV(tuKhoa);
+                        dsKetQua = HoaDonDAO.timHDTheoMaNV(tuKhoaFinal);
                         break;
                     case "Mã Khách Hàng":
-                        dsKetQua = HoaDonDAO.timHDTheoMaKH(tuKhoa);
+                        dsKetQua = HoaDonDAO.timHDTheoMaKH(tuKhoaFinal);
                         break;
                     case "SĐT Khách Hàng":
-                        dsKetQua = HoaDonDAO.timHDTheoSDTKH(tuKhoa);
+                        dsKetQua = HoaDonDAO.timHDTheoSDTKH(tuKhoaFinal);
                         break;
                     case "Ngày lập (yyyy-MM-dd)":
-                        LocalDate date = LocalDate.parse(tuKhoa);
+                        LocalDate date = LocalDate.parse(tuKhoaFinal);
                         dsKetQua = HoaDonDAO.timHDTheoNgayLap(date);
                         break;
                 }

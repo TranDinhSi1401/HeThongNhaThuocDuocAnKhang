@@ -19,6 +19,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -33,6 +34,7 @@ public class QuanLiNhanVienGUI extends JPanel {
     private DefaultTableModel model;
     private JLabel lblTongSoDong;
     private JLabel lblSoDongChon;
+    private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     public QuanLiNhanVienGUI() {
         this.setLayout(new BorderLayout(10, 10));
@@ -211,6 +213,11 @@ public class QuanLiNhanVienGUI extends JPanel {
         }
         int stt = 1;
         for (NhanVien nv : dsNV) {
+            String ngaySinhStr = "";
+            if (nv.getNgaySinh() != null) {
+                ngaySinhStr = nv.getNgaySinh().format(formatter);
+            }
+
             Object[] row = {
                 stt++,
                 nv.getMaNV(),
@@ -219,7 +226,7 @@ public class QuanLiNhanVienGUI extends JPanel {
                 nv.getSdt(),
                 nv.getCccd(),
                 nv.isGioiTinh() ? "Nam" : "Nữ",
-                nv.getNgaySinh().toString(),
+                ngaySinhStr,
                 nv.getDiaChi(),
                 nv.isNghiViec() ? "Đã nghỉ" : "Đang làm"
             };
@@ -402,7 +409,10 @@ public class QuanLiNhanVienGUI extends JPanel {
         pnlThemNV.setTxtSDT(nvCanSua.getSdt());
         pnlThemNV.setTxtCCCD(nvCanSua.getCccd());
         pnlThemNV.setCmbGioiTinh(nvCanSua.isGioiTinh());
+
+        // --- SỬA LOGIC: Dùng setter cho ngày sinh của JDateChooser ---
         pnlThemNV.setTxtNgaySinh(nvCanSua.getNgaySinh());
+
         pnlThemNV.setTxtDiaChi(nvCanSua.getDiaChi());
 
         pnlThemNV.setTxtTenDangNhap(maNV);
@@ -460,7 +470,8 @@ public class QuanLiNhanVienGUI extends JPanel {
             pnlThemNV.getTxtTen().setEditable(false);
             pnlThemNV.getTxtSDT().setEditable(false);
             pnlThemNV.getTxtCCCD().setEditable(false);
-            pnlThemNV.getTxtNgaySinh().setEditable(false);
+
+            pnlThemNV.getChonLichNgaySinh().setEnabled(false);
             pnlThemNV.getTxtDiaChi().setEditable(false);
             pnlThemNV.getCmbGioiTinh().setEnabled(false);
             pnlThemNV.getChkQuanLy().setEnabled(false);
@@ -476,6 +487,7 @@ public class QuanLiNhanVienGUI extends JPanel {
             pnlThemNV.setCmbGioiTinh(nvDaChon.isGioiTinh());
             pnlThemNV.setTxtNgaySinh(nvDaChon.getNgaySinh());
             pnlThemNV.setTxtDiaChi(nvDaChon.getDiaChi());
+
             TaiKhoan tk = TaiKhoanDAO.getTaiKhoanTheoTenDangNhap(nvDaChon.getMaNV());
             pnlThemNV.setChkQuanLy(tk.isQuanLy());
             pnlThemNV.setTxtEmail(tk.getEmail());

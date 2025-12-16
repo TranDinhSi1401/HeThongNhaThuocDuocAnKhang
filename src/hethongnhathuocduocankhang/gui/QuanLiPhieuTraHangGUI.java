@@ -4,6 +4,7 @@
  */
 package hethongnhathuocduocankhang.gui;
 
+import com.toedter.calendar.JDateChooser; // Import JDateChooser
 import hethongnhathuocduocankhang.dao.PhieuTraHangDAO;
 import hethongnhathuocduocankhang.entity.PhieuTraHang;
 import javax.swing.*;
@@ -16,16 +17,22 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.beans.PropertyChangeEvent; // Import sự kiện Property
+import java.beans.PropertyChangeListener;
 import java.time.LocalDate;
+import java.time.ZoneId; // Import ZoneId để convert date
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 public class QuanLiPhieuTraHangGUI extends JPanel { 
 
     private JTextField txtTimKiem;
+    private JDateChooser dcsNgayTimKiem; // Khai báo DateChooser
+    private JPanel pnlNhapLieu; // Panel chứa CardLayout
     private JTable table;
     private JComboBox<String> cmbTieuChiTimKiem;
     private DefaultTableModel model;
@@ -68,9 +75,23 @@ public class QuanLiPhieuTraHangGUI extends JPanel {
                 new EmptyBorder(5, 5, 5, 5)
         ));
 
+        // --- BẮT ĐẦU PHẦN THÊM MỚI ---
+        // 1. Khởi tạo JDateChooser
+        dcsNgayTimKiem = new JDateChooser();
+        dcsNgayTimKiem.setDateFormatString("yyyy-MM-dd");
+        dcsNgayTimKiem.setPreferredSize(new Dimension(200, 30));
+        dcsNgayTimKiem.setFont(new Font("Arial", Font.PLAIN, 14));
+
+        // 2. Tạo Panel CardLayout
+        pnlNhapLieu = new JPanel(new CardLayout());
+        pnlNhapLieu.add(txtTimKiem, "text");
+        pnlNhapLieu.add(dcsNgayTimKiem, "date");
+        // --- KẾT THÚC PHẦN THÊM MỚI ---
+
         JPanel pnlTimKiem = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 0));
         pnlTimKiem.add(new JLabel("Tìm kiếm"));
-        pnlTimKiem.add(txtTimKiem);
+        // Thay thế txtTimKiem bằng pnlNhapLieu
+        pnlTimKiem.add(pnlNhapLieu);
 
         pnlNorthRight.add(new JLabel("Tìm theo"));
         pnlNorthRight.add(cmbTieuChiTimKiem);
@@ -172,8 +193,8 @@ public class QuanLiPhieuTraHangGUI extends JPanel {
         int stt = 1;
         for (PhieuTraHang pth : dsPTH) {
             String tenNV = (pth.getNhanVien() != null && pth.getNhanVien().getTen() != null)
-                           ? pth.getNhanVien().getHoTenDem() + " " + pth.getNhanVien().getTen() 
-                           : pth.getNhanVien().getMaNV(); 
+                            ? pth.getNhanVien().getHoTenDem() + " " + pth.getNhanVien().getTen() 
+                            : pth.getNhanVien().getMaNV(); 
 
             Object[] row = {
                 stt++,
@@ -201,11 +222,29 @@ public class QuanLiPhieuTraHangGUI extends JPanel {
             }
         });
         
+        // Bắt sự kiện chọn ngày trên lịch
+        dcsNgayTimKiem.addPropertyChangeListener("date", new PropertyChangeListener() {
+            @Override
+            public void propertyChange(PropertyChangeEvent evt) {
+                xuLyTimKiem();
+            }
+        });
+        
         cmbTieuChiTimKiem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                txtTimKiem.setText("");
-                txtTimKiem.requestFocus();
+                // Xử lý chuyển đổi giao diện nhập liệu
+                CardLayout cl = (CardLayout) pnlNhapLieu.getLayout();
+                String tieuChi = cmbTieuChiTimKiem.getSelectedItem().toString();
+                
+                if (tieuChi.equals("Ngày Lập (yyyy-MM-dd)")) {
+                    cl.show(pnlNhapLieu, "date"); // Hiện lịch
+                    dcsNgayTimKiem.requestFocusInWindow();
+                } else {
+                    cl.show(pnlNhapLieu, "text"); // Hiện text
+                    txtTimKiem.setText("");
+                    txtTimKiem.requestFocus();
+                }
             }
         });
 
@@ -228,8 +267,20 @@ public class QuanLiPhieuTraHangGUI extends JPanel {
     }
 
     private void xuLyTimKiem() {
-        String tuKhoa = txtTimKiem.getText().trim();
         String tieuChi = cmbTieuChiTimKiem.getSelectedItem().toString();
+        String tuKhoa = "";
+
+        // Logic lấy từ khóa đa hình
+        if (tieuChi.equals("Ngày Lập (yyyy-MM-dd)")) {
+            Date date = dcsNgayTimKiem.getDate();
+            if (date != null) {
+                LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+                tuKhoa = localDate.toString();
+            }
+        } else {
+            tuKhoa = txtTimKiem.getText().trim();
+        }
+
         ArrayList<PhieuTraHang> dsKetQua = new ArrayList<>();
 
         if (tuKhoa.isEmpty()) {
