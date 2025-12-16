@@ -259,35 +259,35 @@ public class ChiTietHoaDonDAO {
         return cthd;
     }
 
-    public static Map<String, Integer> getTongSoLuongBanRaTheoThoiGian(int thang, int nam) {
-        Map<String, Integer> mapBan = new HashMap<>();
-        try {
-            ConnectDB.getInstance().connect();
-            Connection con = ConnectDB.getConnection();
-
-            String sql = "SELECT sp.maSP, SUM(cthd.soLuong) as tongBan "
-                    + "FROM ChiTietHoaDon cthd "
-                    + "JOIN HoaDon hd ON cthd.maHoaDon = hd.maHoaDon "
-                    + "JOIN DonViTinh dvt ON cthd.maDonViTinh = dvt.maDonViTinh "
-                    + "JOIN SanPham sp ON dvt.maSP = sp.maSP "
-                    + "WHERE YEAR(hd.ngayLapHoaDon) = ?";
-
-            if (thang != 0) {
-                sql += " AND MONTH(hd.ngayLapHoaDon) = " + thang;
-            }
-
-            sql += " GROUP BY sp.maSP";
-
-            PreparedStatement stmt = con.prepareStatement(sql);
-            stmt.setInt(1, nam);
-
-            ResultSet rs = stmt.executeQuery();
-            while (rs.next()) {
-                mapBan.put(rs.getString("maSP"), rs.getInt("tongBan"));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return mapBan;
-    }
+//    public static Map<String, Integer> getTongSoLuongBanRaTheoThoiGian(int thang, int nam) {
+//        Map<String, Integer> SPvaTongBan = new HashMap<>();
+//        try {
+//            ConnectDB.getInstance().connect();
+//            Connection con = ConnectDB.getConnection();
+//
+//            String sql = "SELECT sp.maSP, SUM(cthd.soLuong) as tongBan "
+//                    + "FROM ChiTietHoaDon cthd "
+//                    + "JOIN HoaDon hd ON cthd.maHoaDon = hd.maHoaDon "
+//                    + "JOIN DonViTinh dvt ON cthd.maDonViTinh = dvt.maDonViTinh "
+//                    + "JOIN SanPham sp ON dvt.maSP = sp.maSP "
+//                    + "WHERE YEAR(hd.ngayLapHoaDon) = ?";
+//
+//            if (thang != 0) {
+//                sql += " AND MONTH(hd.ngayLapHoaDon) = " + thang;
+//            }
+//
+//            sql += " GROUP BY sp.maSP";
+//
+//            PreparedStatement stmt = con.prepareStatement(sql);
+//            stmt.setInt(1, nam);
+//
+//            ResultSet rs = stmt.executeQuery();
+//            while (rs.next()) {
+//                SPvaTongBan.put(rs.getString("maSP"), rs.getInt("tongBan"));
+//            }
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//        return SPvaTongBan;
+//    }
 }

@@ -428,7 +428,7 @@ public class SanPhamDAO {
                     + "from LoSanPham lsp join SanPham sp\n"
                     + "on lsp.maSP = sp.maSP\n"
                     + "group by sp.maSP, sp.ten, sp.moTa, sp.thanhPhan, sp.loaiSanPham, sp.tonToiThieu, sp.tonToiDa, sp.daXoa\n"
-                    + "having sum(soLuong) <= tonToiDa";
+                    + "having sum(soLuong) <= sp.tonToiThieu";
             PreparedStatement stmt = con.prepareStatement(query);
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {

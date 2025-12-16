@@ -177,6 +177,36 @@ public class HoaDonDAO {
         return dsHD;
     }
 
+    public static Map<String, Integer> getNamHoaDonCuNhatVaMoiNhat() {
+        Map<String, Integer> namHoaDon = new HashMap<>();
+        try {
+            ConnectDB.getInstance().connect();
+            Connection con = ConnectDB.getConnection();
+
+            String sql = "SELECT MIN(YEAR(ngayLapHoaDon)) AS namCuNhat, "
+                    + "MAX(YEAR(ngayLapHoaDon)) AS namMoiNhat "
+                    + "FROM HoaDon";
+
+            Statement statement = con.createStatement();
+            ResultSet rs = statement.executeQuery(sql);
+
+            if (rs.next()) {
+                int namCuNhat = rs.getInt("namCuNhat");
+                int namMoiNhat = rs.getInt("namMoiNhat");
+
+                if (namCuNhat != 0 && namMoiNhat != 0) {
+                    namHoaDon.put("namCuNhat", namCuNhat);
+                    namHoaDon.put("namMoiNhat", namMoiNhat);
+                }
+            }
+            rs.close();
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return namHoaDon;
+    }
+
 //    public static double getDoanhThuTheoNgay(LocalDate date) {
 //        double doanhThu = 0.0;
 //        ArrayList<HoaDon> dsHD = timHDTheoNgayLap(date);
@@ -231,7 +261,6 @@ public class HoaDonDAO {
 //
 //        return doanhthuTungThang;
 //    }
-    
     public static double getDoanhThuTheoNgay(LocalDate date) {
         double doanhThu = 0.0;
         try {
@@ -287,7 +316,7 @@ public class HoaDonDAO {
         }
         return doanhthuTungNgay;
     }
-       
+
     public static double getDoanhThuTheoThang(LocalDate date) {
         double doanhThu = 0.0;
         int thang = date.getMonthValue();
@@ -345,7 +374,7 @@ public class HoaDonDAO {
         }
         return doanhthuTungThang;
     }
-    
+
     public static ArrayList<HoaDon> timHDTheoSDTKH(String sdt) {
         ArrayList<HoaDon> dsHD = new ArrayList<>();
         try {
@@ -444,14 +473,14 @@ public class HoaDonDAO {
         }
         return soPTH;
     }
-    
+
     public static List<DoanhThu> getDoanhThuTungNgayTrongKhoangThoiGian(LocalDate begin, LocalDate end) {
         List<DoanhThu> list = new ArrayList<>();
 
         if (begin == null || end == null || begin.isAfter(end)) {
             return list;
         }
-        
+
         String sql = """
             SELECT
                 CAST(ngayLapHoaDon AS DATE) AS Ngay,
@@ -463,7 +492,7 @@ public class HoaDonDAO {
             GROUP BY CAST(ngayLapHoaDon AS DATE)
             ORDER BY Ngay;
         """;
-        
+
         try {
             ConnectDB.getInstance().connect();
             Connection con = ConnectDB.getConnection();
@@ -483,12 +512,12 @@ public class HoaDonDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return list;   
+        return list;
     }
-    
+
     public static List<DoanhThu> getDoanhThuTungThangTrongNam(int nam) {
         List<DoanhThu> list = new ArrayList<>();
-        
+
         String sql = """
             WITH Thang AS (
                 SELECT 1 AS Thang UNION ALL SELECT 2 UNION ALL SELECT 3
@@ -507,7 +536,7 @@ public class HoaDonDAO {
             GROUP BY t.Thang
             ORDER BY t.Thang;
         """;
-        
+
         try {
             ConnectDB.getInstance().connect();
             Connection con = ConnectDB.getConnection();
@@ -526,12 +555,12 @@ public class HoaDonDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return list;   
+        return list;
     }
-    
+
     public static List<DoanhThu> getDoanhThuTungQuyTrongNam(int nam) {
         List<DoanhThu> list = new ArrayList<>();
-        
+
         String sql = """
             WITH Quy AS (
                 SELECT 1 AS Quy
@@ -550,7 +579,7 @@ public class HoaDonDAO {
             GROUP BY q.Quy
             ORDER BY q.Quy;
         """;
-        
+
         try {
             ConnectDB.getInstance().connect();
             Connection con = ConnectDB.getConnection();
@@ -569,12 +598,12 @@ public class HoaDonDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return list;   
+        return list;
     }
-    
+
     public static List<DoanhThu> getDoanhThuTungNamTheoKhoang(int namBatDau, int namKetThuc) {
         List<DoanhThu> list = new ArrayList<>();
-        
+
         String sql = """
             SELECT
                 YEAR(ngayLapHoaDon) AS Nam,
@@ -585,7 +614,7 @@ public class HoaDonDAO {
             GROUP BY YEAR(ngayLapHoaDon)
             ORDER BY Nam
         """;
-        
+
         try {
             ConnectDB.getInstance().connect();
             Connection con = ConnectDB.getConnection();
@@ -601,13 +630,13 @@ public class HoaDonDAO {
                 double tongDoanhThu = rs.getDouble("TongDoanhThu");
                 DoanhThu doanhThuTheoThang = new DoanhThu(nam, tongHoaDon, tongDoanhThu);
                 list.add(doanhThuTheoThang);
-            }    
-        }catch(SQLException e) {
+            }
+        } catch (SQLException e) {
             e.printStackTrace();
         }
         return list;
-    } 
-    
+    }
+
     public static ArrayList<HoaDon> timHDTheoKhoangNgay(LocalDate startDate, LocalDate endDate) {
         ArrayList<HoaDon> dsHD = new ArrayList<>();
         try {
@@ -624,6 +653,6 @@ public class HoaDonDAO {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return dsHD;   
+        return dsHD;
     }
 }

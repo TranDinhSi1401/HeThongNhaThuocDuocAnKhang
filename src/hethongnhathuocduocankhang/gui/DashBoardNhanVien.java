@@ -4,10 +4,14 @@
  */
 package hethongnhathuocduocankhang.gui;
 
+import hethongnhathuocduocankhang.dao.CaLamDAO;
 import hethongnhathuocduocankhang.dao.HoaDonDAO;
+import hethongnhathuocduocankhang.dao.LichSuCaLamDAO;
 import hethongnhathuocduocankhang.dao.NhanVienDAO;
 import hethongnhathuocduocankhang.dao.SanPhamDAO;
+import hethongnhathuocduocankhang.entity.CaLam;
 import hethongnhathuocduocankhang.entity.HoaDon;
+import hethongnhathuocduocankhang.entity.LichSuCaLam;
 import hethongnhathuocduocankhang.entity.NhanVien;
 import hethongnhathuocduocankhang.entity.SanPham;
 import java.awt.*;
@@ -26,27 +30,19 @@ import javax.swing.table.JTableHeader;
 
 public class DashBoardNhanVien extends javax.swing.JPanel {
 
-    // --- CÁC BIẾN MỚI CHO PHẦN CA LÀM ---
     private JLabel lblDongHo;
     private JLabel lblTenCa;
     private JLabel lblGioVaoCa;
     private JLabel lblNhanVienTruc;
-
-    // Các biến bảng và model dữ liệu
     private DefaultTableModel dtmHoaDon;
     private JTable tblHoaDon;
     private DefaultTableModel dtmLichLamViec;
     private JTable tblLichLamViec;
-
-    // Biến cho bảng sản phẩm hết hàng (MỚI)
     private DefaultTableModel dtmHetHang;
     private JTable tblHetHang;
-
-    // Các panel chứa giao diện
     private JPanel pnlCenterContent;
     private JPanel pnlStats;
     private JPanel pnlTables;
-
     private Timer timer;
     private JLabel lblNgay;
 
@@ -118,7 +114,7 @@ public class DashBoardNhanVien extends javax.swing.JPanel {
         jPanel17.setLayout(new BorderLayout());
         jPanel17.setBackground(Color.WHITE);
 
-        // 1. Panel Đồng hồ
+        // Panel Đồng hồ
         JPanel pnlClock = new JPanel(new FlowLayout(FlowLayout.CENTER));
         pnlClock.setBackground(Color.WHITE);
         lblDongHo = new JLabel("00:00:00");
@@ -126,17 +122,17 @@ public class DashBoardNhanVien extends javax.swing.JPanel {
         lblDongHo.setForeground(new Color(0, 153, 51));
         pnlClock.add(lblDongHo);
 
-        // 2. Panel Thông tin
+        // Panel Thông tin
         JPanel pnlInfo = new JPanel();
         pnlInfo.setLayout(new BoxLayout(pnlInfo, BoxLayout.Y_AXIS));
         pnlInfo.setBackground(Color.WHITE);
         pnlInfo.setBorder(BorderFactory.createEmptyBorder(0, 15, 10, 0));
 
-        // --- KHỞI TẠO LABEL NGÀY MỚI ---
+        // KHỞI TẠO LABEL NGÀY MỚI
         lblNgay = new JLabel("Ngày: ...");
-        styleLabelCaLam(lblNgay); // Dùng chung style với mấy cái kia
-        lblNgay.setFont(new Font("Segoe UI", Font.BOLD, 15)); // Cho đậm lên xíu
-        lblNgay.setForeground(Color.BLUE); // Màu xanh dương cho nổi
+        styleLabelCaLam(lblNgay);
+        lblNgay.setFont(new Font("Segoe UI", Font.BOLD, 15));
+        lblNgay.setForeground(Color.BLUE);
 
         lblTenCa = new JLabel("Ca: ...");
         lblGioVaoCa = new JLabel("Bắt đầu: ...");
@@ -149,8 +145,7 @@ public class DashBoardNhanVien extends javax.swing.JPanel {
         lblNhanVienTruc.setForeground(new Color(204, 0, 0));
         lblNhanVienTruc.setFont(new Font("Segoe UI", Font.BOLD, 15));
 
-        // --- THÊM LABEL NGÀY VÀO PANEL ---
-        pnlInfo.add(lblNgay); // Thêm ngày lên đầu
+        pnlInfo.add(lblNgay);
         pnlInfo.add(Box.createVerticalStrut(5));
         pnlInfo.add(lblTenCa);
         pnlInfo.add(Box.createVerticalStrut(5));
@@ -176,22 +171,16 @@ public class DashBoardNhanVien extends javax.swing.JPanel {
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
 
         timer = new javax.swing.Timer(1000, e -> {
-            // Dùng LocalDateTime để lấy cả ngày và giờ
             java.time.LocalDateTime now = java.time.LocalDateTime.now();
-
-            // 1. Cập nhật Giờ
             lblDongHo.setText(now.format(timeFormatter));
-
-            // 2. Cập nhật Ngày (MỚI)
             lblNgay.setText(now.format(dateFormatter));
 
-            // 3. Logic xét Ca làm việc
             int hour = now.getHour();
             if (hour >= 6 && hour < 14) {
                 lblTenCa.setText("Ca hiện tại: Ca Sáng");
                 lblGioVaoCa.setText("Thời gian: 06:00 - 14:00");
             } else if (hour >= 14 && hour < 22) {
-                lblTenCa.setText("Ca hiện tại: Ca Tối"); // Hoặc Ca Chiều
+                lblTenCa.setText("Ca hiện tại: Ca Tối");
                 lblGioVaoCa.setText("Thời gian: 14:00 - 22:00");
             } else {
                 lblTenCa.setText("Ca hiện tại: Ngoài giờ");
@@ -205,11 +194,8 @@ public class DashBoardNhanVien extends javax.swing.JPanel {
         pnlCenterContent = new JPanel();
         pnlCenterContent.setLayout(new BoxLayout(pnlCenterContent, BoxLayout.Y_AXIS));
         pnlCenterContent.setBackground(Color.WHITE);
-
-        // --- SỬA ĐỔI PHẦN NÀY ĐỂ GỘP Ô ---
         initStatsPanel();
         pnlCenterContent.add(pnlStats);
-
         pnlCenterContent.add(Box.createVerticalStrut(10));
         initTablesPanel();
         pnlCenterContent.add(pnlTables);
@@ -220,20 +206,111 @@ public class DashBoardNhanVien extends javax.swing.JPanel {
         btnVaoCa.setBackground(Color.GREEN);
         btnVaoCa.setForeground(Color.WHITE);
 
-        btnVaoCa.addActionListener(e -> {
-            if (btnVaoCa.getText().equals("Vào Ca")) {
+        // XỬ LÝ TRẠNG THÁI NÚT KHI KHỞI ĐỘNG
+        // Kiểm tra xem nhân viên có đang trong ca không để set màu nút
+        try {
+            String maNVHienTai = GiaoDienChinhGUI.getTk().getTenDangNhap().trim();
+            LichSuCaLamDAO dao = new LichSuCaLamDAO();
+            if (dao.kiemTraNhanVienDangLamViec(maNVHienTai, LocalDate.now())) {
                 btnVaoCa.setText("Ra Ca");
                 btnVaoCa.setBackground(Color.RED);
             } else {
                 btnVaoCa.setText("Vào Ca");
                 btnVaoCa.setBackground(Color.GREEN);
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        // SỰ KIỆN CLICK NÚT
+        btnVaoCa.addActionListener(e -> {
+            try {
+                String maNV = GiaoDienChinhGUI.getTk().getTenDangNhap().trim();
+                NhanVien nv = NhanVienDAO.getNhanVienTheoMaNV(maNV);
+                LocalDate ngayHienTai = LocalDate.now();
+                LocalTime gioHienTai = LocalTime.now();
+
+                String maCa = "";
+                if (gioHienTai.getHour() >= 6 && gioHienTai.getHour() < 14) {
+                    maCa = "SANG";
+                } else {
+                    maCa = "TOI";
+                }
+
+                CaLam caLam = CaLamDAO.timCaLamTheoMa(maCa);
+                if (caLam == null) {
+                    JOptionPane.showMessageDialog(this, "Không xác định được Ca Làm hiện tại (Mã ca: " + maCa + " không tồn tại)!");
+                    return;
+                }
+
+                LichSuCaLamDAO lsDAO = new LichSuCaLamDAO();
+
+                if (btnVaoCa.getText().equals("Vào Ca")) {
+                    // LOGIC VÀO CA
+                    LichSuCaLam ls = new LichSuCaLam(nv, ngayHienTai, caLam, gioHienTai, null, "");
+
+                    if (lsDAO.themLichSuCaLam(ls)) {
+                        JOptionPane.showMessageDialog(this, "Vào ca thành công lúc " + gioHienTai.format(DateTimeFormatter.ofPattern("HH:mm:ss")));
+                        btnVaoCa.setText("Ra Ca");
+                        btnVaoCa.setBackground(Color.RED);
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Lỗi: Không thể vào ca (Có thể bạn đã chấm công rồi).");
+                    }
+
+                } else {
+                    // LOGIC RA CA
+                    // Tạo giao diện nhập ghi chú
+                    JPanel pnlGhiChu = new JPanel(new BorderLayout(5, 5));
+                    pnlGhiChu.setPreferredSize(new Dimension(400, 150));
+
+                    JLabel lblLoiNhan = new JLabel("Nhập ghi chú ra ca (nếu có):");
+                    lblLoiNhan.setFont(new Font("Segoe UI", Font.BOLD, 14));
+
+                    JTextArea txtGhiChu = new JTextArea(5, 20);
+                    txtGhiChu.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+                    txtGhiChu.setLineWrap(true);
+                    txtGhiChu.setWrapStyleWord(true);
+
+                    JScrollPane scrollGhiChu = new JScrollPane(txtGhiChu);
+
+                    pnlGhiChu.add(lblLoiNhan, BorderLayout.NORTH);
+                    pnlGhiChu.add(scrollGhiChu, BorderLayout.CENTER);
+
+                    // Hiển thị hộp thoại nhập
+                    int inputResult = JOptionPane.showConfirmDialog(
+                            this, pnlGhiChu, "Ghi chú Ra Ca",
+                            JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE
+                    );
+
+                    // Nếu bấm Cancel thì thoát
+                    if (inputResult != JOptionPane.OK_OPTION) {
+                        return;
+                    }
+
+                    String ghiChu = txtGhiChu.getText().trim();
+
+                    // Hiện hộp thoại xác nhận cuối cùng
+                    int confirm = JOptionPane.showConfirmDialog(this,
+                            "Bạn có chắc chắn muốn kết thúc ca làm việc?",
+                            "Xác nhận ra ca", JOptionPane.YES_NO_OPTION);
+
+                    if (confirm == JOptionPane.YES_OPTION) {
+                        if (lsDAO.capNhatRaCa(maNV, maCa, ngayHienTai, gioHienTai, ghiChu)) {
+                            JOptionPane.showMessageDialog(this, "Ra ca thành công!");
+                            btnVaoCa.setText("Vào Ca");
+                            btnVaoCa.setBackground(Color.GREEN);
+                        } else {
+                            JOptionPane.showMessageDialog(this, "Lỗi: Không tìm thấy phiên làm việc để ra ca.");
+                        }
+                    }
+                }
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(this, "Lỗi kết nối cơ sở dữ liệu!");
+            }
         });
     }
 
-    /**
-     * SỬA LẠI: Dùng GridBagLayout để gộp 2 ô trống thành 1 ô lớn chứa bảng
-     */
     private void initStatsPanel() {
         pnlStats = new JPanel(new GridBagLayout());
         pnlStats.setBackground(Color.WHITE);
@@ -245,7 +322,7 @@ public class DashBoardNhanVien extends javax.swing.JPanel {
         gbc.insets = new Insets(0, 0, 0, 15);
         gbc.weighty = 1.0;
 
-        // --- 1. XỬ LÝ SỐ LIỆU DOANH THU ---
+        // XỬ LÝ SỐ LIỆU DOANH THU
         LocalDate homNay = LocalDate.now();
         LocalDate homQua = homNay.minusDays(1);
 
@@ -295,7 +372,6 @@ public class DashBoardNhanVien extends javax.swing.JPanel {
         // Thêm Thẻ Doanh Thu (Cột 0)
         gbc.gridx = 0;
         gbc.weightx = 0.25;
-        // createStatCard(Tiêu đề, Giá trị, Dòng phụ, isPositive)
         pnlStats.add(createStatCard("Doanh thu hôm nay", strDoanhThu, subTextDT, phanTramDT >= 0), gbc);
 
         // Tính % Hóa đơn
@@ -312,16 +388,13 @@ public class DashBoardNhanVien extends javax.swing.JPanel {
         gbc.weightx = 0.25;
         pnlStats.add(createStatCard("Hóa đơn đã bán", String.valueOf(hdHomNay), subTextHD, phanTramHD >= 0), gbc);
 
-        // --- 3. BẢNG SẢN PHẨM HẾT HÀNG (GIỮ NGUYÊN) ---
+        // BẢNG SẢN PHẨM HẾT HÀNG (GIỮ NGUYÊN)
         gbc.gridx = 2;
         gbc.weightx = 0.5;
         gbc.insets = new Insets(0, 0, 0, 0);
         pnlStats.add(createStockWarningPanel(), gbc);
     }
 
-    /**
-     * MỚI: Tạo panel chứa bảng cảnh báo hết hàng
-     */
     private JPanel createStockWarningPanel() {
         JPanel pnl = new JPanel(new BorderLayout());
         pnl.setBackground(Color.WHITE);
@@ -362,9 +435,8 @@ public class DashBoardNhanVien extends javax.swing.JPanel {
         }
 
         tblHetHang = new JTable(dtmHetHang);
-        // Style tối giản cho bảng nhỏ này
         tblHetHang.setFont(new Font("Segoe UI", Font.PLAIN, 13));
-        tblHetHang.setRowHeight(25); // Dòng nhỏ hơn để hiện được nhiều
+        tblHetHang.setRowHeight(25);
         tblHetHang.setShowGrid(false);
         tblHetHang.setSelectionBackground(new Color(255, 230, 230)); // Màu chọn đỏ nhạt
 
@@ -400,12 +472,6 @@ public class DashBoardNhanVien extends javax.swing.JPanel {
         lblTitle.setForeground(new Color(102, 102, 102));
         pnlHeader.add(lblTitle, BorderLayout.WEST);
 
-//        JLabel lblIcon = new JLabel("");
-//        if (title.contains("Đơn hàng")) {
-//            lblIcon.setText("");
-//        }
-//        lblIcon.setFont(new Font("Segoe UI", Font.PLAIN, 18));
-//        pnlHeader.add(lblIcon, BorderLayout.EAST);
         JLabel lblValue = new JLabel(value);
         lblValue.setFont(new Font("Segoe UI", Font.BOLD, 26));
         lblValue.setForeground(Color.BLACK);
@@ -454,7 +520,6 @@ public class DashBoardNhanVien extends javax.swing.JPanel {
     }
 
     private JScrollPane initTableHoaDon() {
-        // 1. Khai báo cột: Chỉ còn 4 cột
         String[] columns = {"Mã hóa đơn", "Khách hàng", "PTTT", "Tổng tiền"};
         Object[][] data = {};
 
@@ -507,7 +572,7 @@ public class DashBoardNhanVien extends javax.swing.JPanel {
         tblHoaDon = new JTable(dtmHoaDon);
         applyTableStyle(tblHoaDon);
 
-        // --- CẤU HÌNH RENDERER ĐÃ SỬA ---
+        // CẤU HÌNH RENDERER
         // Cột 0: Mã HĐ - Căn trái
         tblHoaDon.getColumnModel().getColumn(0).setCellRenderer(getLeftRenderer());
 
@@ -517,14 +582,12 @@ public class DashBoardNhanVien extends javax.swing.JPanel {
         // Cột 2: PTTT - Căn giữa
         tblHoaDon.getColumnModel().getColumn(2).setCellRenderer(getCenterRenderer());
 
-        // Cột 3: Tổng tiền - Căn phải (Lúc trước là cột 4, giờ chuyển thành cột 3)
-        // Đã xóa phần statusRenderer vì không còn cột Trạng thái
+        // Cột 3: Tổng tiền - Căn phải
         tblHoaDon.getColumnModel().getColumn(3).setCellRenderer(getRightRenderer());
 
         // Thiết lập độ rộng cột
         tblHoaDon.getColumnModel().getColumn(0).setPreferredWidth(100); // Mã HĐ
         tblHoaDon.getColumnModel().getColumn(1).setPreferredWidth(150); // Tên KH
-        // Cột 2 (PTTT) và 3 (Tổng tiền) để tự động co giãn hoặc set nếu muốn
         tblHoaDon.getColumnModel().getColumn(3).setPreferredWidth(100);
 
         JScrollPane scroll = new JScrollPane(tblHoaDon);
@@ -617,7 +680,6 @@ public class DashBoardNhanVien extends javax.swing.JPanel {
         lblSdt.setText(nv.getSdt());
     }
 
-    // --- INIT COMPONENTS (Phần này để Netbeans không báo lỗi, giữ nguyên như cũ) ---
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">                          
     private void initComponents() {
@@ -747,7 +809,6 @@ public class DashBoardNhanVien extends javax.swing.JPanel {
         pnl.setBorder(BorderFactory.createEmptyBorder(5, 0, 0, 0));
     }
 
-    // Variables declaration - do not modify                     
     private javax.swing.JButton btnVaoCa;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -784,5 +845,4 @@ public class DashBoardNhanVien extends javax.swing.JPanel {
     private javax.swing.JLabel lblNgaySinh;
     private javax.swing.JLabel lblSdt;
     private javax.swing.JLabel lblTrangThai;
-    // End of variables declaration                   
 }
