@@ -12,6 +12,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeListener;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -26,6 +28,14 @@ import java.util.Date;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.jdesktop.swingx.JXDatePicker;
 
 /**
@@ -68,59 +78,16 @@ public class BaoCaoDoanhThu extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
-        jPanel1 = new javax.swing.JPanel();
-        jPanel2 = new javax.swing.JPanel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
-
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        jScrollPane1.setViewportView(jTable1);
-
-        setLayout(new java.awt.BorderLayout());
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 400, Short.MAX_VALUE)
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 300, Short.MAX_VALUE)
         );
-
-        add(jPanel1, java.awt.BorderLayout.PAGE_START);
-
-        jPanel2.setLayout(new javax.swing.BoxLayout(jPanel2, javax.swing.BoxLayout.LINE_AXIS));
-
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        jScrollPane2.setViewportView(jTable2);
-
-        jPanel2.add(jScrollPane2);
-
-        add(jPanel2, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
     private void setupUI() {
@@ -294,6 +261,22 @@ public class BaoCaoDoanhThu extends javax.swing.JPanel {
 
         btnXuatFile = new JButton("Xuất file báo cáo");
         btnXuatFile.setFont(fontLabel);
+        btnXuatFile.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFileChooser fileChooser = new JFileChooser();
+                fileChooser.setDialogTitle("Chọn nơi lưu báo cáo Excel");
+                fileChooser.setSelectedFile(new File("BaoCao.xlsx"));
+                int userSelection = fileChooser.showSaveDialog(null);
+
+                if (userSelection == JFileChooser.APPROVE_OPTION) {
+                    File fileToSave = fileChooser.getSelectedFile();
+                    // Gọi phương thức xuất báo cáo
+                    xuatFileBaoCao(fileToSave);
+                }
+
+            }
+        });
         // TODO: Thêm logic xuất file sau
 
         pnlFilter.add(lblTuNgay);
@@ -345,8 +328,6 @@ public class BaoCaoDoanhThu extends javax.swing.JPanel {
         this.add(pnlSouth, BorderLayout.SOUTH);
 
         // Xóa các component cũ nếu có
-        this.remove(jPanel1);
-        this.remove(jPanel2);
 
         // Mặc định chọn "Theo ngày" và hiện JDatePicker
         cmbLoaiThongKe.setSelectedItem("Theo ngày");
@@ -357,98 +338,98 @@ public class BaoCaoDoanhThu extends javax.swing.JPanel {
     }
 
     private void xemBaoCao() {
-    // Show loading
-    showLoadingDialog();
+        // Show loading
+        showLoadingDialog();
 
-    SwingWorker<Void, Void> worker = new SwingWorker<>() {
-        @Override
-        protected Void doInBackground() throws Exception {
-            try {
-                String loaiThongKe = (String) cmbLoaiThongKe.getSelectedItem();
+        SwingWorker<Void, Void> worker = new SwingWorker<>() {
+            @Override
+            protected Void doInBackground() throws Exception {
+                try {
+                    String loaiThongKe = (String) cmbLoaiThongKe.getSelectedItem();
 
-                // Query DB
-                HoaDonDAO hoaDonDAO = new HoaDonDAO();
-                PhieuTraHangDAO phieuTraDAO = new PhieuTraHangDAO();
+                    // Query DB
+                    HoaDonDAO hoaDonDAO = new HoaDonDAO();
+                    PhieuTraHangDAO phieuTraDAO = new PhieuTraHangDAO();
 
-                ArrayList<HoaDon> hoaDons = hoaDonDAO.getAllHoaDon();
-                ArrayList<PhieuTraHang> phieuTras = phieuTraDAO.getAllPhieuTraHang();
+                    ArrayList<HoaDon> hoaDons = hoaDonDAO.getAllHoaDon();
+                    ArrayList<PhieuTraHang> phieuTras = phieuTraDAO.getAllPhieuTraHang();
 
-                // Tạo list tất cả khoảng thời gian trong range
-                List<String> allKeys = new ArrayList<>();
-                if ("Theo ngày".equals(loaiThongKe)) {
-                    Date tuNgay = datePickerTuNgay.getDate();
-                    Date denNgay = datePickerDenNgay.getDate();
-                    LocalDate startDate = tuNgay.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate();
-                    LocalDate endDate = denNgay.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate();
-                    for (LocalDate date = startDate; !date.isAfter(endDate); date = date.plusDays(1)) {
-                        allKeys.add(date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
-                    }
-                } else if ("Theo tháng".equals(loaiThongKe)) {
-                    int tuThang = (Integer) cmbTuThang.getSelectedItem();
-                    int tuNam = (Integer) cmbTuNam.getSelectedItem();
-                    int denThang = (Integer) cmbDenThang.getSelectedItem();
-                    int denNam = (Integer) cmbDenNam.getSelectedItem();
-                    for (int nam = tuNam; nam <= denNam; nam++) {
-                        int startThang = (nam == tuNam) ? tuThang : 1;
-                        int endThang = (nam == denNam) ? denThang : 12;
-                        for (int thang = startThang; thang <= endThang; thang++) {
-                            allKeys.add(String.format("%02d/%d", thang, nam));
+                    // Tạo list tất cả khoảng thời gian trong range
+                    List<String> allKeys = new ArrayList<>();
+                    if ("Theo ngày".equals(loaiThongKe)) {
+                        Date tuNgay = datePickerTuNgay.getDate();
+                        Date denNgay = datePickerDenNgay.getDate();
+                        LocalDate startDate = tuNgay.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate();
+                        LocalDate endDate = denNgay.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate();
+                        for (LocalDate date = startDate; !date.isAfter(endDate); date = date.plusDays(1)) {
+                            allKeys.add(date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+                        }
+                    } else if ("Theo tháng".equals(loaiThongKe)) {
+                        int tuThang = (Integer) cmbTuThang.getSelectedItem();
+                        int tuNam = (Integer) cmbTuNam.getSelectedItem();
+                        int denThang = (Integer) cmbDenThang.getSelectedItem();
+                        int denNam = (Integer) cmbDenNam.getSelectedItem();
+                        for (int nam = tuNam; nam <= denNam; nam++) {
+                            int startThang = (nam == tuNam) ? tuThang : 1;
+                            int endThang = (nam == denNam) ? denThang : 12;
+                            for (int thang = startThang; thang <= endThang; thang++) {
+                                allKeys.add(String.format("%02d/%d", thang, nam));
+                            }
+                        }
+                    } else if ("Theo quý".equals(loaiThongKe)) {
+                        int tuQuy = (Integer) cmbTuQuy.getSelectedItem();
+                        int tuNam = (Integer) cmbTuNam.getSelectedItem();
+                        int denQuy = (Integer) cmbDenQuy.getSelectedItem();
+                        int denNam = (Integer) cmbDenNam.getSelectedItem();
+                        for (int nam = tuNam; nam <= denNam; nam++) {
+                            int startQuy = (nam == tuNam) ? tuQuy : 1;
+                            int endQuy = (nam == denNam) ? denQuy : 4;
+                            for (int quy = startQuy; quy <= endQuy; quy++) {
+                                allKeys.add("Quý " + quy + " năm " + nam);
+                            }
+                        }
+                    } else if ("Theo năm".equals(loaiThongKe)) {
+                        int tuNam = (Integer) cmbTuNam.getSelectedItem();
+                        int denNam = (Integer) cmbDenNam.getSelectedItem();
+                        for (int nam = tuNam; nam <= denNam; nam++) {
+                            allKeys.add("Năm " + nam);
                         }
                     }
-                } else if ("Theo quý".equals(loaiThongKe)) {
-                    int tuQuy = (Integer) cmbTuQuy.getSelectedItem();
-                    int tuNam = (Integer) cmbTuNam.getSelectedItem();
-                    int denQuy = (Integer) cmbDenQuy.getSelectedItem();
-                    int denNam = (Integer) cmbDenNam.getSelectedItem();
-                    for (int nam = tuNam; nam <= denNam; nam++) {
-                        int startQuy = (nam == tuNam) ? tuQuy : 1;
-                        int endQuy = (nam == denNam) ? denQuy : 4;
-                        for (int quy = startQuy; quy <= endQuy; quy++) {
-                            allKeys.add("Quý " + quy + " năm " + nam);
-                        }
+
+                    // Tính doanh thu và cập nhật table
+                    model.setRowCount(0);
+                    double tongDoanhThu = 0;
+
+                    for (String key : allKeys) {
+                        double tongHD = hoaDons.stream()
+                            .filter(hd -> getKey(hd, loaiThongKe).equals(key))
+                            .mapToDouble(HoaDon::getTongTien)
+                            .sum();
+                        double tongPT = phieuTras.stream()
+                            .filter(pt -> getKey(pt, loaiThongKe).equals(key))
+                            .mapToDouble(PhieuTraHang::getTongTienHoanTra)
+                            .sum();
+                        double doanhThu = tongHD - tongPT;
+                        model.addRow(new Object[]{key, dinhDangTien(tongHD), dinhDangTien(tongPT), dinhDangTien(doanhThu)});
+                        tongDoanhThu += doanhThu;
                     }
-                } else if ("Theo năm".equals(loaiThongKe)) {
-                    int tuNam = (Integer) cmbTuNam.getSelectedItem();
-                    int denNam = (Integer) cmbDenNam.getSelectedItem();
-                    for (int nam = tuNam; nam <= denNam; nam++) {
-                        allKeys.add("Năm " + nam);
-                    }
+
+                    lblTongDoanhThu.setText("Tổng doanh thu: " + dinhDangTien(tongDoanhThu));
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(null, "Lỗi khi xem báo cáo: " + e.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
                 }
-
-                // Tính doanh thu và cập nhật table
-                model.setRowCount(0);
-                double tongDoanhThu = 0;
-
-                for (String key : allKeys) {
-                    double tongHD = hoaDons.stream()
-                        .filter(hd -> getKey(hd, loaiThongKe).equals(key))
-                        .mapToDouble(HoaDon::getTongTien)
-                        .sum();
-                    double tongPT = phieuTras.stream()
-                        .filter(pt -> getKey(pt, loaiThongKe).equals(key))
-                        .mapToDouble(PhieuTraHang::getTongTienHoanTra)
-                        .sum();
-                    double doanhThu = tongHD - tongPT;
-                    model.addRow(new Object[]{key, dinhDangTien(tongHD), dinhDangTien(tongPT), dinhDangTien(doanhThu)});
-                    tongDoanhThu += doanhThu;
-                }
-
-                lblTongDoanhThu.setText("Tổng doanh thu: " + dinhDangTien(tongDoanhThu));
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(null, "Lỗi khi xem báo cáo: " + e.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
+                return null;
             }
-            return null;
-        }
 
-        @Override
-        protected void done() {
-            // Hide loading
-            disposeLoadingDialog();
-        }
-    };
+            @Override
+            protected void done() {
+                // Hide loading
+                disposeLoadingDialog();
+            }
+        };
 
-    worker.execute();
-}
+        worker.execute();
+    }
 
     // Định dạng tiền như TraHangGUI
     private String dinhDangTien(double thanhTien) {
@@ -487,49 +468,123 @@ public class BaoCaoDoanhThu extends javax.swing.JPanel {
         return "";
     }
 
-private JDialog loadingDialog;
+    private JDialog loadingDialog;
 
-private void showLoadingDialog() {
-    loadingDialog = new JDialog(
-        (java.awt.Frame) SwingUtilities.getWindowAncestor(this),
-        "Đang tải", 
-        false
-    );
-    loadingDialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+    private void showLoadingDialog() {
+        loadingDialog = new JDialog(
+            (java.awt.Frame) SwingUtilities.getWindowAncestor(this),
+            "Đang tải", 
+            false
+        );
+        loadingDialog.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
 
-    // Panel chứa label + progress bar
-    JPanel panel = new JPanel(new BorderLayout(10, 10));
-    JLabel label = new JLabel("Đang thống kê dữ liệu...", SwingConstants.CENTER);
-    label.setFont(new Font("Arial", Font.BOLD, 14));
-    panel.add(label, BorderLayout.NORTH);
+        // Panel chứa label + progress bar
+        JPanel panel = new JPanel(new BorderLayout(10, 10));
+        JLabel label = new JLabel("Đang thống kê dữ liệu...", SwingConstants.CENTER);
+        label.setFont(new Font("Arial", Font.BOLD, 14));
+        panel.add(label, BorderLayout.NORTH);
 
-    // Thanh loading
-    JProgressBar progressBar = new JProgressBar();
-    progressBar.setIndeterminate(true); // chạy qua lại
-    panel.add(progressBar, BorderLayout.CENTER);
+        // Thanh loading
+        JProgressBar progressBar = new JProgressBar();
+        progressBar.setIndeterminate(true); // chạy qua lại
+        panel.add(progressBar, BorderLayout.CENTER);
 
-    loadingDialog.getContentPane().add(panel);
-    loadingDialog.pack(); // tự động tính kích thước
-    loadingDialog.setLocationRelativeTo(this);
+        loadingDialog.getContentPane().add(panel);
+        loadingDialog.pack(); // tự động tính kích thước
+        loadingDialog.setLocationRelativeTo(this);
 
-    this.setEnabled(false);
-    loadingDialog.setVisible(true);
-}
-
-private void disposeLoadingDialog() {
-    if (loadingDialog != null) {
-        loadingDialog.dispose();
-        loadingDialog = null;
+        this.setEnabled(false);
+        loadingDialog.setVisible(true);
     }
-    this.setEnabled(true);
-}
+
+    private void disposeLoadingDialog() {
+        if (loadingDialog != null) {
+            loadingDialog.dispose();
+            loadingDialog = null;
+        }
+        this.setEnabled(true);
+    }
+    
+    private void xuatFileBaoCao(File fileToSave) {
+    try (Workbook workbook = new XSSFWorkbook()) {
+        Sheet sheet = workbook.createSheet("Báo cáo");
+
+        String loaiThongKe = (String) cmbLoaiThongKe.getSelectedItem();
+
+        // Header
+        Row headerRow = sheet.createRow(0);
+        Cell headerCell = headerRow.createCell(0);
+        headerCell.setCellValue("BÁO CÁO DOANH THU " + loaiThongKe.toUpperCase());
+        CellStyle headerStyle = workbook.createCellStyle();
+        org.apache.poi.ss.usermodel.Font headerFont = workbook.createFont();
+        headerFont.setBold(true);
+        headerFont.setFontHeightInPoints((short) 16);
+        headerStyle.setFont(headerFont);
+        headerStyle.setAlignment(HorizontalAlignment.CENTER);
+        headerCell.setCellStyle(headerStyle);
+        sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, model.getColumnCount()-1));
+
+        // Thông tin filter (linh động theo ngày/tháng/quý/năm)
+        Row infoRow = sheet.createRow(2);
+        Cell infoCell = infoRow.createCell(0);
+            if ("Theo tháng".equals(loaiThongKe)) {
+                int tuThang = (Integer) cmbTuThang.getSelectedItem();
+                int tuNam = (Integer) cmbTuNam.getSelectedItem();
+                int denThang = (Integer) cmbDenThang.getSelectedItem();
+                int denNam = (Integer) cmbDenNam.getSelectedItem();
+                infoCell.setCellValue("Từ tháng " + tuThang + "/" + tuNam + " đến tháng " + denThang + "/" + denNam);
+            } else if ("Theo quý".equals(loaiThongKe)) {
+                // tương tự cho quý
+            } else if ("Theo năm".equals(loaiThongKe)) {
+                // tương tự cho năm
+            } else if ("Theo ngày".equals(loaiThongKe)) {
+                // tương tự cho ngày
+            }
+            sheet.addMergedRegion(new CellRangeAddress(2, 2, 0, model.getColumnCount()-1));
+
+            // Thời gian lập báo cáo
+            Row timeRow = sheet.createRow(3);
+            Cell timeCell = timeRow.createCell(0);
+            String ngayLap = java.time.LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
+            timeCell.setCellValue("Thời gian lập báo cáo: " + ngayLap);
+            sheet.addMergedRegion(new CellRangeAddress(3, 3, 0, model.getColumnCount()-1));
+
+            // Bảng thống kê
+            Row tableHeaderRow = sheet.createRow(5);
+            for (int i = 0; i < model.getColumnCount(); i++) {
+                tableHeaderRow.createCell(i).setCellValue(model.getColumnName(i));
+            }
+            for (int r = 0; r < model.getRowCount(); r++) {
+                Row row = sheet.createRow(r + 6);
+                for (int c = 0; c < model.getColumnCount(); c++) {
+                    Object value = model.getValueAt(r, c);
+                    row.createCell(c).setCellValue(value != null ? value.toString() : "");
+                }
+            }
+
+            // Footer: tổng doanh thu
+            int footerRowIndex = model.getRowCount() + 7;
+            Row footerRow = sheet.createRow(footerRowIndex);
+            Cell footerCell = footerRow.createCell(0);
+            footerCell.setCellValue(lblTongDoanhThu.getText());
+            sheet.addMergedRegion(new CellRangeAddress(footerRowIndex, footerRowIndex, 0, model.getColumnCount()-1));
+
+            // Auto resize
+            for (int i = 0; i < model.getColumnCount(); i++) {
+                sheet.autoSizeColumn(i);
+            }
+
+            try (FileOutputStream fos = new FileOutputStream(fileToSave)) {
+                workbook.write(fos);
+            }
+
+            JOptionPane.showMessageDialog(this, "Xuất báo cáo thành công: " + fileToSave.getAbsolutePath());
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "Lỗi khi xuất file: " + ex.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
     // End of variables declaration//GEN-END:variables
 }
