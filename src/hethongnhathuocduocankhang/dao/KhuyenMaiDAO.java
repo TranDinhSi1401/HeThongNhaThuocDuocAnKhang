@@ -38,7 +38,7 @@ public class KhuyenMaiDAO {
                          ON sp.maSP = kmsp.maSP
                          JOIN KhuyenMai km
                          ON km.maKhuyenMai = kmsp.maKhuyenMai
-                         WHERE sp.maSP = ? AND NgayBatDau <= GETDATE() AND ngayKetThuc >= GETDATE() AND kmsp.daXoa = 0
+                         WHERE sp.maSP = ? AND NgayBatDau <= GETDATE() AND ngayKetThuc >= GETDATE() AND km.daXoa = 0
                          """;
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, maSp);
