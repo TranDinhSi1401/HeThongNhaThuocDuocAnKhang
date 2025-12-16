@@ -28,6 +28,7 @@ import java.util.Date;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
+import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
@@ -524,6 +525,7 @@ public class BaoCaoDoanhThu extends javax.swing.JPanel {
         headerCell.setCellStyle(headerStyle);
         sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, model.getColumnCount()-1));
 
+
         // Thông tin filter (linh động theo ngày/tháng/quý/năm)
         Row infoRow = sheet.createRow(2);
         Cell infoCell = infoRow.createCell(0);
@@ -549,18 +551,33 @@ public class BaoCaoDoanhThu extends javax.swing.JPanel {
             timeCell.setCellValue("Thời gian lập báo cáo: " + ngayLap);
             sheet.addMergedRegion(new CellRangeAddress(3, 3, 0, model.getColumnCount()-1));
 
-            // Bảng thống kê
+            // Tạo style border
+            CellStyle borderStyle = workbook.createCellStyle();
+            borderStyle.setBorderTop(BorderStyle.THIN);
+            borderStyle.setBorderBottom(BorderStyle.THIN);
+            borderStyle.setBorderLeft(BorderStyle.THIN);
+            borderStyle.setBorderRight(BorderStyle.THIN);
+
+            // Header bảng
             Row tableHeaderRow = sheet.createRow(5);
             for (int i = 0; i < model.getColumnCount(); i++) {
-                tableHeaderRow.createCell(i).setCellValue(model.getColumnName(i));
+                Cell cell = tableHeaderRow.createCell(i);
+                cell.setCellValue(model.getColumnName(i));
+                cell.setCellStyle(borderStyle); // áp dụng border
             }
+
+            // Dữ liệu bảng
             for (int r = 0; r < model.getRowCount(); r++) {
                 Row row = sheet.createRow(r + 6);
                 for (int c = 0; c < model.getColumnCount(); c++) {
                     Object value = model.getValueAt(r, c);
-                    row.createCell(c).setCellValue(value != null ? value.toString() : "");
+                    Cell cell = row.createCell(c);
+                    cell.setCellValue(value != null ? value.toString() : "");
+                    cell.setCellStyle(borderStyle); // áp dụng border
                 }
             }
+            
+            
 
             // Footer: tổng doanh thu
             int footerRowIndex = model.getRowCount() + 7;
