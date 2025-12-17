@@ -32,7 +32,8 @@ public class ThemSanPhamGUI extends JPanel {
     private DefaultTableModel modelBarcode;
 
     // --- 3. Components QUẢN LÝ ĐƠN VỊ TÍNH (Tab 1) ---
-    private JTextField txtTenDonVi, txtHeSoQuyDoi, txtGiaBanDonVi;
+    private JTextField txtHeSoQuyDoi, txtGiaBanDonVi;
+    private JComboBox<String> cboTenDonVi;
     private JCheckBox chkDonViCoBan;
     private JButton btnThemDVT, btnXoaDVT;
     private JTable tableDonViTinh;
@@ -223,7 +224,6 @@ public class ThemSanPhamGUI extends JPanel {
         pnlDVT.setBorder(new EmptyBorder(5, 5, 5, 5));
 
         JPanel pnlInputDVT = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        txtTenDonVi = new JTextField(6);
         txtHeSoQuyDoi = new JTextField(4);
         txtGiaBanDonVi = new JTextField(7);
         chkDonViCoBan = new JCheckBox("Cơ bản");
@@ -231,7 +231,15 @@ public class ThemSanPhamGUI extends JPanel {
         btnXoaDVT = new JButton("Xóa");
 
         pnlInputDVT.add(new JLabel("Tên ĐV:"));
-        pnlInputDVT.add(txtTenDonVi);
+
+        String[] donViMau = {"", "VIEN", "VI", "HOP", "CHAI", "LO", "TUYP", "GOI", "CAI", "THUNG"};
+        cboTenDonVi = new JComboBox<>(donViMau);
+        cboTenDonVi.setEditable(true);
+        cboTenDonVi.setPreferredSize(new Dimension(80, 22));
+
+        pnlInputDVT.add(new JLabel("Tên ĐV:"));
+        pnlInputDVT.add(cboTenDonVi);
+
         pnlInputDVT.add(new JLabel("Quy đổi:"));
         pnlInputDVT.add(txtHeSoQuyDoi);
 
@@ -651,9 +659,8 @@ public class ThemSanPhamGUI extends JPanel {
         return modelBarcode;
     }
 
-    // Đơn vị tính
-    public JTextField getTxtTenDonVi() {
-        return txtTenDonVi;
+    public JComboBox<String> getCboTenDonVi() {
+        return cboTenDonVi;
     }
 
     public JTextField getTxtHeSoQuyDoi() {

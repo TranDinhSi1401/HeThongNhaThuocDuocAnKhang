@@ -277,45 +277,129 @@ public class SanPhamBUS {
             }
         });
 
+//        pnlThemSP.getBtnThemDVT().addActionListener(e -> {
+//            try {
+//                String tenDV = pnlThemSP.getTxtTenDonVi().getText().trim();
+//                if (tenDV.isEmpty()) {
+//                    throw new Exception("Chưa nhập tên ĐVT");
+//                }
+//                int heSo = Integer.parseInt(pnlThemSP.getTxtHeSoQuyDoi().getText().trim());
+//                String giaBanFormatted = pnlThemSP.getTxtGiaBanDonVi().getText();
+//                String giaBanRaw = giaBanFormatted.replaceAll("\\D", "");
+//                double gia = 0.0;
+//                if (!giaBanRaw.trim().isEmpty()) {
+//                    gia = Double.parseDouble(giaBanRaw);
+//                }
+//                boolean isCoBan = pnlThemSP.getChkDonViCoBan().isSelected();
+//                if (isCoBan) {
+//                    for (DonViTinh dv : listTempDVT) {
+//                        if (dv.isDonViTinhCoBan()) {
+//                            JOptionPane.showMessageDialog(dialog, "Đã tồn tại đơn vị tính cơ bản (" + dv.getTenDonVi() + ")");
+//                            return;
+//                        }
+//                    }
+//                }
+//
+//                String maDVT = "DVT-" + pnlThemSP.getTxtMaSanPham().getText().split("-")[1] + "-" + tenDV;
+//                DonViTinh dvt = new DonViTinh(maDVT, new SanPham(pnlThemSP.getTxtMaSanPham().getText()), heSo, gia, tenDV, isCoBan);
+//
+//                listTempDVT.add(dvt);
+//                pnlThemSP.getModelDVT().addRow(new Object[]{
+//                    maDVT, tenDV, heSo, String.format("%,.0f", gia), isCoBan ? "Có" : "Không"
+//                });
+//
+//                pnlThemSP.getTxtTenDonVi().setText("");
+//                pnlThemSP.getTxtGiaBanDonVi().setText("");
+//                pnlThemSP.getChkDonViCoBan().setSelected(false);
+//                pnlThemSP.getTxtHeSoQuyDoi().setEnabled(true);
+//                pnlThemSP.getTxtHeSoQuyDoi().setText("");
+//
+//            } catch (NumberFormatException nfe) {
+//                JOptionPane.showMessageDialog(dialog, "Hệ số hoặc Giá bán phải là số hợp lệ.");
+//            } catch (Exception ex) {
+//                JOptionPane.showMessageDialog(dialog, ex.getMessage());
+//            }
+//        });
+
+
         pnlThemSP.getBtnThemDVT().addActionListener(e -> {
             try {
-                String tenDV = pnlThemSP.getTxtTenDonVi().getText().trim();
+                // --- BƯỚC 1: LẤY DỮ LIỆU TỪ COMBOBOX (QUAN TRỌNG) ---
+                // Phải lấy từ editor vì người dùng có thể đang nhập một giá trị mới không có trong danh sách
+                Object itemObj = pnlThemSP.getCboTenDonVi().getEditor().getItem();
+                String rawTenDV = (itemObj != null) ? itemObj.toString() : "";
+
+                // --- BƯỚC 2: CHUYỂN THÀNH IN HOA ---
+                // Cắt khoảng trắng thừa và chuyển toàn bộ thành chữ in hoa
+                String tenDV = rawTenDV.trim().toUpperCase();
+
+                // Kiểm tra dữ liệu rỗng
                 if (tenDV.isEmpty()) {
-                    throw new Exception("Chưa nhập tên ĐVT");
+                    throw new Exception("Vui lòng nhập hoặc chọn tên Đơn vị tính!");
                 }
-                int heSo = Integer.parseInt(pnlThemSP.getTxtHeSoQuyDoi().getText().trim());
+
+                // --- BƯỚC 3: XỬ LÝ SỐ LIỆU (Hệ số & Giá) ---
+                // Lấy hệ số quy đổi
+                String strHeSo = pnlThemSP.getTxtHeSoQuyDoi().getText().trim();
+                if (strHeSo.isEmpty()) {
+                    throw new Exception("Chưa nhập hệ số quy đổi!");
+                }
+                int heSo = Integer.parseInt(strHeSo);
+
+                // Lấy giá bán và lọc bỏ các ký tự phân cách (ví dụ: 10,000 -> 10000)
                 String giaBanFormatted = pnlThemSP.getTxtGiaBanDonVi().getText();
                 String giaBanRaw = giaBanFormatted.replaceAll("\\D", "");
                 double gia = 0.0;
                 if (!giaBanRaw.trim().isEmpty()) {
                     gia = Double.parseDouble(giaBanRaw);
                 }
+
+                // --- BƯỚC 4: KIỂM TRA LOGIC ĐƠN VỊ CƠ BẢN ---
                 boolean isCoBan = pnlThemSP.getChkDonViCoBan().isSelected();
                 if (isCoBan) {
+                    // Kiểm tra xem trong danh sách tạm đã có đơn vị cơ bản nào chưa
                     for (DonViTinh dv : listTempDVT) {
                         if (dv.isDonViTinhCoBan()) {
-                            JOptionPane.showMessageDialog(dialog, "Đã tồn tại đơn vị tính cơ bản (" + dv.getTenDonVi() + ")");
-                            return;
+                            JOptionPane.showMessageDialog(dialog, "Đã tồn tại đơn vị tính cơ bản (" + dv.getTenDonVi() + "). Vui lòng xóa đơn vị cũ trước khi thêm mới.");
+                            return; // Dừng lại không thêm nữa
                         }
                     }
                 }
 
-                String maDVT = "DVT-" + pnlThemSP.getTxtMaSanPham().getText().split("-")[1] + "-" + tenDV;
-                DonViTinh dvt = new DonViTinh(maDVT, new SanPham(pnlThemSP.getTxtMaSanPham().getText()), heSo, gia, tenDV, isCoBan);
+                // --- BƯỚC 5: TẠO ĐỐI TƯỢNG VÀ THÊM VÀO BẢNG ---
+                // Tạo mã đơn vị tính (Giả định mã SP có dạng XX-123)
+                // Lưu ý: Đảm bảo txtMaSanPham đã có dữ liệu và có dấu "-"
+                String maSP = pnlThemSP.getTxtMaSanPham().getText();
+                String maDVT = "DVT-" + maSP.split("-")[1] + "-" + tenDV;
 
+                DonViTinh dvt = new DonViTinh(maDVT, new SanPham(maSP), heSo, gia, tenDV, isCoBan);
+
+                // Thêm vào List quản lý
                 listTempDVT.add(dvt);
+
+                // Thêm vào Table hiển thị (Model)
                 pnlThemSP.getModelDVT().addRow(new Object[]{
-                    maDVT, tenDV, heSo, String.format("%,.0f", gia), isCoBan ? "Có" : "Không"
+                    maDVT,
+                    tenDV,
+                    heSo,
+                    String.format("%,.0f", gia), // Định dạng hiển thị tiền tệ
+                    isCoBan ? "Có" : "Không"
                 });
 
-                pnlThemSP.getTxtTenDonVi().setText("");
+                // --- BƯỚC 6: RESET FORM ---
+                pnlThemSP.getCboTenDonVi().setSelectedItem(""); // Xóa trắng ComboBox
                 pnlThemSP.getTxtGiaBanDonVi().setText("");
                 pnlThemSP.getChkDonViCoBan().setSelected(false);
                 pnlThemSP.getTxtHeSoQuyDoi().setEnabled(true);
                 pnlThemSP.getTxtHeSoQuyDoi().setText("");
 
+                // Focus lại vào ô tên đơn vị để nhập tiếp cho nhanh
+                pnlThemSP.getCboTenDonVi().requestFocus();
+
             } catch (NumberFormatException nfe) {
-                JOptionPane.showMessageDialog(dialog, "Hệ số hoặc Giá bán phải là số hợp lệ.");
+                JOptionPane.showMessageDialog(dialog, "Lỗi nhập liệu: Hệ số hoặc Giá bán phải là số hợp lệ.");
+            } catch (ArrayIndexOutOfBoundsException aie) {
+                JOptionPane.showMessageDialog(dialog, "Lỗi mã sản phẩm: Mã sản phẩm chưa đúng định dạng để tạo mã ĐVT.");
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(dialog, ex.getMessage());
             }
@@ -639,7 +723,7 @@ public class SanPhamBUS {
         form.getBtnThemBarcode().setEnabled(false);
         form.getBtnXoaBarcode().setEnabled(false);
 
-        form.getTxtTenDonVi().setEditable(false);
+        form.getCboTenDonVi().setEditable(false);
         form.getTxtHeSoQuyDoi().setEditable(false);
         form.getTxtGiaBanDonVi().setEditable(false);
         form.getChkDonViCoBan().setEnabled(false);
