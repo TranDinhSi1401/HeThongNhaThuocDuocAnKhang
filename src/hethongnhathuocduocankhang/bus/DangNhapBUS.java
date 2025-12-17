@@ -6,8 +6,8 @@ package hethongnhathuocduocankhang.bus;
 
 import hethongnhathuocduocankhang.dao.TaiKhoanDAO;
 import hethongnhathuocduocankhang.entity.TaiKhoan;
-import hethongnhathuocduocankhang.mail.EmailUtil;
-import hethongnhathuocduocankhang.password.PasswordUtil;
+import hethongnhathuocduocankhang.util.EmailUtil;
+import hethongnhathuocduocankhang.util.PasswordUtil;
 
 /**
  *
