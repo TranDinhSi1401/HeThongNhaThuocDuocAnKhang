@@ -7,7 +7,7 @@ package hethongnhathuocduocankhang.gui;
 import com.toedter.calendar.JDateChooser; // Import thư viện lịch
 import hethongnhathuocduocankhang.entity.NhanVien;
 import hethongnhathuocduocankhang.entity.TaiKhoan;
-import hethongnhathuocduocankhang.password.PasswordUtil;
+import hethongnhathuocduocankhang.util.PasswordUtil;
 import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
