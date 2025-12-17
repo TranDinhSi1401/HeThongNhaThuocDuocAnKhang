@@ -4,6 +4,10 @@
  */
 package hethongnhathuocduocankhang.gui;
 
+import com.formdev.flatlaf.FlatClientProperties;
+import com.formdev.flatlaf.FlatLaf;
+import com.formdev.flatlaf.fonts.roboto.FlatRobotoFont;
+import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import hethongnhathuocduocankhang.bus.DangNhapBUS;
 import hethongnhathuocduocankhang.connectDB.ConnectDB;
 import hethongnhathuocduocankhang.dao.TaiKhoanDAO;
@@ -27,6 +31,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 import javax.swing.SwingWorker;
+import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 
 /**
@@ -176,6 +181,8 @@ public class DangNhapGUI extends javax.swing.JFrame {
         btnCheMatKhau.setBorder(null);
         pDangNhap.add(btnCheMatKhau, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 200, 40, 40));
 
+        pDangNhap.putClientProperty(FlatClientProperties.STYLE, "arc:20");
+
         pCenter.add(pDangNhap, new java.awt.GridBagConstraints());
 
         getContentPane().add(pCenter, java.awt.BorderLayout.CENTER);
@@ -207,7 +214,14 @@ public class DangNhapGUI extends javax.swing.JFrame {
                         "Đăng nhập thất bại",
                         javax.swing.JOptionPane.ERROR_MESSAGE);
             } else {
-                new GiaoDienChinhGUI(tk);
+                FlatRobotoFont.install();
+                FlatLaf.registerCustomDefaultsSource("hethongnhathuocduocankhang.theme");
+                UIManager.put("defaultFont", new Font(FlatRobotoFont.FAMILY, Font.PLAIN, 13));
+                FlatMacLightLaf.setup();
+                java.awt.EventQueue.invokeLater(() -> {
+                    GiaoDienChinhGUI app = new GiaoDienChinhGUI(tk);
+                    app.setVisible(true);
+                });
                 this.dispose();
             }
         } else {
