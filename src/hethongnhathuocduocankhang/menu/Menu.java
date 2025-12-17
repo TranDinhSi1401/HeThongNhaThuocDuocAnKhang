@@ -1,194 +1,280 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package hethongnhathuocduocankhang.menu;
 
-
-import com.kitfox.svg.app.beans.SVGIcon;
-import hethongnhathuocduocankhang.gui.GiaoDienChinhGUI;
-import java.awt.Color;
+import hethongnhathuocduocankhang.menu.mode.LightDarkMode;
+import com.formdev.flatlaf.FlatClientProperties;
+import com.formdev.flatlaf.ui.FlatUIUtils;
+import com.formdev.flatlaf.util.UIScale;
 import java.awt.Component;
-import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.geom.Rectangle2D;
-import java.net.URISyntaxException;
-import java.net.URL;
-import javax.swing.Icon;
+import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Insets;
+import java.awt.LayoutManager;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.ImageIcon;
-import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
-import net.miginfocom.swing.MigLayout;
+import javax.swing.JScrollBar;
+import javax.swing.JScrollPane;
+import hethongnhathuocduocankhang.menu.mode.ToolBarAccentColor;
+
 /**
  *
- * @author trand
+ * @author Raven
  */
-public class Menu extends JComponent{
-    private MenuEvent event;
-    private MigLayout layout;
-    private boolean isQuanLy = GiaoDienChinhGUI.getTk().isQuanLy();
-    private final String [][]menuItems= new String[][]{
-        {"Tổng quan"},
-        {"Bán hàng"},
+public class Menu extends JPanel {
+
+    private final String menuItems[][] = {
+        {"~Chức năng chính~"},
+        {"Tổng quan"}, // 0
+        {"Bán hàng"}, // 1
+        {"Trả hàng"}, // 2
+        {"Tra cứu"}, // 3
         {"Quản lý", "Quản lý khách hàng", "Quản lý sản phẩm", 
             "Quản lý nhân viên", "Quản lý hóa đơn", "Quản lý khuyến mãi", 
             "Quản lý nhà cung cấp", "Quản lý phiếu đặt hàng", "Quản lý lịch sử ca làm", 
-            "Quản lý phiếu trả hàng","Quản lý phiếu nhập hàng"},
-        {"Trả hàng"},
-        {"Quản lý lô"},
-        {"Tra cứu"},
-        {"Thống kê doanh thu"},
-        {"Báo cáo"},
-        {"Trợ giúp", "Giới thiệu", "Hướng dẫn sử dụng"},
-        {"Đăng xuất"}
-            
+            "Quản lý phiếu trả hàng","Quản lý phiếu nhập hàng"}, // 4
+        {"Quản lý lô"}, // 5
+        {"~Khác~"},
+        {"Thống kê doanh thu"}, // 6
+        {"Báo cáo"}, // 7
+        {"Trợ giúp", "Giới thiệu", "Hướng dẫn sử dụng"}, // 8
+        {"Đăng xuất"} // 9
     };
-    
+
+    public boolean isMenuFull() {
+        return menuFull;
+    }
+
+    public void setMenuFull(boolean menuFull) {
+        this.menuFull = menuFull;
+        if (menuFull) {
+            header.setText(headerName);
+            header.setHorizontalAlignment(getComponentOrientation().isLeftToRight() ? JLabel.LEFT : JLabel.RIGHT);
+        } else {
+            header.setText("");
+            header.setHorizontalAlignment(JLabel.CENTER);
+        }
+        for (Component com : panelMenu.getComponents()) {
+            if (com instanceof MenuItem) {
+                ((MenuItem) com).setFull(menuFull);
+            }
+        }
+        lightDarkMode.setMenuFull(menuFull);
+        toolBarAccentColor.setMenuFull(menuFull);
+    }
+
+    private final List<MenuEvent> events = new ArrayList<>();
+    private boolean menuFull = true;
+    private final String headerName = "Dược An Khang";
+
+    protected final boolean hideMenuTitleOnMinimum = true;
+    protected final int menuTitleLeftInset = 5;
+    protected final int menuTitleVgap = 5;
+    protected final int menuMaxWidth = 250;
+    protected final int menuMinWidth = 60;
+    protected final int headerFullHgap = 5;
+
     public Menu() {
         init();
     }
-    
+
     private void init() {
-        layout = new MigLayout("wrap 1, fillx, gapy 0, inset 2", "fill");
-        setLayout(layout);
-        setOpaque(true);
-        //Menu Items
-        if(isQuanLy) {
-            for(int i = 0; i < menuItems.length; i++){
-                addMenu(menuItems[i][0], i);
+        setLayout(new MenuLayout());
+        putClientProperty(FlatClientProperties.STYLE, ""
+                + "border:20,2,2,2;"
+                + "background:$Menu.background;"
+                + "arc:10");
+        header = new JLabel(headerName);
+        header.setIcon(new ImageIcon(getClass().getResource("/resources/images/medicine.png")));
+        header.putClientProperty(FlatClientProperties.STYLE, ""
+                + "font:$Menu.header.font;"
+                + "foreground:$Menu.foreground");
+
+        //  Menu
+        scroll = new JScrollPane();
+        panelMenu = new JPanel(new MenuItemLayout(this));
+        panelMenu.putClientProperty(FlatClientProperties.STYLE, ""
+                + "border:5,5,5,5;"
+                + "background:$Menu.background");
+
+        scroll.setViewportView(panelMenu);
+        scroll.putClientProperty(FlatClientProperties.STYLE, ""
+                + "border:null");
+        JScrollBar vscroll = scroll.getVerticalScrollBar();
+        vscroll.setUnitIncrement(10);
+        vscroll.putClientProperty(FlatClientProperties.STYLE, ""
+                + "width:$Menu.scroll.width;"
+                + "trackInsets:$Menu.scroll.trackInsets;"
+                + "thumbInsets:$Menu.scroll.thumbInsets;"
+                + "background:$Menu.ScrollBar.background;"
+                + "thumb:$Menu.ScrollBar.thumb");
+        createMenu();
+        lightDarkMode = new LightDarkMode();
+        toolBarAccentColor = new ToolBarAccentColor(this);
+        toolBarAccentColor.setVisible(FlatUIUtils.getUIBoolean("AccentControl.show", false));
+        add(header);
+        add(scroll);
+        add(lightDarkMode);
+        add(toolBarAccentColor);
+        lightDarkMode.setVisible(false); 
+    }
+
+    private void createMenu() {
+        int index = 0;
+        for (int i = 0; i < menuItems.length; i++) {
+            String menuName = menuItems[i][0];
+            if (menuName.startsWith("~") && menuName.endsWith("~")) {
+                panelMenu.add(createTitle(menuName));
+            } else {
+                MenuItem menuItem = new MenuItem(this, menuItems[i], index++, events);
+                panelMenu.add(menuItem);
             }
-        }else {
-            for(int i = 0; i < menuItems.length; i++){
-                if(i == 0 || i == 1 || i == 3 || i == 5 || i == 8)
-                    addMenu(menuItems[i][0], i);
-            }
-        }
-        
-    }
-    
-    private Icon getIcon(int index) {
-        URL url = getClass().getResource("/resources/images/icon/"+index+".png");
-        if(url != null) {
-            return new ImageIcon(url);
-        }else {
-            return null;
-        }        
-    }
-    
-    private Icon getIconSVG(int index) {
-        try {
-            String path = "/resources/images/icon/" + index + ".svg";
-            SVGIcon svgIcon = new SVGIcon();
-            svgIcon.setSvgURI(getClass().getResource(path).toURI());
-
-            // Quan trọng: tắt autosize và bật scale-to-fit
-            svgIcon.setAutosize(0);
-            svgIcon.setScaleToFit(true);
-
-            // Đặt kích thước mong muốn
-            svgIcon.setPreferredSize(new java.awt.Dimension(30,30));
-
-            // Nếu vẫn to, có thể giảm scale trực tiếp
-            // svgIcon.setScale(0.8f);
-
-            return svgIcon;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
         }
     }
 
-    
-    private void addMenu(String menuName, int index){
-        int length = menuItems[index].length;
-        MenuItem item = new MenuItem(menuName, index, length > 1);
-        //icon PNG
-        Icon icon = getIcon(index);
-        if(icon != null) {
-            item.setIcon(icon);
-        }
+    private JLabel createTitle(String title) {
+        String menuName = title.substring(1, title.length() - 1);
+        JLabel lbTitle = new JLabel(menuName);
+        lbTitle.putClientProperty(FlatClientProperties.STYLE, ""
+                + "font:$Menu.label.font;"
+                + "foreground:$Menu.title.foreground");
+        return lbTitle;
+    }
 
-        item.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-                if(length > 1) {
-                    if(!item.isSelected()) {
-                        item.setSelected(true);
-                        addSubMenu(item, index, length, getComponentZOrder(item));
-                    }else {
-                        hideMenu(item, index);
-                        item.setSelected(false);
-                    }
-                }else {
-                    if(event != null) {
-                        event.selected(index, 0);
-                    }
+    public void setSelectedMenu(int index, int subIndex) {
+        runEvent(index, subIndex);
+    }
+
+    protected void setSelected(int index, int subIndex) {
+        int size = panelMenu.getComponentCount();
+        for (int i = 0; i < size; i++) {
+            Component com = panelMenu.getComponent(i);
+            if (com instanceof MenuItem) {
+                MenuItem item = (MenuItem) com;
+                if (item.getMenuIndex() == index) {
+                    item.setSelectedIndex(subIndex);
+                } else {
+                    item.setSelectedIndex(-1);
                 }
             }
-        });
-        add(item);
-        revalidate();
-        repaint();
-    }
-    
-    private void addSubMenu(MenuItem item, int index, int length, int indexZorder) {
-        JPanel panel = new JPanel(new MigLayout("wrap 1, fillx, inset 0, gapy 0", "fill"));
-        panel.setName(index + "");
-        panel.setOpaque(false);
-        
-        // áp vào màu sắc cho submenu
-        panel.setOpaque(true);
-        panel.setBackground(new Color(25, 118, 210));
-        //
-        
-        for(int i = 1; i < length; i++) {
-            MenuItem subItem = new MenuItem(menuItems[index][i], i, false);
-            subItem.addActionListener(new ActionListener() {
-                @Override
-                public void actionPerformed(ActionEvent e) {
-                    if(event != null) {
-                        event.selected(index, subItem.getIndex());
-                    }
-                }
-                
-            });
-            subItem.initSubMenu(i, length);
-            panel.add(subItem);
         }
-        add(panel, "h 0!", indexZorder + 1);
-        revalidate();
-        repaint();
-        MenuAnimation.showMenu(panel, item, layout, true);
     }
-    
-    private void hideMenu(MenuItem item, int index) {
-        for(Component com: getComponents()) {
-            if(com instanceof JPanel && com.getName().equals(index+"")) {
-                //com.setName(null);
-                MenuAnimation.showMenu(com, item, layout, false);
-                break;
+
+    protected void runEvent(int index, int subIndex) {
+        MenuAction menuAction = new MenuAction();
+        for (MenuEvent event : events) {
+            event.menuSelected(index, subIndex, menuAction);
+        }
+        if (!menuAction.isCancel()) {
+            setSelected(index, subIndex);
+        }
+    }
+
+    public void addMenuEvent(MenuEvent event) {
+        events.add(event);
+    }
+
+    public void hideMenuItem() {
+        for (Component com : panelMenu.getComponents()) {
+            if (com instanceof MenuItem) {
+                ((MenuItem) com).hideMenuItem();
+            }
+        }
+        revalidate();
+    }
+
+    public boolean isHideMenuTitleOnMinimum() {
+        return hideMenuTitleOnMinimum;
+    }
+
+    public int getMenuTitleLeftInset() {
+        return menuTitleLeftInset;
+    }
+
+    public int getMenuTitleVgap() {
+        return menuTitleVgap;
+    }
+
+    public int getMenuMaxWidth() {
+        return menuMaxWidth;
+    }
+
+    public int getMenuMinWidth() {
+        return menuMinWidth;
+    }
+
+    private JLabel header;
+    private JScrollPane scroll;
+    private JPanel panelMenu;
+    private LightDarkMode lightDarkMode;
+    private ToolBarAccentColor toolBarAccentColor;
+
+    private class MenuLayout implements LayoutManager {
+
+        @Override
+        public void addLayoutComponent(String name, Component comp) {
+        }
+
+        @Override
+        public void removeLayoutComponent(Component comp) {
+        }
+
+        @Override
+        public Dimension preferredLayoutSize(Container parent) {
+            synchronized (parent.getTreeLock()) {
+                return new Dimension(5, 5);
+            }
+        }
+
+        @Override
+        public Dimension minimumLayoutSize(Container parent) {
+            synchronized (parent.getTreeLock()) {
+                return new Dimension(0, 0);
+            }
+        }
+
+        @Override
+        public void layoutContainer(Container parent) {
+            synchronized (parent.getTreeLock()) {
+                Insets insets = parent.getInsets();
+                int x = insets.left;
+                int y = insets.top;
+                int gap = UIScale.scale(5);
+                int sheaderFullHgap = UIScale.scale(headerFullHgap);
+                int width = parent.getWidth() - (insets.left + insets.right);
+                int height = parent.getHeight() - (insets.top + insets.bottom);
+                int iconWidth = width;
+                int iconHeight = header.getPreferredSize().height;
+                int hgap = menuFull ? sheaderFullHgap : 0;
+                int accentColorHeight = 0;
+                if (toolBarAccentColor.isVisible()) {
+                    accentColorHeight = toolBarAccentColor.getPreferredSize().height+gap;
+                }
+
+                header.setBounds(x + hgap, y, iconWidth - (hgap * 2), iconHeight);
+                int ldgap = UIScale.scale(10);
+                int ldWidth = width - ldgap * 2;
+                int ldHeight = lightDarkMode.getPreferredSize().height;
+                int ldx = x + ldgap;
+                int ldy = y + height - ldHeight - ldgap  - accentColorHeight;
+
+                int menux = x;
+                int menuy = y + iconHeight + gap;
+                int menuWidth = width;
+                int menuHeight = height - (iconHeight + gap) - (ldHeight + ldgap * 2) - (accentColorHeight);
+                scroll.setBounds(menux, menuy, menuWidth, menuHeight);
+
+                lightDarkMode.setBounds(ldx, ldy, ldWidth, ldHeight);
+
+                if (toolBarAccentColor.isVisible()) {
+                    int tbheight = toolBarAccentColor.getPreferredSize().height;
+                    int tbwidth = Math.min(toolBarAccentColor.getPreferredSize().width, ldWidth);
+                    int tby = y + height - tbheight - ldgap;
+                    int tbx = ldx + ((ldWidth - tbwidth) / 2);
+                    toolBarAccentColor.setBounds(tbx, tby, tbwidth, tbheight);
+                }
             }
         }
     }
-    
-    @Override
-    protected void paintComponent(Graphics grphcs) {
-        Graphics2D g2 = (Graphics2D)grphcs.create();
-        g2.setColor(new Color(25, 118, 210));
-        g2.fill(new Rectangle2D.Double(0, 0, getWidth(), getHeight()));
-        super.paintComponent(grphcs);
-    }   
-
-    public MenuEvent getEvent() {
-        return event;
-    }
-
-    public void setEvent(MenuEvent event) {
-        this.event = event;
-    }
-    
-    
 }

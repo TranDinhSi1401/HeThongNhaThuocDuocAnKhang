@@ -57,9 +57,7 @@ public class PhieuDatHangDAO {
         } catch (SQLException sQLException) {
             sQLException.printStackTrace();
         }
-
         return dv;
-
     }
 
     public boolean kiemTraPhieuHomNay() {
@@ -182,6 +180,7 @@ public class PhieuDatHangDAO {
             Connection con = ConnectDB.getConnection();
             String querry = "SELECT * FROM PhieuDatHang WHERE ngayLap = ?";
             PreparedStatement stmt = con.prepareStatement(querry);
+            stmt.setDate(1, Date.valueOf(date)); 
             stmt.setDate(1, Date.valueOf(date));
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
@@ -195,7 +194,7 @@ public class PhieuDatHangDAO {
 
     public static int getMaPDHCuoiCungTrongNgay(String ngay) { 
         int maCuoiCung = 0;
-        String maPDHFormat = "PDH-" + ngay + "-"; // Ví dụ: "PDH-071125-"
+        String maPDHFormat = "PDH-" + ngay + "-"; 
         try {
             ConnectDB.getInstance().connect();
             Connection con = ConnectDB.getConnection();

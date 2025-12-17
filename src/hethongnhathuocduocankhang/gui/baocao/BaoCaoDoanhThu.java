@@ -364,6 +364,10 @@ public class BaoCaoDoanhThu extends javax.swing.JPanel {
                     if ("Theo ngày".equals(loaiThongKe)) {
                         Date tuNgay = datePickerTuNgay.getDate();
                         Date denNgay = datePickerDenNgay.getDate();
+                        if(tuNgay.after(denNgay)){
+                            JOptionPane.showMessageDialog(null, "Từ ngày phải bé hơn đến ngày");
+                            return null;
+                        }
                         LocalDate startDate = tuNgay.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate();
                         LocalDate endDate = denNgay.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate();
                         for (LocalDate date = startDate; !date.isAfter(endDate); date = date.plusDays(1)) {
@@ -374,6 +378,10 @@ public class BaoCaoDoanhThu extends javax.swing.JPanel {
                         int tuNam = (Integer) cmbTuNam.getSelectedItem();
                         int denThang = (Integer) cmbDenThang.getSelectedItem();
                         int denNam = (Integer) cmbDenNam.getSelectedItem();
+                        if(tuThang>denThang){
+                            JOptionPane.showMessageDialog(null, "Từ năm phải bé hơn đến năm");
+                            return null;
+                        }
                         for (int nam = tuNam; nam <= denNam; nam++) {
                             int startThang = (nam == tuNam) ? tuThang : 1;
                             int endThang = (nam == denNam) ? denThang : 12;
@@ -386,6 +394,10 @@ public class BaoCaoDoanhThu extends javax.swing.JPanel {
                         int tuNam = (Integer) cmbTuNam.getSelectedItem();
                         int denQuy = (Integer) cmbDenQuy.getSelectedItem();
                         int denNam = (Integer) cmbDenNam.getSelectedItem();
+                        if(tuQuy>denQuy){
+                            JOptionPane.showMessageDialog(null, "Từ quý phải bé hơn đến quý");
+                            return null;
+                        }
                         for (int nam = tuNam; nam <= denNam; nam++) {
                             int startQuy = (nam == tuNam) ? tuQuy : 1;
                             int endQuy = (nam == denNam) ? denQuy : 4;
@@ -396,6 +408,10 @@ public class BaoCaoDoanhThu extends javax.swing.JPanel {
                     } else if ("Theo năm".equals(loaiThongKe)) {
                         int tuNam = (Integer) cmbTuNam.getSelectedItem();
                         int denNam = (Integer) cmbDenNam.getSelectedItem();
+                        if(tuNam>denNam){
+                            JOptionPane.showMessageDialog(null, "Từ năm phải bé hơn đến năm");
+                            return null;
+                        }
                         for (int nam = tuNam; nam <= denNam; nam++) {
                             allKeys.add("Năm " + nam);
                         }

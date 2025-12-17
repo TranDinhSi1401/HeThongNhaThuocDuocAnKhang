@@ -29,7 +29,6 @@ public class ConnectDB {
             con.close();
         }
     }
-    
     public static Connection getConnection() {
         return con;
     }

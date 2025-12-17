@@ -1,157 +1,95 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package hethongnhathuocduocankhang.gui;
 
+import com.formdev.flatlaf.FlatClientProperties;
 import hethongnhathuocduocankhang.entity.TaiKhoan;
-import hethongnhathuocduocankhang.menu.MenuEvent;
+import java.awt.Component;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.net.URL;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 
 /**
  *
  * @author trand
  */
-public class GiaoDienChinhGUI extends javax.swing.JFrame {
-
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(GiaoDienChinhGUI.class.getName());
+public class GiaoDienChinhGUI extends JFrame{
     private static TaiKhoan tk = null;
-
-    /**
-     * Creates new form GiaoDienChinhGUI
-     *
-     * @param tk
-     */
+    private static GiaoDienChinhGUI app;
+    private final MainForm mainForm;
+    
     public GiaoDienChinhGUI(TaiKhoan tk) {
-        
-        
         if (tk != null) {
             GiaoDienChinhGUI.tk = tk;
         }
-        
+        app = this;
         initComponents();
-        // assign static reference early so handlers can safely read it
-        if (tk != null) {
-            GiaoDienChinhGUI.tk = tk;
-        }
-
-        menu.setEvent(new MenuEvent() {
-            @Override
-            public void selected(int index, int subIndex) {
-                // use the stored static account and guard against null
-                TaiKhoan currentTk = GiaoDienChinhGUI.getTk();
-                boolean isQuanLy = currentTk != null && currentTk.isQuanLy();
-
-                if (index == 0 && subIndex == 0) {
-                    if (isQuanLy) {
-                        showPanel(new DashBoardQuanLi());
-                    } else {
-                        showPanel(new DashBoardNhanVien());
-                    }
-                }
-                if (index == 1 && subIndex == 0) {
-                    showPanel(new BanHangGUI());
-                }
-                if (index == 2) {
-                    switch (subIndex) {
-                        case 1 ->
-                            showPanel(new QuanLiKhachHangGUI());
-                        case 2 ->
-                            showPanel(new QuanLiSanPhamGUI());
-                        case 3 ->
-                            showPanel(new QuanLiNhanVienGUI());
-                        case 4 ->
-                            showPanel(new QuanLiHoaDonGUI());
-                        case 5 ->
-                            showPanel(new QuanLiKhuyenMaiGUI());
-                        case 6 ->
-                            showPanel(new QuanLiNhaCungCapGUI());
-                        case 7 ->
-                            showPanel(new QuanLiPhieuDatHangGUI());
-                        case 8 ->
-                            showPanel(new QuanLiLichSuCaLamGUI());
-                        case 9 ->
-                            showPanel(new QuanLiPhieuTraHangGUI());
-                        case 10 ->
-                            showPanel(new QuanLiPhieuNhapHangGUI());
-                        default -> {
-                        }
-                    }
-                }
-                if (index == 3 && subIndex == 0) {
-                    showPanel(new TraHangGUI());
-                }
-                if (index == 4 && subIndex == 0) {
-                    try {
-                        showPanel(new LoSanPhamGUI());
-                    } catch (SQLException ex) {
-                        Logger.getLogger(GiaoDienChinhGUI.class.getName()).log(Level.SEVERE, null, ex);
-                    }
-                } 
-                if (index == 5 && subIndex == 0) {
-                    showPanel(new TraCuuChungGUI());
-                }
-                if(index == 6 && subIndex == 0) {
-                    showPanel(new ThongKeHoaDonGUI());
-                }
-                
-                if(index == 7 && subIndex == 0) {
-                    showPanel(new BaoCaoGUI());
-                }
-                
-                if (index == 8) {
-                    switch (subIndex){
-                        case 1 -> {
-                            AboutGUI aboutDialog = new AboutGUI(GiaoDienChinhGUI.this);
-                            aboutDialog.setVisible(true);
-                        }
-                        case 2 -> {
-                            // Hướng dẫn sử dụng
-                        }
-                    }
-                }
-                
-                if (index == 9 && subIndex == 0) {
-                    dangXuat();
-                }
-                
-            }
-        });
-        
-        
-        if (tk.isQuanLy()) {
-            showPanel(new DashBoardQuanLi());
-        } else {
-            showPanel(new DashBoardNhanVien());
-        }
 
         URL url = GiaoDienChinhGUI.class.getResource("/resources/images/logo.png");
         Image icon = Toolkit.getDefaultToolkit().createImage(url);
         this.setIconImage(icon);
         setTitle("Hệ thống nhà thuốc Dược An Khang");
+
         setExtendedState(JFrame.MAXIMIZED_BOTH);
+        setLocationRelativeTo(null);
+        mainForm = new MainForm();
+        setContentPane(mainForm);
         setResizable(false);
-        setVisible(true);
+        getRootPane().putClientProperty(FlatClientProperties.FULL_WINDOW_CONTENT, true);
+        //Notifications.getInstance().setJFrame(this);
+        if(GiaoDienChinhGUI.getTk().isQuanLy()) {
+            GiaoDienChinhGUI.showForm(new DashBoardQuanLi());
+        } else {
+            GiaoDienChinhGUI.showForm(new DashBoardNhanVien());
+        } 
+    }
+    
+    public static void showAboutGUI() {
+        AboutGUI aboutDialog = new AboutGUI(app);
+        aboutDialog.setVisible(true);
+    }
+    
+    public static void showForm(Component component) {
+        component.applyComponentOrientation(app.getComponentOrientation());
+        app.mainForm.showForm(component);
     }
 
-    private void dangXuat() {
-        int confirm = JOptionPane.showConfirmDialog(this,
+    public static void logout() {
+        int confirm = JOptionPane.showConfirmDialog(app,
                 "Bạn có chắc chắn muốn đăng xuất không?",
                 "Xác nhận đăng xuất",
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE);
         if (confirm == JOptionPane.YES_OPTION) {
-            this.dispose();
-            new DangNhapGUI();
+                app.dispose(); // đóng cửa sổ hiện tại
+                new DangNhapGUI().setVisible(true); 
         }
+    }
+
+    public static void setSelectedMenu(int index, int subIndex) {
+        app.mainForm.setSelectedMenu(index, subIndex);
+    }
+    
+    private void initComponents() {
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 719, Short.MAX_VALUE)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 521, Short.MAX_VALUE)
+        );
+
+        pack();
     }
 
     public static TaiKhoan getTk() {
@@ -161,145 +99,6 @@ public class GiaoDienChinhGUI extends javax.swing.JFrame {
     public static void setTk(TaiKhoan tk) {
         GiaoDienChinhGUI.tk = tk;
     }
-
-    private void showPanel(JPanel p) {
-        pCenter.removeAll();
-        p.setSize(pCenter.getSize());
-        p.setVisible(true);
-        pCenter.setLayout(new java.awt.BorderLayout());
-        pCenter.add(p, java.awt.BorderLayout.CENTER);
-        pCenter.revalidate();
-        pCenter.repaint();
-    }
-
-    /**
-     * This method is called from within the constructor to initialize the form.
-     * WARNING: Do NOT modify this code. The content of this method is always
-     * regenerated by the Form Editor.
-     */
-    @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-    private void initComponents() {
-
-        pLeft = new javax.swing.JPanel();
-        pLogo = new javax.swing.JPanel();
-        lblLogo = new javax.swing.JLabel();
-        lblTenNV = new javax.swing.JLabel();
-        lblChucVu = new javax.swing.JLabel();
-        scrollPaneWin111 = new hethongnhathuocduocankhang.scroll.win11.ScrollPaneWin11();
-        menu = new hethongnhathuocduocankhang.menu.Menu();
-        pCenter = new javax.swing.JPanel();
-
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setSize(new java.awt.Dimension(1000, 600));
-
-        pLeft.setBackground(new java.awt.Color(25, 118, 210));
-        pLeft.setPreferredSize(new java.awt.Dimension(240, 558));
-        pLeft.setLayout(new java.awt.BorderLayout());
-
-        pLogo.setBackground(new java.awt.Color(25, 118, 210));
-        pLogo.setPreferredSize(new java.awt.Dimension(200, 120));
-
-        lblLogo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/pharmacy.png"))); // NOI18N
-
-        lblTenNV.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
-        lblTenNV.setForeground(new java.awt.Color(255, 255, 255));
-        lblTenNV.setText("NHÀ THUỐC");
-
-        lblChucVu.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
-        lblChucVu.setForeground(new java.awt.Color(255, 255, 255));
-        lblChucVu.setText("DƯỢC AN KHANG");
-
-        javax.swing.GroupLayout pLogoLayout = new javax.swing.GroupLayout(pLogo);
-        pLogo.setLayout(pLogoLayout);
-        pLogoLayout.setHorizontalGroup(
-            pLogoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pLogoLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lblLogo)
-                .addGroup(pLogoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(pLogoLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblChucVu, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(87, 87, 87))
-                    .addGroup(pLogoLayout.createSequentialGroup()
-                        .addGap(26, 26, 26)
-                        .addComponent(lblTenNV)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-        );
-        pLogoLayout.setVerticalGroup(
-            pLogoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pLogoLayout.createSequentialGroup()
-                .addContainerGap(26, Short.MAX_VALUE)
-                .addGroup(pLogoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(lblLogo)
-                    .addGroup(pLogoLayout.createSequentialGroup()
-                        .addComponent(lblTenNV)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblChucVu)
-                        .addGap(6, 6, 6)))
-                .addGap(30, 30, 30))
-        );
-
-        pLeft.add(pLogo, java.awt.BorderLayout.PAGE_START);
-
-        scrollPaneWin111.setViewportView(menu);
-
-        pLeft.add(scrollPaneWin111, java.awt.BorderLayout.CENTER);
-
-        getContentPane().add(pLeft, java.awt.BorderLayout.LINE_START);
-
-        pCenter.setBackground(new java.awt.Color(255, 255, 255));
-
-        javax.swing.GroupLayout pCenterLayout = new javax.swing.GroupLayout(pCenter);
-        pCenter.setLayout(pCenterLayout);
-        pCenterLayout.setHorizontalGroup(
-            pCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 863, Short.MAX_VALUE)
-        );
-        pCenterLayout.setVerticalGroup(
-            pCenterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 784, Short.MAX_VALUE)
-        );
-
-        getContentPane().add(pCenter, java.awt.BorderLayout.CENTER);
-
-        pack();
-    }// </editor-fold>//GEN-END:initComponents
-
-    /**
-     * @param args the command line arguments
-     */
-//    public static void main(String args[]) {
-//        /* Set the Nimbus look and feel */
-//        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-//        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-//         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-//         */
-//        try {
-//            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-//                if ("Nimbus".equals(info.getName())) {
-//                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-//                    break;
-//                }
-//            }
-//        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-//            logger.log(java.util.logging.Level.SEVERE, null, ex);
-//        }
-//        //</editor-fold>
-//
-//        /* Create and display the form */
-//        java.awt.EventQueue.invokeLater(() -> new GiaoDienChinhGUI().setVisible(true));
-//    }
-
-    // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel lblChucVu;
-    private javax.swing.JLabel lblLogo;
-    private javax.swing.JLabel lblTenNV;
-    private hethongnhathuocduocankhang.menu.Menu menu;
-    private javax.swing.JPanel pCenter;
-    private javax.swing.JPanel pLeft;
-    private javax.swing.JPanel pLogo;
-    private hethongnhathuocduocankhang.scroll.win11.ScrollPaneWin11 scrollPaneWin111;
-    // End of variables declaration//GEN-END:variables
+    
+    
 }

@@ -3,7 +3,6 @@ package hethongnhathuocduocankhang.dao;
 
 import hethongnhathuocduocankhang.connectDB.ConnectDB;
 import hethongnhathuocduocankhang.entity.LoSanPham;
-import hethongnhathuocduocankhang.entity.MaVachSanPham;
 import hethongnhathuocduocankhang.entity.SanPham;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -235,5 +234,39 @@ public class LoSanPhamDAO {
             s.printStackTrace();
         }
         return dsLo;
+    }
+    
+    /**
+     * Đếm số lượng lô theo 4 trạng thái:
+     * - Còn hạn (daHuy = 0 AND ngayHetHan > 30 ngày)
+     * - Sắp hết hạn (daHuy = 0 AND ngayHetHan >= hôm nay AND <= 30 ngày)
+     * - Hết hạn (daHuy = 0 AND ngayHetHan < hôm nay)
+     * - Đã hủy (daHuy = 1)
+     * @return int[4] - [0]=Còn hạn, [1]=Sắp hết hạn, [2]=Hết hạn, [3]=Đã hủy
+     */
+    public static int[] demLoTheoTrangThai() {
+        int[] counts = new int[4];
+        String sql = 
+            "SELECT " +
+            "  SUM(CASE WHEN daHuy = 1 THEN 1 ELSE 0 END) AS DaHuy, " +
+            "  SUM(CASE WHEN daHuy = 0 AND ngayHetHan < CAST(GETDATE() AS DATE) THEN 1 ELSE 0 END) AS HetHan, " +
+            "  SUM(CASE WHEN daHuy = 0 AND ngayHetHan >= CAST(GETDATE() AS DATE) AND ngayHetHan <= DATEADD(DAY, 30, CAST(GETDATE() AS DATE)) THEN 1 ELSE 0 END) AS SapHetHan, " +
+            "  SUM(CASE WHEN daHuy = 0 AND ngayHetHan > DATEADD(DAY, 30, CAST(GETDATE() AS DATE)) THEN 1 ELSE 0 END) AS ConHan " +
+            "FROM LoSanPham";
+        
+        try {
+            Connection con = ConnectDB.getConnection();
+            PreparedStatement ps = con.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                counts[3] = rs.getInt("DaHuy");
+                counts[2] = rs.getInt("HetHan");
+                counts[1] = rs.getInt("SapHetHan");
+                counts[0] = rs.getInt("ConHan");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return counts;
     }
 }
