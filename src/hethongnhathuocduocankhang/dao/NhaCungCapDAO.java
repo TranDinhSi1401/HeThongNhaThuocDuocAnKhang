@@ -138,7 +138,6 @@ public class NhaCungCapDAO {
                 String diaChi = rs.getString("diaChi");
                 String sdt = rs.getString("sdt");
                 String email = rs.getString("email");
-
                 ncc = new NhaCungCap(maNCC, tenNCC, diaChi, sdt, email);
             }
         } catch (SQLException e) {

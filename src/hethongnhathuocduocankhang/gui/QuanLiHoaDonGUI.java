@@ -241,7 +241,6 @@ public class QuanLiHoaDonGUI extends JPanel {
         // Hiển thị thanh loading
         progressBar.setVisible(true);
         progressBar.setIndeterminate(true); // Khi bắt đầu tải thanh load sẽ chạy qua chạy lại liên tục
-        
         // Khởi tạo Worker
         SwingWorker<ArrayList<HoaDon>, HoaDon> worker = new SwingWorker<ArrayList<HoaDon>, HoaDon>() {
             @Override
@@ -257,14 +256,12 @@ public class QuanLiHoaDonGUI extends JPanel {
                 }
                 return list;
             }
-
             @Override
             protected void process(List<HoaDon> chunks) {
                 for (HoaDon hd : chunks) {
                     addHoaDonToTable(hd);
                 }
             }
-
             @Override
             protected void done() {
                 try {
