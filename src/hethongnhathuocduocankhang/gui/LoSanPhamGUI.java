@@ -1725,7 +1725,7 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
         btnXemConHan.setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 13));
         btnXemConHan.setFocusPainted(false);
         btnXemConHan.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnXemConHan.addActionListener(evt -> xemLoTheoTrangThai("Còn hạn"));
+        btnXemConHan.addActionListener(evt -> btnXemConHan_ActionPerformed(evt));
 
         jPanel6.add(pnlConHanTop, java.awt.BorderLayout.NORTH);
         jPanel6.add(txtConHan, java.awt.BorderLayout.CENTER);
@@ -1758,7 +1758,7 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
         btnXemSapHetHan.setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 13));
         btnXemSapHetHan.setFocusPainted(false);
         btnXemSapHetHan.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnXemSapHetHan.addActionListener(evt -> xemLoTheoTrangThai("Sắp hết hạn"));
+        btnXemSapHetHan.addActionListener(evt -> btnXemSapHetHan_ActionPerformed(evt));
 
         jPanel15.add(pnlSapHetHanTop, java.awt.BorderLayout.NORTH);
         jPanel15.add(txtSapHetHan, java.awt.BorderLayout.CENTER);
@@ -1791,7 +1791,7 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
         btnXemHetHan.setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 13));
         btnXemHetHan.setFocusPainted(false);
         btnXemHetHan.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnXemHetHan.addActionListener(evt -> xemLoTheoTrangThai("Hết hạn"));
+        btnXemHetHan.addActionListener(evt -> btnXemHetHan_ActionPerformed(evt));
 
         jPanel16.add(pnlHetHanTop, java.awt.BorderLayout.NORTH);
         jPanel16.add(txtHetHan, java.awt.BorderLayout.CENTER);
@@ -1824,7 +1824,7 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
         btnXemDaHuy.setFont(new java.awt.Font("Segoe UI", java.awt.Font.BOLD, 13));
         btnXemDaHuy.setFocusPainted(false);
         btnXemDaHuy.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        btnXemDaHuy.addActionListener(evt -> xemLoTheoTrangThai("Đã hủy"));
+        btnXemDaHuy.addActionListener(evt -> btnXemDaHuy_ActionPerformed(evt));
 
         jPanel17.add(pnlDaHuyTop, java.awt.BorderLayout.NORTH);
         jPanel17.add(txtDaHuy, java.awt.BorderLayout.CENTER);
@@ -1840,9 +1840,23 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
         jPanel4.repaint();
     }
 
-    private void xemLoTheoTrangThai(String trangThai) {
-        tblTab.setSelectedIndex(1);
-        cmbTrangThai.setSelectedItem(trangThai);
+    private void btnXemConHan_ActionPerformed(java.awt.event.ActionEvent evt) {
+        cmbTrangThai.setSelectedItem("Còn hạn");
+        btnTimTheoThongTin.doClick();
+    }
+
+    private void btnXemSapHetHan_ActionPerformed(java.awt.event.ActionEvent evt) {
+        cmbTrangThai.setSelectedItem("Sắp hết hạn");
+        btnTimTheoThongTin.doClick();
+    }
+
+    private void btnXemHetHan_ActionPerformed(java.awt.event.ActionEvent evt) {
+        cmbTrangThai.setSelectedItem("Hết hạn");
+        btnTimTheoThongTin.doClick();
+    }
+
+    private void btnXemDaHuy_ActionPerformed(java.awt.event.ActionEvent evt) {
+        cmbTrangThai.setSelectedItem("Đã hủy");
         btnTimTheoThongTin.doClick();
     }
 }
