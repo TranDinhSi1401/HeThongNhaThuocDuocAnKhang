@@ -8,6 +8,7 @@ import hethongnhathuocduocankhang.dao.LoSanPhamDAO;
 import hethongnhathuocduocankhang.dao.NhaCungCapDAO;
 import hethongnhathuocduocankhang.dao.SanPhamCungCapDAO;
 import hethongnhathuocduocankhang.dao.SanPhamDAO;
+import hethongnhathuocduocankhang.entity.DonViTinh;
 import hethongnhathuocduocankhang.entity.LoSanPham;
 import hethongnhathuocduocankhang.entity.NhaCungCap;
 import hethongnhathuocduocankhang.entity.SanPham;
@@ -19,12 +20,38 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author admin
  */
 public class QuanLyLoBUS {    
+        public ArrayList<LoSanPham> getLoKhongHuy(){
+        ArrayList<LoSanPham> all = hethongnhathuocduocankhang.dao.LoSanPhamDAO.dsLoSanPham();
+        ArrayList<LoSanPham> kq = new ArrayList<>();
+        if(all!=null){
+            for(LoSanPham lo: all){
+                if(!lo.isDaHuy()){
+                    kq.add(lo);
+                }
+            }
+        }
+        return kq;
+    }
+
+    public Object[] toTableRow(LoSanPham lo){
+        DonViTinh donVi = hethongnhathuocduocankhang.dao.DonViTinhDAO.getMotDonViTinhTheoMaSP(lo.getSanPham().getMaSP());
+        SanPham sp = SanPhamDAO.timSPTheoMa(lo.getSanPham().getMaSP());
+        return new Object[]{
+            lo.getSanPham().getMaSP(),
+            sp!=null? sp.getTen():"",
+            lo.getMaLoSanPham(),
+            donVi!=null? donVi.getTenDonVi():"",
+            lo.getSoLuong()
+        };
+    }
+
         public String tinhTrangThaiLo(LoSanPham lo) {
         if (lo.isDaHuy()) {
             return "Đã hủy";
@@ -90,7 +117,6 @@ public class QuanLyLoBUS {
     public static String chuyenDinhDang(String date){
         DateTimeFormatter nhap = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         LocalDate datee = LocalDate.parse(date, nhap);
-        
         DateTimeFormatter xuat = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         String newDate = datee.format(xuat);
         return newDate;
@@ -111,42 +137,88 @@ public class QuanLyLoBUS {
         return ds;
     }
     
-    public ArrayList<LoSanPham> timKiemLoVoiNhieuDieuKien(String tieuChi, String noiDung, String trangThai){    
-        Map<String, Object> ds = thongKe(LoSanPhamDAO.dsLoSanPham());
-        ArrayList<LoSanPham> dsLoDaLocTheoTrangThai = new ArrayList<>();
-        switch(trangThai.toLowerCase()){
-            case "còn hạn" -> dsLoDaLocTheoTrangThai = (ArrayList<LoSanPham>) ds.get("dsConHan");
-            case "sắp hết hạn" -> dsLoDaLocTheoTrangThai = (ArrayList<LoSanPham>) ds.get("dsLoSapHetHan");
-            case "hết hạn" -> dsLoDaLocTheoTrangThai = (ArrayList<LoSanPham>) ds.get("dsLoHetHan");
-            case "đã hủy" -> dsLoDaLocTheoTrangThai = (ArrayList<LoSanPham>) ds.get("dsLoDaHuy");
-            default -> dsLoDaLocTheoTrangThai = LoSanPhamDAO.dsLoSanPham();
+    public ArrayList<LoSanPham> timKiemLoVoiNhieuDieuKien(String tieuChi, String noiDung, String trangThai) {
+        String loaiTimKiem = (tieuChi == null) ? "tất cả" : tieuChi.trim().toLowerCase();
+        String trangThaiLoc = (trangThai == null) ? "tất cả" : trangThai.trim().toLowerCase();
+        String noiDungSafe = (noiDung == null) ? "" : noiDung.trim();
+        String noiDungLowerCase = noiDungSafe.toLowerCase();
+        
+        if (!"tất cả".equals(loaiTimKiem)) { 
+            if (noiDungSafe.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Bạn phải nhập thông tin tìm kiếm khi chọn tiêu chí cụ thể.");
+                return new ArrayList<>();
+            }
         }
-        String loaiTimKiem = tieuChi.toLowerCase();
-
-        if(loaiTimKiem.equals("nhà cung cấp") && noiDung != null){
-            dsLoDaLocTheoTrangThai = timLoTheotenNhaCungCap(dsLoDaLocTheoTrangThai, noiDung);
-            return dsLoDaLocTheoTrangThai;
-        }
-                
-                
-
-        String noiDungLowerCase = (noiDung == null) ? null : noiDung.toLowerCase();
-        List<LoSanPham> ketQuaLoc = dsLoDaLocTheoTrangThai.stream().filter(lo -> {
-            if (noiDung == null) return true; // Nếu không nhập nội dung, không cần lọc thêm
+        if (!noiDungSafe.isEmpty()) {
             switch(loaiTimKiem){
-                case "mã lô sản phẩm" -> {
-                    return lo.getMaLoSanPham().toLowerCase().contains(noiDungLowerCase);
-                }
-                case "mã sản phẩm" -> {
+                case "mã lô sản phẩm":
+                    if(!noiDungSafe.matches("^LO-[A-Za-z0-9]+$")){
+                        JOptionPane.showMessageDialog(null, "Mã lô phải bắt đầu bằng LO- và tiếp theo là chữ cái/số.");
+                        return new ArrayList<>();
+                    }
+                    break;
+                case "mã sản phẩm":
+                    if(!noiDungSafe.matches("^SP-\\d{4}$")){
+                        JOptionPane.showMessageDialog(null, "Mã sản phẩm phải bắt đầu bằng SP- và 4 số nguyên.");
+                        return new ArrayList<>();
+                    }
+                    break;
+                case "tên sản phẩm":
+                case "nhà cung cấp":
+                    if(!noiDungSafe.matches("[a-zA-Z0-9\\s]+")){
+                        JOptionPane.showMessageDialog(null, "Tên tìm kiếm không được chứa ký tự đặc biệt.");
+                        return new ArrayList<>();
+                    }
+                    break;
+            }
+        }
+        Map<String, Object> dsThongKe = thongKe(LoSanPhamDAO.dsLoSanPham());
+        ArrayList<LoSanPham> dsLoDaLocTheoTrangThai;
+        try {
+            dsLoDaLocTheoTrangThai = switch(trangThaiLoc){
+                case "còn hạn" -> (ArrayList<LoSanPham>) dsThongKe.get("dsConHan");
+                case "sắp hết hạn" -> (ArrayList<LoSanPham>) dsThongKe.get("dsLoSapHetHan");
+                case "hết hạn" -> (ArrayList<LoSanPham>) dsThongKe.get("dsLoHetHan");
+                case "đã hủy" -> (ArrayList<LoSanPham>) dsThongKe.get("dsLoDaHuy");
+                default -> LoSanPhamDAO.dsLoSanPham();
+            };
+        } catch (ClassCastException e) {
+            JOptionPane.showMessageDialog(null, "Lỗi dữ liệu nội bộ khi lọc theo trạng thái: " + e.getMessage());
+            return new ArrayList<>();
+        }
+        if(loaiTimKiem.equals("nhà cung cấp")){
+            return timLoTheotenNhaCungCap(dsLoDaLocTheoTrangThai, noiDungSafe);
+        }
+        Map<String, SanPham> spCache = new HashMap<>();
+        List<LoSanPham> ketQuaLoc = dsLoDaLocTheoTrangThai.stream().filter(lo -> {
+            if (loaiTimKiem.equals("tất cả")) {
+                return true;
+            }
+            switch(loaiTimKiem){
+                case "mã lô sản phẩm":
+                    return lo.getMaLoSanPham() != null && lo.getMaLoSanPham().toLowerCase().contains(noiDungLowerCase);
+                case "mã sản phẩm": 
+                    if (lo.getSanPham() == null || lo.getSanPham().getMaSP() == null) return false;
                     return lo.getSanPham().getMaSP().toLowerCase().contains(noiDungLowerCase);
-                }
-                case "tên sản phẩm" -> {
-                    SanPham sp = SanPhamDAO.timSPTheoMa(lo.getSanPham().getMaSP());
-                    return sp != null && sp.getTen().toLowerCase().contains(noiDungLowerCase);
-                }
-                default -> { 
+                case "tên sản phẩm":
+                    SanPham spThamChieu = lo.getSanPham();
+                    if (spThamChieu == null || spThamChieu.getMaSP() == null) return false;
+                    String maSP = spThamChieu.getMaSP();
+                    SanPham chiTietSP = spCache.get(maSP);
+                    if (chiTietSP == null) {
+                        chiTietSP = SanPhamDAO.timSPTheoMa(maSP); 
+                        if (chiTietSP != null) {
+                            spCache.put(maSP, chiTietSP);
+                        } else {
+                            return false; 
+                        }
+                    }
+
+                    // Kiểm tra điều kiện lọc
+                    return chiTietSP.getTen() != null && chiTietSP.getTen().toLowerCase().contains(noiDungLowerCase);
+
+                default: 
                     return true;
-                }
             }
         }).collect(Collectors.toList()); 
 
@@ -161,6 +233,14 @@ public class QuanLyLoBUS {
         if(sp.getTonToiDa()<tongSL)
             return true;
         return false;
+    }
+    
+    /**
+     * Lấy thống kê số lượng lô theo trạng thái
+     * @return int[4] - [0]=Còn hạn, [1]=Sắp hết hạn, [2]=Hết hạn, [3]=Đã hủy
+     */
+    public static int[] layThongKeLoTheoTrangThai() {
+        return LoSanPhamDAO.demLoTheoTrangThai();
     }
     
 }
