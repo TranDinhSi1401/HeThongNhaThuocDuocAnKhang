@@ -13,6 +13,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 
 
 /**
@@ -68,4 +69,45 @@ public class ChiTietPhieuNhapDAO {
         }
         return ctpn;
     }
+        
+    public static ArrayList<ChiTietPhieuNhap> getChiTietByMaPhieuNhap(String maPhieuNhap) {
+        ArrayList<ChiTietPhieuNhap> dsCT = new ArrayList<>();
+        String sql = "SELECT ct.maPhieuNhap, ct.maLoSanPham, ct.maNCC, ct.soLuong, ct.soLuongYeuCau, ct.donGia, ct.thanhTien, ct.ghiChu, " +
+                     "lo.maLo, sp.ten, ncc.tenNCC " +
+                     "FROM ChiTietPhieuNhap ct " +
+                     "JOIN LoSanPham lo ON ct.maLoSanPham = lo.maLoSanPham " +
+                     "JOIN SanPham sp ON lo.maSP = sp.maSP " +
+                     "JOIN NhaCungCap ncc ON ct.maNCC = ncc.maNCC " +
+                     "WHERE ct.maPhieuNhap = ?";
+        try {
+            ConnectDB.getInstance().connect();
+            Connection con = ConnectDB.getConnection();
+            PreparedStatement st = con.prepareStatement(sql);
+            st.setString(1, maPhieuNhap);
+            try (ResultSet rs = st.executeQuery()) {
+                while (rs.next()) {
+                    String maPN = rs.getString("maPhieuNhap");
+                    String maLoSP = rs.getString("maLoSanPham");
+                    String maNCC = rs.getString("maNCC");
+                    int soLuong = rs.getInt("soLuong");
+                    int soLuongYeuCau = rs.getInt("soLuongYeuCau");
+                    double donGia = rs.getDouble("donGia");
+                    double thanhTien = rs.getDouble("thanhTien");
+                    String ghiChu = rs.getString("ghiChu");
+                    
+                    PhieuNhap pn = new PhieuNhap(maPN);
+                    LoSanPham lo = new LoSanPham(maLoSP);
+                    lo.setSanPham(new hethongnhathuocduocankhang.entity.SanPham(rs.getString("maLo"), rs.getString("ten"))); // Assuming SanPham constructor
+                    NhaCungCap ncc = new NhaCungCap(maNCC, rs.getString("tenNCC"));
+                    
+                    ChiTietPhieuNhap ct = new ChiTietPhieuNhap(pn, lo, ncc, soLuong, donGia, thanhTien, soLuongYeuCau, ghiChu);
+                    dsCT.add(ct);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return dsCT;
+    }
 }
+

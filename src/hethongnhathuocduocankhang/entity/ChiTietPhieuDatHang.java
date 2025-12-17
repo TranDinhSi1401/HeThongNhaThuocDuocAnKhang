@@ -4,10 +4,6 @@
  */
 package hethongnhathuocduocankhang.entity;
 
-/**
- *
- * @author admin
- */
 public class ChiTietPhieuDatHang {
     private SanPham sanPham;
     private int soLuong;

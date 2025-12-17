@@ -12,10 +12,6 @@ import hethongnhathuocduocankhang.entity.SanPham;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-/**
- *
- * @author trand
- */
 public class NhaCungCapDAO {
 
     public static ArrayList<NhaCungCap> getAllNhaCungCap() {
@@ -23,7 +19,7 @@ public class NhaCungCapDAO {
         try {
             ConnectDB.getInstance().connect();
             Connection con = ConnectDB.getConnection();
-            String sql = "SELECT * FROM NhaCungCap";
+            String sql = "SELECT * FROM NhaCungCap WHERE daXoa = 0";
             Statement statement = con.createStatement();
             ResultSet rs = statement.executeQuery(sql);
             while (rs.next()) {
@@ -93,16 +89,12 @@ public class NhaCungCapDAO {
         try {
             ConnectDB.getInstance().connect();
             Connection con = ConnectDB.getConnection();
-            String querry = "DELETE FROM NhaCungCap WHERE maNCC = ?";
+            String querry = "UPDATE NhaCungCap SET daXoa = 1 WHERE maNCC = ?";
             PreparedStatement stmt = con.prepareStatement(querry);
             stmt.setString(1, maNCC);
             n = stmt.executeUpdate();
         } catch (SQLException e) {
-            if (e.getMessage().contains("The DELETE statement conflicted with the REFERENCE constraint")) {
-                System.err.println("Lỗi: Không thể xóa nhà cung cấp đang cung cấp sản phẩm.");
-            } else {
-                e.printStackTrace();
-            }
+            e.printStackTrace();
         }
         return n > 0;
     }
@@ -136,7 +128,7 @@ public class NhaCungCapDAO {
         try {
             ConnectDB.getInstance().connect();
             Connection con = ConnectDB.getConnection();
-            String querry = "SELECT * FROM NhaCungCap WHERE maNCC = ?";
+            String querry = "SELECT * FROM NhaCungCap WHERE maNCC = ? AND daXoa = 0";
             PreparedStatement stmt = con.prepareStatement(querry);
             stmt.setString(1, ma);
             ResultSet rs = stmt.executeQuery();
@@ -146,7 +138,6 @@ public class NhaCungCapDAO {
                 String diaChi = rs.getString("diaChi");
                 String sdt = rs.getString("sdt");
                 String email = rs.getString("email");
-
                 ncc = new NhaCungCap(maNCC, tenNCC, diaChi, sdt, email);
             }
         } catch (SQLException e) {
@@ -160,7 +151,7 @@ public class NhaCungCapDAO {
         try {
             ConnectDB.getInstance().connect();
             Connection con = ConnectDB.getConnection();
-            String querry = "SELECT * FROM NhaCungCap WHERE tenNCC LIKE ?";
+            String querry = "SELECT * FROM NhaCungCap WHERE tenNCC LIKE ? AND daXoa = 0";
             PreparedStatement stmt = con.prepareStatement(querry);
             stmt.setString(1, "%" + tenNCCInput + "%");
             ResultSet rs = stmt.executeQuery();
@@ -185,7 +176,7 @@ public class NhaCungCapDAO {
         try {
             ConnectDB.getInstance().connect();
             Connection con = ConnectDB.getConnection();
-            String querry = "SELECT * FROM NhaCungCap WHERE sdt = ?";
+            String querry = "SELECT * FROM NhaCungCap WHERE sdt = ? AND daXoa = 0";
             PreparedStatement stmt = con.prepareStatement(querry);
             stmt.setString(1, sdtInput);
             ResultSet rs = stmt.executeQuery();
@@ -210,7 +201,7 @@ public class NhaCungCapDAO {
         try {
             ConnectDB.getInstance().connect();
             Connection con = ConnectDB.getConnection();
-            String querry = "SELECT * FROM NhaCungCap WHERE email LIKE ?";
+            String querry = "SELECT * FROM NhaCungCap WHERE email LIKE ? AND daXoa = 0";
             PreparedStatement stmt = con.prepareStatement(querry);
             stmt.setString(1, "%" + emailInput + "%");
             ResultSet rs = stmt.executeQuery();
@@ -251,16 +242,17 @@ public class NhaCungCapDAO {
         }
         return maCuoiCung;
     }
-    public static NhaCungCap getNhaCungCapTheoTen (String ten){
+
+    public static NhaCungCap getNhaCungCapTheoTen(String ten) {
         NhaCungCap ncc = new NhaCungCap();
-        String sql = "Select * from NhaCungCap where tenNCC like ?";
+        String sql = "Select * from NhaCungCap where tenNCC like ? AND daXoa = 0";
         try {
             ConnectDB.getInstance().connect();
             Connection con = ConnectDB.getConnection();
             PreparedStatement st = con.prepareStatement(sql);
             st.setString(1, ten);
-            try(ResultSet rs = st.executeQuery()){
-                if(rs.next()){
+            try (ResultSet rs = st.executeQuery()) {
+                if (rs.next()) {
                     String ma = rs.getString(1);
                     String tenNCC = rs.getString(2);
                     String diaChi = rs.getString(3);
@@ -269,24 +261,25 @@ public class NhaCungCapDAO {
                     ncc = new NhaCungCap(ma, tenNCC, diaChi, sdt, email);
                 }
             }
-            
+
         } catch (SQLException s) {
             s.printStackTrace();
         }
         return ncc;
     }
-    public static ArrayList<LoSanPham> getDanhSachLoTheoMaNCC(String maNCC){
-        String sql = "Select l.maLoSanPham, maSP, l.soLuong, ngaySanXuat, ngayHetHan, daHuy  from LoSanPham l join ChiTietPhieuNhap ct on l.maLoSanPham=ct.maLoSanPham \n" +
-                    "join NhaCungCap c on c.maNCC=ct.maNCC\n" +
-                    "where c.maNCC like ?";
+
+    public static ArrayList<LoSanPham> getDanhSachLoTheoMaNCC(String maNCC) {
+        String sql = "Select l.maLoSanPham, maSP, l.soLuong, ngaySanXuat, ngayHetHan, daHuy  from LoSanPham l join ChiTietPhieuNhap ct on l.maLoSanPham=ct.maLoSanPham \n"
+                + "join NhaCungCap c on c.maNCC=ct.maNCC\n"
+                + "where c.maNCC like ? AND daXoa = 0";
         ArrayList<LoSanPham> dsLo = new ArrayList<>();
         try {
             ConnectDB.getInstance().connect();
             Connection con = ConnectDB.getConnection();
             PreparedStatement st = con.prepareStatement(sql);
             st.setString(1, maNCC);
-            try(ResultSet rs = st.executeQuery()){
-                while(rs.next()){
+            try (ResultSet rs = st.executeQuery()) {
+                while (rs.next()) {
                     String ma = rs.getString(1);
                     String maSP = rs.getString(2);
                     int sl = rs.getInt(3);
@@ -297,18 +290,19 @@ public class NhaCungCapDAO {
                     dsLo.add(lo);
                 }
             }
-            
+
         } catch (SQLException a) {
             a.printStackTrace();
         }
         return dsLo;
     }
+
     public static NhaCungCap timMotNCCTheoTen(String tenNCCInput) {
         NhaCungCap ncc = new NhaCungCap();
         try {
             ConnectDB.getInstance().connect();
             Connection con = ConnectDB.getConnection();
-            String querry = "SELECT * FROM NhaCungCap WHERE tenNCC LIKE ?";
+            String querry = "SELECT * FROM NhaCungCap WHERE tenNCC LIKE ? AND daXoa = 0";
             PreparedStatement stmt = con.prepareStatement(querry);
             stmt.setString(1, "%" + tenNCCInput + "%");
             ResultSet rs = stmt.executeQuery();

@@ -19,8 +19,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import javax.swing.JOptionPane;
 
@@ -235,6 +233,14 @@ public class QuanLyLoBUS {
         if(sp.getTonToiDa()<tongSL)
             return true;
         return false;
+    }
+    
+    /**
+     * Lấy thống kê số lượng lô theo trạng thái
+     * @return int[4] - [0]=Còn hạn, [1]=Sắp hết hạn, [2]=Hết hạn, [3]=Đã hủy
+     */
+    public static int[] layThongKeLoTheoTrangThai() {
+        return LoSanPhamDAO.demLoTheoTrangThai();
     }
     
 }

@@ -4,9 +4,9 @@
  */
 package hethongnhathuocduocankhang.gui;
 
-import hethongnhathuocduocankhang.dao.ChiTietHoaDonDAO;
-import hethongnhathuocduocankhang.entity.ChiTietHoaDon;
-import hethongnhathuocduocankhang.entity.HoaDon;
+import hethongnhathuocduocankhang.dao.ChiTietPhieuNhapDAO;
+import hethongnhathuocduocankhang.entity.ChiTietPhieuNhap;
+import hethongnhathuocduocankhang.entity.PhieuNhap;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -14,37 +14,38 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.ArrayList;
 
-public class ChiTietHoaDonGUI extends JPanel {
+public class ChiTietPhieuNhapGUI extends JPanel {
     private JTable table;
     private DefaultTableModel model;
-    private JLabel lblMaHoaDon;
+    private JLabel lblMaPhieuNhap;
     private JLabel lblTongTien;
 
-    public ChiTietHoaDonGUI() {
+    public ChiTietPhieuNhapGUI() {
         this.setLayout(new BorderLayout(10, 10));
         this.setBorder(new EmptyBorder(10, 10, 10, 10));
 
-        // Panel Thông tin chung
+        // 1. Panel Thông tin chung
         JPanel pnlNorth = new JPanel(new GridLayout(2, 2, 5, 5));
-        lblMaHoaDon = new JLabel("Mã Hóa Đơn: ");
-        lblTongTien = new JLabel("Tổng Tiền Hóa Đơn: ");
-        lblMaHoaDon.setFont(new Font("Arial", Font.BOLD, 14));
+        lblMaPhieuNhap = new JLabel("Mã Phiếu Nhập: ");
+        lblTongTien = new JLabel("Tổng Tiền: ");
+        lblMaPhieuNhap.setFont(new Font("Arial", Font.BOLD, 14));
         lblTongTien.setFont(new Font("Arial", Font.BOLD, 14));
         
-        pnlNorth.add(lblMaHoaDon);
+        pnlNorth.add(lblMaPhieuNhap);
         pnlNorth.add(new JLabel(""));
         pnlNorth.add(lblTongTien);
         this.add(pnlNorth, BorderLayout.NORTH);
 
-        // Panel Bảng
+        // 2. Panel Bảng (Danh sách chi tiết)
         String[] columnNames = {
-            "Mã CTHD",
+            "Mã Lô Sản Phẩm",
             "Sản Phẩm",
-            "ĐVT",
+            "Nhà Cung Cấp",
             "Số Lượng",
             "Đơn Giá",
-            "Giảm Giá",
-            "Thành Tiền"
+            "Thành Tiền",
+            "Số Lượng Yêu Cầu",
+            "Ghi Chú"
         };
         Object[][] data = {};
 
@@ -65,23 +66,28 @@ public class ChiTietHoaDonGUI extends JPanel {
         this.add(scrollPane, BorderLayout.CENTER);
     }
 
-    public void loadData(HoaDon hoaDon) {
-        if (hoaDon == null) return;
-        lblMaHoaDon.setText("Mã Hóa Đơn: " + hoaDon.getMaHoaDon());
-        lblTongTien.setText("Tổng Tiền Hóa Đơn: " + String.format("%,.0f VND", hoaDon.getTongTien()));
-        
-        ArrayList<ChiTietHoaDon> dsCTHD = ChiTietHoaDonDAO.getChiTietHoaDonTheoMaHD(hoaDon);
-        
+    public void loadData(PhieuNhap phieuNhap) {
+        if (phieuNhap == null) return;
+
+        // Cập nhật thông tin chung
+        lblMaPhieuNhap.setText("Mã Phiếu Nhập: " + phieuNhap.getMaPhieuNhap());
+        lblTongTien.setText("Tổng Tiền: " + String.format("%,.0f VND", phieuNhap.getTongTien()));
+
+        // Gọi DAO để lấy danh sách chi tiết
+        ArrayList<ChiTietPhieuNhap> dsChiTiet = ChiTietPhieuNhapDAO.getChiTietByMaPhieuNhap(phieuNhap.getMaPhieuNhap());
+
+        // Đổ dữ liệu vào bảng
         model.setRowCount(0);
-        for (ChiTietHoaDon cthd : dsCTHD) {
+        for (ChiTietPhieuNhap ct : dsChiTiet) {
             Object[] row = {
-                cthd.getMaChiTietHoaDon(),
-                cthd.getDonViTinh().getSanPham().getTen(), 
-                cthd.getDonViTinh().getTenDonVi(),       
-                cthd.getSoLuong(),
-                String.format("%,.0f", cthd.getDonGia()),
-                String.format("%.0f%%", cthd.getGiamGia() * 100), 
-                String.format("%,.0f", cthd.getThanhTien())
+                ct.getMaLoSanPham().getMaLoSanPham(),
+                ct.getMaLoSanPham().getSanPham().getTen(),
+                ct.getNcc().getTenNCC(),
+                ct.getSoLuong(),
+                String.format("%,.0f", ct.getDonGia()),
+                String.format("%,.0f", ct.getThanhTien()),
+                ct.getSoLuongYeuCau(),
+                ct.getGhiChu()
             };
             model.addRow(row);
         }

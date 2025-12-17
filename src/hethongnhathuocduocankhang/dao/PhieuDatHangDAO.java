@@ -24,69 +24,14 @@ import java.util.ArrayList;
 public class PhieuDatHangDAO {
 
     public ArrayList<SanPham> dsSanPham() {
-//        ArrayList<SanPham> dsSanPham = new ArrayList<>();
-//        try {
-//            ConnectDB.getInstance().connect();
-//            Connection con = ConnectDB.getConnection();
-//            String sql = "Select maSP, ten from SanPham";
-//            Statement st = con.createStatement();
-//            ResultSet rs = st.executeQuery(sql);
-//            while(rs.next()){
-//                String maSP = rs.getString(1);
-//                String ten = rs.getString(2);
-//                SanPham sp = new SanPham(maSP, ten); 
-//                dsSanPham.add(sp);
-//            }
-//            
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
-//        return dsSanPham;
         return SanPhamDAO.getAllTableSanPham();
     }
 
     public SanPham timSanPham(String ma) {
-        SanPham sp = SanPhamDAO.timSPTheoMa(ma);
-//        SanPham s = null;
-//        try {
-//            ConnectDB.getInstance().connect();
-//            Connection con = ConnectDB.getConnection();
-//            String sql = "select maSP, ten from SanPham where maSP = ?";
-//            PreparedStatement st = con.prepareStatement(sql);
-//            st.setString(1, ma);
-//            try(ResultSet rs = st.executeQuery()){
-//                while(rs.next()){
-//                    String maSP = rs.getString(1);
-//                    String tenSP = rs.getString(2);
-//                    s = new SanPham(maSP, tenSP);
-//                }
-//            }
-//        } catch (SQLException sQLException) {
-//            sQLException.printStackTrace();
-//        }
-        return sp;
+        return SanPhamDAO.timSPTheoMa(ma);
     }
 
     public NhaCungCap timNhaCungCap(String ma) {
-//        NhaCungCap ncc = null;
-//        try {
-//            ConnectDB.getInstance().connect();
-//            Connection con = ConnectDB.getConnection();
-//            String sql = "Select maNCC from SanPham s join SanPhamCungCap sc on s.maSP=sc.maSP where sc.maSP=?";
-//            PreparedStatement st = con.prepareStatement(sql);
-//            st.setString(1, ma);
-//            try (ResultSet rs = st.executeQuery()) {
-//                while (rs.next()) {
-//                    String maNCC = rs.getString(1);
-//                    ncc = new NhaCungCap(maNCC);
-//                }
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//        } catch (SQLException sQLException) {
-//            sQLException.printStackTrace();
-//        }
-//        return ncc;
         return NhaCungCapDAO.timNCCTheoMa(ma);
     }
 
@@ -104,7 +49,6 @@ public class PhieuDatHangDAO {
                     SanPham sanPham = new SanPham(rs.getString(2));
                     String tenDV = rs.getString(3);
                     double gia = Double.parseDouble(rs.getString(4));
-                    // Giả định DonViTinh có constructor này
                     dv = new DonViTinh(maDVT, sanPham, gia, tenDV);
                 }
             } catch (Exception e) {
@@ -113,9 +57,7 @@ public class PhieuDatHangDAO {
         } catch (SQLException sQLException) {
             sQLException.printStackTrace();
         }
-
         return dv;
-        
     }
 
     public boolean kiemTraPhieuHomNay() {
@@ -137,11 +79,12 @@ public class PhieuDatHangDAO {
         return tonTai;
     }
 
-    private static PhieuDatHang buildPhieuDatHangFromResultSet(ResultSet rs) throws SQLException {
+    private static PhieuDatHang taoDoiTuongPhieuDatHang(ResultSet rs) throws SQLException {
         String maPDH = rs.getString("maPhieuDatHang");
 
         LocalDate ngayLapDate = rs.getDate("ngayLap").toLocalDate();
         LocalDateTime ngayLapDateTime = ngayLapDate.atStartOfDay(); 
+
         String maNCC = rs.getString("maNCC");
         String maNV = rs.getString("maNV");
         double tongTien = rs.getDouble("tongTien");
@@ -168,7 +111,7 @@ public class PhieuDatHangDAO {
             Statement statement = con.createStatement();
             ResultSet rs = statement.executeQuery(sql);
             while (rs.next()) {
-                dsPDH.add(buildPhieuDatHangFromResultSet(rs));
+                dsPDH.add(taoDoiTuongPhieuDatHang(rs));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -186,7 +129,7 @@ public class PhieuDatHangDAO {
             stmt.setString(1, ma);
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
-                pdh = buildPhieuDatHangFromResultSet(rs);
+                pdh = taoDoiTuongPhieuDatHang(rs);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -204,7 +147,7 @@ public class PhieuDatHangDAO {
             stmt.setString(1, maNCC);
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
-                dsPDH.add(buildPhieuDatHangFromResultSet(rs));
+                dsPDH.add(taoDoiTuongPhieuDatHang(rs));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -222,7 +165,7 @@ public class PhieuDatHangDAO {
             stmt.setString(1, maNV);
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
-                dsPDH.add(buildPhieuDatHangFromResultSet(rs));
+                dsPDH.add(taoDoiTuongPhieuDatHang(rs));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -238,9 +181,10 @@ public class PhieuDatHangDAO {
             String querry = "SELECT * FROM PhieuDatHang WHERE ngayLap = ?";
             PreparedStatement stmt = con.prepareStatement(querry);
             stmt.setDate(1, Date.valueOf(date)); 
+            stmt.setDate(1, Date.valueOf(date));
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
-                dsPDH.add(buildPhieuDatHangFromResultSet(rs));
+                dsPDH.add(taoDoiTuongPhieuDatHang(rs));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -257,13 +201,12 @@ public class PhieuDatHangDAO {
             String sql = "SELECT top 1 * FROM PhieuTraHang pth WHERE CAST(pth.ngayLapPhieuTraHang AS DATE) = CAST(GETDATE() AS DATE) order by pth.ngayLapPhieuTraHang desc";
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery(sql);
-            
+
             String ma = null;
-            if (rs.next()){
+            if (rs.next()) {
                 ma = rs.getString(1);
             }
-            
-            
+
         } catch (SQLException | NumberFormatException e) {
             e.printStackTrace();
         }

@@ -6,12 +6,7 @@ package hethongnhathuocduocankhang.entity;
 
 import java.util.Objects;
 
-/**
- *
- * @author GIGABYTE
- */
 public class ChiTietHoaDon {
-
     private String maChiTietHoaDon;
     private HoaDon hoaDon;
     private DonViTinh donViTinh;
@@ -33,7 +28,7 @@ public class ChiTietHoaDon {
     public ChiTietHoaDon(double donGia) {
         this.donGia = donGia;
     }
-    
+
     public ChiTietHoaDon(String maCTHD) {
         this.maChiTietHoaDon = maCTHD;
     }

@@ -19,58 +19,53 @@ import javax.swing.table.DefaultTableModel;
 
 public class ThemSanPhamGUI extends JPanel {
 
-    // --- 1. Components Thông tin chung ---
+    // Thông tin chung
     private JTextField txtMaSanPham, txtTenSanPham;
     private JTextArea txtMoTa, txtThanhPhan;
     private JComboBox<String> cmbLoaiSanPham;
     private JTextField txtTonToiThieu, txtTonToiDa;
 
-    // --- 2. Components QUẢN LÝ BARCODE ---
+    // BARCODE
     private JTextField txtInputBarcode;
     private JButton btnThemBarcode, btnXoaBarcode;
-    private JTable tblBarcode;
+    private JTable tableBarcode;
     private DefaultTableModel modelBarcode;
 
     // --- 3. Components QUẢN LÝ ĐƠN VỊ TÍNH (Tab 1) ---
     private JTextField txtTenDonVi, txtHeSoQuyDoi, txtGiaBanDonVi;
     private JCheckBox chkDonViCoBan;
     private JButton btnThemDVT, btnXoaDVT;
-    private JTable tblDonViTinh;
+    private JTable tableDonViTinh;
     private DefaultTableModel modelDVT;
 
-    // --- 4. Components QUẢN LÝ NHÀ CUNG CẤP (Tab 2) ---
+    // NHÀ CUNG CẤP (Tab 2)
     private JTextField txtTimNCC;
     private JButton btnTimNCC;
     private JTextField txtGiaNhap;
     private JButton btnThemNCC;
     private JButton btnXoaNCC;
 
-    private JTable tableKQTimKiemNCC;       // Bảng kết quả tìm kiếm
+    private JTable tableKQTimKiemNCC;
     private DefaultTableModel modelKQTimKiemNCC;
 
-    private JTable tblNCCChon;          // Bảng danh sách đã chọn
+    private JTable tableNCCChon;
     private DefaultTableModel modelNCCChon;
 
-    // --- 5. Components QUẢN LÝ KHUYẾN MÃI (Tab 3) ---
+    // KHUYẾN MÃI (Tab 3)
     private JTextField txtTimKM;
     private JButton btnTimKM;
     private JButton btnThemKM;
     private JButton btnXoaKM;
 
-    private JTable tableKQTimKiemKM;        // Bảng kết quả tìm kiếm
+    private JTable tableKQTimKiemKM;
     private DefaultTableModel modelKQTimKiemKM;
 
-    private JTable tblKMChon;           // Bảng danh sách đã chọn
+    private JTable tableKMChon;
     private DefaultTableModel modelKMChon;
 
-    // --- 6. Components điều hướng ---
     private JButton btnHuy, btnXacNhan;
 
     public ThemSanPhamGUI() {
-        initComponents();
-    }
-
-    private void initComponents() {
         this.setLayout(new BorderLayout());
 
         JPanel mainContentPanel = new JPanel(new BorderLayout(10, 10));
@@ -119,10 +114,10 @@ public class ThemSanPhamGUI extends JPanel {
                 return false;
             }
         };
-        tblBarcode = new JTable(modelBarcode);
-        tblBarcode.setTableHeader(null); // Ẩn header cho gọn
+        tableBarcode = new JTable(modelBarcode);
+        tableBarcode.setTableHeader(null); // Ẩn header cho gọn
 
-        JScrollPane scrBarcode = new JScrollPane(tblBarcode);
+        JScrollPane scrBarcode = new JScrollPane(tableBarcode);
         scrBarcode.setBorder(new TitledBorder("DS Mã vạch"));
         scrBarcode.setPreferredSize(new Dimension(150, 80));
 
@@ -353,15 +348,15 @@ public class ThemSanPhamGUI extends JPanel {
                 return false;
             }
         };
-        tblDonViTinh = new JTable(modelDVT);
+        tableDonViTinh = new JTable(modelDVT);
 
-        tblDonViTinh.setRowHeight(
+        tableDonViTinh.setRowHeight(
                 22);
-        tblDonViTinh.getColumnModel()
+        tableDonViTinh.getColumnModel()
                 .getColumn(0).setPreferredWidth(80);
 
         pnlDVT.add(pnlInputDVT, BorderLayout.NORTH);
-        pnlDVT.add(new JScrollPane(tblDonViTinh), BorderLayout.CENTER);
+        pnlDVT.add(new JScrollPane(tableDonViTinh), BorderLayout.CENTER);
         tabbedPane.addTab("1. Đơn vị tính", pnlDVT);
 
         // ---------------- TAB 2: NHÀ CUNG CẤP ----------------
@@ -411,14 +406,14 @@ public class ThemSanPhamGUI extends JPanel {
                 return false;
             }
         };
-        tblNCCChon = new JTable(modelNCCChon);
-        tblNCCChon.setRowHeight(22);
+        tableNCCChon = new JTable(modelNCCChon);
+        tableNCCChon.setRowHeight(22);
 
         JPanel pnlFooterNCC = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         btnXoaNCC = new JButton("Xóa khỏi DS");
         pnlFooterNCC.add(btnXoaNCC);
 
-        pnlTable2NCC.add(new JScrollPane(tblNCCChon), BorderLayout.CENTER);
+        pnlTable2NCC.add(new JScrollPane(tableNCCChon), BorderLayout.CENTER);
         pnlTable2NCC.add(pnlFooterNCC, BorderLayout.SOUTH);
 
         pnlTablesAreaNCC.add(pnlTable1NCC);
@@ -470,14 +465,14 @@ public class ThemSanPhamGUI extends JPanel {
                 return false;
             }
         };
-        tblKMChon = new JTable(modelKMChon);
-        tblKMChon.setRowHeight(22);
+        tableKMChon = new JTable(modelKMChon);
+        tableKMChon.setRowHeight(22);
 
         JPanel pnlFooterKM = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         btnXoaKM = new JButton("Xóa khỏi DS");
         pnlFooterKM.add(btnXoaKM);
 
-        pnlTable2KM.add(new JScrollPane(tblKMChon), BorderLayout.CENTER);
+        pnlTable2KM.add(new JScrollPane(tableKMChon), BorderLayout.CENTER);
         pnlTable2KM.add(pnlFooterKM, BorderLayout.SOUTH);
 
         pnlTablesAreaKM.add(pnlTable1KM);
@@ -513,11 +508,10 @@ public class ThemSanPhamGUI extends JPanel {
         this.add(pnlButton, BorderLayout.SOUTH);
 
         // Cấu hình selection mode cho bảng
-        tblNCCChon.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-        tblKMChon.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        tableNCCChon.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+        tableKMChon.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         tableKQTimKiemNCC.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
         tableKQTimKiemKM.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-
     }
 
     // ==========================================================================
@@ -565,7 +559,7 @@ public class ThemSanPhamGUI extends JPanel {
     }
 
     public JTable getTblBarcode() {
-        return tblBarcode;
+        return tableBarcode;
     }
 
     public DefaultTableModel getModelBarcode() {
@@ -598,7 +592,7 @@ public class ThemSanPhamGUI extends JPanel {
     }
 
     public JTable getTblDonViTinh() {
-        return tblDonViTinh;
+        return tableDonViTinh;
     }
 
     public DefaultTableModel getModelDVT() {
@@ -645,7 +639,7 @@ public class ThemSanPhamGUI extends JPanel {
     }
 
     public JTable getTblNCCChon() {
-        return tblNCCChon;
+        return tableNCCChon;
     }
 
     public DefaultTableModel getModelNCCChon() {
@@ -678,7 +672,7 @@ public class ThemSanPhamGUI extends JPanel {
     }
 
     public JTable getTblKMChon() {
-        return tblKMChon;
+        return tableKMChon;
     }
 
     public DefaultTableModel getModelKMChon() {

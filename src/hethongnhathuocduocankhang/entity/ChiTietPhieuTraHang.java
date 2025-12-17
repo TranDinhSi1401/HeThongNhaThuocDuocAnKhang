@@ -6,10 +6,6 @@ package hethongnhathuocduocankhang.entity;
 
 import java.util.Objects;
 
-/**
- *
- * @author trand
- */
 public class ChiTietPhieuTraHang {
     private PhieuTraHang phieuTraHang;
     private ChiTietHoaDon chiTietHoaDon;

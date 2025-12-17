@@ -24,7 +24,7 @@ public class ChiTietPhieuDatHangGUI extends JPanel {
         this.setLayout(new BorderLayout(10, 10));
         this.setBorder(new EmptyBorder(10, 10, 10, 10));
 
-        // 1. Panel Thông tin chung (Hiển thị Mã PDH và Tổng Tiền)
+        // Panel Thông tin chung (Hiển thị Mã PDH và Tổng Tiền)
         JPanel pnlNorth = new JPanel(new GridLayout(2, 2, 5, 5));
         lblMaPhieuDat = new JLabel("Mã Phiếu Đặt: ");
         lblTongTien = new JLabel("Tổng Tiền Phiếu Đặt: ");
@@ -36,7 +36,7 @@ public class ChiTietPhieuDatHangGUI extends JPanel {
         pnlNorth.add(lblTongTien);
         this.add(pnlNorth, BorderLayout.NORTH);
 
-        // 2. Panel Bảng (Danh sách chi tiết)
+        // Panel Bảng (Danh sách chi tiết)
         String[] columnNames = {
             "Mã SP",
             "Tên Sản Phẩm",
@@ -66,14 +66,11 @@ public class ChiTietPhieuDatHangGUI extends JPanel {
     public void loadData(PhieuDatHang phieuDatHang) {
         if (phieuDatHang == null) return;
 
-        // Cập nhật thông tin chung
         lblMaPhieuDat.setText("Mã Phiếu Đặt: " + phieuDatHang.getMaPhieuDat());
         lblTongTien.setText("Tổng Tiền Phiếu Đặt: " + String.format("%,.0f VND", phieuDatHang.getTongTien()));
 
-        // Gọi DAO để lấy danh sách chi tiết
         ArrayList<ChiTietPhieuDatHang> dsChiTiet = ChiTietPhieuDatDAO.getChiTietTheoMaPDH(phieuDatHang.getMaPhieuDat());
 
-        // Đổ dữ liệu vào bảng
         model.setRowCount(0);
         for (ChiTietPhieuDatHang ctpd : dsChiTiet) {
             Object[] row = {

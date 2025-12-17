@@ -80,6 +80,8 @@ public class GiaoDienChinhGUI extends javax.swing.JFrame {
                             showPanel(new QuanLiLichSuCaLamGUI());
                         case 9 ->
                             showPanel(new QuanLiPhieuTraHangGUI());
+                        case 10 ->
+                            showPanel(new QuanLiPhieuNhapHangGUI());
                         default -> {
                         }
                     }
@@ -97,19 +99,8 @@ public class GiaoDienChinhGUI extends javax.swing.JFrame {
                 if (index == 5 && subIndex == 0) {
                     showPanel(new TraCuuChungGUI());
                 }
-                if(index == 6) {
-                    switch (subIndex) {
-                        case 1 ->
-                            showPanel(new ThongKeHoaDonGUI());
-                        case 2 ->
-                            showPanel(new ThongKeSanPhamGUI());
-                        case 3 ->
-                            showPanel(new ThongKePhieuNhapGUI());
-                        case 4 ->
-                            showPanel(new ThongKePhieuTraHangGUI());
-                        default -> {
-                        }
-                    }
+                if(index == 6 && subIndex == 0) {
+                    showPanel(new ThongKeHoaDonGUI());
                 }
                 
                 if(index == 7 && subIndex == 0) {
