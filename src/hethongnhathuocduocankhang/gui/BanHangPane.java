@@ -56,13 +56,6 @@ public class BanHangPane extends javax.swing.JPanel {
             System.out.println("Không thể kết nối vs CSDL");
         }
         
-//        JTableHeader header = tblCTHD.getTableHeader();
-//        header.setPreferredSize(new Dimension(header.getWidth(), 30));
-//        header.setBorder(null);
-//        header.setBackground(new Color(245, 245, 245));
-//        header.setForeground(Color.BLACK);
-//        header.setFont(new Font("Segoe UI", Font.BOLD, 14));
-        
         hideColumn(tblCTHD, 8);
         hideColumn(tblCTHD, 7);
 
@@ -162,13 +155,15 @@ public class BanHangPane extends javax.swing.JPanel {
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(this, ex.getMessage(), "Error Message", JOptionPane.ERROR_MESSAGE );
                     if(ex.getMessage().trim().equalsIgnoreCase("Không đủ số lượng") || ex.getMessage().trim().equalsIgnoreCase("Số lượng phải lớn hơn bằng 1")) {
+                        isMerging = true; // chặn event vòng lặp
                         if(e.getColumn() == 4) {
                             // roll back số lượng
                              model.setValueAt(oldSoLuong, row, 4);
                         } else {
                             // roll back dvt
                             model.setValueAt(oldDonViTinh, row, 2);
-                        }                     
+                        }    
+                        isMerging = false; // mở lại
                     }
                 }
                
@@ -961,11 +956,17 @@ public class BanHangPane extends javax.swing.JPanel {
             String maKH = lblMaKH1.getText().trim();
             boolean chuyenKhoan = radChuyenKhoan.isSelected();
             double tongTien = getTongTien();
-            if(bus.thanhToan(tblCTHD, maKH, chuyenKhoan, tongTien)) {
+            double tienKhachDua = Double.parseDouble(txtTienKhachDua.getText().replaceAll("\\s", ""));
+            double tienThua = Double.parseDouble(lblTienThua1.getText().replaceAll("[^\\d]", ""));
+            if(bus.thanhToan(tblCTHD, maKH, chuyenKhoan, tongTien, tienKhachDua, tienThua)) {
                 xoaTrang();
             }
         } catch(Exception e) {
-            JOptionPane.showMessageDialog(this, e.getMessage(), "Error Message", JOptionPane.ERROR_MESSAGE);
+            if(e.getMessage().equalsIgnoreCase("For input string: \"Nhậptiềnkháchđưa[F5]\"")) {
+                JOptionPane.showMessageDialog(this, "tiền khách đưa phải là số dương", "Error Message", JOptionPane.ERROR_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(this, e.getMessage(), "Error Message", JOptionPane.ERROR_MESSAGE);
+            }
         }
     }//GEN-LAST:event_btnThanhToanActionPerformed
 

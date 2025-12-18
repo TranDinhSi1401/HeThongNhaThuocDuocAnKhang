@@ -182,7 +182,7 @@ public class BanHangBUS {
         return false;
     }
     
-    public boolean thanhToan(JTable tblCTHD, String maKH, boolean chuyenKhoan, double tongTien) throws Exception{
+    public boolean thanhToan(JTable tblCTHD, String maKH, boolean chuyenKhoan, double tongTien, double tienKhachDua, double tienThua) throws Exception{
         int confirm = JOptionPane.showConfirmDialog(null, "Bạn có chắc muốn thanh toán không?", "Xác nhận", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE
         );
         // Xác nhận thanh toán
@@ -201,6 +201,21 @@ public class BanHangBUS {
                     throw new Exception("Vui lòng lưu thông tin khách hàng trước khi thanh toán vì có thuốc kê đơn");
                 }
             }
+            if(tongTien > tienKhachDua) {
+                throw new Exception("Tiền khách đưa phải lớn hơn hoặc bằng tổng tiền");
+            }
+            for (int i = 0; i < tblCTHD.getRowCount(); i++) {
+                String maSP = tblCTHD.getValueAt(i, 8).toString();
+                int tongTon = LoSanPhamDAO.dsLoTheoMaSanPham(maSP)
+                    .stream()
+                    .mapToInt(LoSanPham::getSoLuong)
+                    .sum();;
+                int soLuongYeuCau = Integer.parseInt(tblCTHD.getValueAt(i, 4).toString());
+                if (tongTon < soLuongYeuCau) {
+                    throw new Exception("Không đủ hàng cho sản phẩm: " + maSP);
+                }
+            }
+
             
             
             // Lấy mã hóa đơn mới nhất
@@ -288,7 +303,7 @@ public class BanHangBUS {
                 KhachHangDAO.updateDiemTichLuy(diemTichLuy, maKH);
             }
 
-            String noiDung = taoNoiDungHoaDon(hd, dsCTHD);
+            String noiDung = taoNoiDungHoaDon(hd, dsCTHD, tienKhachDua, tienThua);
             JDialog dialog = new JDialog();
             dialog.setTitle(maHDMoi);
             dialog.setSize(1000, 600);
@@ -327,7 +342,7 @@ public class BanHangBUS {
         }
     }
     
-    public static String taoNoiDungHoaDon(HoaDon hd, ArrayList<ChiTietHoaDon> dsCTHD) {
+    public static String taoNoiDungHoaDon(HoaDon hd, ArrayList<ChiTietHoaDon> dsCTHD, double tienKhachDua, double tienThua) {
         int WIDTH = 120;
         String LINE = "=".repeat(WIDTH);
         String SEPARATOR = "-".repeat(WIDTH);
@@ -382,8 +397,18 @@ public class BanHangBUS {
         sb.append(SEPARATOR).append("\n");
         String tongCongStr = "TỔNG CỘNG: " + df.format(tongTien) + " VND";
         sb.append(alignRight(tongCongStr, WIDTH)).append("\n");
-        sb.append(LINE).append("\n");
-
+        if(hd.isChuyenKhoan()) {
+            String tienKhachDuaStr = "KHÁCH CHUYỂN KHOẢN: " + df.format(tongTien) + " VND";
+            sb.append(alignRight(tienKhachDuaStr, WIDTH)).append("\n");
+            sb.append(LINE).append("\n");
+        } else {
+            String tienKhachDuaStr = "KHÁCH ĐƯA: " + df.format(tienKhachDua) + " VND";
+            sb.append(alignRight(tienKhachDuaStr, WIDTH)).append("\n");
+            String tienThuaStr = "TIỀN THỪA: " + df.format(tienThua) + " VND";
+            sb.append(alignRight(tienThuaStr, WIDTH)).append("\n");
+            sb.append(LINE).append("\n");
+        }
+        
         sb.append(center("CẢM ƠN QUÝ KHÁCH, HẸN GẶP LẠI!", WIDTH)).append("\n");
 
         sb.append(LINE).append("\n");

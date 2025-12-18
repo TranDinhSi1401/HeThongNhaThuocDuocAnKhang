@@ -80,6 +80,7 @@ public class GiaoDienChinhGUI extends JFrame{
                 JOptionPane.QUESTION_MESSAGE);
         if (confirm == JOptionPane.YES_OPTION) {
                 app.dispose(); // đóng cửa sổ hiện tại
+                cachedPanels.clear();
                 new DangNhapGUI().setVisible(true); 
         }
     }
