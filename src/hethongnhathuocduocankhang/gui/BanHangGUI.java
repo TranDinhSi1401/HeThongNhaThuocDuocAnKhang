@@ -6,6 +6,7 @@ package hethongnhathuocduocankhang.gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -21,7 +22,7 @@ import javax.swing.UIManager;
  * @author trand
  */
 public class BanHangGUI extends javax.swing.JPanel {
-
+    private JTabbedPane tabHoaDon;
     /**
      * Creates new form BanHangGUI
      */
@@ -47,14 +48,13 @@ public class BanHangGUI extends javax.swing.JPanel {
         UIManager.put("TabbedPane.focus", Color.WHITE);
         UIManager.put("TabbedPane.contentAreaColor", Color.WHITE);
 
-        JTabbedPane tabHoaDon = new JTabbedPane();
+        tabHoaDon = new JTabbedPane();
         tabHoaDon.setTabLayoutPolicy(JTabbedPane.SCROLL_TAB_LAYOUT);
 
-            
-        tabHoaDon.addTab("Hóa đơn 1", new BanHangPane());
+        tabHoaDon.addTab("Hóa đơn 1", new BanHangPane(this)); // Truyền tham chiếu
         addCloseButton(tabHoaDon, 0);
         tabHoaDon.addTab("+", null);
-        
+
         tabHoaDon.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent e) {
@@ -62,10 +62,8 @@ public class BanHangGUI extends javax.swing.JPanel {
                 int lastIndex = tabHoaDon.getTabCount() - 1;
                 if (tabIndex == lastIndex) {
                     String title = "Hóa đơn " + (lastIndex + 1);
-                    JPanel panel = new JPanel(new BorderLayout());
-                    panel.add(new BanHangPane());
-
-                    tabHoaDon.insertTab(title, null, panel, null, lastIndex);
+                    BanHangPane banHangPane = new BanHangPane(BanHangGUI.this);
+                    tabHoaDon.insertTab(title, null, banHangPane, null, lastIndex);
                     addCloseButton(tabHoaDon, lastIndex);
                     tabHoaDon.setSelectedIndex(lastIndex);
                 }
@@ -130,6 +128,15 @@ public class BanHangGUI extends javax.swing.JPanel {
             }
         }
     }
+    
+    public void dongTabHienTai(Component component) {
+        int index = tabHoaDon.indexOfComponent(component);
+        if (index != -1) {
+            tabHoaDon.remove(index);
+            capNhatLaiTenHoaDon(tabHoaDon);
+        }
+    }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables

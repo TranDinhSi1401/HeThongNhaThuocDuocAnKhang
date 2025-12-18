@@ -43,11 +43,13 @@ public class BanHangPane extends javax.swing.JPanel {
     private boolean isMerging = false;
     private Object oldSoLuong = null;
     private Object oldDonViTinh = null;
+    private final BanHangGUI parent;
     /**
      * Creates new form BanHangGUI
      */
     
-    public BanHangPane() {
+    public BanHangPane(BanHangGUI parent) {
+        this.parent = parent;
         initComponents();
         
         try {
@@ -959,7 +961,7 @@ public class BanHangPane extends javax.swing.JPanel {
             double tienKhachDua = Double.parseDouble(txtTienKhachDua.getText().replaceAll("\\s", ""));
             double tienThua = Double.parseDouble(lblTienThua1.getText().replaceAll("[^\\d]", ""));
             if(bus.thanhToan(tblCTHD, maKH, chuyenKhoan, tongTien, tienKhachDua, tienThua)) {
-                xoaTrang();
+                parent.dongTabHienTai(this);
             }
         } catch(Exception e) {
             if(e.getMessage().equalsIgnoreCase("For input string: \"Nhậptiềnkháchđưa[F5]\"")) {
