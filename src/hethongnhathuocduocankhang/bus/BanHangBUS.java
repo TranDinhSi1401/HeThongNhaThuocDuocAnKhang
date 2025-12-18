@@ -195,6 +195,9 @@ public class BanHangBUS {
             if(tblCTHD.getRowCount() == 0) {
                 throw new Exception("Vui lòng thêm sản phẩm cần thanh toán");
             }
+            if(tienThua != tongTien - tienKhachDua) {
+                throw new Exception("Tiền thừa phải bằng tổng tiền trừ tiền khách đưa");
+            }
             for(int i = 0; i < tblCTHD.getRowCount(); i++) {
                 String maSP = tblCTHD.getValueAt(i, 8).toString();
                 if(kiemTraKeDon(maSP) && maKH.equalsIgnoreCase("KH-00000")) {

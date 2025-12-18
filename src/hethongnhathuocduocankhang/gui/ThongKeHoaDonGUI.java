@@ -385,9 +385,18 @@ public class ThongKeHoaDonGUI extends javax.swing.JPanel {
                 true,
                 false
         );
+        
+        // Đặt nền trắng cho toàn biểu đồ
+        chart.setBackgroundPaint(Color.WHITE);
 
+        // Đặt nền trắng cho vùng vẽ (nơi có các đường đồ thị)
+        chart.getPlot().setBackgroundPaint(Color.WHITE);
+        
         // Format trục Y (VNĐ)
         XYPlot plot = chart.getXYPlot();
+        plot.setDomainGridlinePaint(new Color(230, 230, 230)); // màu xám nhạt cho trục X
+        plot.setRangeGridlinePaint(new Color(230, 230, 230));  // màu xám nhạt cho trục Y
+        plot.setOutlinePaint(Color.LIGHT_GRAY); // viền nhạt quanh plot
         DateAxis xAxis = (DateAxis) plot.getDomainAxis();
         NumberAxis yAxis = (NumberAxis) plot.getRangeAxis();
         xAxis.setDateFormatOverride(
@@ -466,6 +475,7 @@ public class ThongKeHoaDonGUI extends javax.swing.JPanel {
 
         // Format trục Y (VNĐ)
         CategoryPlot plot = chart.getCategoryPlot();
+        chart.setBackgroundPaint(Color.WHITE); 
         NumberAxis yAxis = (NumberAxis) plot.getRangeAxis();
         yAxis.setNumberFormatOverride(new DecimalFormat("#,###"));
 
@@ -517,6 +527,7 @@ public class ThongKeHoaDonGUI extends javax.swing.JPanel {
 
         // Format trục Y (VNĐ)
         CategoryPlot plot = chart.getCategoryPlot();
+        chart.setBackgroundPaint(Color.WHITE);
         NumberAxis yAxis = (NumberAxis) plot.getRangeAxis();
         yAxis.setNumberFormatOverride(new DecimalFormat("#,###"));
 
@@ -568,6 +579,7 @@ public class ThongKeHoaDonGUI extends javax.swing.JPanel {
 
         // Format trục Y (VNĐ)
         CategoryPlot plot = chart.getCategoryPlot();
+        chart.setBackgroundPaint(Color.WHITE);
         NumberAxis yAxis = (NumberAxis) plot.getRangeAxis();
         yAxis.setNumberFormatOverride(new DecimalFormat("#,###"));
         
@@ -613,6 +625,11 @@ public class ThongKeHoaDonGUI extends javax.swing.JPanel {
 
         // Format trục Y
         CategoryPlot plot = chart.getCategoryPlot();
+        chart.setBackgroundPaint(Color.WHITE);
+        plot.setBackgroundPaint(Color.WHITE); // Nền vùng vẽ
+        plot.setOutlinePaint(Color.LIGHT_GRAY); // Viền vùng vẽ
+        plot.setRangeGridlinePaint(new Color(170, 170, 170));  // đường ngang đậm 
+        plot.setDomainGridlinePaint(new Color(170, 170, 170)); // đường dọc đậm
         NumberAxis yAxis = (NumberAxis) plot.getRangeAxis();
         yAxis.setNumberFormatOverride(new DecimalFormat("#,###"));
 
@@ -640,7 +657,11 @@ public class ThongKeHoaDonGUI extends javax.swing.JPanel {
     }
     
     private void cauHinhDiemTronVaHover(CategoryPlot plot) {
-
+        plot.setBackgroundPaint(Color.WHITE); // Nền vùng vẽ
+        plot.setOutlinePaint(Color.LIGHT_GRAY); // Viền vùng vẽ
+        plot.setRangeGridlinePaint(new Color(170, 170, 170));  // đường ngang đậm 
+        plot.setDomainGridlinePaint(new Color(170, 170, 170)); // đường dọc đậm
+        
         LineAndShapeRenderer renderer =
             (LineAndShapeRenderer) plot.getRenderer();
 
