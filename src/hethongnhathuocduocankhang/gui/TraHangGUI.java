@@ -7,7 +7,10 @@ package hethongnhathuocduocankhang.gui;
 import com.microsoft.sqlserver.jdbc.SQLServerException;
 import hethongnhathuocduocankhang.dao.ChiTietHoaDonDAO;
 import hethongnhathuocduocankhang.dao.ChiTietPhieuTraDAO;
+import hethongnhathuocduocankhang.dao.ChiTietXuatLoDAO;
 import hethongnhathuocduocankhang.dao.HoaDonDAO;
+import hethongnhathuocduocankhang.dao.KhachHangDAO;
+import hethongnhathuocduocankhang.dao.LoSanPhamDAO;
 import hethongnhathuocduocankhang.dao.NhanVienDAO;
 import hethongnhathuocduocankhang.dao.PhieuDatHangDAO;
 import hethongnhathuocduocankhang.dao.PhieuTraHangDAO;
@@ -575,7 +578,16 @@ public class TraHangGUI extends javax.swing.JPanel {
             List<ChiTietPhieuTraHang> list = getListCTPTH(pth);
             //
             luuPhieuVaoCSDL(pth, list);
+            themSPLaiVaoLo(list);
             taoPhieuTraHang(pth, list);
+            if(!pth.getHoaDon().getKhachHang().getMaKH().equalsIgnoreCase("KH-00000")){
+                String maKhachHang = pth.getHoaDon().getKhachHang().getMaKH();
+                int diemTru = (int)pth.getTongTienHoanTra()/1000;
+                KhachHangDAO.updateDiemTichLuy(diemTru, maKhachHang);
+            }
+            
+            
+            
             //
             jTabbedPane1.setSelectedIndex(0);
             xoaRongTatCa();
@@ -1271,6 +1283,20 @@ public class TraHangGUI extends javax.swing.JPanel {
             return tongTien;
         } catch (Exception e) {
             return 0;
+        }
+    }
+
+    private void themSPLaiVaoLo(List<ChiTietPhieuTraHang> list) {
+        for(int i=0;i<list.size();i++){
+            TinhTrangSanPhamEnum tinhTrang = list.get(i).getTinhTrangSanPham();
+            TruongHopDoiTraEnum  truongHopDoiTra = list.get(i).getTruongHopDoiTra();
+            if(tinhTrang.equals(TinhTrangSanPhamEnum.HANG_NGUYEN_VEN)  && truongHopDoiTra.equals(TruongHopDoiTraEnum.NHU_CAU_KHACH_HANG) || truongHopDoiTra.equals(TruongHopDoiTraEnum.DI_UNG_MAN_CAM) ){
+                    LoSanPhamDAO.congSoLuong(
+                            LoSanPhamDAO.getLoSanPhamTheoMaCTHD(list.get(i).getChiTietHoaDon().getMaChiTietHoaDon()).getMaLoSanPham(), 
+                            list.get(i).getSoLuong()
+                    );
+            }
+            System.out.println("Đã cộng lại sl");
         }
     }
 
