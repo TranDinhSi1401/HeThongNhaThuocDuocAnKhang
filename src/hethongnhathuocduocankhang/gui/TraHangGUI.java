@@ -21,6 +21,7 @@ import hethongnhathuocduocankhang.entity.NhanVien;
 import hethongnhathuocduocankhang.entity.PhieuTraHang;
 import hethongnhathuocduocankhang.entity.TinhTrangSanPhamEnum;
 import hethongnhathuocduocankhang.entity.TruongHopDoiTraEnum;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.KeyboardFocusManager;
@@ -487,7 +488,7 @@ public class TraHangGUI extends javax.swing.JPanel {
 
     private void txtNhapMaHoaDonFocusGained(java.awt.event.FocusEvent evt) {// GEN-FIRST:event_txtNhapMaHoaDonFocusGained
         // TODO add your handling code here:
-        txtNhapMaHoaDon.setText("HD-181225-0080");
+        txtNhapMaHoaDon.setText("HD-181225-0088");
     }// GEN-LAST:event_txtNhapMaHoaDonFocusGained
 
     private void txtNhapMaHoaDonKeyPressed(java.awt.event.KeyEvent evt) {// GEN-FIRST:event_txtNhapMaHoaDonKeyPressed
@@ -639,12 +640,13 @@ public class TraHangGUI extends javax.swing.JPanel {
         if (selectRow >= 0) {
             int soLuong = Integer.parseInt(dtm.getValueAt(selectRow, 2).toString());
             String maCTHD = dtm.getValueAt(selectRow, 10).toString();
-            if (soLuong <= ChiTietHoaDonDAO.getChiTietHoaDonTheoMaCTHD(maCTHD).getSoLuong() && soLuong > 0) {
+            if (soLuong <= ChiTietHoaDonDAO.getChiTietHoaDonDaTungTraRoiTheoMaCTHD(maCTHD).getSoLuong() && soLuong > 0) {
                 double donGia = boDinhDangTien(dtm.getValueAt(selectRow, 3).toString());
                 double khuyenMai = boDinhDangTien(dtm.getValueAt(selectRow, 4).toString());
-                dtm.setValueAt(dinhDangTien(soLuong * donGia - khuyenMai), selectRow, 5);
+                dtm.setValueAt(dinhDangTien(soLuong * donGia - (soLuong * donGia*(khuyenMai/100))), selectRow, 5);
             } else {
                 int stt = selectRow + 1;
+                dtm.setValueAt(1, selectRow, 2);
                 JOptionPane.showMessageDialog(null, "Yêu cầu kiểm tra lại tại STT " + stt + "\n"
                         + "- Số lượng trả bé hơn hoặc bằng số lượng mua\n"
                         + "- Số lượng trả lớn hơn 0 ");
@@ -793,11 +795,12 @@ public class TraHangGUI extends javax.swing.JPanel {
             row[3] = soLuong < 0 ? 0 : soLuong;
             row[4] = donViTinh;
             row[5] = dinhDangTien(donGia);
-            row[6] = dinhDangTien(giamGia);
+            row[6] = giamGia*100;
             row[7] = dinhDangTien(thanhTien);
             row[8] = chon;
             if (soLuong <= 0) {
-                row[2] = "(Không nhận trả hàng nữa!) " + tenSanPham;
+                String traHet = "Đã trả hết ";
+                row[2] = traHet + tenSanPham;
             }
             bangCTHD.addRow(row);
         }
@@ -814,7 +817,7 @@ public class TraHangGUI extends javax.swing.JPanel {
         int soLuong = cthd.getSoLuong();
         double donGia = cthd.getDonGia();
         double giamGia = cthd.getGiamGia();
-        double thanhTien = soLuong * donGia - giamGia;
+        double thanhTien = soLuong * donGia - (soLuong * donGia*(giamGia/100));
         String lyDoTra = TruongHopDoiTraEnum.HANG_LOI_DO_NHA_SAN_XUAT.getTruongHopDoiTra();
         boolean sanPhamNguyenVen = Boolean.TRUE;
         String giaTriHoanTra = null;
@@ -824,7 +827,7 @@ public class TraHangGUI extends javax.swing.JPanel {
         rowData[1] = tenSanPham;
         rowData[2] = soLuong;
         rowData[3] = dinhDangTien(donGia);
-        rowData[4] = dinhDangTien(giamGia);
+        rowData[4] = giamGia * 100;
         rowData[5] = dinhDangTien(thanhTien);
         rowData[6] = lyDoTra;
         rowData[7] = sanPhamNguyenVen;
@@ -858,7 +861,7 @@ public class TraHangGUI extends javax.swing.JPanel {
         rowData[1] = tenSanPham;
         rowData[2] = soLuong;
         rowData[3] = dinhDangTien(donGia);
-        rowData[4] = dinhDangTien(giamGia);
+        rowData[4] = giamGia*100;
         rowData[5] = dinhDangTien(thanhTien);
         rowData[6] = lyDoTra;
         rowData[7] = sanPhamNguyenVen;
@@ -1067,8 +1070,9 @@ public class TraHangGUI extends javax.swing.JPanel {
             String maCTHD = dtm.getValueAt(i, 10).toString();
             if (soLuong <= ChiTietHoaDonDAO.getChiTietHoaDonDaTungTraRoiTheoMaCTHD(maCTHD).getSoLuong()) {
                 double donGia = boDinhDangTien(dtm.getValueAt(i, 3).toString());
-                double khuyenMai = boDinhDangTien(dtm.getValueAt(i, 4).toString());
-                dtm.setValueAt(dinhDangTien(soLuong * (donGia - khuyenMai)), i, 5);
+                double khuyenMai = Double.parseDouble(dtm.getValueAt(i, 4).toString()) ;
+                System.out.println("Phần trăm khuyến mãi là " +khuyenMai);
+                dtm.setValueAt(dinhDangTien(soLuong * donGia - (soLuong * donGia *(khuyenMai/100))), i, 5);
             } else {
                 int stt = i + 1;
                 JOptionPane.showMessageDialog(null,
@@ -1299,5 +1303,16 @@ public class TraHangGUI extends javax.swing.JPanel {
             System.out.println("Đã cộng lại sl");
         }
     }
+        public static double xoaPhanTram(String input) {
+        if (input == null || input.isEmpty()) {
+            throw new IllegalArgumentException("Chuỗi không hợp lệ");
+        }
+        // Loại bỏ khoảng trắng và ký tự %
+        String cleaned = input.trim().replace("%", "");
+        
+        // Chuyển sang double
+        return Double.parseDouble(cleaned);
+    }
+
 
 }
