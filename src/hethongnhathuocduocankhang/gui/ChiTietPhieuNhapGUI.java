@@ -80,8 +80,8 @@ public class ChiTietPhieuNhapGUI extends JPanel {
         model.setRowCount(0);
         for (ChiTietPhieuNhap ct : dsChiTiet) {
             Object[] row = {
-                ct.getMaLoSanPham().getMaLoSanPham(),
-                ct.getMaLoSanPham().getSanPham().getTen(),
+                ct.getLoSanPham().getMaLoSanPham(),
+                ct.getLoSanPham().getSanPham().getTen(),
                 ct.getNcc().getTenNCC(),
                 ct.getSoLuong(),
                 String.format("%,.0f", ct.getDonGia()),

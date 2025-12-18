@@ -9,8 +9,8 @@ package hethongnhathuocduocankhang.entity;
  * @author admin
  */
 public class ChiTietPhieuNhap {
-    private PhieuNhap maPhieuNhap;
-    private LoSanPham maLoSanPham;
+    private PhieuNhap phieuNhap;
+    private LoSanPham loSanPham;
     private NhaCungCap ncc;
     private int soLuong;
     private double donGia;
@@ -22,12 +22,12 @@ public class ChiTietPhieuNhap {
     }
 
     public ChiTietPhieuNhap(PhieuNhap maPhieuNhap, LoSanPham maLoSanPham) {
-        this.maPhieuNhap = maPhieuNhap;
-        this.maLoSanPham = maLoSanPham;
+        this.phieuNhap = maPhieuNhap;
+        this.loSanPham = maLoSanPham;
     }
 
     public ChiTietPhieuNhap(PhieuNhap maPhieuNhap, LoSanPham maLoSanPham, NhaCungCap ncc, int soLuong, double donGia, double thanhTien, int soLuongYeuCau, String ghiChu) {
-        this.maPhieuNhap = maPhieuNhap;
+        this.phieuNhap = maPhieuNhap;
         this.ncc = ncc;
         this.soLuong = soLuong;
         this.donGia = donGia;
@@ -36,12 +36,12 @@ public class ChiTietPhieuNhap {
         this.ghiChu = ghiChu;
     }
 
-    public PhieuNhap getMaPhieuNhap() {
-        return maPhieuNhap;
+    public PhieuNhap getPhieuNhap() {
+        return phieuNhap;
     }
 
-    public LoSanPham getMaLoSanPham() {
-        return maLoSanPham;
+    public LoSanPham getLoSanPham() {
+        return loSanPham;
     }
 
     public NhaCungCap getNcc() {
@@ -64,12 +64,12 @@ public class ChiTietPhieuNhap {
         return ghiChu;
     }
 
-    public void setMaPhieuNhap(PhieuNhap maPhieuNhap) {
-        this.maPhieuNhap = maPhieuNhap;
+    public void setPhieuNhap(PhieuNhap phieuNhap) {
+        this.phieuNhap = phieuNhap;
     }
 
-    public void setMaLoSanPham(LoSanPham maLoSanPham) {
-        this.maLoSanPham = maLoSanPham;
+    public void setLoSanPham(LoSanPham loSanPham) {
+        this.loSanPham = loSanPham;
     }
 
     public void setNcc(NhaCungCap ncc) {
@@ -102,6 +102,6 @@ public class ChiTietPhieuNhap {
 
     @Override
     public String toString() {
-        return "ChiTietPhieuNhap{" + "maPhieuNhap=" + maPhieuNhap + ", maLoSanPham=" + maLoSanPham + ", ncc=" + ncc + ", soLuong=" + soLuong + ", donGia=" + donGia + ", thanhTien=" + thanhTien + ", soLuongYeuCau=" + soLuongYeuCau + ", ghiChu=" + ghiChu + '}';
+        return "ChiTietPhieuNhap{" + "maPhieuNhap=" + phieuNhap + ", maLoSanPham=" + loSanPham + ", ncc=" + ncc + ", soLuong=" + soLuong + ", donGia=" + donGia + ", thanhTien=" + thanhTien + ", soLuongYeuCau=" + soLuongYeuCau + ", ghiChu=" + ghiChu + '}';
     }
 }

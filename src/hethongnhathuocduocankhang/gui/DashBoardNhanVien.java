@@ -438,7 +438,8 @@ public class DashBoardNhanVien extends javax.swing.JPanel {
         tblHetHang.setFont(new Font("Segoe UI", Font.PLAIN, 13));
         tblHetHang.setRowHeight(25);
         tblHetHang.setShowGrid(false);
-        tblHetHang.setSelectionBackground(new Color(255, 230, 230)); // Màu chọn đỏ nhạt
+        tblHetHang.setSelectionBackground(new Color(255, 180, 180));
+        tblHetHang.setSelectionForeground(Color.BLACK);
 
         JTableHeader header = tblHetHang.getTableHeader();
         header.setFont(new Font("Segoe UI", Font.BOLD, 13));
@@ -633,7 +634,8 @@ public class DashBoardNhanVien extends javax.swing.JPanel {
         table.setRowHeight(35);
         table.setShowGrid(false);
         table.setIntercellSpacing(new Dimension(0, 0));
-        table.setSelectionBackground(new Color(230, 245, 255));
+        table.setSelectionBackground(new Color(160, 200, 230)); // Xanh xám dịu
+        table.setSelectionForeground(Color.BLACK); // Đảm bảo chữ vẫn đọc được
 
         JTableHeader header = table.getTableHeader();
         header.setFont(new Font("Segoe UI", Font.BOLD, 14));
@@ -675,7 +677,7 @@ public class DashBoardNhanVien extends javax.swing.JPanel {
         if (nv.getNgaySinh() != null) {
             lblNgaySinh.setText(nv.getNgaySinh().format(formatter));
         }
-        lblChucVu.setText("Nhân viên");
+        lblChucVu.setText(GiaoDienChinhGUI.getTk().isQuanLyLo() ? "Quản lý lô" : "Nhân viên");
         lblTrangThai.setText(nv.isNghiViec() ? "Nghỉ việc" : "Đang làm việc");
         lblSdt.setText(nv.getSdt());
     }

@@ -32,7 +32,8 @@ public class ThemSanPhamGUI extends JPanel {
     private DefaultTableModel modelBarcode;
 
     // --- 3. Components QUẢN LÝ ĐƠN VỊ TÍNH (Tab 1) ---
-    private JTextField txtTenDonVi, txtHeSoQuyDoi, txtGiaBanDonVi;
+    private JTextField txtHeSoQuyDoi, txtGiaBanDonVi;
+    private JComboBox<String> cboTenDonVi;
     private JCheckBox chkDonViCoBan;
     private JButton btnThemDVT, btnXoaDVT;
     private JTable tableDonViTinh;
@@ -223,7 +224,6 @@ public class ThemSanPhamGUI extends JPanel {
         pnlDVT.setBorder(new EmptyBorder(5, 5, 5, 5));
 
         JPanel pnlInputDVT = new JPanel(new FlowLayout(FlowLayout.LEFT));
-        txtTenDonVi = new JTextField(6);
         txtHeSoQuyDoi = new JTextField(4);
         txtGiaBanDonVi = new JTextField(7);
         chkDonViCoBan = new JCheckBox("Cơ bản");
@@ -231,7 +231,15 @@ public class ThemSanPhamGUI extends JPanel {
         btnXoaDVT = new JButton("Xóa");
 
         pnlInputDVT.add(new JLabel("Tên ĐV:"));
-        pnlInputDVT.add(txtTenDonVi);
+
+        String[] donViMau = {"", "VIEN", "VI", "HOP", "CHAI", "LO", "TUYP", "GOI", "CAI", "THUNG"};
+        cboTenDonVi = new JComboBox<>(donViMau);
+        cboTenDonVi.setEditable(true);
+        cboTenDonVi.setPreferredSize(new Dimension(80, 22));
+
+        pnlInputDVT.add(new JLabel("Tên ĐV:"));
+        pnlInputDVT.add(cboTenDonVi);
+
         pnlInputDVT.add(new JLabel("Quy đổi:"));
         pnlInputDVT.add(txtHeSoQuyDoi);
 
@@ -369,7 +377,92 @@ public class ThemSanPhamGUI extends JPanel {
         txtTimNCC = new JTextField(12);
         btnTimNCC = new JButton("Tìm");
         txtGiaNhap = new JTextField(8);
-        btnThemNCC = new JButton("↓ Thêm xuống DS");
+
+        // --- BẮT ĐẦU ĐOẠN CODE ĐỊNH DẠNG CHO txtGiaNhap ---
+        txtGiaNhap.setHorizontalAlignment(JTextField.RIGHT); // Căn lề phải cho số tiền
+        txtGiaNhap.getDocument().addDocumentListener(new DocumentListener() {
+            private boolean coDangFormat = false;
+
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                if (!coDangFormat) {
+                    formatText();
+                }
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                if (!coDangFormat) {
+                    formatText();
+                }
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+            }
+
+            private void formatText() {
+                if (coDangFormat) {
+                    return;
+                }
+
+                // 1. Lấy chuỗi thô (chỉ giữ lại số)
+                String rawText;
+                try {
+                    String currentText = txtGiaNhap.getText();
+                    rawText = currentText.replaceAll("[^\\d]", "");
+                } catch (Exception e) {
+                    return;
+                }
+
+                if (rawText.isEmpty()) {
+                    return;
+                }
+
+                // 2. Bắt đầu định dạng
+                coDangFormat = true;
+                try {
+                    long value = Long.parseLong(rawText);
+                    // Giả sử bạn đã có biến 'formatter' (DecimalFormat)
+                    String formattedText = formatter.format(value);
+
+                    SwingUtilities.invokeLater(() -> {
+                        try {
+                            int caretPosition = txtGiaNhap.getCaretPosition();
+                            String originalText = txtGiaNhap.getText();
+
+                            // Cập nhật text mới
+                            txtGiaNhap.setText(formattedText);
+
+                            // Tính toán lại vị trí con trỏ
+                            int offset = formattedText.length() - originalText.length();
+                            int newCaretPosition = caretPosition + offset;
+
+                            // Kiểm tra biên để không lỗi
+                            if (newCaretPosition < 0) {
+                                newCaretPosition = 0;
+                            }
+                            if (newCaretPosition > formattedText.length()) {
+                                newCaretPosition = formattedText.length();
+                            }
+
+                            txtGiaNhap.setCaretPosition(newCaretPosition);
+                        } catch (Exception ex) {
+                            // Bỏ qua lỗi giao diện nhỏ
+                        } finally {
+                            coDangFormat = false;
+                        }
+                    });
+
+                } catch (NumberFormatException ex) {
+                    // Xử lý trường hợp số quá lớn hoặc lỗi format
+                    coDangFormat = false;
+                }
+            }
+        });
+        // --- KẾT THÚC ĐOẠN CODE ĐỊNH DẠNG ---
+
+        btnThemNCC = new JButton("Thêm xuống DS");
         btnThemNCC.setBackground(new Color(220, 235, 250));
 
         pnlTopControlNCC.add(new JLabel("Tìm NCC (Mã/Tên):"));
@@ -430,7 +523,7 @@ public class ThemSanPhamGUI extends JPanel {
 
         txtTimKM = new JTextField(15);
         btnTimKM = new JButton("Tìm");
-        btnThemKM = new JButton("↓ Thêm xuống DS");
+        btnThemKM = new JButton("Thêm xuống DS");
         btnThemKM.setBackground(new Color(220, 235, 250));
 
         pnlTopControlKM.add(new JLabel("Tìm KM (Mã KM/Mô tả):"));
@@ -566,9 +659,8 @@ public class ThemSanPhamGUI extends JPanel {
         return modelBarcode;
     }
 
-    // Đơn vị tính
-    public JTextField getTxtTenDonVi() {
-        return txtTenDonVi;
+    public JComboBox<String> getCboTenDonVi() {
+        return cboTenDonVi;
     }
 
     public JTextField getTxtHeSoQuyDoi() {

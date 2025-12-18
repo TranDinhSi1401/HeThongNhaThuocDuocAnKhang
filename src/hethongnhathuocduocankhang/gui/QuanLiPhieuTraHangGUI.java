@@ -4,8 +4,9 @@
  */
 package hethongnhathuocduocankhang.gui;
 
-import com.toedter.calendar.JDateChooser; // Import JDateChooser
+import com.toedter.calendar.JDateChooser;
 import hethongnhathuocduocankhang.dao.PhieuTraHangDAO;
+import hethongnhathuocduocankhang.entity.NhanVien;
 import hethongnhathuocduocankhang.entity.PhieuTraHang;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -17,10 +18,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.beans.PropertyChangeEvent; // Import sự kiện Property
+import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.time.LocalDate;
-import java.time.ZoneId; // Import ZoneId để convert date
+import java.time.ZoneId; 
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
@@ -75,22 +76,19 @@ public class QuanLiPhieuTraHangGUI extends JPanel {
                 new EmptyBorder(5, 5, 5, 5)
         ));
 
-        // --- BẮT ĐẦU PHẦN THÊM MỚI ---
-        // 1. Khởi tạo JDateChooser
+        // Khởi tạo JDateChooser
         dcsNgayTimKiem = new JDateChooser();
         dcsNgayTimKiem.setDateFormatString("yyyy-MM-dd");
         dcsNgayTimKiem.setPreferredSize(new Dimension(200, 30));
         dcsNgayTimKiem.setFont(new Font("Arial", Font.PLAIN, 14));
 
-        // 2. Tạo Panel CardLayout
+        // Tạo Panel CardLayout
         pnlNhapLieu = new JPanel(new CardLayout());
         pnlNhapLieu.add(txtTimKiem, "text");
         pnlNhapLieu.add(dcsNgayTimKiem, "date");
-        // --- KẾT THÚC PHẦN THÊM MỚI ---
 
         JPanel pnlTimKiem = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 0));
         pnlTimKiem.add(new JLabel("Tìm kiếm"));
-        // Thay thế txtTimKiem bằng pnlNhapLieu
         pnlTimKiem.add(pnlNhapLieu);
 
         pnlNorthRight.add(new JLabel("Tìm theo"));
@@ -191,16 +189,20 @@ public class QuanLiPhieuTraHangGUI extends JPanel {
             return;
         }
         int stt = 1;
+        NhanVien nv = new NhanVien();
         for (PhieuTraHang pth : dsPTH) {
-            String tenNV = (pth.getNhanVien() != null && pth.getNhanVien().getTen() != null)
-                            ? pth.getNhanVien().getHoTenDem() + " " + pth.getNhanVien().getTen() 
-                            : pth.getNhanVien().getMaNV(); 
+//            String tenNV = (pth.getNhanVien() != null && pth.getNhanVien().getTen() != null)
+//                            ? pth.getNhanVien().getHoTenDem() + " " + pth.getNhanVien().getTen() 
+//                            : pth.getNhanVien().getMaNV(); 
+
+//            String tenNV = pth.getNhanVien().getHoTenDem() + " " + pth.getNhanVien().getTen();
+            nv = pth.getNhanVien();
 
             Object[] row = {
                 stt++,
                 pth.getMaPhieuTraHang(),
                 pth.getHoaDon().getMaHoaDon(),
-                tenNV,
+                nv.getHoTenDem() + " " + nv.getTen(),
                 pth.getNgayLapPhieuTraHang().format(formatter), 
                 String.format("%,.0f VND", pth.getTongTienHoanTra()) 
             };
