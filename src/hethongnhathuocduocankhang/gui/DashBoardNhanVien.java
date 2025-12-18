@@ -677,7 +677,7 @@ public class DashBoardNhanVien extends javax.swing.JPanel {
         if (nv.getNgaySinh() != null) {
             lblNgaySinh.setText(nv.getNgaySinh().format(formatter));
         }
-        lblChucVu.setText("Nhân viên");
+        lblChucVu.setText(GiaoDienChinhGUI.getTk().isQuanLyLo() ? "Quản lý lô" : "Nhân viên");
         lblTrangThai.setText(nv.isNghiViec() ? "Nghỉ việc" : "Đang làm việc");
         lblSdt.setText(nv.getSdt());
     }

@@ -815,7 +815,6 @@ public class DashBoardQuanLi extends javax.swing.JPanel {
         setBackground(new java.awt.Color(255, 255, 255));
         setLayout(new java.awt.BorderLayout(10, 10));
 
-        jPanel1.setBackground(new java.awt.Color(245, 245, 245));
         jPanel1.setPreferredSize(new java.awt.Dimension(808, 220));
         jPanel1.setLayout(new java.awt.BorderLayout(10, 10));
 

@@ -229,7 +229,7 @@ public class QuanLiNhanVienGUI extends JPanel {
                 if (tk.isQuanLy()) {
                     vaiTro = "Quản lý (Admin)"; // Ưu tiên hiển thị Admin cao nhất
                 } else if (tk.isQuanLyLo()) {
-                    vaiTro = "Quản lý kho";    // Nếu không phải Admin mà là Quản lý lô
+                    vaiTro = "Quản lý lô";    // Nếu không phải Admin mà là Quản lý lô
                 }
             }
 
@@ -433,6 +433,8 @@ public class QuanLiNhanVienGUI extends JPanel {
         pnlThemNV.setChkQuanLyLo(tkCanSua.isQuanLyLo());
         pnlThemNV.setTxtEmail(tkCanSua.getEmail());
         pnlThemNV.setTxtNgayTao(tkCanSua.getNgayTao());
+        
+        pnlThemNV.getTxtMatKhau().setEditable(false);
 
         boolean isSuccess = false;
 
@@ -486,7 +488,7 @@ public class QuanLiNhanVienGUI extends JPanel {
 
             pnlThemNV.getChonLichNgaySinh().setEnabled(false);
             pnlThemNV.getTxtDiaChi().setEditable(false);
-            pnlThemNV.getCmbGioiTinh().setEnabled(false);
+            pnlThemNV.getCmbGioiTinh().setEditable(false);
             pnlThemNV.getChkQuanLy().setEnabled(false);
             pnlThemNV.getChkQuanLyLo().setEnabled(false);
             pnlThemNV.getTxtEmail().setEditable(false);
