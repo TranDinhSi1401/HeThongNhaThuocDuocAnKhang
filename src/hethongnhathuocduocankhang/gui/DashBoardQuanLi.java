@@ -5,7 +5,7 @@
 package hethongnhathuocduocankhang.gui;
 
 import com.orsoncharts.util.TextAnchor;
-import hethongnhathuocduocankhang.bus.LichSuCaLamBUS;
+import hethongnhathuocduocankhang.bus.VaoRaCaBUS;
 import hethongnhathuocduocankhang.bus.QuanLyLoBUS;
 import hethongnhathuocduocankhang.dao.CaLamDAO;
 import hethongnhathuocduocankhang.dao.DonViTinhDAO;
@@ -287,7 +287,7 @@ public class DashBoardQuanLi extends javax.swing.JPanel {
     private void configureBtnVaoCa() {
         btnVaoCa.setOpaque(true);
         // Khởi tạo BUS
-        LichSuCaLamBUS lsBUS = new LichSuCaLamBUS();
+        VaoRaCaBUS lsBUS = new VaoRaCaBUS();
         String maNV = GiaoDienChinhGUI.getTk().getTenDangNhap().trim();
 
         // 1. XỬ LÝ TRẠNG THÁI NÚT KHI KHỞI ĐỘNG

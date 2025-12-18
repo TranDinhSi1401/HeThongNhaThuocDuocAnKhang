@@ -4,7 +4,7 @@
  */
 package hethongnhathuocduocankhang.gui;
 
-import hethongnhathuocduocankhang.bus.LichSuCaLamBUS;
+import hethongnhathuocduocankhang.bus.VaoRaCaBUS;
 import hethongnhathuocduocankhang.dao.CaLamDAO;
 import hethongnhathuocduocankhang.dao.HoaDonDAO;
 import hethongnhathuocduocankhang.dao.LichSuCaLamDAO;
@@ -205,7 +205,7 @@ public class DashBoardNhanVien extends javax.swing.JPanel {
     private void configureBtnVaoCa() {
         btnVaoCa.setOpaque(true);
         // Khởi tạo BUS
-        LichSuCaLamBUS lsBUS = new LichSuCaLamBUS();
+        VaoRaCaBUS lsBUS = new VaoRaCaBUS();
         String maNV = GiaoDienChinhGUI.getTk().getTenDangNhap().trim();
 
         // 1. XỬ LÝ TRẠNG THÁI NÚT KHI KHỞI ĐỘNG

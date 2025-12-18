@@ -10,7 +10,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
-public class LichSuCaLamBUS {
+public class VaoRaCaBUS {
     
     private final LichSuCaLamDAO lsDAO = new LichSuCaLamDAO();
     // private final CaLamDAO caLamDAO = new CaLamDAO(); // Nếu bạn có instance, hoặc dùng static method như code cũ
