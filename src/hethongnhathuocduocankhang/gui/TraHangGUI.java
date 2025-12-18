@@ -181,6 +181,8 @@ public class TraHangGUI extends javax.swing.JPanel {
         });
         jPanel25.add(txtNhapMaHoaDon);
 
+        btnTimKiem.setBackground(new java.awt.Color(25, 118, 210));
+        btnTimKiem.setForeground(new java.awt.Color(255, 255, 255));
         btnTimKiem.setText("Tìm kiếm");
         btnTimKiem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -219,6 +221,8 @@ public class TraHangGUI extends javax.swing.JPanel {
 
         jPanel30.add(jPanel23);
 
+        btnXacNhan.setBackground(new java.awt.Color(0, 203, 0));
+        btnXacNhan.setForeground(new java.awt.Color(255, 255, 255));
         btnXacNhan.setText("Xác nhận [F4]");
         btnXacNhan.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -310,6 +314,8 @@ public class TraHangGUI extends javax.swing.JPanel {
         jPanel1.add(jPanel31);
         jPanel1.add(jPanel22);
 
+        btnXoaDong.setBackground(new java.awt.Color(255, 51, 51));
+        btnXoaDong.setForeground(new java.awt.Color(255, 255, 255));
         btnXoaDong.setText("Xóa dòng [F9]");
         btnXoaDong.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -318,6 +324,8 @@ public class TraHangGUI extends javax.swing.JPanel {
         });
         jPanel1.add(btnXoaDong);
 
+        btnXoaRong.setBackground(new java.awt.Color(255, 255, 255));
+        btnXoaRong.setForeground(new java.awt.Color(0, 0, 0));
         btnXoaRong.setText("Xóa rỗng [F10]");
         btnXoaRong.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -327,6 +335,8 @@ public class TraHangGUI extends javax.swing.JPanel {
         jPanel1.add(btnXoaRong);
         jPanel1.add(jPanel2);
 
+        btnTaoPhieu.setBackground(new java.awt.Color(0, 203, 0));
+        btnTaoPhieu.setForeground(new java.awt.Color(255, 255, 255));
         btnTaoPhieu.setText("Tạo phiếu [F6]");
         btnTaoPhieu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -956,7 +966,7 @@ public class TraHangGUI extends javax.swing.JPanel {
         try {
             maNV = NhanVienDAO.getNhanVienTheoMaNV(GiaoDienChinhGUI.getTk().getTenDangNhap()).getMaNV();
         } catch (Exception e) {
-
+            e.printStackTrace();
         }
 
         String maHD = txtMaHoaDonTrongPhieuTraHang.getText();
