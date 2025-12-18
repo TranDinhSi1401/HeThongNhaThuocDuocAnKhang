@@ -282,9 +282,9 @@ public class BanHangBUS {
                 }
             }
 
-            // Cập nhật điểm tích lũy cho khách hàng mua lớn hơn bằng 100 ngàn 
-            if(tongTien >= 100000 && !"KH-99999".equals(maKH)) {
-                int diemTichLuy = (int) Math.floor(tongTien / 100000);
+            // Cập nhật điểm tích lũy cho khách hàng mua lớn hơn bằng 1 ngàn 
+            if(tongTien >= 1000 && !"KH-99999".equals(maKH)) {
+                int diemTichLuy = (int) Math.floor(tongTien / 1000);
                 KhachHangDAO.updateDiemTichLuy(diemTichLuy, maKH);
             }
 
@@ -364,7 +364,7 @@ public class BanHangBUS {
             String tenSP = SanPhamDAO.timSPTheoMa(maSP).getTen();
             String tenDVT = DonViTinhDAO.getDonViTinhTheoMaDVT(cthd.getDonViTinh().getMaDonViTinh()).getTenDonVi();
 
-            String giamStr = String.format("%.0f%%", cthd.getGiamGia() * 100);
+            String giamStr = String.format("%.0f%%", cthd.getGiamGia());
 
             double thanhTien = cthd.getThanhTien();
             tongTien += thanhTien;

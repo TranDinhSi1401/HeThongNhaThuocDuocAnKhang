@@ -539,6 +539,11 @@ public class BanHangPane extends javax.swing.JPanel {
         p7.add(radTienMat);
 
         radChuyenKhoan.setText("Chuyển khoản [F4]");
+        radChuyenKhoan.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                radChuyenKhoanActionPerformed(evt);
+            }
+        });
         p7.add(radChuyenKhoan);
 
         p7.setPreferredSize(new Dimension(Short.MAX_VALUE, 50));
@@ -890,7 +895,9 @@ public class BanHangPane extends javax.swing.JPanel {
     }
     
     private void capNhatTienThua() {
-        double tienKhachDua = Double.parseDouble(txtTienKhachDua.getText());
+        String text = txtTienKhachDua.getText().replaceAll("[^\\d.]", "");
+        double tienKhachDua = Double.parseDouble(text);
+        //double tienKhachDua = Double.parseDouble(txtTienKhachDua.getText());
         double tongTien = getTongTien();
         if(tienKhachDua < tongTien) {
             JOptionPane.showMessageDialog(this, "Tiền khách đưa phải lớn hơn hoặc bằng tổng tiền", "Warning Message", JOptionPane.WARNING_MESSAGE);
@@ -1100,6 +1107,13 @@ public class BanHangPane extends javax.swing.JPanel {
             }
         }
     }//GEN-LAST:event_btnThemKHActionPerformed
+
+    private void radChuyenKhoanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radChuyenKhoanActionPerformed
+        double tongTien = getTongTien();
+        DecimalFormat df = new DecimalFormat("0");
+        txtTienKhachDua.setText(df.format(tongTien));
+        capNhatTienThua();
+    }//GEN-LAST:event_radChuyenKhoanActionPerformed
         
     public void xoaTrang() {
         DefaultTableModel model = (DefaultTableModel)tblCTHD.getModel();

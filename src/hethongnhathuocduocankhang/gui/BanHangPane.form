@@ -416,6 +416,9 @@
                   <Properties>
                     <Property name="text" type="java.lang.String" value="Chuy&#x1ec3;n kho&#x1ea3;n [F4]"/>
                   </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="radChuyenKhoanActionPerformed"/>
+                  </Events>
                 </Component>
               </SubComponents>
             </Container>
