@@ -320,8 +320,6 @@ public class SanPhamBUS {
 //                JOptionPane.showMessageDialog(dialog, ex.getMessage());
 //            }
 //        });
-
-
         pnlThemSP.getBtnThemDVT().addActionListener(e -> {
             try {
                 // --- BƯỚC 1: LẤY DỮ LIỆU TỪ COMBOBOX (QUAN TRỌNG) ---
@@ -434,7 +432,13 @@ public class SanPhamBUS {
                 return;
             }
             try {
-                double gia = Double.parseDouble(pnlThemSP.getTxtGiaNhap().getText().trim());
+                String giaNhapFormatted = pnlThemSP.getTxtGiaNhap().getText();
+                String giaNhapRaw = giaNhapFormatted.replaceAll("\\D", "");
+                double gia = 0.0;
+                if (!giaNhapRaw.trim().isEmpty()) {
+                    gia = Double.parseDouble(giaNhapRaw);
+                }
+
                 for (int r : rows) {
                     String maNCC = pnlThemSP.getModelTimKiemNCC().getValueAt(r, 0).toString();
                     String tenNCC = pnlThemSP.getModelTimKiemNCC().getValueAt(r, 1).toString();
