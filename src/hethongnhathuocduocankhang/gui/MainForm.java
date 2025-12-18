@@ -123,6 +123,7 @@ public class MainForm extends JLayeredPane {
                     }
                     case 2 -> {
                         // Hướng dẫn sử dụng
+                        showForm(new HuongDanSuDungGUI());
                     }
                     default -> {
                         action.cancel();

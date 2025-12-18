@@ -655,4 +655,23 @@ public class HoaDonDAO {
         }
         return dsHD;
     }
+
+    public static double getTongTienCacPTH(String maHoaDon) {
+        double tongTienCacPTH = 0;
+        try {
+            ConnectDB.getInstance().connect();
+            Connection con = ConnectDB.getConnection();
+            String sql = "select hd.maHoaDon, sum(pth.tongTienHoanTra) from HoaDon hd join PhieuTraHang pth on hd.maHoaDon = pth.maHoaDon where hd.maHoaDon = ? group by hd.maHoaDon";
+            PreparedStatement stmt = con.prepareStatement(sql);
+            stmt.setString(1, maHoaDon);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                tongTienCacPTH = rs.getDouble(2);
+            }
+        } catch (SQLException | NumberFormatException e) {
+            e.printStackTrace();
+        }
+        return tongTienCacPTH;
+    }
 }
