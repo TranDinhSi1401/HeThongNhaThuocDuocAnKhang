@@ -648,8 +648,7 @@ public class TraHangGUI extends javax.swing.JPanel {
                 int stt = selectRow + 1;
                 dtm.setValueAt(1, selectRow, 2);
                 JOptionPane.showMessageDialog(null, "Yêu cầu kiểm tra lại tại STT " + stt + "\n"
-                        + "- Số lượng trả bé hơn hoặc bằng số lượng mua\n"
-                        + "- Số lượng trả lớn hơn 0 ");
+                        + "- Số lượng trả lớn hơn 0 và bé hơn hoặc bằng số lượng mua là "+ ChiTietHoaDonDAO.getChiTietHoaDonDaTungTraRoiTheoMaCTHD(maCTHD).getSoLuong() +"\n");
             }
 
             if (dtm.getValueAt(selectRow, 7) == Boolean.TRUE) {
