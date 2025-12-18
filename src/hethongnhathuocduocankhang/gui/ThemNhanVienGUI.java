@@ -4,7 +4,7 @@
  */
 package hethongnhathuocduocankhang.gui;
 
-import com.toedter.calendar.JDateChooser; // Import thư viện lịch
+import com.toedter.calendar.JDateChooser;
 import hethongnhathuocduocankhang.entity.NhanVien;
 import hethongnhathuocduocankhang.entity.TaiKhoan;
 import hethongnhathuocduocankhang.util.PasswordUtil;
@@ -13,7 +13,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneId; // Dùng để chuyển đổi Date <-> LocalDate
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import javax.swing.JCheckBox;
@@ -95,10 +95,8 @@ public class ThemNhanVienGUI extends javax.swing.JPanel {
         txtSdt = new javax.swing.JTextField();
         txtCCCD = new javax.swing.JTextField();
         
-        // --- THAY ĐỔI: Khởi tạo JDateChooser ---
         chonLichNgaySinh = new JDateChooser();
         chonLichNgaySinh.setDateFormatString("yyyy-MM-dd");
-        // ---------------------------------------
 
         btnHuy = new javax.swing.JButton();
         btnXacNhan = new javax.swing.JButton();
@@ -113,6 +111,11 @@ public class ThemNhanVienGUI extends javax.swing.JPanel {
         lblTenDangNhap = new javax.swing.JLabel();
         txtTenDangNhap = new javax.swing.JTextField();
         chkQuanLy = new javax.swing.JCheckBox();
+        
+        // --- THAY ĐỔI: Khởi tạo check box Quản Lý Lô ---
+        chkQuanLyLo = new javax.swing.JCheckBox();
+        // -----------------------------------------------
+        
         lblNgayTao = new javax.swing.JLabel();
         txtNgayTao = new javax.swing.JTextField();
 
@@ -169,7 +172,13 @@ public class ThemNhanVienGUI extends javax.swing.JPanel {
         lblEmail.setText("Email:");
         lblTenDangNhap.setText("Tên đăng nhập:");
         txtTenDangNhap.setEnabled(false);
+        
         chkQuanLy.setText("Là Quản lý (Admin)");
+        
+        // --- THAY ĐỔI: Set text cho checkbox mới ---
+        chkQuanLyLo.setText("Quản lý lô (Kho)");
+        // ------------------------------------------
+        
         lblNgayTao.setText("Ngày tạo:");
         txtNgayTao.setEnabled(false);
 
@@ -207,7 +216,6 @@ public class ThemNhanVienGUI extends javax.swing.JPanel {
                             .addComponent(txtSdt)
                             .addComponent(cmbGioiTinh, 0, 268, Short.MAX_VALUE)
                             .addComponent(txtCCCD)
-                            // --- THAY ĐỔI: Đưa dcsNgaySinh vào layout ---
                             .addComponent(chonLichNgaySinh, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(txtDiaChi)
                             .addComponent(txtEmail)
@@ -219,6 +227,10 @@ public class ThemNhanVienGUI extends javax.swing.JPanel {
                                 .addComponent(btnHienMatKhau, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addComponent(chkQuanLy)
+                                .addGap(18, 18, 18)
+                                // --- THAY ĐỔI: Thêm checkbox vào layout ---
+                                .addComponent(chkQuanLyLo)
+                                // ------------------------------------------
                                 .addGap(0, 0, Short.MAX_VALUE)))))
                 .addContainerGap())
         );
@@ -254,7 +266,6 @@ public class ThemNhanVienGUI extends javax.swing.JPanel {
                     .addComponent(lblCCCD)
                     .addComponent(txtCCCD, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                // --- THAY ĐỔI: Căn chỉnh dcsNgaySinh ---
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(lblNgaySinh)
                     .addComponent(chonLichNgaySinh, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -276,7 +287,11 @@ public class ThemNhanVienGUI extends javax.swing.JPanel {
                     .addComponent(lblNgayTao)
                     .addComponent(txtNgayTao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(chkQuanLy)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(chkQuanLy)
+                    // --- THAY ĐỔI: Thêm checkbox vào layout vertical ---
+                    .addComponent(chkQuanLyLo))
+                    // --------------------------------------------------
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnHuy)
@@ -324,7 +339,6 @@ public class ThemNhanVienGUI extends javax.swing.JPanel {
         return txtCCCD;
     }
 
-    // --- THAY ĐỔI: Getter cho JDateChooser ---
     public JDateChooser getChonLichNgaySinh() {
         return chonLichNgaySinh;
     }
@@ -368,6 +382,12 @@ public class ThemNhanVienGUI extends javax.swing.JPanel {
     public JCheckBox getChkQuanLy() {
         return chkQuanLy;
     }
+    
+    // --- THAY ĐỔI: Getter cho quanLyLo ---
+    public JCheckBox getChkQuanLyLo() {
+        return chkQuanLyLo;
+    }
+    // -------------------------------------
 
     public JCheckBox getChkBiKhoa() {
         return chkBiKhoa;
@@ -402,10 +422,8 @@ public class ThemNhanVienGUI extends javax.swing.JPanel {
         cmbGioiTinh.setSelectedItem(gioiTinh ? "Nam" : "Nữ");
     }
 
-    // --- THAY ĐỔI: Setter cho Ngày sinh nhận vào LocalDate ---
     public void setTxtNgaySinh(LocalDate ngaySinh) {
         if (ngaySinh != null) {
-            // Chuyển LocalDate sang Date để set cho JDateChooser
             Date date = Date.from(ngaySinh.atStartOfDay(ZoneId.systemDefault()).toInstant());
             chonLichNgaySinh.setDate(date);
         } else {
@@ -432,6 +450,12 @@ public class ThemNhanVienGUI extends javax.swing.JPanel {
     public void setChkQuanLy(boolean quanLy) {
         this.chkQuanLy.setSelected(quanLy);
     }
+    
+    // --- THAY ĐỔI: Setter cho quanLyLo ---
+    public void setChkQuanLyLo(boolean quanLyLo) {
+        this.chkQuanLyLo.setSelected(quanLyLo);
+    }
+    // -------------------------------------
 
     public void setTxtMaNV(String txtMaNV) {
         this.txtMaNV.setText(txtMaNV);
@@ -494,16 +518,19 @@ public class ThemNhanVienGUI extends javax.swing.JPanel {
             boolean gioiTinh = cmbGioiTinh.getSelectedItem().toString().equals("Nam");
             String cccd = txtCCCD.getText().trim();
             
-            // --- THAY ĐỔI: Lấy dữ liệu từ JDateChooser ---
             Date date = chonLichNgaySinh.getDate();
-            // Convert Date -> LocalDate
             LocalDate ngaySinh = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
             
             String diaChi = txtDiaChi.getText().trim();
             String tenDangNhap = txtTenDangNhap.getText().trim();
             String plainPassword = new String(txtMatKhau.getPassword());
             String matKhau = PasswordUtil.hashPassword(plainPassword);
+            
             boolean quanLy = chkQuanLy.isSelected();
+            // --- THAY ĐỔI: Lấy giá trị checkbox Quản lý lô ---
+            boolean quanLyLo = chkQuanLyLo.isSelected();
+            // -------------------------------------------------
+            
             LocalDateTime ngayTao = LocalDateTime.now();
 
             this.nhanVienMoi = new NhanVien();
@@ -521,6 +548,9 @@ public class ThemNhanVienGUI extends javax.swing.JPanel {
             this.taiKhoanMoi.setNhanVien(nhanVienMoi);
             this.taiKhoanMoi.setMatKhau(matKhau);
             this.taiKhoanMoi.setQuanLy(quanLy);
+            // --- THAY ĐỔI: Set giá trị Quản lý lô cho đối tượng TaiKhoan ---
+            this.taiKhoanMoi.setQuanLyLo(quanLyLo);
+            // --------------------------------------------------------------
             this.taiKhoanMoi.setEmail(email);
             this.taiKhoanMoi.setNgayTao(ngayTao);
 
@@ -607,7 +637,6 @@ public class ThemNhanVienGUI extends javax.swing.JPanel {
     }
 
     private boolean kiemTraNgaySinh() {
-        // --- THAY ĐỔI: Logic kiểm tra với JDateChooser ---
         if (chonLichNgaySinh.getDate() == null) {
             showError("Ngày sinh không được rỗng.", chonLichNgaySinh);
             return false;
@@ -667,6 +696,11 @@ public class ThemNhanVienGUI extends javax.swing.JPanel {
     private javax.swing.JToggleButton btnHienMatKhau;
     private javax.swing.JCheckBox chkBiKhoa;
     private javax.swing.JCheckBox chkQuanLy;
+    
+    // --- THAY ĐỔI: Khai báo check box mới ---
+    private javax.swing.JCheckBox chkQuanLyLo;
+    // ----------------------------------------
+    
     private javax.swing.JButton btnHuy;
     private javax.swing.JButton btnXacNhan;
     private javax.swing.JCheckBox chkNghiViec;

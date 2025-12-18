@@ -102,7 +102,7 @@ public class QuanLiNhanVienGUI extends JPanel {
         // PANEL CENTER (TABLE)
         JPanel centerPanel = new JPanel(new BorderLayout(0, 10));
 
-        String[] columnNames = {"STT", "Mã NV", "Họ tên đệm", "Tên", "SĐT", "CCCD", "Giới tính", "Ngày sinh", "Địa chỉ", "Trạng thái"};
+        String[] columnNames = {"STT", "Mã NV", "Họ tên đệm", "Tên", "SĐT", "CCCD", "Giới tính", "Ngày sinh", "Địa chỉ", "Vai trò", "Trạng thái"};
         Object[][] data = {};
 
         model = new DefaultTableModel(data, columnNames) {
@@ -164,9 +164,13 @@ public class QuanLiNhanVienGUI extends JPanel {
         // 8. Địa chỉ: Rộng (Tự giãn nở các phần còn lại)
         columnModel.getColumn(8).setPreferredWidth(150);
 
-        // 9. Trạng thái: Căn giữa
-        columnModel.getColumn(9).setPreferredWidth(90);
+        // 9. VAI TRÒ
+        columnModel.getColumn(9).setPreferredWidth(110);
         columnModel.getColumn(9).setCellRenderer(centerRenderer);
+
+        // 10. Trạng thái
+        columnModel.getColumn(10).setPreferredWidth(90);
+        columnModel.getColumn(10).setCellRenderer(centerRenderer);
 
         JScrollPane scrollPane = new JScrollPane(table);
         centerPanel.add(scrollPane, BorderLayout.CENTER);
@@ -218,6 +222,17 @@ public class QuanLiNhanVienGUI extends JPanel {
                 ngaySinhStr = nv.getNgaySinh().format(formatter);
             }
 
+            TaiKhoan tk = TaiKhoanDAO.getTaiKhoanTheoTenDangNhap(nv.getMaNV());
+            String vaiTro = "Nhân viên";
+
+            if (tk != null) {
+                if (tk.isQuanLy()) {
+                    vaiTro = "Quản lý (Admin)"; // Ưu tiên hiển thị Admin cao nhất
+                } else if (tk.isQuanLyLo()) {
+                    vaiTro = "Quản lý kho";    // Nếu không phải Admin mà là Quản lý lô
+                }
+            }
+
             Object[] row = {
                 stt++,
                 nv.getMaNV(),
@@ -228,6 +243,7 @@ public class QuanLiNhanVienGUI extends JPanel {
                 nv.isGioiTinh() ? "Nam" : "Nữ",
                 ngaySinhStr,
                 nv.getDiaChi(),
+                vaiTro,
                 nv.isNghiViec() ? "Đã nghỉ" : "Đang làm"
             };
             model.addRow(row);
@@ -409,15 +425,12 @@ public class QuanLiNhanVienGUI extends JPanel {
         pnlThemNV.setTxtSDT(nvCanSua.getSdt());
         pnlThemNV.setTxtCCCD(nvCanSua.getCccd());
         pnlThemNV.setCmbGioiTinh(nvCanSua.isGioiTinh());
-
-        // --- SỬA LOGIC: Dùng setter cho ngày sinh của JDateChooser ---
         pnlThemNV.setTxtNgaySinh(nvCanSua.getNgaySinh());
-
         pnlThemNV.setTxtDiaChi(nvCanSua.getDiaChi());
-
         pnlThemNV.setTxtTenDangNhap(maNV);
         pnlThemNV.setTxtMatKhau(tkCanSua.getMatKhau());
         pnlThemNV.setChkQuanLy(tkCanSua.isQuanLy());
+        pnlThemNV.setChkQuanLyLo(tkCanSua.isQuanLyLo());
         pnlThemNV.setTxtEmail(tkCanSua.getEmail());
         pnlThemNV.setTxtNgayTao(tkCanSua.getNgayTao());
 
@@ -475,6 +488,7 @@ public class QuanLiNhanVienGUI extends JPanel {
             pnlThemNV.getTxtDiaChi().setEditable(false);
             pnlThemNV.getCmbGioiTinh().setEnabled(false);
             pnlThemNV.getChkQuanLy().setEnabled(false);
+            pnlThemNV.getChkQuanLyLo().setEnabled(false);
             pnlThemNV.getTxtEmail().setEditable(false);
             pnlThemNV.getTxtTenDangNhap().setEditable(false);
             pnlThemNV.getTxtMatKhau().setEditable(false);
@@ -490,6 +504,7 @@ public class QuanLiNhanVienGUI extends JPanel {
 
             TaiKhoan tk = TaiKhoanDAO.getTaiKhoanTheoTenDangNhap(nvDaChon.getMaNV());
             pnlThemNV.setChkQuanLy(tk.isQuanLy());
+            pnlThemNV.setChkQuanLyLo(tk.isQuanLyLo());
             pnlThemNV.setTxtEmail(tk.getEmail());
             pnlThemNV.setTxtTenDangNhap(nvDaChon.getMaNV());
             pnlThemNV.setTxtMatKhau(tk.getMatKhau());
