@@ -37,6 +37,7 @@ import javax.swing.DefaultCellEditor;
 import javax.swing.InputMap;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -51,6 +52,10 @@ import javax.swing.table.TableColumn;
  * @author trand
  */
 public class TraHangGUI extends javax.swing.JPanel {
+
+    private JLabel lblSoLanTra;
+    private JLabel lblSoNgayHD;
+    private JLabel lblTongTienTra;
 
     /**
      * Creates new form TraHangGUI
@@ -76,7 +81,7 @@ public class TraHangGUI extends javax.swing.JPanel {
      */
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated
-    // Code">//GEN-BEGIN:initComponents
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         jPanel24 = new javax.swing.JPanel();
@@ -164,6 +169,11 @@ public class TraHangGUI extends javax.swing.JPanel {
                 txtNhapMaHoaDonFocusGained(evt);
             }
         });
+        txtNhapMaHoaDon.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtNhapMaHoaDonActionPerformed(evt);
+            }
+        });
         txtNhapMaHoaDon.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 txtNhapMaHoaDonKeyPressed(evt);
@@ -235,28 +245,26 @@ public class TraHangGUI extends javax.swing.JPanel {
         jScrollPane2.setBorder(null);
 
         tblCTHD.setModel(new javax.swing.table.DefaultTableModel(
-                new Object[][] {
+            new Object [][] {
 
-                },
-                new String[] {
-                        "STT", "Mã CTHD", "Tên sản phẩm", "Số lượng", "Đơn vị tính", "Đơn giá", "Giảm giá",
-                        "Thành tiền", "Chọn"
-                }) {
-            Class[] types = new Class[] {
-                    java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class,
-                    java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class,
-                    java.lang.Boolean.class
+            },
+            new String [] {
+                "STT", "Mã CTHD", "Tên sản phẩm", "Số lượng", "Đơn vị tính", "Đơn giá", "Giảm giá", "Thành tiền", "Chọn"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Boolean.class
             };
-            boolean[] canEdit = new boolean[] {
-                    false, false, false, false, false, false, false, false, true
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false, true
             };
 
             public Class getColumnClass(int columnIndex) {
-                return types[columnIndex];
+                return types [columnIndex];
             }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit[columnIndex];
+                return canEdit [columnIndex];
             }
         });
         tblCTHD.setShowGrid(false);
@@ -396,28 +404,26 @@ public class TraHangGUI extends javax.swing.JPanel {
         jPanel21.setLayout(new javax.swing.BoxLayout(jPanel21, javax.swing.BoxLayout.Y_AXIS));
 
         tblTraHang.setModel(new javax.swing.table.DefaultTableModel(
-                new Object[][] {
+            new Object [][] {
 
-                },
-                new String[] {
-                        "STT", "Tên sản phẩm", "Số lượng", "Đơn giá", "Giảm giá", "Thành tiền", "Lý do trả",
-                        "Sản phẩm nguyên vẹn", "Giá trị hoàn trả", "Thành tiền hoàn trả", "Mã CTHD"
-                }) {
-            Class[] types = new Class[] {
-                    java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class,
-                    java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Boolean.class,
-                    java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
+            },
+            new String [] {
+                "STT", "Tên sản phẩm", "Số lượng", "Đơn giá", "Giảm giá", "Thành tiền", "Lý do trả", "Sản phẩm nguyên vẹn", "Giá trị hoàn trả", "Thành tiền hoàn trả", "Mã CTHD"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
             };
-            boolean[] canEdit = new boolean[] {
-                    false, false, true, false, false, false, true, true, false, false, false
+            boolean[] canEdit = new boolean [] {
+                false, false, true, false, false, false, true, true, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
-                return types[columnIndex];
+                return types [columnIndex];
             }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit[columnIndex];
+                return canEdit [columnIndex];
             }
         });
         tblTraHang.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
@@ -448,6 +454,10 @@ public class TraHangGUI extends javax.swing.JPanel {
         add(jTabbedPane1);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void txtNhapMaHoaDonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNhapMaHoaDonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtNhapMaHoaDonActionPerformed
+
     private void btnXoaDongActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnXoaDongActionPerformed
         // TODO add your handling code here:
         DefaultTableModel dtm = (DefaultTableModel) tblTraHang.getModel();
@@ -464,7 +474,7 @@ public class TraHangGUI extends javax.swing.JPanel {
 
     private void txtNhapMaHoaDonFocusGained(java.awt.event.FocusEvent evt) {// GEN-FIRST:event_txtNhapMaHoaDonFocusGained
         // TODO add your handling code here:
-        txtNhapMaHoaDon.setText("HD-101125-0010");
+        txtNhapMaHoaDon.setText("HD-181225-0080");
     }// GEN-LAST:event_txtNhapMaHoaDonFocusGained
 
     private void txtNhapMaHoaDonKeyPressed(java.awt.event.KeyEvent evt) {// GEN-FIRST:event_txtNhapMaHoaDonKeyPressed
@@ -588,7 +598,6 @@ public class TraHangGUI extends javax.swing.JPanel {
 
             // Hóa đơn hợp lệ, thêm dữ liệu và cập nhật 3 ô thông tin
             addHoaDon(maHoaDon);
-            capNhatThongTinHoaDon(maHoaDon);
         }
     }// GEN-LAST:event_btnTimKiemActionPerformed
 
@@ -707,10 +716,6 @@ public class TraHangGUI extends javax.swing.JPanel {
     private javax.swing.JTextField txtMaPhieuTraHang;
     private javax.swing.JTextField txtNhapMaHoaDon;
     private javax.swing.JTextField txtTongThanhTien;
-    // 3 labels cho info panels
-    private javax.swing.JLabel lblSoLanTra;
-    private javax.swing.JLabel lblSoNgayHD;
-    private javax.swing.JLabel lblTongTienTra;
     // End of variables declaration//GEN-END:variables
 
     // Thêm hóa đơn vào "Tìm hóa đơn"
@@ -718,22 +723,26 @@ public class TraHangGUI extends javax.swing.JPanel {
         // hóa đơn có pth không?
         boolean coPTH = HoaDonDAO.getSoPTH(maHoaDon) > 0;
         System.out.println(HoaDonDAO.getSoPTH(maHoaDon));
+        int tongSoPhieuTraHang = 0;
         //
         List<ChiTietHoaDon> listCTHD;
         HoaDon hoaDon = HoaDonDAO.getHoaDonTheoMaHD(maHoaDon);
 
         if (coPTH) {
             listCTHD = ChiTietHoaDonDAO.getChiTietHoaDonDaTruPTHTheoMaHD(hoaDon);
-            System.out.println(1);
+            tongSoPhieuTraHang = HoaDonDAO.getSoPTH(maHoaDon);
         } else {
             listCTHD = ChiTietHoaDonDAO.getChiTietHoaDonTheoMaHD(hoaDon);
-            System.out.println(2);
         }
 
         long ngayLap = ChronoUnit.DAYS.between(LocalDate.now(), hoaDon.getNgayLapHoaDon()) * -1;
         if (ngayLap <= 30) {
             System.out.println(ngayLap);
             // Them du lieu vao bang cthd
+            lblSoLanTra.setText(tongSoPhieuTraHang+"");
+            lblSoNgayHD.setText(ngayLap+"");
+            lblTongTienTra.setText(dinhDangTien(HoaDonDAO.getTongTienCacPTH(maHoaDon)));
+            System.out.println("Sửa thành công");
             themDuLieuCTHDVaoBang(listCTHD);
             taoThongTinPhieu(maHoaDon);
         } else {
@@ -1144,7 +1153,7 @@ public class TraHangGUI extends javax.swing.JPanel {
         pnlInfos.setBorder(javax.swing.BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         // Ô 1: Tổng số lần đã trả
-        javax.swing.JPanel pnlSoLanTra = createInfoCard("Tổng số lần đã trả", lblSoLanTra,
+        javax.swing.JPanel pnlSoLanTra = createInfoCard("Tổng số phiếu trả của hóa đơn", lblSoLanTra,
                 new java.awt.Color(232, 245, 233), new java.awt.Color(46, 125, 50));
         pnlInfos.add(pnlSoLanTra);
 
@@ -1192,32 +1201,32 @@ public class TraHangGUI extends javax.swing.JPanel {
         return card;
     }
 
-    private void capNhatThongTinHoaDon(String maHoaDon) {
-        try {
-            // 1. Số lần đã trả
-            int soLanTra = demSoLanTraHang(maHoaDon);
-            System.out.println("DEBUG: soLanTra = " + soLanTra);
-            lblSoLanTra.setText(String.valueOf(soLanTra));
-
-            // 2. Số ngày kể từ khi lập hóa đơn
-            HoaDon hoaDon = HoaDonDAO.getHoaDonTheoMaHD(maHoaDon);
-            if (hoaDon == null) {
-                resetInfoPanels();
-                return;
-            }
-            long soNgay = ChronoUnit.DAYS.between(hoaDon.getNgayLapHoaDon(), LocalDate.now());
-            System.out.println("DEBUG: soNgay = " + soNgay);
-            lblSoNgayHD.setText(String.valueOf(soNgay));
-
-            // 3. Tổng tiền đã trả
-            double tongTienTra = tinhTongTienTraHang(maHoaDon);
-            System.out.println("DEBUG: tongTienTra = " + tongTienTra);
-            lblTongTienTra.setText(dinhDangTien(tongTienTra) + " VND");
-        } catch (Exception e) {
-            e.printStackTrace();
-            resetInfoPanels();
-        }
-    }
+//    private void capNhatThongTinHoaDon(String maHoaDon) {
+//        try {
+//            // 1. Số lần đã trả
+//            int soLanTra = demSoLanTraHang(maHoaDon);
+//            System.out.println("DEBUG: soLanTra = " + soLanTra);
+//            lblSoLanTra.setText(String.valueOf(soLanTra));
+//
+//            // 2. Số ngày kể từ khi lập hóa đơn
+//            HoaDon hoaDon = HoaDonDAO.getHoaDonTheoMaHD(maHoaDon);
+//            if (hoaDon == null) {
+//                resetInfoPanels();
+//                return;
+//            }
+//            long soNgay = ChronoUnit.DAYS.between(hoaDon.getNgayLapHoaDon(), LocalDate.now());
+//            System.out.println("DEBUG: soNgay = " + soNgay);
+//            lblSoNgayHD.setText(String.valueOf(soNgay));
+//
+//            // 3. Tổng tiền đã trả
+//            double tongTienTra = tinhTongTienTraHang(maHoaDon);
+//            System.out.println("DEBUG: tongTienTra = " + tongTienTra);
+//            lblTongTienTra.setText(dinhDangTien(tongTienTra) + " VND");
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            resetInfoPanels();
+//        }
+//    }
 
     /**
      * Đếm số lượng phiếu trả hàng của một hóa đơn
