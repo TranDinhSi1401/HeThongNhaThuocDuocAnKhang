@@ -24,19 +24,10 @@ import java.util.List;
  * @author MINH KHANG
  */
 public class TraHangBUS {
-
-    // Không cần khai báo DAO instance nếu các method trong DAO là static. 
-    // Nếu DAO không static thì khai báo: private final HoaDonDAO hoaDonDAO = new HoaDonDAO(); ...
-
     /**
      * Nghiệp vụ 1: Kiểm tra điều kiện trả hàng
-     * Logic: Hóa đơn tồn tại VÀ ngày lập <= 30 ngày
+     * Logic: Hóa đơn tồn tại VÀ ngày lập <= 30 ngày 
      */
-/**
- * Nghiệp vụ 1: Kiểm tra điều kiện trả hàng
- * Logic: Hóa đơn tồn tại VÀ ngày lập <= 30 ngày
- * FIX: Chuyển đổi về cùng kiểu LocalDate để tránh lỗi "Unable to obtain LocalDateTime"
- */
     public HoaDon kiemTraDieuKienTraHang(String maHoaDon) throws Exception {
         if (maHoaDon == null || maHoaDon.trim().isEmpty()) {
             throw new Exception("Vui lòng nhập mã hóa đơn!");
@@ -67,37 +58,32 @@ public class TraHangBUS {
     /**
      * Nghiệp vụ 2: Lấy chuỗi hiển thị phần trăm hoàn trả
      */
-    public static String layPhanTramHoanTra(TruongHopDoiTraEnum lyDo) {
-        if (lyDo == TruongHopDoiTraEnum.HANG_LOI_DO_NHA_SAN_XUAT) {
-            return "100%";
-        } else if (lyDo == TruongHopDoiTraEnum.DI_UNG_MAN_CAM) {
-            return "70%";
-        } else if (lyDo == TruongHopDoiTraEnum.NHU_CAU_KHACH_HANG) {
-            return "Miễn trả hàng"; // Hoặc "0%" tùy logic hiển thị
+    public static String layPhanTramHoanTra(TruongHopDoiTraEnum lyDo, boolean isNguyenVen) {
+            if (isNguyenVen) {
+                return "100%";
+            }
+            if (lyDo == TruongHopDoiTraEnum.HANG_LOI_DO_NHA_SAN_XUAT) return "100%";
+            if (lyDo == TruongHopDoiTraEnum.DI_UNG_MAN_CAM) return "70%";
+            return "Miễn trả hàng";
         }
-        return "0%";
-    }
 
     /**
      * Nghiệp vụ 3: Tính tiền hoàn trả cho từng sản phẩm
      */
-/**
- * Nghiệp vụ 3: Tính tiền hoàn trả cho từng sản phẩm
- * Đã cập nhật nhận thêm tham số boolean conditionName để khớp với lời gọi hàm từ GUI
- */
-    public static double tinhTienHoanTraItem(double thanhTienGoc, TruongHopDoiTraEnum caseType, boolean conditionName) {
-        // Nếu conditionName (ví dụ: sản phẩm nguyên vẹn) là true, có thể xử lý logic riêng ở đây nếu cần.
-        // Hiện tại logic đang dựa theo Enum:
-
-        if (caseType == TruongHopDoiTraEnum.HANG_LOI_DO_NHA_SAN_XUAT) {
-            return thanhTienGoc; // Hoàn 100%
-        } else if (caseType == TruongHopDoiTraEnum.DI_UNG_MAN_CAM) {
-            return thanhTienGoc * 0.7; // Hoàn 70%
-        } else if (caseType == TruongHopDoiTraEnum.NHU_CAU_KHACH_HANG) {
-            return 0; // Không hoàn tiền (0%)
+public static double tinhTienHoanTraItem(double thanhTienGoc, TruongHopDoiTraEnum lyDo, boolean isNguyenVen) {
+        // 1. Nếu hàng nguyên vẹn -> Luôn hoàn 100% tiền (theo logic code cũ của bạn)
+        if (isNguyenVen) {
+            return thanhTienGoc;
         }
 
-        return 0;
+        // 2. Nếu hàng KHÔNG nguyên vẹn -> Xét theo lý do
+        if (lyDo == TruongHopDoiTraEnum.HANG_LOI_DO_NHA_SAN_XUAT) {
+            return thanhTienGoc; // 100%
+        } else if (lyDo == TruongHopDoiTraEnum.DI_UNG_MAN_CAM) {
+            return thanhTienGoc * 0.7; // 70%
+        } else {
+            return 0; // Nhu cầu khách hàng -> 0%
+        }
     }
 
     /**
@@ -155,5 +141,9 @@ public class TraHangBUS {
                 KhachHangDAO.truDiemTichLuy(diemTru, maKhachHang);
             }
         }
+    }
+
+    public static double tinhThanhTienGoc(int soLuong, double donGia, double phanTramGiamGia) {
+        return (soLuong * donGia) - (soLuong * donGia * (phanTramGiamGia / 100));
     }
 }

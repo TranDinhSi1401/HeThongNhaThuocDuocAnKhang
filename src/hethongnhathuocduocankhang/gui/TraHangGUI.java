@@ -116,7 +116,14 @@ public class TraHangGUI extends javax.swing.JPanel {
         jPanel3 = new javax.swing.JPanel();
         jPanel20 = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
+        jLabel8 = new javax.swing.JLabel();
+        txtTenKhachHang = new javax.swing.JTextField();
+        jLabel7 = new javax.swing.JLabel();
         jPanel31 = new javax.swing.JPanel();
+        txtDiemTichLuy = new javax.swing.JTextField();
+        jLabel9 = new javax.swing.JLabel();
+        txtDiemTru = new javax.swing.JTextField();
+        jPanel28 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         txtTongThanhTien = new javax.swing.JTextField();
         jPanel22 = new javax.swing.JPanel();
@@ -167,6 +174,30 @@ public class TraHangGUI extends javax.swing.JPanel {
         jPanel25.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
         jPanel25.add(jPanel27);
 
+        txtNhapMaHoaDon.setDocument(new javax.swing.text.PlainDocument() {
+            @Override
+            public void insertString(int offs, String str, javax.swing.text.AttributeSet a) throws javax.swing.text.BadLocationException {
+                if (str == null) return;
+
+                // 1. Nếu đang ở vị trí đầu tiên (offs == 0), chuỗi dán vào phải bắt đầu bằng "HD"
+                if (offs == 0 && !str.startsWith("HD")) {
+                    return; // Từ chối nếu không bắt đầu bằng HD
+                }
+
+                // 2. Kiểm tra tổng độ dài sau khi thêm không vượt quá 14
+                if ((getLength() + str.length()) <= 14) {
+                    super.insertString(offs, str, a);
+                } else {
+                    // 3. Nếu dán một đoạn dài, chỉ cắt lấy 14 ký tự đầu tiên nếu nó hợp lệ
+                    int spaceLeft = 14 - getLength();
+                    if (spaceLeft > 0) {
+                        String subStr = str.substring(0, spaceLeft);
+                        if (offs == 0 && !subStr.startsWith("HD")) return;
+                        super.insertString(offs, subStr, a);
+                    }
+                }
+            }
+        });
         txtNhapMaHoaDon.setText("Nhập mã hóa đơn [F3]");
         txtNhapMaHoaDon.setPreferredSize(new java.awt.Dimension(400, 22));
         txtNhapMaHoaDon.addFocusListener(new java.awt.event.FocusAdapter() {
@@ -307,7 +338,47 @@ public class TraHangGUI extends javax.swing.JPanel {
 
         jPanel1.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
 
+        jLabel8.setText("Khách hàng");
+        jPanel1.add(jLabel8);
+
+        txtTenKhachHang.setEditable(false);
+        txtTenKhachHang.setEnabled(false);
+        txtTenKhachHang.setPreferredSize(new java.awt.Dimension(150, 22));
+        txtTenKhachHang.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtTenKhachHangActionPerformed(evt);
+            }
+        });
+        jPanel1.add(txtTenKhachHang);
+
+        jLabel7.setText("Điểm tích lũy");
+        jPanel1.add(jLabel7);
+
         jPanel31.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
+
+        txtDiemTichLuy.setEditable(false);
+        txtDiemTichLuy.setEnabled(false);
+        txtDiemTichLuy.setPreferredSize(new java.awt.Dimension(100, 22));
+        txtDiemTichLuy.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtDiemTichLuyActionPerformed(evt);
+            }
+        });
+        jPanel31.add(txtDiemTichLuy);
+
+        jLabel9.setText("Trừ điểm tích lũy");
+        jPanel31.add(jLabel9);
+
+        txtDiemTru.setEditable(false);
+        txtDiemTru.setEnabled(false);
+        txtDiemTru.setPreferredSize(new java.awt.Dimension(100, 22));
+        txtDiemTru.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtDiemTruActionPerformed(evt);
+            }
+        });
+        jPanel31.add(txtDiemTru);
+        jPanel31.add(jPanel28);
 
         jLabel5.setText("Tổng tiền hoàn trả");
         jPanel31.add(jLabel5);
@@ -473,6 +544,18 @@ public class TraHangGUI extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtNhapMaHoaDonActionPerformed
 
+    private void txtDiemTichLuyActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDiemTichLuyActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtDiemTichLuyActionPerformed
+
+    private void txtTenKhachHangActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTenKhachHangActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtTenKhachHangActionPerformed
+
+    private void txtDiemTruActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtDiemTruActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtDiemTruActionPerformed
+
     private void btnXoaDongActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnXoaDongActionPerformed
         // TODO add your handling code here:
         DefaultTableModel dtm = (DefaultTableModel) tblTraHang.getModel();
@@ -489,7 +572,7 @@ public class TraHangGUI extends javax.swing.JPanel {
 
     private void txtNhapMaHoaDonFocusGained(java.awt.event.FocusEvent evt) {// GEN-FIRST:event_txtNhapMaHoaDonFocusGained
         // TODO add your handling code here:
-        txtNhapMaHoaDon.setText("HD-181225-0088");
+        txtNhapMaHoaDon.setText("");
     }// GEN-LAST:event_txtNhapMaHoaDonFocusGained
 
     private void txtNhapMaHoaDonKeyPressed(java.awt.event.KeyEvent evt) {// GEN-FIRST:event_txtNhapMaHoaDonKeyPressed
@@ -647,15 +730,20 @@ int chon = JOptionPane.showConfirmDialog(null, "Xác nhận tạo phiếu trả?
                     lyDoEnum = TruongHopDoiTraEnum.NHU_CAU_KHACH_HANG;
 
                 // Sử dụng BUS để lấy phần trăm và tính tiền
-                dtm.setValueAt(TraHangBUS.layPhanTramHoanTra(lyDoEnum), selectRow, 8);
+                boolean isNguyenVen = (boolean)dtm.getValueAt(selectRow, 7);
+                dtm.setValueAt(TraHangBUS.layPhanTramHoanTra(lyDoEnum,isNguyenVen), selectRow, 8);
                 
                 double thanhTienGoc = boDinhDangTien(dtm.getValueAt(selectRow, 5).toString());
                 double tienHoanTra = TraHangBUS.tinhTienHoanTraItem(thanhTienGoc, lyDoEnum, false);
                 dtm.setValueAt(dinhDangTien(tienHoanTra), selectRow, 9);
             }
+            capNhatTongTienTra();
             capNhatTongThanhTien();
+            
         }
     }
+    
+
 
     private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jTextField3ActionPerformed
         // TODO add your handling code here:
@@ -679,6 +767,9 @@ int chon = JOptionPane.showConfirmDialog(null, "Xác nhận tạo phiếu trả?
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
@@ -699,6 +790,7 @@ int chon = JOptionPane.showConfirmDialog(null, "Xác nhận tạo phiếu trả?
     private javax.swing.JPanel jPanel25;
     private javax.swing.JPanel jPanel26;
     private javax.swing.JPanel jPanel27;
+    private javax.swing.JPanel jPanel28;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel30;
     private javax.swing.JPanel jPanel31;
@@ -716,9 +808,12 @@ int chon = JOptionPane.showConfirmDialog(null, "Xác nhận tạo phiếu trả?
     private javax.swing.JToolBar jToolBar1;
     private javax.swing.JTable tblCTHD;
     private javax.swing.JTable tblTraHang;
+    private javax.swing.JTextField txtDiemTichLuy;
+    private javax.swing.JTextField txtDiemTru;
     private javax.swing.JTextField txtMaHoaDonTrongPhieuTraHang;
     private javax.swing.JTextField txtMaPhieuTraHang;
     private javax.swing.JTextField txtNhapMaHoaDon;
+    private javax.swing.JTextField txtTenKhachHang;
     private javax.swing.JTextField txtTongThanhTien;
     // End of variables declaration//GEN-END:variables
 
@@ -748,11 +843,25 @@ int chon = JOptionPane.showConfirmDialog(null, "Xác nhận tạo phiếu trả?
             System.out.println("Sửa thành công");
             themDuLieuCTHDVaoBang(listCTHD);
             taoThongTinPhieu(maHoaDon);
+            
+            if (hoaDon.getKhachHang() != null) {
+                String tenKhach = hoaDon.getKhachHang().getTen(); // Hoặc getHoTen() tùy Entity của bạn
+                txtTenKhachHang.setText(tenKhach);
+
+                // Kiểm tra nếu là khách lẻ (ví dụ mã KH-00000) thì không hiện điểm
+                if (!hoaDon.getKhachHang().getMaKH().equalsIgnoreCase("KH-00000")) {
+                    txtDiemTichLuy.setText(String.valueOf(hoaDon.getKhachHang().getDiemTichLuy()));
+                } else {
+                    txtDiemTichLuy.setText("0");
+                }
+            }            
         } else {
             JOptionPane.showMessageDialog(null, "Hóa đơn đã lập hơn 30 ngày, theo nguyên tắc không thể trả hàng!");
         }
         
     }
+    
+
 
     private void themDuLieuCTHDVaoBang(List<ChiTietHoaDon> listCTHD) {
         int stt = 0;
@@ -891,6 +1000,17 @@ int chon = JOptionPane.showConfirmDialog(null, "Xác nhận tạo phiếu trả?
             tongThanhTien = tongThanhTien + boDinhDangTien(dtm.getValueAt(i, 9).toString());
         }
         txtTongThanhTien.setText(dinhDangTien(tongThanhTien));
+        // Kiểm tra nếu là khách lẻ thì không trừ điểm
+        String diemHienTaiStr = txtDiemTichLuy.getText();
+        if (diemHienTaiStr != null && !diemHienTaiStr.isEmpty() && !diemHienTaiStr.equals("0")) {
+            // Giả sử quy đổi: 1.000 VNĐ hoàn tiền = Trừ 1 điểm tích lũy
+            // Bạn có thể sửa số 1000 thành hệ số quy đổi của cửa hàng bạn
+            int diemTru = (int) (tongThanhTien / 1000); 
+
+            txtDiemTru.setText(String.valueOf(diemTru));
+        } else {
+            txtDiemTru.setText("0");
+        }
     }
 
     private String phatSinhMaPhieuTraHang() {
@@ -1042,45 +1162,55 @@ int chon = JOptionPane.showConfirmDialog(null, "Xác nhận tạo phiếu trả?
         }
     }
 
+
     private void capNhatTongTienTra() {
-        // cập nhật lại thành tiền khi đổi số lượng
-        DefaultTableModel dtm = (DefaultTableModel) tblTraHang.getModel();
-        for (int i = 0; i < tblTraHang.getRowCount(); i++) {
-            int soLuong = Integer.parseInt(dtm.getValueAt(i, 2).toString());
-            String maCTHD = dtm.getValueAt(i, 10).toString();
-            if (soLuong <= ChiTietHoaDonDAO.getChiTietHoaDonDaTungTraRoiTheoMaCTHD(maCTHD).getSoLuong()) {
-                double donGia = boDinhDangTien(dtm.getValueAt(i, 3).toString());
-                double khuyenMai = Double.parseDouble(dtm.getValueAt(i, 4).toString()) ;
-                System.out.println("Phần trăm khuyến mãi là " +khuyenMai);
-                dtm.setValueAt(dinhDangTien(soLuong * donGia - (soLuong * donGia *(khuyenMai/100))), i, 5);
-            } else {
-                int stt = i + 1;
-                JOptionPane.showMessageDialog(null,
-                        "Yêu cầu số lượng trả bé hơn hoặc bằng số lượng mua, số lượng trả lớn hơn 0 tại STT: " + stt);
-            }
+    DefaultTableModel dtm = (DefaultTableModel) tblTraHang.getModel();
+    
+    for (int i = 0; i < tblTraHang.getRowCount(); i++) {
+        // 1. Lấy dữ liệu từ bảng
+        int soLuong = Integer.parseInt(dtm.getValueAt(i, 2).toString());
+        String maCTHD = dtm.getValueAt(i, 10).toString();
+        
+        // Validation: Kiểm tra số lượng hợp lệ (Logic này giữ ở GUI hoặc chuyển vào BUS tùy bạn, tạm thời giữ nguyên)
+        if (soLuong > ChiTietHoaDonDAO.getChiTietHoaDonDaTungTraRoiTheoMaCTHD(maCTHD).getSoLuong()) {
+            dtm.setValueAt(1,i, 2);
+            JOptionPane.showMessageDialog(null, "Số lượng trả không được vượt quá số lượng mua là "+ChiTietHoaDonDAO.getChiTietHoaDonDaTungTraRoiTheoMaCTHD(maCTHD).getSoLuong()+"! (Dòng " + (i + 1) + ")");
+            // Reset lại số lượng về mặc định hoặc xử lý tùy ý
+            return; 
         }
 
-        for (int i = 0; i < dtm.getRowCount(); i++) {
-            if (dtm.getValueAt(i, 7) == Boolean.TRUE) {
-                dtm.setValueAt("100%", i, 8);
-                Object thanhTien = dtm.getValueAt(i, 5);
-                dtm.setValueAt(thanhTien, i, 9);
-            } else if (dtm.getValueAt(i, 7) == Boolean.FALSE) {
-                if (dtm.getValueAt(i, 6).equals(TruongHopDoiTraEnum.HANG_LOI_DO_NHA_SAN_XUAT.getTruongHopDoiTra())) {
-                    dtm.setValueAt("100%", i, 8);
-                    Object thanhTien = dtm.getValueAt(i, 5);
-                    dtm.setValueAt(thanhTien, i, 9);
-                } else if (dtm.getValueAt(i, 6).equals(TruongHopDoiTraEnum.DI_UNG_MAN_CAM.getTruongHopDoiTra())) {
-                    dtm.setValueAt("70%", i, 8);
-                    String thanhTien = dinhDangTien(boDinhDangTien(dtm.getValueAt(i, 5).toString()) * 0.7);
-                    dtm.setValueAt(thanhTien, i, 9);
-                } else if (dtm.getValueAt(i, 6).equals(TruongHopDoiTraEnum.NHU_CAU_KHACH_HANG.getTruongHopDoiTra())) {
-                    dtm.setValueAt("Miễn trả hàng", i, 8);
-                    dtm.setValueAt(0, i, 9);
-                }
-            }
-        }
-        capNhatTongThanhTien();
+        // 2. GỌI BUS: Tính thành tiền gốc (Cột 5)
+        double donGia = boDinhDangTien(dtm.getValueAt(i, 3).toString());
+        double khuyenMai = Double.parseDouble(dtm.getValueAt(i, 4).toString());
+        
+        double thanhTienGoc = TraHangBUS.tinhThanhTienGoc(soLuong, donGia, khuyenMai);
+        dtm.setValueAt(dinhDangTien(thanhTienGoc), i, 5);
+
+        // 3. Chuẩn bị dữ liệu để tính hoàn trả
+        boolean isNguyenVen = (boolean) dtm.getValueAt(i, 7);
+        String lyDoString = dtm.getValueAt(i, 6).toString();
+        TruongHopDoiTraEnum lyDoEnum = convertStringToEnum(lyDoString); // Hàm phụ trợ chuyển đổi (xem bên dưới)
+
+        // 4. GỌI BUS: Lấy phần trăm hiển thị (Cột 8)
+        String hienThiPhanTram = TraHangBUS.layPhanTramHoanTra(lyDoEnum, isNguyenVen);
+        dtm.setValueAt(hienThiPhanTram, i, 8);
+
+        // 5. GỌI BUS: Tính tiền hoàn trả (Cột 9)
+        double tienHoanTra = TraHangBUS.tinhTienHoanTraItem(thanhTienGoc, lyDoEnum, isNguyenVen);
+        dtm.setValueAt(dinhDangTien(tienHoanTra), i, 9);
+    }
+
+    // Cập nhật tổng tiền cuối cùng
+    capNhatTongThanhTien();
+}
+
+    // Hàm phụ trợ để code gọn hơn (bạn thêm vào dưới cùng class GUI)
+    private TruongHopDoiTraEnum convertStringToEnum(String lyDo) {
+        if (lyDo.equals(TruongHopDoiTraEnum.HANG_LOI_DO_NHA_SAN_XUAT.getTruongHopDoiTra())) 
+            return TruongHopDoiTraEnum.HANG_LOI_DO_NHA_SAN_XUAT;
+        if (lyDo.equals(TruongHopDoiTraEnum.DI_UNG_MAN_CAM.getTruongHopDoiTra())) 
+            return TruongHopDoiTraEnum.DI_UNG_MAN_CAM;
+        return TruongHopDoiTraEnum.NHU_CAU_KHACH_HANG;
     }
 
     // CRUD, hiệu chỉnh
@@ -1207,93 +1337,6 @@ int chon = JOptionPane.showConfirmDialog(null, "Xác nhận tạo phiếu trả?
         return card;
     }
 
-//    private void capNhatThongTinHoaDon(String maHoaDon) {
-//        try {
-//            // 1. Số lần đã trả
-//            int soLanTra = demSoLanTraHang(maHoaDon);
-//            System.out.println("DEBUG: soLanTra = " + soLanTra);
-//            lblSoLanTra.setText(String.valueOf(soLanTra));
-//
-//            // 2. Số ngày kể từ khi lập hóa đơn
-//            HoaDon hoaDon = HoaDonDAO.getHoaDonTheoMaHD(maHoaDon);
-//            if (hoaDon == null) {
-//                resetInfoPanels();
-//                return;
-//            }
-//            long soNgay = ChronoUnit.DAYS.between(hoaDon.getNgayLapHoaDon(), LocalDate.now());
-//            System.out.println("DEBUG: soNgay = " + soNgay);
-//            lblSoNgayHD.setText(String.valueOf(soNgay));
-//
-//            // 3. Tổng tiền đã trả
-//            double tongTienTra = tinhTongTienTraHang(maHoaDon);
-//            System.out.println("DEBUG: tongTienTra = " + tongTienTra);
-//            lblTongTienTra.setText(dinhDangTien(tongTienTra) + " VND");
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            resetInfoPanels();
-//        }
-//    }
-
-    /**
-     * Đếm số lượng phiếu trả hàng của một hóa đơn
-     */
-    private int demSoLanTraHang(String maHoaDon) {
-        try {
-            List<PhieuTraHang> dsPhieuTra = PhieuTraHangDAO.timPTHTheoMaHD(maHoaDon);
-            return dsPhieuTra != null ? dsPhieuTra.size() : 0;
-        } catch (Exception e) {
-            return 0;
-        }
-    }
-
-    /**
-     * Tính tổng tiền đã trả hàng của một hóa đơn
-     */
-    private double tinhTongTienTraHang(String maHoaDon) {
-        try {
-            List<PhieuTraHang> dsPhieuTra = PhieuTraHangDAO.timPTHTheoMaHD(maHoaDon);
-            double tongTien = 0;
-
-            if (dsPhieuTra != null) {
-                for (PhieuTraHang pth : dsPhieuTra) {
-                    List<ChiTietPhieuTraHang> dsChiTiet = PhieuTraHangDAO.getChiTietTheoMaPTH(pth);
-                    if (dsChiTiet != null) {
-                        for (ChiTietPhieuTraHang ctpth : dsChiTiet) {
-                            tongTien += ctpth.getThanhTienHoanTra();
-                        }
-                    }
-                }
-            }
-            return tongTien;
-        } catch (Exception e) {
-            return 0;
-        }
-    }
-
-    private void themSPLaiVaoLo(List<ChiTietPhieuTraHang> list) {
-        for(int i=0;i<list.size();i++){
-            TinhTrangSanPhamEnum tinhTrang = list.get(i).getTinhTrangSanPham();
-            TruongHopDoiTraEnum  truongHopDoiTra = list.get(i).getTruongHopDoiTra();
-            if(tinhTrang.equals(TinhTrangSanPhamEnum.HANG_NGUYEN_VEN)  && truongHopDoiTra.equals(TruongHopDoiTraEnum.NHU_CAU_KHACH_HANG) || truongHopDoiTra.equals(TruongHopDoiTraEnum.DI_UNG_MAN_CAM) ){
-                    LoSanPhamDAO.congSoLuong(
-                            LoSanPhamDAO.getLoSanPhamTheoMaCTHD(list.get(i).getChiTietHoaDon().getMaChiTietHoaDon()).getMaLoSanPham(), 
-                            list.get(i).getSoLuong(),
-                            list.get(i).getChiTietHoaDon().getDonViTinh().getHeSoQuyDoi()
-                    );
-            }
-            System.out.println("Đã cộng lại sl");
-        }
-    }
-        public static double xoaPhanTram(String input) {
-        if (input == null || input.isEmpty()) {
-            throw new IllegalArgumentException("Chuỗi không hợp lệ");
-        }
-        // Loại bỏ khoảng trắng và ký tự %
-        String cleaned = input.trim().replace("%", "");
-        
-        // Chuyển sang double
-        return Double.parseDouble(cleaned);
-    }
 
 
 }
