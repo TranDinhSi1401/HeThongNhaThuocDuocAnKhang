@@ -4,6 +4,7 @@
  */
 package hethongnhathuocduocankhang.gui;
 
+import hethongnhathuocduocankhang.bus.VaoRaCaBUS;
 import hethongnhathuocduocankhang.dao.CaLamDAO;
 import hethongnhathuocduocankhang.dao.HoaDonDAO;
 import hethongnhathuocduocankhang.dao.LichSuCaLamDAO;
@@ -203,54 +204,53 @@ public class DashBoardNhanVien extends javax.swing.JPanel {
 
     private void configureBtnVaoCa() {
         btnVaoCa.setOpaque(true);
-        btnVaoCa.setBackground(Color.GREEN);
-        btnVaoCa.setForeground(Color.WHITE);
+        // Khởi tạo BUS
+        VaoRaCaBUS lsBUS = new VaoRaCaBUS();
+        String maNV = GiaoDienChinhGUI.getTk().getTenDangNhap().trim();
 
-        // XỬ LÝ TRẠNG THÁI NÚT KHI KHỞI ĐỘNG
-        // Kiểm tra xem nhân viên có đang trong ca không để set màu nút
-        try {
-            String maNVHienTai = GiaoDienChinhGUI.getTk().getTenDangNhap().trim();
-            LichSuCaLamDAO dao = new LichSuCaLamDAO();
-            if (dao.kiemTraNhanVienDangLamViec(maNVHienTai, LocalDate.now())) {
-                btnVaoCa.setText("Ra Ca");
-                btnVaoCa.setBackground(Color.RED);
-            } else {
-                btnVaoCa.setText("Vào Ca");
-                btnVaoCa.setBackground(Color.GREEN);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        // 1. XỬ LÝ TRẠNG THÁI NÚT KHI KHỞI ĐỘNG
+        if (lsBUS.kiemTraDangLamViec(maNV)) {
+            btnVaoCa.setText("Ra Ca");
+            btnVaoCa.setBackground(Color.RED);
+        } else {
+            btnVaoCa.setText("Vào Ca");
+            btnVaoCa.setBackground(Color.GREEN);
+            btnVaoCa.setForeground(Color.WHITE);
         }
 
-        // SỰ KIỆN CLICK NÚT
+        // 2. XÓA CÁC LISTENER CŨ (tránh bị lặp sự kiện khi reload)
+        for (java.awt.event.ActionListener al : btnVaoCa.getActionListeners()) {
+            btnVaoCa.removeActionListener(al);
+        }
+
+        // 3. SỰ KIỆN CLICK NÚT MỚI
         btnVaoCa.addActionListener(e -> {
             try {
-                String maNV = GiaoDienChinhGUI.getTk().getTenDangNhap().trim();
-                NhanVien nv = NhanVienDAO.getNhanVienTheoMaNV(maNV);
-                LocalDate ngayHienTai = LocalDate.now();
-                LocalTime gioHienTai = LocalTime.now();
+                // Lấy thông tin Ca làm hiện tại từ BUS
+                CaLam caLam = lsBUS.getCaLamHienTai();
 
-                String maCa = "";
-                if (gioHienTai.getHour() >= 6 && gioHienTai.getHour() < 14) {
-                    maCa = "SANG";
-                } else {
-                    maCa = "TOI";
-                }
-
-                CaLam caLam = CaLamDAO.timCaLamTheoMa(maCa);
                 if (caLam == null) {
-                    JOptionPane.showMessageDialog(this, "Không xác định được Ca Làm hiện tại (Mã ca: " + maCa + " không tồn tại)!");
+                    JOptionPane.showMessageDialog(this, "Không xác định được Ca Làm hiện tại (hoặc lỗi kết nối)!");
                     return;
                 }
 
-                LichSuCaLamDAO lsDAO = new LichSuCaLamDAO();
-
                 if (btnVaoCa.getText().equals("Vào Ca")) {
-                    // LOGIC VÀO CA
-                    LichSuCaLam ls = new LichSuCaLam(nv, ngayHienTai, caLam, gioHienTai, null, "");
+                    // --- LOGIC VÀO CA ---
 
-                    if (lsDAO.themLichSuCaLam(ls)) {
-                        JOptionPane.showMessageDialog(this, "Vào ca thành công lúc " + gioHienTai.format(DateTimeFormatter.ofPattern("HH:mm:ss")));
+                    // Hộp thoại xác nhận (GUI giữ quyền hiển thị tương tác)
+                    int confirmVaoCa = JOptionPane.showConfirmDialog(this,
+                            "Bạn có chắc chắn muốn BẮT ĐẦU ca làm việc (" + caLam.getTenCa() + ") không?",
+                            "Xác nhận vào ca",
+                            JOptionPane.YES_NO_OPTION,
+                            JOptionPane.QUESTION_MESSAGE);
+
+                    if (confirmVaoCa != JOptionPane.YES_OPTION) {
+                        return;
+                    }
+
+                    // Gọi BUS để xử lý dữ liệu
+                    if (lsBUS.xuLyVaoCa(maNV, caLam)) {
+                        JOptionPane.showMessageDialog(this, "Vào ca thành công lúc " + java.time.LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")));
                         btnVaoCa.setText("Ra Ca");
                         btnVaoCa.setBackground(Color.RED);
                     } else {
@@ -258,44 +258,39 @@ public class DashBoardNhanVien extends javax.swing.JPanel {
                     }
 
                 } else {
-                    // LOGIC RA CA
-                    // Tạo giao diện nhập ghi chú
+                    // --- LOGIC RA CA ---
+
+                    // GUI xử lý nhập liệu ghi chú
                     JPanel pnlGhiChu = new JPanel(new BorderLayout(5, 5));
                     pnlGhiChu.setPreferredSize(new Dimension(400, 150));
-
                     JLabel lblLoiNhan = new JLabel("Nhập ghi chú ra ca (nếu có):");
                     lblLoiNhan.setFont(new Font("Segoe UI", Font.BOLD, 14));
-
                     JTextArea txtGhiChu = new JTextArea(5, 20);
                     txtGhiChu.setFont(new Font("Segoe UI", Font.PLAIN, 14));
                     txtGhiChu.setLineWrap(true);
                     txtGhiChu.setWrapStyleWord(true);
-
                     JScrollPane scrollGhiChu = new JScrollPane(txtGhiChu);
-
                     pnlGhiChu.add(lblLoiNhan, BorderLayout.NORTH);
                     pnlGhiChu.add(scrollGhiChu, BorderLayout.CENTER);
 
-                    // Hiển thị hộp thoại nhập
                     int inputResult = JOptionPane.showConfirmDialog(
                             this, pnlGhiChu, "Ghi chú Ra Ca",
                             JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE
                     );
 
-                    // Nếu bấm Cancel thì thoát
                     if (inputResult != JOptionPane.OK_OPTION) {
                         return;
                     }
 
                     String ghiChu = txtGhiChu.getText().trim();
 
-                    // Hiện hộp thoại xác nhận cuối cùng
-                    int confirm = JOptionPane.showConfirmDialog(this,
+                    int confirmRaCa = JOptionPane.showConfirmDialog(this,
                             "Bạn có chắc chắn muốn kết thúc ca làm việc?",
                             "Xác nhận ra ca", JOptionPane.YES_NO_OPTION);
 
-                    if (confirm == JOptionPane.YES_OPTION) {
-                        if (lsDAO.capNhatRaCa(maNV, maCa, ngayHienTai, gioHienTai, ghiChu)) {
+                    if (confirmRaCa == JOptionPane.YES_OPTION) {
+                        // Gọi BUS để xử lý dữ liệu
+                        if (lsBUS.xuLyRaCa(maNV, caLam, ghiChu)) {
                             JOptionPane.showMessageDialog(this, "Ra ca thành công!");
                             btnVaoCa.setText("Vào Ca");
                             btnVaoCa.setBackground(Color.GREEN);
@@ -438,7 +433,8 @@ public class DashBoardNhanVien extends javax.swing.JPanel {
         tblHetHang.setFont(new Font("Segoe UI", Font.PLAIN, 13));
         tblHetHang.setRowHeight(25);
         tblHetHang.setShowGrid(false);
-        tblHetHang.setSelectionBackground(new Color(255, 230, 230)); // Màu chọn đỏ nhạt
+        tblHetHang.setSelectionBackground(new Color(255, 180, 180));
+        tblHetHang.setSelectionForeground(Color.BLACK);
 
         JTableHeader header = tblHetHang.getTableHeader();
         header.setFont(new Font("Segoe UI", Font.BOLD, 13));
@@ -633,7 +629,8 @@ public class DashBoardNhanVien extends javax.swing.JPanel {
         table.setRowHeight(35);
         table.setShowGrid(false);
         table.setIntercellSpacing(new Dimension(0, 0));
-        table.setSelectionBackground(new Color(230, 245, 255));
+        table.setSelectionBackground(new Color(160, 200, 230)); // Xanh xám dịu
+        table.setSelectionForeground(Color.BLACK); // Đảm bảo chữ vẫn đọc được
 
         JTableHeader header = table.getTableHeader();
         header.setFont(new Font("Segoe UI", Font.BOLD, 14));
@@ -675,7 +672,7 @@ public class DashBoardNhanVien extends javax.swing.JPanel {
         if (nv.getNgaySinh() != null) {
             lblNgaySinh.setText(nv.getNgaySinh().format(formatter));
         }
-        lblChucVu.setText("Nhân viên");
+        lblChucVu.setText(GiaoDienChinhGUI.getTk().isQuanLyLo() ? "Quản lý lô" : "Nhân viên");
         lblTrangThai.setText(nv.isNghiViec() ? "Nghỉ việc" : "Đang làm việc");
         lblSdt.setText(nv.getSdt());
     }

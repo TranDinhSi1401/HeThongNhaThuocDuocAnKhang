@@ -55,6 +55,19 @@ public class LoSanPhamDAO {
         }
         return rows > 0;
     }
+    public static boolean congSoLuong(String maLo, int soLuong, int heSoQuyDoi) {
+        int rows = 0;
+        try {
+            Connection con = ConnectDB.getConnection();
+            String sql = "UPDATE LoSanPham SET soLuong = soLuong + ? WHERE maLoSanPham = ?";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, soLuong * heSoQuyDoi);
+            ps.setString(2, maLo);
+            rows = ps.executeUpdate(); 
+        } catch (SQLException e) {
+        }
+        return rows > 0;
+    }
     public static ArrayList<LoSanPham> dsLoSanPham(){
         ArrayList<LoSanPham> ds = new ArrayList<>();
         String sql = "Select * from LoSanPham";
@@ -101,6 +114,27 @@ public class LoSanPhamDAO {
         }
         
         return lo;
+    }
+
+    public static LoSanPham getLoSanPhamTheoMaCTHD(String maChiTietHoaDon) {
+                LoSanPham lSP = null;
+        try {
+            Connection con = ConnectDB.getConnection();
+            String sql = "select lsp.* from LoSanPham lsp join ChiTietXuatLo ctxl on lsp.maLoSanPham = ctxl.maLoSanPham join ChiTietHoaDon cthd on cthd.maChiTietHoaDon = ctxl.maChiTietHoaDon where cthd.maChiTietHoaDon = ?";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, maChiTietHoaDon);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()) {
+                String maLSP = rs.getString(1);
+                int soLuong = rs.getInt(3);
+                LocalDate ngaySanXuat = rs.getDate(4).toLocalDate();
+                LocalDate ngayHetHan = rs.getDate(5).toLocalDate();
+                LoSanPham lsp = new LoSanPham(maLSP, new SanPham(), soLuong, ngaySanXuat, ngayHetHan);
+                lSP = lsp;
+            }
+        } catch (SQLException e) {
+        }
+        return lSP;
     }
     
     public ArrayList<LoSanPham> dsSanPhamCoNgay(){

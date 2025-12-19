@@ -97,11 +97,18 @@
                               </Properties>
                               <Events>
                                 <EventHandler event="focusGained" listener="java.awt.event.FocusListener" parameters="java.awt.event.FocusEvent" handler="txtNhapMaHoaDonFocusGained"/>
+                                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="txtNhapMaHoaDonActionPerformed"/>
                                 <EventHandler event="keyPressed" listener="java.awt.event.KeyListener" parameters="java.awt.event.KeyEvent" handler="txtNhapMaHoaDonKeyPressed"/>
                               </Events>
                             </Component>
                             <Component class="javax.swing.JButton" name="btnTimKiem">
                               <Properties>
+                                <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                                  <Color blue="d2" green="76" red="19" type="rgb"/>
+                                </Property>
+                                <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                                  <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                                </Property>
                                 <Property name="text" type="java.lang.String" value="T&#xec;m ki&#x1ebf;m"/>
                               </Properties>
                               <Events>
@@ -153,6 +160,12 @@
                         </Container>
                         <Component class="javax.swing.JButton" name="btnXacNhan">
                           <Properties>
+                            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                              <Color blue="0" green="cb" red="0" type="rgb"/>
+                            </Property>
+                            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                              <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                            </Property>
                             <Property name="text" type="java.lang.String" value="X&#xe1;c nh&#x1ead;n [F4]"/>
                           </Properties>
                           <Events>
@@ -351,6 +364,12 @@
                     </Container>
                     <Component class="javax.swing.JButton" name="btnXoaDong">
                       <Properties>
+                        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                          <Color blue="33" green="33" red="ff" type="rgb"/>
+                        </Property>
+                        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                          <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                        </Property>
                         <Property name="text" type="java.lang.String" value="X&#xf3;a d&#xf2;ng [F9]"/>
                       </Properties>
                       <Events>
@@ -359,6 +378,12 @@
                     </Component>
                     <Component class="javax.swing.JButton" name="btnXoaRong">
                       <Properties>
+                        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                          <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                        </Property>
+                        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                          <Color blue="0" green="0" red="0" type="rgb"/>
+                        </Property>
                         <Property name="text" type="java.lang.String" value="X&#xf3;a r&#x1ed7;ng [F10]"/>
                       </Properties>
                       <Events>
@@ -371,6 +396,12 @@
                     </Container>
                     <Component class="javax.swing.JButton" name="btnTaoPhieu">
                       <Properties>
+                        <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                          <Color blue="0" green="cb" red="0" type="rgb"/>
+                        </Property>
+                        <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
+                          <Color blue="ff" green="ff" red="ff" type="rgb"/>
+                        </Property>
                         <Property name="text" type="java.lang.String" value="T&#x1ea1;o phi&#x1ebf;u [F6]"/>
                       </Properties>
                       <Events>

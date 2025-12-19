@@ -4,7 +4,7 @@
  */
 package hethongnhathuocduocankhang.gui;
 
-import com.toedter.calendar.JDateChooser; // Import thư viện lịch
+import com.toedter.calendar.JDateChooser;
 import hethongnhathuocduocankhang.entity.NhanVien;
 import hethongnhathuocduocankhang.entity.TaiKhoan;
 import hethongnhathuocduocankhang.util.PasswordUtil;
@@ -13,7 +13,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneId; // Dùng để chuyển đổi Date <-> LocalDate
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import javax.swing.JCheckBox;
@@ -66,12 +66,19 @@ public class ThemNhanVienGUI extends javax.swing.JPanel {
         txtEmail.addActionListener(e -> kiemTraEmail());
         cmbGioiTinh.addActionListener(e -> kiemTraGioiTinh());
         txtCCCD.addActionListener(e -> kiemTraCCCD());
-        
-        // JDateChooser không có ActionListener như TextField, việc kiểm tra sẽ thực hiện khi bấm nút Xác nhận
-        
+
         txtDiaChi.addActionListener(e -> kiemTraDiaChi());
         txtTenDangNhap.addActionListener(e -> kiemTraTenDangNhap());
         txtMatKhau.addActionListener(e -> kiemTraMatKhau());
+
+        chkQuanLy.addActionListener(e -> {
+            if (chkQuanLy.isSelected()) {
+                chkQuanLyLo.setSelected(false);
+                chkQuanLyLo.setEnabled(false);
+            } else {
+                chkQuanLyLo.setEnabled(true);
+            }
+        });
     }
 
     //Hàm khởi tạo giao diện
@@ -94,11 +101,9 @@ public class ThemNhanVienGUI extends javax.swing.JPanel {
         txtTen = new javax.swing.JTextField();
         txtSdt = new javax.swing.JTextField();
         txtCCCD = new javax.swing.JTextField();
-        
-        // --- THAY ĐỔI: Khởi tạo JDateChooser ---
+
         chonLichNgaySinh = new JDateChooser();
         chonLichNgaySinh.setDateFormatString("yyyy-MM-dd");
-        // ---------------------------------------
 
         btnHuy = new javax.swing.JButton();
         btnXacNhan = new javax.swing.JButton();
@@ -113,6 +118,11 @@ public class ThemNhanVienGUI extends javax.swing.JPanel {
         lblTenDangNhap = new javax.swing.JLabel();
         txtTenDangNhap = new javax.swing.JTextField();
         chkQuanLy = new javax.swing.JCheckBox();
+
+        // --- THAY ĐỔI: Khởi tạo check box Quản Lý Lô ---
+        chkQuanLyLo = new javax.swing.JCheckBox();
+        // -----------------------------------------------
+
         lblNgayTao = new javax.swing.JLabel();
         txtNgayTao = new javax.swing.JTextField();
 
@@ -126,18 +136,18 @@ public class ThemNhanVienGUI extends javax.swing.JPanel {
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lblTieuDe)
-                .addContainerGap(233, Short.MAX_VALUE))
+                jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(lblTieuDe)
+                                .addContainerGap(233, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lblTieuDe)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(lblTieuDe)
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         add(jPanel1, java.awt.BorderLayout.PAGE_START);
@@ -157,7 +167,7 @@ public class ThemNhanVienGUI extends javax.swing.JPanel {
         btnHuy.setText("Hủy");
         btnXacNhan.setText("Xác nhận");
 
-        cmbGioiTinh.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Nam", "Nữ" }));
+        cmbGioiTinh.setModel(new javax.swing.DefaultComboBoxModel<>(new String[]{"Nam", "Nữ"}));
 
         jLabel9.setText("Địa chỉ:");
         lblMatKhau.setText("Mật khẩu:");
@@ -169,119 +179,131 @@ public class ThemNhanVienGUI extends javax.swing.JPanel {
         lblEmail.setText("Email:");
         lblTenDangNhap.setText("Tên đăng nhập:");
         txtTenDangNhap.setEnabled(false);
+
         chkQuanLy.setText("Là Quản lý (Admin)");
+
+        // --- THAY ĐỔI: Set text cho checkbox mới ---
+        chkQuanLyLo.setText("Quản lý lô (Kho)");
+        // ------------------------------------------
+
         lblNgayTao.setText("Ngày tạo:");
         txtNgayTao.setEnabled(false);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(btnHuy)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnXacNhan))
-                    .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblCCCD)
-                            .addComponent(lblNgaySinh)
-                            .addComponent(jLabel9)
-                            .addComponent(lblTen)
-                            .addComponent(lblSdt)
-                            .addComponent(lblGioiTinh)
-                            .addComponent(lblHoTenDem)
-                            .addComponent(lblMaNV)
-                            .addComponent(lblMatKhau)
-                            .addComponent(lblEmail)
-                            .addComponent(lblTenDangNhap)
-                            .addComponent(lblNgayTao))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtMaNV)
-                            .addComponent(txtHoTenDem)
-                            .addComponent(txtTen)
-                            .addComponent(txtSdt)
-                            .addComponent(cmbGioiTinh, 0, 268, Short.MAX_VALUE)
-                            .addComponent(txtCCCD)
-                            // --- THAY ĐỔI: Đưa dcsNgaySinh vào layout ---
-                            .addComponent(chonLichNgaySinh, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(txtDiaChi)
-                            .addComponent(txtEmail)
-                            .addComponent(txtTenDangNhap)
-                            .addComponent(txtNgayTao)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(txtMatKhau)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnHienMatKhau, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addComponent(chkQuanLy)
-                                .addGap(0, 0, Short.MAX_VALUE)))))
-                .addContainerGap())
+                jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                                                .addGap(0, 0, Short.MAX_VALUE)
+                                                .addComponent(btnHuy)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addComponent(btnXacNhan))
+                                        .addGroup(jPanel2Layout.createSequentialGroup()
+                                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addComponent(lblCCCD)
+                                                        .addComponent(lblNgaySinh)
+                                                        .addComponent(jLabel9)
+                                                        .addComponent(lblTen)
+                                                        .addComponent(lblSdt)
+                                                        .addComponent(lblGioiTinh)
+                                                        .addComponent(lblHoTenDem)
+                                                        .addComponent(lblMaNV)
+                                                        .addComponent(lblMatKhau)
+                                                        .addComponent(lblEmail)
+                                                        .addComponent(lblTenDangNhap)
+                                                        .addComponent(lblNgayTao))
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addComponent(txtMaNV)
+                                                        .addComponent(txtHoTenDem)
+                                                        .addComponent(txtTen)
+                                                        .addComponent(txtSdt)
+                                                        .addComponent(cmbGioiTinh, 0, 268, Short.MAX_VALUE)
+                                                        .addComponent(txtCCCD)
+                                                        .addComponent(chonLichNgaySinh, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                        .addComponent(txtDiaChi)
+                                                        .addComponent(txtEmail)
+                                                        .addComponent(txtTenDangNhap)
+                                                        .addComponent(txtNgayTao)
+                                                        .addGroup(jPanel2Layout.createSequentialGroup()
+                                                                .addComponent(txtMatKhau)
+                                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                .addComponent(btnHienMatKhau, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                        .addGroup(jPanel2Layout.createSequentialGroup()
+                                                                .addComponent(chkQuanLy)
+                                                                .addGap(18, 18, 18)
+                                                                // --- THAY ĐỔI: Thêm checkbox vào layout ---
+                                                                .addComponent(chkQuanLyLo)
+                                                                // ------------------------------------------
+                                                                .addGap(0, 0, Short.MAX_VALUE)))))
+                                .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblMaNV)
-                    .addComponent(txtMaNV, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblHoTenDem)
-                    .addComponent(txtHoTenDem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblTen)
-                    .addComponent(txtTen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblSdt)
-                    .addComponent(txtSdt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblEmail)
-                    .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblGioiTinh)
-                    .addComponent(cmbGioiTinh, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblCCCD)
-                    .addComponent(txtCCCD, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                // --- THAY ĐỔI: Căn chỉnh dcsNgaySinh ---
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
-                    .addComponent(lblNgaySinh)
-                    .addComponent(chonLichNgaySinh, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel9)
-                    .addComponent(txtDiaChi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblTenDangNhap)
-                    .addComponent(txtTenDangNhap, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblMatKhau)
-                    .addComponent(txtMatKhau, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnHienMatKhau))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblNgayTao)
-                    .addComponent(txtNgayTao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(chkQuanLy)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnHuy)
-                    .addComponent(btnXacNhan))
-                .addContainerGap())
+                jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(lblMaNV)
+                                        .addComponent(txtMaNV, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(lblHoTenDem)
+                                        .addComponent(txtHoTenDem, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(lblTen)
+                                        .addComponent(txtTen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(lblSdt)
+                                        .addComponent(txtSdt, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(lblEmail)
+                                        .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(lblGioiTinh)
+                                        .addComponent(cmbGioiTinh, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(lblCCCD)
+                                        .addComponent(txtCCCD, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
+                                        .addComponent(lblNgaySinh)
+                                        .addComponent(chonLichNgaySinh, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jLabel9)
+                                        .addComponent(txtDiaChi, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(lblTenDangNhap)
+                                        .addComponent(txtTenDangNhap, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(lblMatKhau)
+                                        .addComponent(txtMatKhau, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(btnHienMatKhau))
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(lblNgayTao)
+                                        .addComponent(txtNgayTao, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(chkQuanLy)
+                                        // --- THAY ĐỔI: Thêm checkbox vào layout vertical ---
+                                        .addComponent(chkQuanLyLo))
+                                // --------------------------------------------------
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
+                                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(btnHuy)
+                                        .addComponent(btnXacNhan))
+                                .addContainerGap())
         );
 
         add(jPanel2, java.awt.BorderLayout.CENTER);
@@ -324,7 +346,6 @@ public class ThemNhanVienGUI extends javax.swing.JPanel {
         return txtCCCD;
     }
 
-    // --- THAY ĐỔI: Getter cho JDateChooser ---
     public JDateChooser getChonLichNgaySinh() {
         return chonLichNgaySinh;
     }
@@ -369,6 +390,11 @@ public class ThemNhanVienGUI extends javax.swing.JPanel {
         return chkQuanLy;
     }
 
+    public JCheckBox getChkQuanLyLo() {
+        return chkQuanLyLo;
+    }
+    // -------------------------------------
+
     public JCheckBox getChkBiKhoa() {
         return chkBiKhoa;
     }
@@ -402,10 +428,8 @@ public class ThemNhanVienGUI extends javax.swing.JPanel {
         cmbGioiTinh.setSelectedItem(gioiTinh ? "Nam" : "Nữ");
     }
 
-    // --- THAY ĐỔI: Setter cho Ngày sinh nhận vào LocalDate ---
     public void setTxtNgaySinh(LocalDate ngaySinh) {
         if (ngaySinh != null) {
-            // Chuyển LocalDate sang Date để set cho JDateChooser
             Date date = Date.from(ngaySinh.atStartOfDay(ZoneId.systemDefault()).toInstant());
             chonLichNgaySinh.setDate(date);
         } else {
@@ -431,7 +455,19 @@ public class ThemNhanVienGUI extends javax.swing.JPanel {
 
     public void setChkQuanLy(boolean quanLy) {
         this.chkQuanLy.setSelected(quanLy);
+
+        if (quanLy) {
+            chkQuanLyLo.setSelected(false);
+            chkQuanLyLo.setEnabled(false);
+        } else {
+            chkQuanLyLo.setEnabled(true);
+        }
     }
+
+    public void setChkQuanLyLo(boolean quanLyLo) {
+        this.chkQuanLyLo.setSelected(quanLyLo);
+    }
+    // -------------------------------------
 
     public void setTxtMaNV(String txtMaNV) {
         this.txtMaNV.setText(txtMaNV);
@@ -493,17 +529,20 @@ public class ThemNhanVienGUI extends javax.swing.JPanel {
             String email = txtEmail.getText().trim();
             boolean gioiTinh = cmbGioiTinh.getSelectedItem().toString().equals("Nam");
             String cccd = txtCCCD.getText().trim();
-            
-            // --- THAY ĐỔI: Lấy dữ liệu từ JDateChooser ---
+
             Date date = chonLichNgaySinh.getDate();
-            // Convert Date -> LocalDate
             LocalDate ngaySinh = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-            
+
             String diaChi = txtDiaChi.getText().trim();
             String tenDangNhap = txtTenDangNhap.getText().trim();
             String plainPassword = new String(txtMatKhau.getPassword());
             String matKhau = PasswordUtil.hashPassword(plainPassword);
+
             boolean quanLy = chkQuanLy.isSelected();
+            // --- THAY ĐỔI: Lấy giá trị checkbox Quản lý lô ---
+            boolean quanLyLo = chkQuanLyLo.isSelected();
+            // -------------------------------------------------
+
             LocalDateTime ngayTao = LocalDateTime.now();
 
             this.nhanVienMoi = new NhanVien();
@@ -521,6 +560,8 @@ public class ThemNhanVienGUI extends javax.swing.JPanel {
             this.taiKhoanMoi.setNhanVien(nhanVienMoi);
             this.taiKhoanMoi.setMatKhau(matKhau);
             this.taiKhoanMoi.setQuanLy(quanLy);
+            this.taiKhoanMoi.setQuanLyLo(quanLyLo);
+            // --------------------------------------------------------------
             this.taiKhoanMoi.setEmail(email);
             this.taiKhoanMoi.setNgayTao(ngayTao);
 
@@ -607,21 +648,20 @@ public class ThemNhanVienGUI extends javax.swing.JPanel {
     }
 
     private boolean kiemTraNgaySinh() {
-        // --- THAY ĐỔI: Logic kiểm tra với JDateChooser ---
         if (chonLichNgaySinh.getDate() == null) {
             showError("Ngày sinh không được rỗng.", chonLichNgaySinh);
             return false;
         }
-        
+
         Date date = chonLichNgaySinh.getDate();
         LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        
+
         // Kiểm tra logic
         if (localDate.isAfter(LocalDate.now())) {
             showError("Ngày sinh phải trước hiện tại.", chonLichNgaySinh);
             return false;
         }
-        
+
         int tuoi = LocalDate.now().getYear() - localDate.getYear();
         if (tuoi < 18) {
             showError("Nhân viên phải đủ 18 tuổi.", chonLichNgaySinh);
@@ -667,6 +707,11 @@ public class ThemNhanVienGUI extends javax.swing.JPanel {
     private javax.swing.JToggleButton btnHienMatKhau;
     private javax.swing.JCheckBox chkBiKhoa;
     private javax.swing.JCheckBox chkQuanLy;
+
+    // --- THAY ĐỔI: Khai báo check box mới ---
+    private javax.swing.JCheckBox chkQuanLyLo;
+    // ----------------------------------------
+
     private javax.swing.JButton btnHuy;
     private javax.swing.JButton btnXacNhan;
     private javax.swing.JCheckBox chkNghiViec;
@@ -687,7 +732,7 @@ public class ThemNhanVienGUI extends javax.swing.JPanel {
     private javax.swing.JTextField txtTen;
     private javax.swing.JTextField txtSdt;
     private javax.swing.JTextField txtCCCD;
-    private JDateChooser chonLichNgaySinh; 
+    private JDateChooser chonLichNgaySinh;
     private javax.swing.JTextField txtDiaChi;
     private javax.swing.JLabel lblEmail;
     private javax.swing.JLabel lblMatKhau;

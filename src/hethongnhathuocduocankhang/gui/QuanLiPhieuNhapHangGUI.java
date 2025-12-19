@@ -6,6 +6,7 @@ package hethongnhathuocduocankhang.gui;
 
 import hethongnhathuocduocankhang.dao.PhieuNhapDAO;
 import hethongnhathuocduocankhang.dao.PhieuTraHangDAO;
+import hethongnhathuocduocankhang.entity.NhanVien;
 import hethongnhathuocduocankhang.entity.PhieuNhap;
 import hethongnhathuocduocankhang.entity.PhieuTraHang;
 import javax.swing.*;
@@ -180,6 +181,7 @@ public class QuanLiPhieuNhapHangGUI extends JPanel {
             return;
         }
         int stt = 1;
+        NhanVien nv = new NhanVien();
         for (PhieuTraHang pth : dsPTH) {
             String tenNV = (pth.getNhanVien() != null && pth.getNhanVien().getTen() != null)
                            ? pth.getNhanVien().getHoTenDem() + " " + pth.getNhanVien().getTen() 

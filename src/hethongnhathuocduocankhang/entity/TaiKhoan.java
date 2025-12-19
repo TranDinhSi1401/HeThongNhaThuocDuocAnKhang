@@ -5,28 +5,25 @@
 package hethongnhathuocduocankhang.entity;
 
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.Objects;
 
-/**
- *
- * @author GIGABYTE
- */
 public class TaiKhoan {
 
     private String tenDangNhap;
     private NhanVien nhanVien;
     private String matKhau;
     private boolean quanLy;
+    private boolean quanLyLo; 
     private boolean biKhoa;
     private String email;
     private LocalDateTime ngayTao;
 
-    public TaiKhoan(String tenDangNhap, NhanVien nhanVien, String matKhau, boolean quanLy, boolean biKhoa, String email, LocalDateTime ngayTao) {
+    public TaiKhoan(String tenDangNhap, NhanVien nhanVien, String matKhau, boolean quanLy, boolean quanLyLo, boolean biKhoa, String email, LocalDateTime ngayTao) {
         this.tenDangNhap = tenDangNhap;
         this.nhanVien = nhanVien;
         this.matKhau = matKhau;
         this.quanLy = quanLy;
+        this.quanLyLo = quanLyLo; 
         this.biKhoa = biKhoa;
         this.email = email;
         this.ngayTao = ngayTao;
@@ -37,6 +34,7 @@ public class TaiKhoan {
         this.nhanVien = taiKhoan.nhanVien;
         this.matKhau = taiKhoan.matKhau;
         this.quanLy = taiKhoan.quanLy;
+        this.quanLyLo = taiKhoan.quanLyLo;
         this.biKhoa = taiKhoan.biKhoa;
         this.email = taiKhoan.email;
         this.ngayTao = taiKhoan.ngayTao;
@@ -83,6 +81,14 @@ public class TaiKhoan {
 
     public void setQuanLy(boolean quanLy) {
         this.quanLy = quanLy;
+    }
+
+    public boolean isQuanLyLo() {
+        return quanLyLo;
+    }
+
+    public void setQuanLyLo(boolean quanLyLo) {
+        this.quanLyLo = quanLyLo;
     }
 
     public boolean isBiKhoa() {
@@ -144,6 +150,6 @@ public class TaiKhoan {
 
     @Override
     public String toString() {
-        return "TaiKhoan{" + "tenDangNhap=" + tenDangNhap + ", nhanVien=" + nhanVien + ", matKhau=" + matKhau + ", quanLy=" + quanLy + ", biKhoa=" + biKhoa + ", email=" + email + ", ngayTao=" + ngayTao + '}';
+        return "TaiKhoan{" + "tenDangNhap=" + tenDangNhap + ", nhanVien=" + nhanVien + ", matKhau=" + matKhau + ", quanLy=" + quanLy + ", quanLyLo=" + quanLyLo + ", biKhoa=" + biKhoa + ", email=" + email + ", ngayTao=" + ngayTao + '}';
     }
 }

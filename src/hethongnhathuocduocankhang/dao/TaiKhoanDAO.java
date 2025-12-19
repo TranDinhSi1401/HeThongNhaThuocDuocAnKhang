@@ -7,7 +7,6 @@ package hethongnhathuocduocankhang.dao;
 import hethongnhathuocduocankhang.connectDB.ConnectDB;
 import hethongnhathuocduocankhang.entity.NhanVien;
 import hethongnhathuocduocankhang.entity.TaiKhoan;
-import java.security.Timestamp;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -20,7 +19,7 @@ import java.time.LocalDateTime;
  */
 public class TaiKhoanDAO {
 
-    public static TaiKhoan getTaiKhoanTheoTenDangNhap(String tenDangNhap) {       
+    public static TaiKhoan getTaiKhoanTheoTenDangNhap(String tenDangNhap) {        
 
         TaiKhoan tk = null;
 
@@ -32,13 +31,19 @@ public class TaiKhoanDAO {
             ps.setString(1, tenDangNhap);
             ResultSet rs = ps.executeQuery();
             if(rs.next()) {
-                String hashedPassword = rs.getString(2);
-                boolean quanLy = rs.getInt(3) == 1;
-                boolean biKhoa = rs.getInt(4) == 1;
-                String email = rs.getString(5);
-                LocalDateTime ngayTao = rs.getTimestamp(6).toLocalDateTime();
-                NhanVien nv = NhanVienDAO.getNhanVienTheoMaNV(tenDangNhap);
-                tk = new TaiKhoan(tenDangNhap, nv, hashedPassword, quanLy, biKhoa, email, ngayTao);
+                String maNV = rs.getString("tenDangNhap");
+                String hashedPassword = rs.getString("matKhau");
+                boolean quanLy = rs.getBoolean("quanLy");
+                boolean quanLyLo = rs.getBoolean("quanLyLo"); 
+                boolean biKhoa = rs.getBoolean("biKhoa");
+                String email = rs.getString("email");
+
+                java.sql.Timestamp ts = rs.getTimestamp("ngayTao");
+                LocalDateTime ngayTao = (ts != null) ? ts.toLocalDateTime() : null;
+                
+                NhanVien nv = NhanVienDAO.getNhanVienTheoMaNV(maNV);
+
+                tk = new TaiKhoan(maNV, nv, hashedPassword, quanLy, quanLyLo, biKhoa, email, ngayTao);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -52,17 +57,18 @@ public class TaiKhoanDAO {
             ConnectDB.getInstance();
             Connection con = ConnectDB.getConnection();
 
-            String sql = "INSERT INTO TaiKhoan (tenDangNhap, matKhau, quanLy, biKhoa, email, ngayTao) "
-                    + "VALUES (?, ?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO TaiKhoan (tenDangNhap, matKhau, quanLy, quanLyLo, biKhoa, email, ngayTao, daXoa) "
+                    + "VALUES (?, ?, ?, ?, ?, ?, ?, 0)"; // Mặc định daXoa là 0
 
             PreparedStatement ps = con.prepareStatement(sql);
 
             ps.setString(1, tk.getTenDangNhap());
             ps.setString(2, tk.getMatKhau());
             ps.setBoolean(3, tk.isQuanLy());
-            ps.setBoolean(4, tk.isBiKhoa());
-            ps.setString(5, tk.getEmail());
-            ps.setTimestamp(6, java.sql.Timestamp.valueOf(tk.getNgayTao()));
+            ps.setBoolean(4, tk.isQuanLyLo());
+            ps.setBoolean(5, tk.isBiKhoa());
+            ps.setString(6, tk.getEmail());
+            ps.setTimestamp(7, java.sql.Timestamp.valueOf(tk.getNgayTao()));
 
             n = ps.executeUpdate();
         } catch (SQLException e) {
@@ -96,16 +102,16 @@ public class TaiKhoanDAO {
             Connection con = ConnectDB.getConnection();
 
             String sql = "UPDATE TaiKhoan SET "
-                    + "matKhau = ?, "
                     + "quanLy = ?, "
+                    + "quanLyLo = ?, " 
                     + "biKhoa = ?, "
                     + "email = ? "
                     + "WHERE tenDangNhap = ?";
 
             PreparedStatement ps = con.prepareStatement(sql);
 
-            ps.setString(1, tk.getMatKhau());
-            ps.setBoolean(2, tk.isQuanLy());
+            ps.setBoolean(1, tk.isQuanLy());
+            ps.setBoolean(2, tk.isQuanLyLo());
             ps.setBoolean(3, tk.isBiKhoa());
             ps.setString(4, tk.getEmail());
             ps.setString(5, tk.getTenDangNhap());
@@ -116,17 +122,15 @@ public class TaiKhoanDAO {
             e.printStackTrace();
         }
 
-        // Trả về true nếu có ít nhất 1 dòng được cập nhật
         return n > 0;
     }
 
     public static boolean kiemTraEmailTonTai(String email) {
-
         try {
             ConnectDB.getInstance();
             Connection con = ConnectDB.getConnection();
 
-            String sql = "SELECT * FROM TaiKhoan WHERE email = ?";
+            String sql = "SELECT tenDangNhap FROM TaiKhoan WHERE email = ?";
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, email);
             ResultSet rs = ps.executeQuery();
@@ -166,7 +170,7 @@ public class TaiKhoanDAO {
             ps.setString(2, email);
             ps.setString(3, taiKhoan);
             int rowsAffected = ps.executeUpdate();
-            return rowsAffected > 0; // cập nhật thành công nếu > 0
+            return rowsAffected > 0; 
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
