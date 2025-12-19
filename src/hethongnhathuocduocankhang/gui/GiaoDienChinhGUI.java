@@ -6,16 +6,24 @@ package hethongnhathuocduocankhang.gui;
 
 import com.formdev.flatlaf.FlatClientProperties;
 import hethongnhathuocduocankhang.entity.TaiKhoan;
+import hethongnhathuocduocankhang.util.PasswordUtil;
+import java.awt.Color;
 import java.awt.Component;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.Image;
+import java.awt.Insets;
 import java.awt.Toolkit;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
 
 /**
  *
@@ -26,6 +34,15 @@ public class GiaoDienChinhGUI extends JFrame{
     private static GiaoDienChinhGUI app;
     private final MainForm mainForm;
     private static final Map<String, JPanel> cachedPanels = new HashMap<>();
+    private static boolean canDoiMatKhau = false;
+
+    public static boolean isCanDoiMatKhau() {
+        return canDoiMatKhau;
+    }
+
+    public static void setCanDoiMatKhau(boolean canDoiMatKhau) {
+        GiaoDienChinhGUI.canDoiMatKhau = canDoiMatKhau;
+    }
         
     public GiaoDienChinhGUI(TaiKhoan tk) {
         if (tk != null) {
@@ -81,6 +98,7 @@ public class GiaoDienChinhGUI extends JFrame{
         if (confirm == JOptionPane.YES_OPTION) {
                 app.dispose(); // đóng cửa sổ hiện tại
                 cachedPanels.clear();
+                GiaoDienChinhGUI.setCanDoiMatKhau(false);
                 new DangNhapGUI().setVisible(true); 
         }
     }
@@ -115,5 +133,77 @@ public class GiaoDienChinhGUI extends JFrame{
         GiaoDienChinhGUI.tk = tk;
     }
     
+    public static void taoPanelDoiMatKhau() {
+        JPanel panel = new JPanel();
+        panel.setLayout(new GridBagLayout());
+        panel.setBackground(Color.WHITE);
+
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 10, 10, 10);
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.weightx = 1.0;
+
+        // Label và PasswordField cho Mật khẩu cũ
+        JLabel lblMatKhauCu = new JLabel("Mật khẩu cũ:");
+        JTextField txtMatKhauCu = new JTextField(20);
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        panel.add(lblMatKhauCu, gbc);
+        gbc.gridx = 1;
+        panel.add(txtMatKhauCu, gbc);
+
+        // Label và PasswordField cho Mật khẩu mới
+        JLabel lblMatKhauMoi = new JLabel("Mật khẩu mới:");
+        JTextField txtMatKhauMoi = new JTextField(20);
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        panel.add(lblMatKhauMoi, gbc);
+        gbc.gridx = 1;
+        panel.add(txtMatKhauMoi, gbc);
+
+        // Label và PasswordField cho Xác nhận mật khẩu mới
+        JLabel lblXacNhan = new JLabel("Xác nhận mật khẩu mới:");
+        JTextField txtXacNhan = new JTextField(20);
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        panel.add(lblXacNhan, gbc);
+        gbc.gridx = 1;
+        panel.add(txtXacNhan, gbc);
+
+        int result = JOptionPane.showConfirmDialog(
+                app,
+                panel,
+                "Đổi mật khẩu",
+                JOptionPane.OK_CANCEL_OPTION,
+                JOptionPane.PLAIN_MESSAGE
+        );
+        
+        if (result == JOptionPane.OK_OPTION) {
+            String oldPass = txtMatKhauCu.getText().trim();
+            String newPass = txtMatKhauMoi.getText().trim();
+            String confirmPass = txtXacNhan.getText().trim();
+
+            if (oldPass.isEmpty() || newPass.isEmpty() || confirmPass.isEmpty()) {
+                JOptionPane.showMessageDialog(app, "Vui lòng nhập đầy đủ thông tin!");
+            } else if (!newPass.equals(confirmPass)) {
+                JOptionPane.showMessageDialog(app, "Mật khẩu xác nhận không khớp!");
+            } else {
+                // Gọi business logic xử lý đổi mật khẩu
+                if(PasswordUtil.doiMatKhau(GiaoDienChinhGUI.getTk(), oldPass, newPass)) {
+                    JOptionPane.showMessageDialog(app, "Đổi mật khẩu thành công!");
+                } else {
+                    JOptionPane.showMessageDialog(app, "Mật khẩu cũ không đúng!");
+                }             
+            }
+        }
+    }
     
+    public static void showNhacNhoDoiMatKhau(boolean canDoiMatKhau) {
+        if(canDoiMatKhau) {
+            JOptionPane.showMessageDialog(app, "Bạn vừa đặt lại mật khẩu\nHãy đổi lại mật khẩu mới trong phần tiện ích -> đổi mật khẩu", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+        } else {
+        
+        }
+    }
 }

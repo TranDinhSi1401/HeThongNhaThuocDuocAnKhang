@@ -214,6 +214,7 @@ public class DangNhapGUI extends javax.swing.JFrame {
                 java.awt.EventQueue.invokeLater(() -> {
                     GiaoDienChinhGUI app = new GiaoDienChinhGUI(tk);
                     app.setVisible(true);
+                    GiaoDienChinhGUI.showNhacNhoDoiMatKhau(GiaoDienChinhGUI.isCanDoiMatKhau());
                 });
                 this.dispose();
             }
@@ -334,6 +335,7 @@ public class DangNhapGUI extends javax.swing.JFrame {
                                     "Mật khẩu mới đã được gửi đến email: " + email,
                                     "Thành công",
                                     JOptionPane.INFORMATION_MESSAGE);
+                            GiaoDienChinhGUI.setCanDoiMatKhau(ok);
                         } else {
                             JOptionPane.showMessageDialog(null,
                                     "Không thể đặt lại mật khẩu. Vui lòng thử lại!",

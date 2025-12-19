@@ -38,7 +38,7 @@ public class Menu extends JPanel {
         {"~Khác~"},
         {"Thống kê doanh thu"}, // 6
         {"Báo cáo"}, // 7
-        {"Trợ giúp", "Giới thiệu", "Hướng dẫn sử dụng"}, // 8
+        {"Trợ giúp", "Giới thiệu", "Hướng dẫn sử dụng", "Đổi mật khẩu"}, // 8
         {"Đăng xuất"} // 9
     };
 

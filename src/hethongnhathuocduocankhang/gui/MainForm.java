@@ -3,6 +3,7 @@ package hethongnhathuocduocankhang.gui;
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.formdev.flatlaf.util.UIScale;
+import hethongnhathuocduocankhang.bus.DangNhapBUS;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.ComponentOrientation;
@@ -141,6 +142,9 @@ public class MainForm extends JLayeredPane {
                     case 2 -> {
                         // Hướng dẫn sử dụng
                         showForm(new HuongDanSuDungGUI());
+                    }
+                    case 3 -> {
+                        GiaoDienChinhGUI.taoPanelDoiMatKhau();  
                     }
                     default -> {
                         action.cancel();
