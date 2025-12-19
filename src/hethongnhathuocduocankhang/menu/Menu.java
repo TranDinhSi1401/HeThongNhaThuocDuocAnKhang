@@ -32,7 +32,7 @@ public class Menu extends JPanel {
         {"Tra cứu"}, // 3
         {"Quản lý", "Quản lý khách hàng", "Quản lý sản phẩm", 
             "Quản lý nhân viên", "Quản lý hóa đơn", "Quản lý khuyến mãi", 
-            "Quản lý nhà cung cấp", "Quản lý phiếu đặt hàng", "Quản lý lịch sử ca làm", 
+            "Quản lý nhà cung cấp", "Quản lý lịch sử ca làm", 
             "Quản lý phiếu trả hàng","Quản lý phiếu nhập hàng"}, // 4
         {"Quản lý lô"}, // 5
         {"~Khác~"},

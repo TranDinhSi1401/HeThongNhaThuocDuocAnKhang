@@ -214,10 +214,6 @@ public class DangNhapGUI extends javax.swing.JFrame {
                         "Đăng nhập thất bại",
                         javax.swing.JOptionPane.ERROR_MESSAGE);
             } else {
-                FlatRobotoFont.install();
-                FlatLaf.registerCustomDefaultsSource("hethongnhathuocduocankhang.theme");
-                UIManager.put("defaultFont", new Font(FlatRobotoFont.FAMILY, Font.PLAIN, 13));
-                FlatMacLightLaf.setup();
                 java.awt.EventQueue.invokeLater(() -> {
                     GiaoDienChinhGUI app = new GiaoDienChinhGUI(tk);
                     app.setVisible(true);
