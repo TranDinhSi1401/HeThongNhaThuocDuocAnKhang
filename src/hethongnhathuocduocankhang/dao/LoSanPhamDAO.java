@@ -55,13 +55,13 @@ public class LoSanPhamDAO {
         }
         return rows > 0;
     }
-    public static boolean congSoLuong(String maLo, int soLuong) {
+    public static boolean congSoLuong(String maLo, int soLuong, int heSoQuyDoi) {
         int rows = 0;
         try {
             Connection con = ConnectDB.getConnection();
             String sql = "UPDATE LoSanPham SET soLuong = soLuong + ? WHERE maLoSanPham = ?";
             PreparedStatement ps = con.prepareStatement(sql);
-            ps.setInt(1, soLuong);
+            ps.setInt(1, soLuong * heSoQuyDoi);
             ps.setString(2, maLo);
             rows = ps.executeUpdate(); 
         } catch (SQLException e) {

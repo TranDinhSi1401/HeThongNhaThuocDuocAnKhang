@@ -1296,7 +1296,8 @@ public class TraHangGUI extends javax.swing.JPanel {
             if(tinhTrang.equals(TinhTrangSanPhamEnum.HANG_NGUYEN_VEN)  && truongHopDoiTra.equals(TruongHopDoiTraEnum.NHU_CAU_KHACH_HANG) || truongHopDoiTra.equals(TruongHopDoiTraEnum.DI_UNG_MAN_CAM) ){
                     LoSanPhamDAO.congSoLuong(
                             LoSanPhamDAO.getLoSanPhamTheoMaCTHD(list.get(i).getChiTietHoaDon().getMaChiTietHoaDon()).getMaLoSanPham(), 
-                            list.get(i).getSoLuong()
+                            list.get(i).getSoLuong(),
+                            list.get(i).getChiTietHoaDon().getDonViTinh().getHeSoQuyDoi()
                     );
             }
             System.out.println("Đã cộng lại sl");
