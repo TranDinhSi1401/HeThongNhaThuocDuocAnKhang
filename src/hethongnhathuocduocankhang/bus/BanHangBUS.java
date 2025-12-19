@@ -154,7 +154,7 @@ public class BanHangBUS {
                 String maDVT = dvt.getMaDonViTinh();
                 int tonTheoDonVi = tongSoLuong / heSoQuyDoi;
                 if(soLuong * heSoQuyDoi > tongSoLuong) {
-                    throw new Exception("Không đủ số lượng\nTổng số lượng trong kho còn đủ cho: " + tonTheoDonVi + " " + tenDVT);
+                    throw new Exception("Không đủ số lượng\nTổng số lượng còn lại: " + tonTheoDonVi + " " + tenDVT);
                 }
                 if(soLuong < 1) {
                     throw new Exception("Số lượng phải lớn hơn bằng 1");
@@ -197,8 +197,8 @@ public class BanHangBUS {
             if(tblCTHD.getRowCount() == 0) {
                 throw new Exception("Vui lòng thêm sản phẩm cần thanh toán");
             }
-            if(tienThua != tongTien - tienKhachDua) {
-                throw new Exception("Tiền thừa phải bằng tổng tiền trừ tiền khách đưa");
+            if(tienThua != tienKhachDua - tongTien) {
+                throw new Exception("Tiền thừa phải bằng tiền khách đưa trừ tổng tiền");
             }
             for(int i = 0; i < tblCTHD.getRowCount(); i++) {
                 String maSP = tblCTHD.getValueAt(i, 8).toString();
@@ -291,7 +291,7 @@ public class BanHangBUS {
                         soLuongXuat = 0;
                     } else {
                         LoSanPhamDAO.truSoLuong(lsp.getMaLoSanPham(), soLuongTon);
-                        ChiTietXuatLo ctxl = new ChiTietXuatLo(new LoSanPham(lsp.getMaLoSanPham()), new ChiTietHoaDon(maCTHDMoi), soLuongXuat);
+                        ChiTietXuatLo ctxl = new ChiTietXuatLo(new LoSanPham(lsp.getMaLoSanPham()), new ChiTietHoaDon(maCTHDMoi), soLuongTon);
                         ChiTietXuatLoDAO.insertChiTietXuatLo(ctxl);
                         soLuongXuat -= soLuongTon;
                     }

@@ -967,6 +967,8 @@ public class BanHangPane extends javax.swing.JPanel {
         } catch(Exception e) {
             if(e.getMessage().equalsIgnoreCase("For input string: \"Nhậptiềnkháchđưa[F5]\"")) {
                 JOptionPane.showMessageDialog(this, "tiền khách đưa phải là số dương", "Error Message", JOptionPane.ERROR_MESSAGE);
+            } else if (e.getMessage().equalsIgnoreCase("empty String")){
+                JOptionPane.showMessageDialog(this, "Ô tiền thừa bị trống", "Error Message", JOptionPane.ERROR_MESSAGE);    
             } else {
                 JOptionPane.showMessageDialog(this, e.getMessage(), "Error Message", JOptionPane.ERROR_MESSAGE);
             }
