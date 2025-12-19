@@ -25,7 +25,6 @@ CREATE TABLE NhanVien (
     ngaySinh DATE NOT NULL,
     diaChi NVARCHAR(255) NULL,
     nghiViec BIT NOT NULL CONSTRAINT DF_NhanVien_NghiViec DEFAULT 0, -- true: Đã nghỉ việc (Logic NV), false: Đang làm
-    --daXoa BIT NOT NULL CONSTRAINT DF_NhanVien_DaXoa DEFAULT 0, -- true: Đã xóa mềm (Logic hệ thống)
     
     CONSTRAINT CK_NhanVien_MaNV_Format CHECK (maNV LIKE 'NV-[0-9][0-9][0-9][0-9]'),
     CONSTRAINT CK_NhanVien_Sdt_Format CHECK (LEN(sdt) = 10 AND sdt LIKE '0%'),
@@ -50,7 +49,7 @@ CREATE TABLE NhaCungCap (
     diaChi NVARCHAR(255) NULL,
     sdt VARCHAR(10) NOT NULL UNIQUE,
     email NVARCHAR(255) NOT NULL UNIQUE,
-    --daXoa BIT NOT NULL CONSTRAINT DF_NhaCungCap_DaXoa DEFAULT 0,
+    daXoa BIT NOT NULL CONSTRAINT DF_NhaCungCap_DaXoa DEFAULT 0,
 
     CONSTRAINT CK_NhaCungCap_MaNCC_Format CHECK (maNCC LIKE 'NCC-[0-9][0-9][0-9][0-9]'),
     CONSTRAINT CK_NhaCungCap_Sdt_Format CHECK (LEN(sdt) = 10 AND sdt LIKE '0%'),
@@ -84,7 +83,7 @@ CREATE TABLE KhuyenMai (
     soLuongToiThieu INT NOT NULL,
     soLuongToiDa INT NOT NULL,
     ngayChinhSua DATETIME2 NOT NULL CONSTRAINT DF_KhuyenMai_NgayChinhSua DEFAULT GETDATE(),
-    --daXoa BIT NOT NULL CONSTRAINT DF_KhuyenMai_DaXoa DEFAULT 0,
+    daXoa BIT NOT NULL CONSTRAINT DF_KhuyenMai_DaXoa DEFAULT 0,
 
     CONSTRAINT CK_KhuyenMai_MaKM_Format CHECK (maKhuyenMai LIKE 'KM-[0-9][0-9][0-9][0-9]'),
     CONSTRAINT CK_KhuyenMai_PhanTram CHECK (phanTram > 0 AND phanTram <= 100),
@@ -102,7 +101,7 @@ CREATE TABLE TaiKhoan (
     biKhoa BIT NOT NULL CONSTRAINT DF_TaiKhoan_BiKhoa DEFAULT 0, -- true: Bị khóa, false: Hoạt động
     email NVARCHAR(255) NOT NULL UNIQUE,
     ngayTao DATETIME NOT NULL CONSTRAINT DF_TaiKhoan_NgayTao DEFAULT GETDATE(),
-    --daXoa BIT NOT NULL CONSTRAINT DF_TaiKhoan_DaXoa DEFAULT 0,
+    daXoa BIT NOT NULL CONSTRAINT DF_TaiKhoan_DaXoa DEFAULT 0,
 
     CONSTRAINT FK_TaiKhoan_NhanVien FOREIGN KEY (tenDangNhap) REFERENCES NhanVien(maNV),
     CONSTRAINT CK_TaiKhoan_Email_Format CHECK (email LIKE '%_@gmail.com')
@@ -159,6 +158,7 @@ CREATE TABLE LoSanPham (
     ngaySanXuat DATE NOT NULL,
     ngayHetHan DATE NOT NULL,
     daHuy BIT NOT NULL DEFAULT 0,
+
     CONSTRAINT FK_LoSanPham_SanPham FOREIGN KEY (maSP) REFERENCES SanPham(maSP) ON DELETE CASCADE,
     CONSTRAINT CK_LoSanPham_SoLuong CHECK (soLuong >= 0),
     CONSTRAINT CK_LoSanPham_NgayHopLe CHECK (ngayHetHan >= ngaySanXuat)
@@ -1002,183 +1002,184 @@ GO
 -- ===================================================================
 INSERT INTO LichSuLo (maLichSuLo, maLoSanPham, hanhDong, soLuongSau, ghiChu, maNV) VALUES
 -- SP-0001
-('LSL-1', 'LO-SP-0001-20240510-1', 'NHAP_KHO', 1500, N'Nhập hàng từ nhà cung cấp', 'NV-0001'),
-('LSL-2', 'LO-SP-0001-20250120-2', 'NHAP_KHO', 1000, N'Nhập hàng đợt 2', 'NV-0002'),
+('LSL-0001', 'LO-SP-0001-20240510-1', 'NHAP_KHO', 1500, N'Nhập hàng từ nhà cung cấp', 'NV-0002'),
+('LSL-0002', 'LO-SP-0001-20250120-2', 'NHAP_KHO', 1000, N'Nhập hàng đợt 2', 'NV-0002'),
 
 -- SP-0002
-('LSL-3', 'LO-SP-0002-20241101-1', 'NHAP_KHO', 500, N'Nhập hàng theo PO-2024-11', 'NV-0003'),
-('LSL-4', 'LO-SP-0002-20250315-2', 'NHAP_KHO', 300, N'Nhập bổ sung', 'NV-0004'),
+('LSL-0003', 'LO-SP-0002-20241101-1', 'NHAP_KHO', 500, N'Nhập hàng theo PO-2024-11', 'NV-0002'),
+('LSL-0004', 'LO-SP-0002-20250315-2', 'NHAP_KHO', 300, N'Nhập bổ sung', 'NV-0002'),
 
 -- SP-0003
-('LSL-5', 'LO-SP-0003-20240801-1', 'NHAP_KHO', 1000, N'Nhập hàng mới', 'NV-0001'),
+('LSL-0005', 'LO-SP-0003-20240801-1', 'NHAP_KHO', 1000, N'Nhập hàng mới', 'NV-0002'),
 
 -- SP-0004
-('LSL-6', 'LO-SP-0004-20240630-1', 'NHAP_KHO', 500, N'Nhập khẩu chính ngạch', 'NV-0002'),
-('LSL-7', 'LO-SP-0004-20250401-2', 'NHAP_KHO', 400, N'Nhập hàng quý 2', 'NV-0002'),
+('LSL-0006', 'LO-SP-0004-20240630-1', 'NHAP_KHO', 500, N'Nhập khẩu chính ngạch', 'NV-0002'),
+('LSL-0007', 'LO-SP-0004-20250401-2', 'NHAP_KHO', 400, N'Nhập hàng quý 2', 'NV-0002'),
 
 -- SP-0005
-('LSL-8', 'LO-SP-0005-20240715-1', 'NHAP_KHO', 1000, N'Nhập kho tiêu chuẩn', 'NV-0003'),
+('LSL-0008', 'LO-SP-0005-20240715-1', 'NHAP_KHO', 1000, N'Nhập kho tiêu chuẩn', 'NV-0002'),
 
 -- SP-0006
-('LSL-9', 'LO-SP-0006-20241201-1', 'NHAP_KHO', 200, N'Nhập hàng thuốc tim mạch', 'NV-0004'),
-('LSL-10', 'LO-SP-0006-20250510-2', 'NHAP_KHO', 150, N'Nhập bổ sung dự trữ', 'NV-0001'),
+('LSL-0009', 'LO-SP-0006-20241201-1', 'NHAP_KHO', 200, N'Nhập hàng thuốc tim mạch', 'NV-0002'),
+('LSL-0010', 'LO-SP-0006-20250510-2', 'NHAP_KHO', 150, N'Nhập bổ sung dự trữ', 'NV-0002'),
 
 -- SP-0007
-('LSL-11', 'LO-SP-0007-20240220-1', 'NHAP_KHO', 300, N'Nhập hàng Blackmores', 'NV-0002'),
+('LSL-0011', 'LO-SP-0007-20240220-1', 'NHAP_KHO', 300, N'Nhập hàng Blackmores', 'NV-0002'),
 
 -- SP-0008
-('LSL-12', 'LO-SP-0008-20240905-1', 'NHAP_KHO', 1000, N'Nhập hàng Traphaco', 'NV-0003'),
-('LSL-13', 'LO-SP-0008-20250415-2', 'NHAP_KHO', 800, N'Nhập kho lô 2', 'NV-0003'),
+('LSL-0012', 'LO-SP-0008-20240905-1', 'NHAP_KHO', 1000, N'Nhập hàng Traphaco', 'NV-0002'),
+('LSL-0013', 'LO-SP-0008-20250415-2', 'NHAP_KHO', 800, N'Nhập kho lô 2', 'NV-0002'),
 
 -- SP-0009
-('LSL-14', 'LO-SP-0009-20240110-1', 'NHAP_KHO', 2000, N'Nhập hàng số lượng lớn', 'NV-0001'),
+('LSL-0014', 'LO-SP-0009-20240110-1', 'NHAP_KHO', 2000, N'Nhập hàng số lượng lớn', 'NV-0002'),
 
 -- SP-0010
-('LSL-15', 'LO-SP-0010-20241030-1', 'NHAP_KHO', 500, N'Nhập Canxi ống', 'NV-0004'),
-('LSL-16', 'LO-SP-0010-20250520-2', 'NHAP_KHO', 400, N'Nhập bổ sung', 'NV-0002'),
+('LSL-0015', 'LO-SP-0010-20241030-1', 'NHAP_KHO', 500, N'Nhập Canxi ống', 'NV-0002'),
+('LSL-0016', 'LO-SP-0010-20250520-2', 'NHAP_KHO', 400, N'Nhập bổ sung', 'NV-0002'),
 
 -- SP-0011
-('LSL-17', 'LO-SP-0011-20240818-1', 'NHAP_KHO', 300, N'Nhập hàng huyết áp', 'NV-0003'),
+('LSL-0017', 'LO-SP-0011-20240818-1', 'NHAP_KHO', 300, N'Nhập hàng huyết áp', 'NV-0002'),
 
 -- SP-0012
-('LSL-18', 'LO-SP-0012-20241101-1', 'NHAP_KHO', 300, N'Nhập Siro ho', 'NV-0001'),
-('LSL-19', 'LO-SP-0012-20250601-2', 'NHAP_KHO', 200, N'Nhập hàng dự trữ mùa lạnh', 'NV-0004'),
+('LSL-0018', 'LO-SP-0012-20241101-1', 'NHAP_KHO', 300, N'Nhập Siro ho', 'NV-0002'),
+('LSL-0019', 'LO-SP-0012-20250601-2', 'NHAP_KHO', 200, N'Nhập hàng dự trữ mùa lạnh', 'NV-0002'),
 
 -- SP-0013
-('LSL-20', 'LO-SP-0013-20240910-1', 'NHAP_KHO', 200, N'Nhập men vi sinh', 'NV-0002'),
+('LSL-0020', 'LO-SP-0013-20240910-1', 'NHAP_KHO', 200, N'Nhập men vi sinh', 'NV-0002'),
 
 -- SP-0014
-('LSL-21', 'LO-SP-0014-20240301-1', 'NHAP_KHO', 1000, N'Nhập Oresol', 'NV-0003'),
-('LSL-22', 'LO-SP-0014-20250105-2', 'NHAP_KHO', 800, N'Nhập hàng đầu năm', 'NV-0003'),
+('LSL-0021', 'LO-SP-0014-20240301-1', 'NHAP_KHO', 1000, N'Nhập Oresol', 'NV-0002'),
+('LSL-0022', 'LO-SP-0014-20250105-2', 'NHAP_KHO', 800, N'Nhập hàng đầu năm', 'NV-0002'),
 
 -- SP-0015
-('LSL-23', 'LO-SP-0015-20240725-1', 'NHAP_KHO', 500, N'Nhập thuốc hen suyễn', 'NV-0001'),
+('LSL-0023', 'LO-SP-0015-20240725-1', 'NHAP_KHO', 500, N'Nhập thuốc hen suyễn', 'NV-0002'),
 
 -- SP-0016
-('LSL-24', 'LO-SP-0016-20241001-1', 'NHAP_KHO', 600, N'Nhập Sắt bà bầu', 'NV-0004'),
-('LSL-25', 'LO-SP-0016-20250420-2', 'NHAP_KHO', 400, N'Nhập bổ sung', 'NV-0002'),
+('LSL-0024', 'LO-SP-0016-20241001-1', 'NHAP_KHO', 600, N'Nhập Sắt bà bầu', 'NV-0002'),
+('LSL-0025', 'LO-SP-0016-20250420-2', 'NHAP_KHO', 400, N'Nhập bổ sung', 'NV-0002'),
 
 -- SP-0017
-('LSL-26', 'LO-SP-0017-20240515-1', 'NHAP_KHO', 100, N'Nhập hàng đặc biệt', 'NV-0001'),
+('LSL-0026', 'LO-SP-0017-20240515-1', 'NHAP_KHO', 100, N'Nhập hàng đặc biệt', 'NV-0002'),
 
 -- SP-0018
-('LSL-27', 'LO-SP-0018-20240830-1', 'NHAP_KHO', 1000, N'Nhập Boganic', 'NV-0003'),
-('LSL-28', 'LO-SP-0018-20250214-2', 'NHAP_KHO', 500, N'Nhập hàng sau tết', 'NV-0003'),
+('LSL-0027', 'LO-SP-0018-20240830-1', 'NHAP_KHO', 1000, N'Nhập Boganic', 'NV-0002'),
+('LSL-0028', 'LO-SP-0018-20250214-2', 'NHAP_KHO', 500, N'Nhập hàng sau tết', 'NV-0002'),
 
 -- SP-0019
-('LSL-29', 'LO-SP-0019-20241120-1', 'NHAP_KHO', 400, N'Nhập thuốc dạ dày', 'NV-0004'),
+('LSL-0029', 'LO-SP-0019-20241120-1', 'NHAP_KHO', 400, N'Nhập thuốc dạ dày', 'NV-0002'),
 
 -- SP-0020
-('LSL-30', 'LO-SP-0020-20240610-1', 'NHAP_KHO', 300, N'Nhập bổ não', 'NV-0002'),
-('LSL-31', 'LO-SP-0020-20250130-2', 'NHAP_KHO', 200, N'Nhập bổ sung', 'NV-0002'),
+('LSL-0030', 'LO-SP-0020-20240610-1', 'NHAP_KHO', 300, N'Nhập bổ não', 'NV-0002'),
+('LSL-0031', 'LO-SP-0020-20250130-2', 'NHAP_KHO', 200, N'Nhập bổ sung', 'NV-0002'),
 
 -- SP-0021
-('LSL-32', 'LO-SP-0021-20240922-1', 'NHAP_KHO', 200, N'Nhập hàng ban đầu', 'NV-0001'),
-('LSL-33', 'LO-SP-0021-20240922-1', 'XUAT_BAN', 0, N'Xuất bán sỉ toàn bộ lô', 'NV-0001'),
+('LSL-0032', 'LO-SP-0021-20240922-1', 'NHAP_KHO', 200, N'Nhập hàng ban đầu', 'NV-0002'),
+('LSL-0033', 'LO-SP-0021-20240922-1', 'XUAT_BAN', 0, N'Xuất bán sỉ toàn bộ lô', 'NV-0002'),
 
 -- SP-0022
-('LSL-34', 'LO-SP-0022-20240405-1', 'NHAP_KHO', 2000, N'Nhập thuốc cảm cúm', 'NV-0004'),
-('LSL-35', 'LO-SP-0022-20250310-2', 'NHAP_KHO', 1500, N'Nhập hàng giao mùa', 'NV-0003'),
+('LSL-0034', 'LO-SP-0022-20240405-1', 'NHAP_KHO', 2000, N'Nhập thuốc cảm cúm', 'NV-0002'),
+('LSL-0035', 'LO-SP-0022-20250310-2', 'NHAP_KHO', 1500, N'Nhập hàng giao mùa', 'NV-0002'),
 
 -- SP-0023
-('LSL-36', 'LO-SP-0023-20240701-1', 'NHAP_KHO', 200, N'Nhập Vitamin E Mỹ', 'NV-0002'),
+('LSL-0036', 'LO-SP-0023-20240701-1', 'NHAP_KHO', 200, N'Nhập Vitamin E Mỹ', 'NV-0002'),
 
 -- SP-0024
-('LSL-37', 'LO-SP-0024-20241010-1', 'NHAP_KHO', 100, N'Nhập thuốc hướng thần (có kiểm soát)', 'NV-0001'),
-('LSL-38', 'LO-SP-0024-20250501-2', 'NHAP_KHO', 50, N'Nhập bổ sung có kiểm soát', 'NV-0001'),
+('LSL-0037', 'LO-SP-0024-20241010-1', 'NHAP_KHO', 100, N'Nhập thuốc hướng thần (có kiểm soát)', 'NV-0002'),
+('LSL-0038', 'LO-SP-0024-20250501-2', 'NHAP_KHO', 50, N'Nhập bổ sung có kiểm soát', 'NV-0002'),
 
 -- SP-0025
-('LSL-39', 'LO-SP-0025-20240315-1', 'NHAP_KHO', 400, N'Nhập sát trùng', 'NV-0003'),
+('LSL-0039', 'LO-SP-0025-20240315-1', 'NHAP_KHO', 400, N'Nhập sát trùng', 'NV-0002'),
 
 -- SP-0026
-('LSL-40', 'LO-SP-0026-20240808-1', 'NHAP_KHO', 150, N'Nhập Multivitamin', 'NV-0004'),
-('LSL-41', 'LO-SP-0026-20250225-2', 'NHAP_KHO', 100, N'Nhập bổ sung', 'NV-0002'),
+('LSL-0040', 'LO-SP-0026-20240808-1', 'NHAP_KHO', 150, N'Nhập Multivitamin', 'NV-0002'),
+('LSL-0041', 'LO-SP-0026-20250225-2', 'NHAP_KHO', 100, N'Nhập bổ sung', 'NV-0002'),
 
 -- SP-0027
-('LSL-42', 'LO-SP-0027-20240914-1', 'NHAP_KHO', 200, N'Nhập kháng sinh', 'NV-0001'),
+('LSL-0042', 'LO-SP-0027-20240914-1', 'NHAP_KHO', 200, N'Nhập kháng sinh', 'NV-0002'),
 
 -- SP-0028
-('LSL-43', 'LO-SP-0028-20240707-1', 'NHAP_KHO', 500, N'Nhập giảm đau sủi', 'NV-0003'),
-('LSL-44', 'LO-SP-0028-20250125-2', 'NHAP_KHO', 300, N'Nhập hàng', 'NV-0004'),
+('LSL-0043', 'LO-SP-0028-20240707-1', 'NHAP_KHO', 500, N'Nhập giảm đau sủi', 'NV-0002'),
+('LSL-0044', 'LO-SP-0028-20250125-2', 'NHAP_KHO', 300, N'Nhập hàng', 'NV-0002'),
 
 -- SP-0029
-('LSL-45', 'LO-SP-0029-20241001-1', 'NHAP_KHO', 100, N'Nhập Collagen', 'NV-0002'),
+('LSL-0045', 'LO-SP-0029-20241001-1', 'NHAP_KHO', 100, N'Nhập Collagen', 'NV-0002'),
 
 -- SP-0030
-('LSL-46', 'LO-SP-0030-20240620-1', 'NHAP_KHO', 500, N'Nhập kháng viêm', 'NV-0001'),
-('LSL-47', 'LO-SP-0030-20250210-2', 'NHAP_KHO', 300, N'Nhập bổ sung', 'NV-0003'),
+('LSL-0046', 'LO-SP-0030-20240620-1', 'NHAP_KHO', 500, N'Nhập kháng viêm', 'NV-0002'),
+('LSL-0047', 'LO-SP-0030-20250210-2', 'NHAP_KHO', 300, N'Nhập bổ sung', 'NV-0002'),
 
 -- SP-0031
-('LSL-48', 'LO-SP-0031-20240101-1', 'NHAP_KHO', 1000, N'Nhập dầu gió', 'NV-0004'),
+('LSL-0048', 'LO-SP-0031-20240101-1', 'NHAP_KHO', 1000, N'Nhập dầu gió', 'NV-0002'),
 
 -- SP-0032
-('LSL-49', 'LO-SP-0032-20240915-1', 'NHAP_KHO', 100, N'Nhập sữa nước', 'NV-0002'),
-('LSL-50', 'LO-SP-0032-20250301-2', 'NHAP_KHO', 80, N'Nhập bổ sung', 'NV-0002'),
+('LSL-0049', 'LO-SP-0032-20240915-1', 'NHAP_KHO', 100, N'Nhập sữa nước', 'NV-0002'),
+('LSL-0050', 'LO-SP-0032-20250301-2', 'NHAP_KHO', 80, N'Nhập bổ sung', 'NV-0002'),
 
 -- SP-0033
-('LSL-51', 'LO-SP-0033-20240810-1', 'NHAP_KHO', 500, N'Nhập Aspirin', 'NV-0001'),
+('LSL-0051', 'LO-SP-0033-20240810-1', 'NHAP_KHO', 500, N'Nhập Aspirin', 'NV-0002'),
 
 -- SP-0034
-('LSL-52', 'LO-SP-0034-20240505-1', 'NHAP_KHO', 2500, N'Nhập Tiffy vỉ', 'NV-0003'),
-('LSL-53', 'LO-SP-0034-20250115-2', 'NHAP_KHO', 2000, N'Nhập hàng Tết', 'NV-0003'),
+('LSL-0052', 'LO-SP-0034-20240505-1', 'NHAP_KHO', 2500, N'Nhập Tiffy vỉ', 'NV-0002'),
+('LSL-0053', 'LO-SP-0034-20250115-2', 'NHAP_KHO', 2000, N'Nhập hàng Tết', 'NV-0002'),
 
 -- SP-0035
-('LSL-54', 'LO-SP-0035-20240712-1', 'NHAP_KHO', 100, N'Nhập Vitamin nam', 'NV-0004'),
+('LSL-0054', 'LO-SP-0035-20240712-1', 'NHAP_KHO', 100, N'Nhập Vitamin nam', 'NV-0002'),
 
 -- SP-0036
-('LSL-55', 'LO-SP-0036-20241020-1', 'NHAP_KHO', 800, N'Nhập thuốc chống nôn', 'NV-0002'),
-('LSL-56', 'LO-SP-0036-20250410-2', 'NHAP_KHO', 500, N'Nhập bổ sung', 'NV-0001'),
+('LSL-0055', 'LO-SP-0036-20241020-1', 'NHAP_KHO', 800, N'Nhập thuốc chống nôn', 'NV-0002'),
+('LSL-0056', 'LO-SP-0036-20250410-2', 'NHAP_KHO', 500, N'Nhập bổ sung', 'NV-0002'),
 
 -- SP-0037
-('LSL-57', 'LO-SP-0037-20240614-1', 'NHAP_KHO', 200, N'Nhập dầu cá Mỹ', 'NV-0003'),
+('LSL-0057', 'LO-SP-0037-20240614-1', 'NHAP_KHO', 200, N'Nhập dầu cá Mỹ', 'NV-0002'),
 
 -- SP-0038
-('LSL-58', 'LO-SP-0038-20240901-1', 'NHAP_KHO', 500, N'Nhập thuốc dị ứng', 'NV-0004'),
-('LSL-59', 'LO-SP-0038-20250501-2', 'NHAP_KHO', 300, N'Nhập bổ sung', 'NV-0002'),
+('LSL-0058', 'LO-SP-0038-20240901-1', 'NHAP_KHO', 500, N'Nhập thuốc dị ứng', 'NV-0002'),
+('LSL-0059', 'LO-SP-0038-20250501-2', 'NHAP_KHO', 300, N'Nhập bổ sung', 'NV-0002'),
 
 -- SP-0039
-('LSL-60', 'LO-SP-0039-20241105-1', 'NHAP_KHO', 400, N'Nhập kháng sinh', 'NV-0001'),
+('LSL-0060', 'LO-SP-0039-20241105-1', 'NHAP_KHO', 400, N'Nhập kháng sinh', 'NV-0002'),
 
 -- SP-0040
-('LSL-61', 'LO-SP-0040-20240820-1', 'NHAP_KHO', 100, N'Nhập thực phẩm chức năng Nhật', 'NV-0003'),
-('LSL-62', 'LO-SP-0040-20250215-2', 'NHAP_KHO', 80, N'Nhập bổ sung', 'NV-0004'),
+('LSL-0061', 'LO-SP-0040-20240820-1', 'NHAP_KHO', 100, N'Nhập thực phẩm chức năng Nhật', 'NV-0002'),
+('LSL-0062', 'LO-SP-0040-20250215-2', 'NHAP_KHO', 80, N'Nhập bổ sung', 'NV-0002'),
 
 -- SP-0041
-('LSL-63', 'LO-SP-0041-20240730-1', 'NHAP_KHO', 200, N'Nhập thuốc an thần', 'NV-0001'),
+('LSL-0063', 'LO-SP-0041-20240730-1', 'NHAP_KHO', 200, N'Nhập thuốc an thần', 'NV-0002'),
 
 -- SP-0042
-('LSL-64', 'LO-SP-0042-20240201-1', 'NHAP_KHO', 1000, N'Nhập băng cá nhân', 'NV-0002'),
-('LSL-65', 'LO-SP-0042-20250110-2', 'NHAP_KHO', 800, N'Nhập hàng mới', 'NV-0002'),
+('LSL-0064', 'LO-SP-0042-20240201-1', 'NHAP_KHO', 1000, N'Nhập băng cá nhân', 'NV-0002'),
+('LSL-0065', 'LO-SP-0042-20250110-2', 'NHAP_KHO', 800, N'Nhập hàng mới', 'NV-0002'),
 
 -- SP-0043
-('LSL-66', 'LO-SP-0043-20240909-1', 'NHAP_KHO', 150, N'Nhập hỗ trợ giấc ngủ', 'NV-0003'),
+('LSL-0066', 'LO-SP-0043-20240909-1', 'NHAP_KHO', 150, N'Nhập hỗ trợ giấc ngủ', 'NV-0002'),
 
 -- SP-0044
-('LSL-67', 'LO-SP-0044-20240625-1', 'NHAP_KHO', 1200, N'Nhập Panadol đỏ', 'NV-0004'),
-('LSL-68', 'LO-SP-0044-20250305-2', 'NHAP_KHO', 1000, N'Nhập bổ sung', 'NV-0001'),
+('LSL-0067', 'LO-SP-0044-20240625-1', 'NHAP_KHO', 1200, N'Nhập Panadol đỏ', 'NV-0002'),
+('LSL-0068', 'LO-SP-0044-20250305-2', 'NHAP_KHO', 1000, N'Nhập bổ sung', 'NV-0002'),
 
 -- SP-0045
-('LSL-69', 'LO-SP-0045-20240717-1', 'NHAP_KHO', 1000, N'Nhập Vitamin C', 'NV-0003'),
+('LSL-0069', 'LO-SP-0045-20240717-1', 'NHAP_KHO', 1000, N'Nhập Vitamin C', 'NV-0002'),
 
 -- SP-0046
-('LSL-70', 'LO-SP-0046-20241001-1', 'NHAP_KHO', 2000, N'Nhập Nước muối 0.9%', 'NV-0002'),
-('LSL-71', 'LO-SP-0046-20250515-2', 'NHAP_KHO', 1500, N'Nhập bổ sung', 'NV-0002'),
+('LSL-0070', 'LO-SP-0046-20241001-1', 'NHAP_KHO', 2000, N'Nhập Nước muối 0.9%', 'NV-0002'),
+('LSL-0071', 'LO-SP-0046-20250515-2', 'NHAP_KHO', 1500, N'Nhập bổ sung', 'NV-0002'),
 
 -- SP-0047
-('LSL-72', 'LO-SP-0047-20240801-1', 'NHAP_KHO', 200, N'Nhập miếng dán trắng răng', 'NV-0001'),
+('LSL-0072', 'LO-SP-0047-20240801-1', 'NHAP_KHO', 200, N'Nhập miếng dán trắng răng', 'NV-0002'),
 
 -- SP-0048
-('LSL-73', 'LO-SP-0048-20240920-1', 'NHAP_KHO', 800, N'Nhập kẹo ngậm ho', 'NV-0004'),
-('LSL-74', 'LO-SP-0048-20250412-2', 'NHAP_KHO', 600, N'Nhập hàng đợt 2', 'NV-0003'),
+('LSL-0073', 'LO-SP-0048-20240920-1', 'NHAP_KHO', 800, N'Nhập kẹo ngậm ho', 'NV-0002'),
+('LSL-0074', 'LO-SP-0048-20250412-2', 'NHAP_KHO', 600, N'Nhập hàng đợt 2', 'NV-0002'),
 
 -- SP-0049
-('LSL-75', 'LO-SP-0049-20240530-1', 'NHAP_KHO', 100, N'Nhập Biotin', 'NV-0002'),
+('LSL-0075', 'LO-SP-0049-20240530-1', 'NHAP_KHO', 100, N'Nhập Biotin', 'NV-0002'),
 
 -- SP-0050
-('LSL-76', 'LO-SP-0050-20240720-1', 'NHAP_KHO', 500, N'Nhập thuốc dạ dày sữa', 'NV-0001'),
-('LSL-77', 'LO-SP-0050-20250410-2', 'NHAP_KHO', 400, N'Nhập kho chờ kiểm định', 'NV-0003'),
-('LSL-78', 'LO-SP-0050-20250410-2', 'HUY_LO', 400, N'Hủy toàn bộ lô do sai quy cách', 'NV-0001');
+('LSL-0076', 'LO-SP-0050-20240720-1', 'NHAP_KHO', 500, N'Nhập thuốc dạ dày sữa', 'NV-0002'),
+('LSL-0077', 'LO-SP-0050-20250410-2', 'NHAP_KHO', 400, N'Nhập kho chờ kiểm định', 'NV-0002'),
+('LSL-0078', 'LO-SP-0050-20250410-2', 'HUY_LO', 400, N'Hủy toàn bộ lô do sai quy cách', 'NV-0002');
 GO
+
 
 -- ===================================================================
 -- 10. Bảng SanPhamCungCap
@@ -1452,8 +1453,6 @@ INSERT INTO LichSuCaLam (maNV, maCa, ngayLamViec, thoiGianVaoCa, thoiGianRaCa, g
 ('NV-0001', 'SANG', '2025-11-09', '06:59:00', '15:00:00', NULL),
 ('NV-0001', 'TOI', '2025-11-10', '14:59:00', '22:01:00', NULL),
 ('NV-0001', 'SANG', '2025-11-12', '07:00:00', '15:03:00', NULL),
--- Ca đang làm (Giả định hôm nay là 13/11/2025)
-('NV-0001', 'SANG', '2025-11-13', '06:59:00', NULL, N'Đang trong ca'),
 
 -- ===================================================================
 -- Lịch sử cho NV-0002 (Hồ Minh Khang)

@@ -979,12 +979,21 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
         int check = JOptionPane.showConfirmDialog(this, "Xác nhận hủy lô " + maLo, "Xác nhận",
                 JOptionPane.YES_NO_OPTION);
         if (check == JOptionPane.YES_OPTION) {
+            String lyDo=null;
             JTextArea noiDungXoaLo = new JTextArea();
             JScrollPane cuon = new JScrollPane(noiDungXoaLo);
-            int nhap = JOptionPane.showConfirmDialog(null, cuon, "Nhập lý do hủy lô(Thông tin bắt buộc)",
-                    JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-            if (nhap != JOptionPane.OK_OPTION) {
-                return;
+            while(true){
+                int nhap = JOptionPane.showConfirmDialog(null, cuon, "Nhập lý do hủy lô(Thông tin bắt buộc)",
+                        JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+                if (nhap != JOptionPane.OK_OPTION) {
+                    return;
+                }               
+                lyDo=noiDungXoaLo.getText().trim();
+                if(!lyDo.isEmpty()){
+                    break;
+                }
+                JOptionPane.showMessageDialog(this, "Không thể bỏ trống phần nội dung này");
+                noiDungXoaLo.requestFocus();
             }
             String noiDungsXL = noiDungXoaLo.getText();
             LoSanPham loDuocTim = LoSanPhamDAO.timLoSanPham(maLo);
