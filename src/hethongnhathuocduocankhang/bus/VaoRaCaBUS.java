@@ -38,7 +38,7 @@ public class VaoRaCaBUS {
         // Logic xác định mã ca
         if (gioHienTai.getHour() >= 6 && gioHienTai.getHour() < 14) {
             maCa = "SANG";
-        } else {
+        } else if (gioHienTai.getHour() >= 14 && gioHienTai.getHour() < 22){
             maCa = "TOI";
         }
         
