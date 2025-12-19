@@ -5,6 +5,7 @@
 package hethongnhathuocduocankhang.gui;
 
 import com.orsoncharts.util.TextAnchor;
+import hethongnhathuocduocankhang.bus.VaoRaCaBUS;
 import hethongnhathuocduocankhang.bus.QuanLyLoBUS;
 import hethongnhathuocduocankhang.dao.CaLamDAO;
 import hethongnhathuocduocankhang.dao.DonViTinhDAO;
@@ -113,7 +114,7 @@ public class DashBoardQuanLi extends javax.swing.JPanel {
         initTableLoSapHetHan();
         initPanelThongKeNgay();
         veBieuDo(LocalDate.now().getMonthValue(), LocalDate.now().getYear(), "tháng");
-
+        configureBtnVaoCa();
     }
 
     private void initBieuDo() {
@@ -195,34 +196,143 @@ public class DashBoardQuanLi extends javax.swing.JPanel {
         }
 
         // SỰ KIỆN CLICK NÚT
+//        btnVaoCa.addActionListener(e -> {
+//            try {
+//                String maNV = GiaoDienChinhGUI.getTk().getTenDangNhap().trim();
+//                NhanVien nv = NhanVienDAO.getNhanVienTheoMaNV(maNV);
+//                LocalDate ngayHienTai = LocalDate.now();
+//                LocalTime gioHienTai = LocalTime.now();
+//
+//                String maCa = "";
+//                if (gioHienTai.getHour() >= 6 && gioHienTai.getHour() < 14) {
+//                    maCa = "SANG";
+//                } else {
+//                    maCa = "TOI";
+//                }
+//
+//                CaLam caLam = CaLamDAO.timCaLamTheoMa(maCa);
+//                if (caLam == null) {
+//                    JOptionPane.showMessageDialog(this, "Không xác định được Ca Làm hiện tại (Mã ca: " + maCa + " không tồn tại)!");
+//                    return;
+//                }
+//
+//                LichSuCaLamDAO lsDAO = new LichSuCaLamDAO();
+//
+//                if (btnVaoCa.getText().equals("Vào Ca")) {
+//                    // LOGIC VÀO CA
+//                    LichSuCaLam ls = new LichSuCaLam(nv, ngayHienTai, caLam, gioHienTai, null, "");
+//
+//                    if (lsDAO.themLichSuCaLam(ls)) {
+//                        JOptionPane.showMessageDialog(this, "Vào ca thành công lúc " + gioHienTai.format(DateTimeFormatter.ofPattern("HH:mm:ss")));
+//                        btnVaoCa.setText("Ra Ca");
+//                        btnVaoCa.setBackground(Color.RED);
+//                    } else {
+//                        JOptionPane.showMessageDialog(this, "Lỗi: Không thể vào ca (Có thể bạn đã chấm công rồi).");
+//                    }
+//
+//                } else {
+//                    // LOGIC RA CA
+//                    // Tạo giao diện nhập ghi chú
+//                    JPanel pnlGhiChu = new JPanel(new BorderLayout(5, 5));
+//                    pnlGhiChu.setPreferredSize(new Dimension(400, 150));
+//
+//                    JLabel lblLoiNhan = new JLabel("Nhập ghi chú ra ca (nếu có):");
+//                    lblLoiNhan.setFont(new Font("Segoe UI", Font.BOLD, 14));
+//
+//                    JTextArea txtGhiChu = new JTextArea(5, 20);
+//                    txtGhiChu.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+//                    txtGhiChu.setLineWrap(true);
+//                    txtGhiChu.setWrapStyleWord(true);
+//
+//                    JScrollPane scrollGhiChu = new JScrollPane(txtGhiChu);
+//
+//                    pnlGhiChu.add(lblLoiNhan, BorderLayout.NORTH);
+//                    pnlGhiChu.add(scrollGhiChu, BorderLayout.CENTER);
+//
+//                    // Hiển thị hộp thoại nhập
+//                    int inputResult = JOptionPane.showConfirmDialog(
+//                            this, pnlGhiChu, "Ghi chú Ra Ca",
+//                            JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE
+//                    );
+//
+//                    // Nếu bấm Cancel thì thoát
+//                    if (inputResult != JOptionPane.OK_OPTION) {
+//                        return;
+//                    }
+//
+//                    String ghiChu = txtGhiChu.getText().trim();
+//
+//                    // Hiện hộp thoại xác nhận cuối cùng
+//                    int confirm = JOptionPane.showConfirmDialog(this,
+//                            "Bạn có chắc chắn muốn kết thúc ca làm việc?",
+//                            "Xác nhận ra ca", JOptionPane.YES_NO_OPTION);
+//
+//                    if (confirm == JOptionPane.YES_OPTION) {
+//                        if (lsDAO.capNhatRaCa(maNV, maCa, ngayHienTai, gioHienTai, ghiChu)) {
+//                            JOptionPane.showMessageDialog(this, "Ra ca thành công!");
+//                            btnVaoCa.setText("Vào Ca");
+//                            btnVaoCa.setBackground(Color.GREEN);
+//                        } else {
+//                            JOptionPane.showMessageDialog(this, "Lỗi: Không tìm thấy phiên làm việc để ra ca.");
+//                        }
+//                    }
+//                }
+//            } catch (SQLException ex) {
+//                ex.printStackTrace();
+//                JOptionPane.showMessageDialog(this, "Lỗi kết nối cơ sở dữ liệu!");
+//            }
+//        });
+    }
+
+    private void configureBtnVaoCa() {
+        btnVaoCa.setOpaque(true);
+        // Khởi tạo BUS
+        VaoRaCaBUS lsBUS = new VaoRaCaBUS();
+        String maNV = GiaoDienChinhGUI.getTk().getTenDangNhap().trim();
+
+        // 1. XỬ LÝ TRẠNG THÁI NÚT KHI KHỞI ĐỘNG
+        if (lsBUS.kiemTraDangLamViec(maNV)) {
+            btnVaoCa.setText("Ra Ca");
+            btnVaoCa.setBackground(Color.RED);
+        } else {
+            btnVaoCa.setText("Vào Ca");
+            btnVaoCa.setBackground(Color.GREEN);
+            btnVaoCa.setForeground(Color.WHITE);
+        }
+
+        // 2. XÓA CÁC LISTENER CŨ (tránh bị lặp sự kiện khi reload)
+        for (java.awt.event.ActionListener al : btnVaoCa.getActionListeners()) {
+            btnVaoCa.removeActionListener(al);
+        }
+
+        // 3. SỰ KIỆN CLICK NÚT MỚI
         btnVaoCa.addActionListener(e -> {
             try {
-                String maNV = GiaoDienChinhGUI.getTk().getTenDangNhap().trim();
-                NhanVien nv = NhanVienDAO.getNhanVienTheoMaNV(maNV);
-                LocalDate ngayHienTai = LocalDate.now();
-                LocalTime gioHienTai = LocalTime.now();
+                // Lấy thông tin Ca làm hiện tại từ BUS
+                CaLam caLam = lsBUS.getCaLamHienTai();
 
-                String maCa = "";
-                if (gioHienTai.getHour() >= 6 && gioHienTai.getHour() < 14) {
-                    maCa = "SANG";
-                } else {
-                    maCa = "TOI";
-                }
-
-                CaLam caLam = CaLamDAO.timCaLamTheoMa(maCa);
                 if (caLam == null) {
-                    JOptionPane.showMessageDialog(this, "Không xác định được Ca Làm hiện tại (Mã ca: " + maCa + " không tồn tại)!");
+                    JOptionPane.showMessageDialog(this, "Không xác định được Ca Làm hiện tại (hoặc lỗi kết nối)!");
                     return;
                 }
 
-                LichSuCaLamDAO lsDAO = new LichSuCaLamDAO();
-
                 if (btnVaoCa.getText().equals("Vào Ca")) {
-                    // LOGIC VÀO CA
-                    LichSuCaLam ls = new LichSuCaLam(nv, ngayHienTai, caLam, gioHienTai, null, "");
+                    // --- LOGIC VÀO CA ---
 
-                    if (lsDAO.themLichSuCaLam(ls)) {
-                        JOptionPane.showMessageDialog(this, "Vào ca thành công lúc " + gioHienTai.format(DateTimeFormatter.ofPattern("HH:mm:ss")));
+                    // Hộp thoại xác nhận (GUI giữ quyền hiển thị tương tác)
+                    int confirmVaoCa = JOptionPane.showConfirmDialog(this,
+                            "Bạn có chắc chắn muốn BẮT ĐẦU ca làm việc (" + caLam.getTenCa() + ") không?",
+                            "Xác nhận vào ca",
+                            JOptionPane.YES_NO_OPTION,
+                            JOptionPane.QUESTION_MESSAGE);
+
+                    if (confirmVaoCa != JOptionPane.YES_OPTION) {
+                        return;
+                    }
+
+                    // Gọi BUS để xử lý dữ liệu
+                    if (lsBUS.xuLyVaoCa(maNV, caLam)) {
+                        JOptionPane.showMessageDialog(this, "Vào ca thành công lúc " + java.time.LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm:ss")));
                         btnVaoCa.setText("Ra Ca");
                         btnVaoCa.setBackground(Color.RED);
                     } else {
@@ -230,44 +340,39 @@ public class DashBoardQuanLi extends javax.swing.JPanel {
                     }
 
                 } else {
-                    // LOGIC RA CA
-                    // Tạo giao diện nhập ghi chú
+                    // --- LOGIC RA CA ---
+
+                    // GUI xử lý nhập liệu ghi chú
                     JPanel pnlGhiChu = new JPanel(new BorderLayout(5, 5));
                     pnlGhiChu.setPreferredSize(new Dimension(400, 150));
-
                     JLabel lblLoiNhan = new JLabel("Nhập ghi chú ra ca (nếu có):");
                     lblLoiNhan.setFont(new Font("Segoe UI", Font.BOLD, 14));
-
                     JTextArea txtGhiChu = new JTextArea(5, 20);
                     txtGhiChu.setFont(new Font("Segoe UI", Font.PLAIN, 14));
                     txtGhiChu.setLineWrap(true);
                     txtGhiChu.setWrapStyleWord(true);
-
                     JScrollPane scrollGhiChu = new JScrollPane(txtGhiChu);
-
                     pnlGhiChu.add(lblLoiNhan, BorderLayout.NORTH);
                     pnlGhiChu.add(scrollGhiChu, BorderLayout.CENTER);
 
-                    // Hiển thị hộp thoại nhập
                     int inputResult = JOptionPane.showConfirmDialog(
                             this, pnlGhiChu, "Ghi chú Ra Ca",
                             JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE
                     );
 
-                    // Nếu bấm Cancel thì thoát
                     if (inputResult != JOptionPane.OK_OPTION) {
                         return;
                     }
 
                     String ghiChu = txtGhiChu.getText().trim();
 
-                    // Hiện hộp thoại xác nhận cuối cùng
-                    int confirm = JOptionPane.showConfirmDialog(this,
+                    int confirmRaCa = JOptionPane.showConfirmDialog(this,
                             "Bạn có chắc chắn muốn kết thúc ca làm việc?",
                             "Xác nhận ra ca", JOptionPane.YES_NO_OPTION);
 
-                    if (confirm == JOptionPane.YES_OPTION) {
-                        if (lsDAO.capNhatRaCa(maNV, maCa, ngayHienTai, gioHienTai, ghiChu)) {
+                    if (confirmRaCa == JOptionPane.YES_OPTION) {
+                        // Gọi BUS để xử lý dữ liệu
+                        if (lsBUS.xuLyRaCa(maNV, caLam, ghiChu)) {
                             JOptionPane.showMessageDialog(this, "Ra ca thành công!");
                             btnVaoCa.setText("Vào Ca");
                             btnVaoCa.setBackground(Color.GREEN);
