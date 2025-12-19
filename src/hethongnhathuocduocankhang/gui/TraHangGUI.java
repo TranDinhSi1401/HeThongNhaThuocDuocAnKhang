@@ -5,6 +5,7 @@
 package hethongnhathuocduocankhang.gui;
 
 import com.microsoft.sqlserver.jdbc.SQLServerException;
+import hethongnhathuocduocankhang.bus.TraHangBUS;
 import hethongnhathuocduocankhang.dao.ChiTietHoaDonDAO;
 import hethongnhathuocduocankhang.dao.ChiTietPhieuTraDAO;
 import hethongnhathuocduocankhang.dao.ChiTietXuatLoDAO;
@@ -60,7 +61,7 @@ public class TraHangGUI extends javax.swing.JPanel {
     private JLabel lblSoLanTra;
     private JLabel lblSoNgayHD;
     private JLabel lblTongTienTra;
-
+    private final TraHangBUS traHangBUS = new TraHangBUS();
     /**
      * Creates new form TraHangGUI
      */
@@ -495,7 +496,7 @@ public class TraHangGUI extends javax.swing.JPanel {
         // TODO add your handling code here:
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             String maHoaDon = txtNhapMaHoaDon.getText();
-            addHoaDon(maHoaDon);
+            addHoaDon(maHoaDon,HoaDonDAO.getHoaDonTheoMaHD(maHoaDon));
         }
     }// GEN-LAST:event_txtNhapMaHoaDonKeyPressed
 
@@ -570,58 +571,47 @@ public class TraHangGUI extends javax.swing.JPanel {
 
     private void btnTaoPhieuActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnTaoPhieuActionPerformed
         // TODO add your handling code here:
-        int chon = JOptionPane.showConfirmDialog(null, "Xác nhận tạo phiếu trả?", "Xác nhận",
-                JOptionPane.YES_NO_OPTION);
+int chon = JOptionPane.showConfirmDialog(null, "Xác nhận tạo phiếu trả?", "Xác nhận", JOptionPane.YES_NO_OPTION);
         if (chon == JOptionPane.YES_OPTION) {
-
             PhieuTraHang pth = getPhieuTraHang();
-
             List<ChiTietPhieuTraHang> list = getListCTPTH(pth);
-            //
-            luuPhieuVaoCSDL(pth, list);
-            themSPLaiVaoLo(list);
-            taoPhieuTraHang(pth, list);
-            if(!pth.getHoaDon().getKhachHang().getMaKH().equalsIgnoreCase("KH-00000")){
-                String maKhachHang = pth.getHoaDon().getKhachHang().getMaKH();
-                int diemTru = (int)pth.getTongTienHoanTra()/1000;
-                KhachHangDAO.updateDiemTichLuy(diemTru, maKhachHang);
-            }
-            
-            
-            
-            //
-            jTabbedPane1.setSelectedIndex(0);
-            xoaRongTatCa();
-        } else {
 
+            // GỌI BUS: Xử lý toàn bộ giao dịch (Lưu DB, Cập nhật kho, Trừ điểm)
+            // Thay thế 3-4 dòng gọi DAO cũ
+            try {
+                TraHangBUS.xuLyTraHang(pth, list);
+                
+                // Hiển thị phiếu in (Logic giao diện)
+                taoPhieuTraHang(pth, list); 
+                
+                jTabbedPane1.setSelectedIndex(0);
+                xoaRongTatCa();
+                JOptionPane.showMessageDialog(null, "Tạo phiếu trả hàng thành công!");
+                
+            } catch (Exception e) {
+                e.printStackTrace();
+                JOptionPane.showMessageDialog(null, "Lỗi khi tạo phiếu: " + e.getMessage());
+            }
         }
 
     }// GEN-LAST:event_btnTaoPhieuActionPerformed
 
     private void btnTimKiemActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnTimKiemActionPerformed
-        String maHoaDon = txtNhapMaHoaDon.getText();
-        // Reset thông tin khi tìm kiếm mới
-        resetInfoPanels();
+    String maHoaDon = txtNhapMaHoaDon.getText();
+            resetInfoPanels(); // GUI reset
 
-        if (maHoaDon != null && !maHoaDon.trim().isEmpty()) {
-            // Kiểm tra hóa đơn có tồn tại không
-            HoaDon hoaDon = HoaDonDAO.getHoaDonTheoMaHD(maHoaDon);
+            if (maHoaDon != null && !maHoaDon.trim().isEmpty()) {
+                try {
+                    // GỌI BUS: Kiểm tra điều kiện
+                    HoaDon hoaDon = traHangBUS.kiemTraDieuKienTraHang(maHoaDon);
 
-            if (hoaDon == null) {
-                JOptionPane.showMessageDialog(null, "Không tìm thấy hóa đơn với mã: " + maHoaDon);
-                return;
+                    // Nếu không có exception thì thêm hóa đơn vào GUI
+                    addHoaDon(maHoaDon, hoaDon); 
+
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(null, e.getMessage());
+                }
             }
-
-            // Kiểm tra hóa đơn có quá 30 ngày không
-            long ngayLap = ChronoUnit.DAYS.between(LocalDate.now(), hoaDon.getNgayLapHoaDon()) * -1;
-            if (ngayLap > 30) {
-                JOptionPane.showMessageDialog(null, "Hóa đơn đã lập hơn 30 ngày, theo nguyên tắc không thể trả hàng!");
-                return;
-            }
-
-            // Hóa đơn hợp lệ, thêm dữ liệu và cập nhật 3 ô thông tin
-            addHoaDon(maHoaDon);
-        }
     }// GEN-LAST:event_btnTimKiemActionPerformed
 
     private void btnChonTatCaActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnChonTatCaActionPerformed
@@ -640,41 +630,32 @@ public class TraHangGUI extends javax.swing.JPanel {
         if (selectRow >= 0) {
             int soLuong = Integer.parseInt(dtm.getValueAt(selectRow, 2).toString());
             String maCTHD = dtm.getValueAt(selectRow, 10).toString();
-            if (soLuong <= ChiTietHoaDonDAO.getChiTietHoaDonDaTungTraRoiTheoMaCTHD(maCTHD).getSoLuong() && soLuong > 0) {
-                double donGia = boDinhDangTien(dtm.getValueAt(selectRow, 3).toString());
-                double khuyenMai = boDinhDangTien(dtm.getValueAt(selectRow, 4).toString());
-                dtm.setValueAt(dinhDangTien(soLuong * donGia - (soLuong * donGia*(khuyenMai/100))), selectRow, 5);
+// GỌI BUS: Tính toán tiền hoàn trả (Thay thế logic if-else dài dòng cũ)
+            if (dtm.getValueAt(selectRow, 7) == Boolean.TRUE) { // Sản phẩm nguyên vẹn
+                 dtm.setValueAt("100%", selectRow, 8);
+                 dtm.setValueAt(dtm.getValueAt(selectRow, 5), selectRow, 9);
             } else {
-                int stt = selectRow + 1;
-                dtm.setValueAt(1, selectRow, 2);
-                JOptionPane.showMessageDialog(null, "Yêu cầu kiểm tra lại tại STT " + stt + "\n"
-                        + "- Số lượng trả lớn hơn 0 và bé hơn hoặc bằng số lượng mua là "+ ChiTietHoaDonDAO.getChiTietHoaDonDaTungTraRoiTheoMaCTHD(maCTHD).getSoLuong() +"\n");
-            }
+                // Lấy Enum từ String trong bảng
+                String lyDoStr = dtm.getValueAt(selectRow, 6).toString();
+                TruongHopDoiTraEnum lyDoEnum = null;
+                
+                if(lyDoStr.equals(TruongHopDoiTraEnum.HANG_LOI_DO_NHA_SAN_XUAT.getTruongHopDoiTra())) 
+                    lyDoEnum = TruongHopDoiTraEnum.HANG_LOI_DO_NHA_SAN_XUAT;
+                else if(lyDoStr.equals(TruongHopDoiTraEnum.DI_UNG_MAN_CAM.getTruongHopDoiTra())) 
+                    lyDoEnum = TruongHopDoiTraEnum.DI_UNG_MAN_CAM;
+                else 
+                    lyDoEnum = TruongHopDoiTraEnum.NHU_CAU_KHACH_HANG;
 
-            if (dtm.getValueAt(selectRow, 7) == Boolean.TRUE) {
-                dtm.setValueAt("100%", selectRow, 8);
-                Object thanhTien = dtm.getValueAt(selectRow, 5);
-                dtm.setValueAt(thanhTien, selectRow, 9);
-            } else if (dtm.getValueAt(selectRow, 7) == Boolean.FALSE) {
-                if (dtm.getValueAt(selectRow, 6)
-                        .equals(TruongHopDoiTraEnum.HANG_LOI_DO_NHA_SAN_XUAT.getTruongHopDoiTra())) {
-                    dtm.setValueAt("100%", selectRow, 8);
-                    Object thanhTien = dtm.getValueAt(selectRow, 5);
-                    dtm.setValueAt(thanhTien, selectRow, 9);
-                } else if (dtm.getValueAt(selectRow, 6)
-                        .equals(TruongHopDoiTraEnum.DI_UNG_MAN_CAM.getTruongHopDoiTra())) {
-                    dtm.setValueAt("70%", selectRow, 8);
-                    String thanhTien = dinhDangTien(boDinhDangTien(dtm.getValueAt(selectRow, 5).toString()) * 0.7);
-                    dtm.setValueAt(thanhTien, selectRow, 9);
-                } else if (dtm.getValueAt(selectRow, 6)
-                        .equals(TruongHopDoiTraEnum.NHU_CAU_KHACH_HANG.getTruongHopDoiTra())) {
-                    dtm.setValueAt("Miễn trả hàng", selectRow, 8);
-                    dtm.setValueAt(0, selectRow, 9);
-                }
+                // Sử dụng BUS để lấy phần trăm và tính tiền
+                dtm.setValueAt(TraHangBUS.layPhanTramHoanTra(lyDoEnum), selectRow, 8);
+                
+                double thanhTienGoc = boDinhDangTien(dtm.getValueAt(selectRow, 5).toString());
+                double tienHoanTra = TraHangBUS.tinhTienHoanTraItem(thanhTienGoc, lyDoEnum, false);
+                dtm.setValueAt(dinhDangTien(tienHoanTra), selectRow, 9);
             }
             capNhatTongThanhTien();
         }
-    }// GEN-LAST:event_tblTraHangPropertyChange
+    }
 
     private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_jTextField3ActionPerformed
         // TODO add your handling code here:
@@ -742,15 +723,14 @@ public class TraHangGUI extends javax.swing.JPanel {
     // End of variables declaration//GEN-END:variables
 
     // Thêm hóa đơn vào "Tìm hóa đơn"
-    private void addHoaDon(String maHoaDon) {
+    private void addHoaDon(String maHoaDon, HoaDon hoaDon) {
         // hóa đơn có pth không?
         boolean coPTH = HoaDonDAO.getSoPTH(maHoaDon) > 0;
         System.out.println(HoaDonDAO.getSoPTH(maHoaDon));
         int tongSoPhieuTraHang = 0;
         //
         List<ChiTietHoaDon> listCTHD;
-        HoaDon hoaDon = HoaDonDAO.getHoaDonTheoMaHD(maHoaDon);
-
+        
         if (coPTH) {
             listCTHD = ChiTietHoaDonDAO.getChiTietHoaDonDaTruPTHTheoMaHD(hoaDon);
             tongSoPhieuTraHang = HoaDonDAO.getSoPTH(maHoaDon);
@@ -771,6 +751,7 @@ public class TraHangGUI extends javax.swing.JPanel {
         } else {
             JOptionPane.showMessageDialog(null, "Hóa đơn đã lập hơn 30 ngày, theo nguyên tắc không thể trả hàng!");
         }
+        
     }
 
     private void themDuLieuCTHDVaoBang(List<ChiTietHoaDon> listCTHD) {
@@ -889,10 +870,10 @@ public class TraHangGUI extends javax.swing.JPanel {
         int nam = LocalDate.now().getYear();
         jTextField5.setText(ngay + "/" + thang + "/" + nam);
 
-        String maPhieuTraHang = phatSinhMaPhieuTraHang();
+        // GỌI BUS: Sinh mã phiếu
+        String maPhieuTraHang = TraHangBUS.phatSinhMaPhieuTraHang();
         txtMaPhieuTraHang.setText(maPhieuTraHang);
     }
-
     private void taoLyDo() {
         JComboBox<String> cbbLyDo = new JComboBox<>();
         cbbLyDo.addItem(TruongHopDoiTraEnum.HANG_LOI_DO_NHA_SAN_XUAT.getTruongHopDoiTra());

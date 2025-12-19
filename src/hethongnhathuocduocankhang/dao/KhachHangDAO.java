@@ -155,6 +155,20 @@ public class KhachHangDAO {
         }
         return rows > 0;
     }
+        public static boolean truDiemTichLuy(int diemTichLuy, String maKH) {
+        int rows = 0;
+        try {
+            Connection con = ConnectDB.getConnection();
+            String sql = "UPDATE KhachHang SET diemTichLuy = diemTichLuy - ? WHERE maKH = ? AND daXoa = 0";
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, diemTichLuy);
+            ps.setString(2, maKH);
+            rows = ps.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return rows > 0;
+    }
 
     public static ArrayList<KhachHang> timKHTheoTen(String tenKH) {
         ArrayList<KhachHang> dsKH = new ArrayList<>();
