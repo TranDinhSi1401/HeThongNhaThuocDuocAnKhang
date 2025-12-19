@@ -145,14 +145,16 @@ public class BanHangBUS {
         }
 
         ArrayList<DonViTinh> dsDVT = DonViTinhDAO.getDonViTinhTheoMaSP(maSP);
+        dsDVT.sort((a, b) -> Double.compare(a.getHeSoQuyDoi(), b.getHeSoQuyDoi()));
         for (DonViTinh dvt : dsDVT) {
             if (dvt.getTenDonVi().equals(tenDVT)) {
                 int heSoQuyDoi = dvt.getHeSoQuyDoi();
                 double donGia = dvt.getGiaBanTheoDonVi();
                 double thanhTien = soLuong * donGia * (1 - giamGia / 100);
                 String maDVT = dvt.getMaDonViTinh();
+                int tonTheoDonVi = tongSoLuong / heSoQuyDoi;
                 if(soLuong * heSoQuyDoi > tongSoLuong) {
-                    throw new Exception("Không đủ số lượng");
+                    throw new Exception("Không đủ số lượng\nTổng số lượng trong kho còn đủ cho: " + tonTheoDonVi + " " + tenDVT);
                 }
                 if(soLuong < 1) {
                     throw new Exception("Số lượng phải lớn hơn bằng 1");

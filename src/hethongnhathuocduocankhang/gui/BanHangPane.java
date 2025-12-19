@@ -155,8 +155,9 @@ public class BanHangPane extends javax.swing.JPanel {
                     model.setValueAt(updatedInfo[3], row, 7);
                     capNhatTongTien(model);
                 } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(this, ex.getMessage(), "Error Message", JOptionPane.ERROR_MESSAGE );
-                    if(ex.getMessage().trim().equalsIgnoreCase("Không đủ số lượng") || ex.getMessage().trim().equalsIgnoreCase("Số lượng phải lớn hơn bằng 1")) {
+                    String msg = ex.getMessage().trim();
+                    JOptionPane.showMessageDialog(this, msg, "Error Message", JOptionPane.ERROR_MESSAGE );
+                    if(msg.startsWith("Không đủ số lượng") || msg.startsWith("Số lượng phải lớn hơn")) {
                         isMerging = true; // chặn event vòng lặp
                         if(e.getColumn() == 4) {
                             // roll back số lượng
@@ -1047,25 +1048,36 @@ public class BanHangPane extends javax.swing.JPanel {
     }//GEN-LAST:event_btnGoiY6ActionPerformed
 
     private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaActionPerformed
-        int selectedRow = tblCTHD.getSelectedRow();
         DefaultTableModel model = (DefaultTableModel) tblCTHD.getModel();
+        int[] selectedRows = tblCTHD.getSelectedRows();
 
-        if (selectedRow == -1) {
-            JOptionPane.showMessageDialog(this, "Vui lòng chọn dòng cần xóa!", "Warning Message", JOptionPane.WARNING_MESSAGE);
+        if (selectedRows.length == 0) {
+            JOptionPane.showMessageDialog(this, 
+                "Vui lòng chọn ít nhất một dòng cần xóa!", 
+                "Warning Message", 
+                JOptionPane.WARNING_MESSAGE);
             return;
         }
 
         int confirm = JOptionPane.showConfirmDialog(this, 
-                "Bạn có chắc muốn xóa dòng này không?", 
+                "Bạn có chắc muốn xóa " + selectedRows.length + " dòng đã chọn không?", 
                 "Xác nhận", 
                 JOptionPane.YES_NO_OPTION);
 
         if (confirm == JOptionPane.YES_OPTION) {
-            model.removeRow(selectedRow);
+            // Xóa từ dòng cuối lên đầu để tránh sai chỉ số
+            for (int i = selectedRows.length - 1; i >= 0; i--) {
+                model.removeRow(selectedRows[i]);
+            }
+
+            // Cập nhật lại số thứ tự cột đầu tiên (giả sử cột 0 là STT)
             for (int i = 0; i < model.getRowCount(); i++) {
                 model.setValueAt(i + 1, i, 0);
             }
-        }  
+            
+            // Cập nhật tổng tiền
+            capNhatTongTien(model);
+        }
     }//GEN-LAST:event_btnXoaActionPerformed
 
     private void txtTienKhachDuaFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtTienKhachDuaFocusGained
