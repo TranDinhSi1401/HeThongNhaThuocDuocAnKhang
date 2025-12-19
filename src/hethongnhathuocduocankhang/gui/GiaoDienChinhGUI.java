@@ -10,8 +10,12 @@ import java.awt.Component;
 import java.awt.Image;
 import java.awt.Toolkit;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.function.Supplier;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 
 /**
  *
@@ -21,7 +25,8 @@ public class GiaoDienChinhGUI extends JFrame{
     private static TaiKhoan tk = null;
     private static GiaoDienChinhGUI app;
     private final MainForm mainForm;
-    
+    private static final Map<String, JPanel> cachedPanels = new HashMap<>();
+        
     public GiaoDienChinhGUI(TaiKhoan tk) {
         if (tk != null) {
             GiaoDienChinhGUI.tk = tk;
@@ -57,7 +62,16 @@ public class GiaoDienChinhGUI extends JFrame{
         component.applyComponentOrientation(app.getComponentOrientation());
         app.mainForm.showForm(component);
     }
-
+    
+    public static JPanel getOrCreatePanel(String key, Supplier<JPanel> creator) {
+        return cachedPanels.computeIfAbsent(key, k -> creator.get());
+    }
+    
+    public static void showFormByKey(String key, Supplier<JPanel> creator) {
+        JPanel panel = getOrCreatePanel(key, creator);
+        showForm(panel);
+    }
+    
     public static void logout() {
         int confirm = JOptionPane.showConfirmDialog(app,
                 "Bạn có chắc chắn muốn đăng xuất không?",
@@ -66,6 +80,7 @@ public class GiaoDienChinhGUI extends JFrame{
                 JOptionPane.QUESTION_MESSAGE);
         if (confirm == JOptionPane.YES_OPTION) {
                 app.dispose(); // đóng cửa sổ hiện tại
+                cachedPanels.clear();
                 new DangNhapGUI().setVisible(true); 
         }
     }
