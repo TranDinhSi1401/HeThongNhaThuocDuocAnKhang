@@ -180,6 +180,8 @@ public class ThongKeHoaDonGUI extends javax.swing.JPanel {
         pLoc.add(Box.createHorizontalStrut(10));
         pLoc.add(txtNgayKetThuc);
 
+        btnThongKe.setBackground(new java.awt.Color(0, 203, 0));
+        btnThongKe.setForeground(new java.awt.Color(255, 255, 255));
         btnThongKe.setText("Thống kê [F6]");
         pLoc.add(Box.createHorizontalStrut(50));
         btnThongKe.addActionListener(new java.awt.event.ActionListener() {
@@ -189,6 +191,8 @@ public class ThongKeHoaDonGUI extends javax.swing.JPanel {
         });
         pLoc.add(btnThongKe);
 
+        btnLamMoi.setBackground(new java.awt.Color(25, 118, 210));
+        btnLamMoi.setForeground(new java.awt.Color(255, 255, 255));
         btnLamMoi.setText("Làm mới [F5]");
         pLoc.add(Box.createHorizontalStrut(10));
         btnLamMoi.addActionListener(new java.awt.event.ActionListener() {
