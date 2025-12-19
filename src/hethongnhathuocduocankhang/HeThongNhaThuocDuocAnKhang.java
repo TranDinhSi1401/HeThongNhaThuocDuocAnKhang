@@ -11,6 +11,7 @@ import com.formdev.flatlaf.FlatLightLaf;
 import com.formdev.flatlaf.extras.FlatAnimatedLafChange;
 import com.formdev.flatlaf.fonts.roboto.FlatRobotoFont;
 import com.formdev.flatlaf.themes.FlatMacDarkLaf;
+import com.formdev.flatlaf.themes.FlatMacLightLaf;
 import hethongnhathuocduocankhang.connectDB.ConnectDB;
 import hethongnhathuocduocankhang.dao.KhachHangDAO;
 import hethongnhathuocduocankhang.dao.LoSanPhamDAO;
@@ -39,14 +40,10 @@ public class HeThongNhaThuocDuocAnKhang {
     public static void main(String[] args) {
         java.awt.EventQueue.invokeLater(() -> {
             
-            //set up làm đẹp ... thay đổi content pane, update UI
             FlatRobotoFont.install();
-            FlatLaf.registerCustomDefaultsSource("raven.theme");
+            FlatLaf.registerCustomDefaultsSource("hethongnhathuocduocankhang.theme");
             UIManager.put("defaultFont", new Font(FlatRobotoFont.FAMILY, Font.PLAIN, 13));
-            //animation
-            FlatAnimatedLafChange.hideSnapshotWithAnimation();
-            //áp dụng làm đẹp
-            FlatLightLaf.setup();
+            FlatMacLightLaf.setup();
             
             
             SplashScreen ss = new SplashScreen(0);

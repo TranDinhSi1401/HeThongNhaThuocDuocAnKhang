@@ -24,15 +24,26 @@ import hethongnhathuocduocankhang.entity.NhanVien;
 import hethongnhathuocduocankhang.entity.SanPham;
 import hethongnhathuocduocankhang.entity.TaiKhoan;
 import hethongnhathuocduocankhang.gui.GiaoDienChinhGUI;
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
@@ -145,14 +156,16 @@ public class BanHangBUS {
         }
 
         ArrayList<DonViTinh> dsDVT = DonViTinhDAO.getDonViTinhTheoMaSP(maSP);
+        dsDVT.sort((a, b) -> Double.compare(a.getHeSoQuyDoi(), b.getHeSoQuyDoi()));
         for (DonViTinh dvt : dsDVT) {
             if (dvt.getTenDonVi().equals(tenDVT)) {
                 int heSoQuyDoi = dvt.getHeSoQuyDoi();
                 double donGia = dvt.getGiaBanTheoDonVi();
                 double thanhTien = soLuong * donGia * (1 - giamGia / 100);
                 String maDVT = dvt.getMaDonViTinh();
+                int tonTheoDonVi = tongSoLuong / heSoQuyDoi;
                 if(soLuong * heSoQuyDoi > tongSoLuong) {
-                    throw new Exception("Không đủ số lượng");
+                    throw new Exception("Không đủ số lượng\nTổng số lượng còn lại: " + tonTheoDonVi + " " + tenDVT);
                 }
                 if(soLuong < 1) {
                     throw new Exception("Số lượng phải lớn hơn bằng 1");
@@ -195,8 +208,8 @@ public class BanHangBUS {
             if(tblCTHD.getRowCount() == 0) {
                 throw new Exception("Vui lòng thêm sản phẩm cần thanh toán");
             }
-            if(tienThua != tongTien - tienKhachDua) {
-                throw new Exception("Tiền thừa phải bằng tổng tiền trừ tiền khách đưa");
+            if(tienThua != tienKhachDua - tongTien) {
+                throw new Exception("Tiền thừa phải bằng tiền khách đưa trừ tổng tiền");
             }
             for(int i = 0; i < tblCTHD.getRowCount(); i++) {
                 String maSP = tblCTHD.getValueAt(i, 8).toString();
@@ -289,7 +302,7 @@ public class BanHangBUS {
                         soLuongXuat = 0;
                     } else {
                         LoSanPhamDAO.truSoLuong(lsp.getMaLoSanPham(), soLuongTon);
-                        ChiTietXuatLo ctxl = new ChiTietXuatLo(new LoSanPham(lsp.getMaLoSanPham()), new ChiTietHoaDon(maCTHDMoi), soLuongXuat);
+                        ChiTietXuatLo ctxl = new ChiTietXuatLo(new LoSanPham(lsp.getMaLoSanPham()), new ChiTietHoaDon(maCTHDMoi), soLuongTon);
                         ChiTietXuatLoDAO.insertChiTietXuatLo(ctxl);
                         soLuongXuat -= soLuongTon;
                     }
@@ -429,5 +442,5 @@ public class BanHangBUS {
         int padding = width - text.length();
         if (padding < 0) padding = 0;
         return " ".repeat(padding) + text;
-    } 
+    }    
 }
