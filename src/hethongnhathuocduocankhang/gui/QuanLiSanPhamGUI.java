@@ -1,19 +1,14 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package hethongnhathuocduocankhang.gui;
 
 import hethongnhathuocduocankhang.bus.SanPhamBUS;
 import java.awt.*;
-import java.awt.event.ActionEvent;
+import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 
-//đang tối ưu
 public class QuanLiSanPhamGUI extends JPanel {
 
     private JButton btnThem, btnXoa, btnSua;
@@ -24,29 +19,36 @@ public class QuanLiSanPhamGUI extends JPanel {
     private DefaultTableModel model;
     private JLabel lblTongSoDong;
     private JLabel lblSoDongChon;
+    
+    private SanPhamBUS sanPhamBUS;
 
     public QuanLiSanPhamGUI() {
         this.setLayout(new BorderLayout(10, 10));
         this.setBorder(new EmptyBorder(10, 10, 10, 10));
 
+        // Khởi tạo các thành phần giao diện
+        initComponents();
+        
+        // Khởi tạo BUS và load dữ liệu
+        sanPhamBUS = new SanPhamBUS();
+        sanPhamBUS.loadDataToTable(this, null);
+        
+        // Gắn sự kiện (Controller logic in View)
+        initEvents();
+    }
+
+    private void initComponents() {
         // PANEL NORTH (Chức năng & Tìm kiếm)
-        JPanel pnlNorth = new JPanel();
-        pnlNorth.setLayout(new BorderLayout());
+        JPanel pnlNorth = new JPanel(new BorderLayout());
 
         // Bên Trái: Các nút Thêm, Xóa, Sửa
-        JPanel pnlNorthLeft = new JPanel();
-        pnlNorthLeft.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 0));
+        JPanel pnlNorthLeft = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
         pnlNorthLeft.setBorder(new EmptyBorder(0, 0, 10, 0));
 
         btnThem = new JButton("Thêm - F6");
         btnXoa = new JButton("Xóa - Del");
         btnSua = new JButton("Sửa - F2");
 
-        mapKeyToClickButton("F6", btnThem);
-        mapKeyToClickButton("DELETE", btnXoa);
-        mapKeyToClickButton("F2", btnSua);
-
-        // Trang trí nút bấm
         setupTopButton(btnThem, new Color(50, 150, 250)); // Xanh dương
         setupTopButton(btnXoa, new Color(250, 100, 100)); // Đỏ
         setupTopButton(btnSua, Color.LIGHT_GRAY);         // Xám
@@ -54,24 +56,19 @@ public class QuanLiSanPhamGUI extends JPanel {
         pnlNorthLeft.add(btnThem);
         pnlNorthLeft.add(btnXoa);
         pnlNorthLeft.add(btnSua);
-
         pnlNorth.add(pnlNorthLeft, BorderLayout.WEST);
 
         // Bên Phải: Tìm kiếm & Lọc
-        JPanel pnlNorthRight = new JPanel();
-        pnlNorthRight.setLayout(new FlowLayout(FlowLayout.RIGHT, 10, 5));
-
-        // Combo Tiêu chí tìm
+        JPanel pnlNorthRight = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 5));
+        
         cmbTieuChiTimKiem = new JComboBox<>(new String[]{"Mã sản phẩm", "Tên sản phẩm", "Mã nhà cung cấp"});
         cmbTieuChiTimKiem.setFont(new Font("Arial", Font.PLAIN, 14));
         cmbTieuChiTimKiem.setPreferredSize(new Dimension(150, 30));
 
-        // Combo Bộ lọc
         cmbBoLoc = new JComboBox<>(new String[]{"Tất cả", "Thuốc kê đơn", "Thuốc không kê đơn", "Thực phẩm chức năng"});
         cmbBoLoc.setFont(new Font("Arial", Font.PLAIN, 14));
         cmbBoLoc.setPreferredSize(new Dimension(180, 30));
 
-        // Ô nhập từ khóa
         txtTimKiem = new JTextField(20);
         txtTimKiem.setFont(new Font("Arial", Font.PLAIN, 14));
         txtTimKiem.setPreferredSize(new Dimension(200, 30));
@@ -89,20 +86,16 @@ public class QuanLiSanPhamGUI extends JPanel {
         pnlNorthRight.add(pnlTimKiem);
         pnlNorthRight.add(new JLabel("Lọc theo:"));
         pnlNorthRight.add(cmbBoLoc);
-
         pnlNorth.add(pnlNorthRight, BorderLayout.EAST);
-
         this.add(pnlNorth, BorderLayout.NORTH);
 
         // PANEL CENTER (Bảng dữ liệu)
         JPanel centerPanel = new JPanel(new BorderLayout(0, 10));
-
         String[] columnNames = {
             "STT", "Mã SP", "Tên SP", "Mô tả",
             "Thành phần", "Loại sản phẩm", "Tồn tối thiểu", "Tồn tối đa", "Trạng thái"
         };
 
-        // Tạo Model bảng và chặn edit trực tiếp trên ô
         model = new DefaultTableModel(new Object[][]{}, columnNames) {
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -113,90 +106,107 @@ public class QuanLiSanPhamGUI extends JPanel {
         table = new JTable(model);
         table.setRowHeight(25);
         table.setFont(new Font("Arial", Font.PLAIN, 12));
-
-        // Header bảng
+        
         table.getTableHeader().setFont(new Font("Arial", Font.BOLD, 12));
         table.getTableHeader().setBackground(new Color(220, 220, 220));
-        table.getTableHeader().setReorderingAllowed(false);
         table.setShowGrid(true);
         table.setGridColor(Color.LIGHT_GRAY);
 
-        // --- Cấu hình độ rộng cột ---
         TableColumnModel columnModel = table.getColumnModel();
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(JLabel.CENTER);
 
-        // 0. STT
         columnModel.getColumn(0).setPreferredWidth(40);
-        columnModel.getColumn(0).setMaxWidth(40);
         columnModel.getColumn(0).setCellRenderer(centerRenderer);
-
-        // 1. Mã SP
         columnModel.getColumn(1).setPreferredWidth(80);
-        columnModel.getColumn(1).setMaxWidth(100);
         columnModel.getColumn(1).setCellRenderer(centerRenderer);
-
-        // 2. Tên SP (Quan trọng -> Rộng)
         columnModel.getColumn(2).setPreferredWidth(200);
-
-        // 3. Mô tả
         columnModel.getColumn(3).setPreferredWidth(200);
-
-        // 4. Thành phần
         columnModel.getColumn(4).setPreferredWidth(150);
-
-        // 5. Loại SP
         columnModel.getColumn(5).setPreferredWidth(120);
         columnModel.getColumn(5).setCellRenderer(centerRenderer);
-
-        // 6. Tồn min
         columnModel.getColumn(6).setPreferredWidth(80);
-        columnModel.getColumn(6).setMaxWidth(90);
         columnModel.getColumn(6).setCellRenderer(centerRenderer);
-
-        // 7. Tồn max
         columnModel.getColumn(7).setPreferredWidth(80);
-        columnModel.getColumn(7).setMaxWidth(90);
         columnModel.getColumn(7).setCellRenderer(centerRenderer);
 
-        JScrollPane scrollPane = new JScrollPane(table);
-        centerPanel.add(scrollPane, BorderLayout.CENTER);
+        centerPanel.add(new JScrollPane(table), BorderLayout.CENTER);
         this.add(centerPanel, BorderLayout.CENTER);
 
-        // PANEL SOUTH (Footer thống kê)
+        // PANEL SOUTH
         JPanel pnlSouth = new JPanel(new FlowLayout(FlowLayout.LEFT, 20, 5));
-        pnlSouth.setBorder(new EmptyBorder(5, 0, 0, 0));
-
-        Font fontFooter = new Font("Arial", Font.BOLD, 13);
-
         lblTongSoDong = new JLabel("Tổng số sản phẩm: 0");
-        lblTongSoDong.setFont(fontFooter);
+        lblTongSoDong.setFont(new Font("Arial", Font.BOLD, 13));
         lblTongSoDong.setForeground(new Color(0, 102, 204));
 
         lblSoDongChon = new JLabel("Đang chọn: 0");
-        lblSoDongChon.setFont(fontFooter);
+        lblSoDongChon.setFont(new Font("Arial", Font.BOLD, 13));
         lblSoDongChon.setForeground(new Color(204, 0, 0));
 
         pnlSouth.add(lblTongSoDong);
         pnlSouth.add(new JSeparator(JSeparator.VERTICAL));
         pnlSouth.add(lblSoDongChon);
-
         this.add(pnlSouth, BorderLayout.SOUTH);
-
-        SanPhamBUS spBUS = new SanPhamBUS(this);
+        
+        // Map Keys
+        mapKeyToClickButton("F6", btnThem);
+        mapKeyToClickButton("DELETE", btnXoa);
+        mapKeyToClickButton("F2", btnSua);
     }
-
-    private void mapKeyToFocus(String key, JComponent component) {
-        InputMap im = component.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
-        ActionMap am = component.getActionMap();
-
-        im.put(KeyStroke.getKeyStroke(key), "focus_" + key);
-        am.put("focus_" + key, new AbstractAction() {
+    
+    private void initEvents() {
+        // Sự kiện THÊM
+        btnThem.addActionListener(e -> {
+            ThemSanPhamGUI dialog = new ThemSanPhamGUI(sanPhamBUS, false, "");
+            dialog.setVisible(true);
+            // Sau khi dialog đóng -> load lại
+            sanPhamBUS.loadDataToTable(this, null);
+        });
+        
+        // Sự kiện SỬA
+        btnSua.addActionListener(e -> {
+            int selectedRow = table.getSelectedRow();
+            if (selectedRow == -1) {
+                JOptionPane.showMessageDialog(this, "Vui lòng chọn sản phẩm cần sửa.");
+                return;
+            }
+            String maSP = model.getValueAt(selectedRow, 1).toString();
+            ThemSanPhamGUI dialog = new ThemSanPhamGUI(sanPhamBUS, true, maSP);
+            dialog.setVisible(true);
+            sanPhamBUS.loadDataToTable(this, null);
+        });
+        
+        // Sự kiện XÓA
+        btnXoa.addActionListener(e -> sanPhamBUS.xuLyXoaSanPham(this));
+        
+        // Sự kiện TÌM KIẾM
+        txtTimKiem.addActionListener(e -> sanPhamBUS.xuLyTimKiem(this));
+        cmbTieuChiTimKiem.addActionListener(e -> {
+             txtTimKiem.selectAll();
+             txtTimKiem.requestFocus();
+        });
+        
+        // Sự kiện LỌC
+        cmbBoLoc.addActionListener(e -> sanPhamBUS.xuLyLoc(this));
+        
+        // Sự kiện Table
+        table.getSelectionModel().addListSelectionListener(e -> {
+            if (!e.getValueIsAdjusting()) {
+                lblSoDongChon.setText("Đang chọn: " + table.getSelectedRowCount());
+            }
+        });
+        
+        // Double Click xem chi tiết
+        table.addMouseListener(new MouseAdapter() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                component.requestFocus();
-                if (component instanceof JTextField jTextField) {
-                    jTextField.selectAll();
+            public void mouseClicked(MouseEvent e) {
+                if(e.getClickCount() == 2) {
+                     int selectedRow = table.getSelectedRow();
+                     String maSP = model.getValueAt(selectedRow, 1).toString();
+                     // Dùng chung form sửa nhưng có thể disable nút lưu nếu muốn
+                     ThemSanPhamGUI dialog = new ThemSanPhamGUI(sanPhamBUS, true, maSP);
+                     dialog.setTitle("Chi tiết sản phẩm");
+                     dialog.setVisible(true);
                 }
             }
         });
@@ -205,17 +215,15 @@ public class QuanLiSanPhamGUI extends JPanel {
     private void mapKeyToClickButton(String key, AbstractButton button) {
         InputMap im = button.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
         ActionMap am = button.getActionMap();
-
         im.put(KeyStroke.getKeyStroke(key), "click_" + key);
         am.put("click_" + key, new AbstractAction() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                button.doClick(); // kích hoạt sự kiện button
+                button.doClick();
             }
         });
     }
 
-    // setup style cho button
     private void setupTopButton(JButton button, Color bgColor) {
         button.setBackground(bgColor);
         button.setForeground(Color.BLACK);
@@ -224,44 +232,12 @@ public class QuanLiSanPhamGUI extends JPanel {
         button.setPreferredSize(new Dimension(100, 30));
     }
 
-    // GETTER
-    public JButton getBtnThem() {
-        return btnThem;
-    }
-
-    public JButton getBtnXoa() {
-        return btnXoa;
-    }
-
-    public JButton getBtnSua() {
-        return btnSua;
-    }
-
-    public JTextField getTxtTimKiem() {
-        return txtTimKiem;
-    }
-
-    public JComboBox<String> getCmbTieuChiTimKiem() {
-        return cmbTieuChiTimKiem;
-    }
-
-    public JComboBox<String> getCmbBoLoc() {
-        return cmbBoLoc;
-    }
-
-    public JTable getTable() {
-        return table;
-    }
-
-    public DefaultTableModel getModel() {
-        return model;
-    }
-
-    public JLabel getLblTongSoDong() {
-        return lblTongSoDong;
-    }
-
-    public JLabel getLblSoDongChon() {
-        return lblSoDongChon;
-    }
+    // Getters for BUS
+    public JTable getTable() { return table; }
+    public DefaultTableModel getModel() { return model; }
+    public JTextField getTxtTimKiem() { return txtTimKiem; }
+    public JComboBox<String> getCmbTieuChiTimKiem() { return cmbTieuChiTimKiem; }
+    public JComboBox<String> getCmbBoLoc() { return cmbBoLoc; }
+    public JLabel getLblTongSoDong() { return lblTongSoDong; }
+    public JLabel getLblSoDongChon() { return lblSoDongChon; }
 }
