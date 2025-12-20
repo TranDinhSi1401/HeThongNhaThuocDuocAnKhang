@@ -6,6 +6,7 @@ package hethongnhathuocduocankhang.gui.baocao;
 
 import hethongnhathuocduocankhang.dao.HoaDonDAO;
 import hethongnhathuocduocankhang.dao.PhieuTraHangDAO;
+import hethongnhathuocduocankhang.dao.ThongKeDAO;
 import hethongnhathuocduocankhang.entity.HoaDon;
 import hethongnhathuocduocankhang.entity.PhieuTraHang;
 import java.awt.*;
@@ -347,112 +348,128 @@ public class BaoCaoDoanhThu extends javax.swing.JPanel {
     }
 
     private void xemBaoCao() {
-        // Show loading
         showLoadingDialog();
 
-        SwingWorker<Void, Void> worker = new SwingWorker<>() {
+        // 1. Sửa SwingWorker để trả về Map (Key, Value) thay vì Void
+        SwingWorker<Map<String, double[]>, Void> worker = new SwingWorker<>() {
+
+            // Khai báo biến này ở đây để dùng chung cho cả doInBackground và done
+            List<String> allKeys = new ArrayList<>();
+
             @Override
-            protected Void doInBackground() throws Exception {
-                try {
-                    String loaiThongKe = (String) cmbLoaiThongKe.getSelectedItem();
+            protected Map<String, double[]> doInBackground() throws Exception {
+                String loaiThongKe = (String) cmbLoaiThongKe.getSelectedItem();
 
-                    // Query DB
-                    HoaDonDAO hoaDonDAO = new HoaDonDAO();
-                    PhieuTraHangDAO phieuTraDAO = new PhieuTraHangDAO();
+                // Khai báo biến ngày để gửi xuống DB
+                java.util.Date dbTuNgay = null;
+                java.util.Date dbDenNgay = null;
 
-                    ArrayList<HoaDon> hoaDons = hoaDonDAO.getAllHoaDon();
-                    ArrayList<PhieuTraHang> phieuTras = phieuTraDAO.getAllPhieuTraHang();
+                // --- XỬ LÝ NGÀY THÁNG (Logic giữ nguyên như cũ) ---
+                if ("Theo ngày".equals(loaiThongKe)) {
+                    dbTuNgay = datePickerTuNgay.getDate();
+                    dbDenNgay = datePickerDenNgay.getDate();
 
-                    // Tạo list tất cả khoảng thời gian trong range
-                    List<String> allKeys = new ArrayList<>();
-                    if ("Theo ngày".equals(loaiThongKe)) {
-                        Date tuNgay = datePickerTuNgay.getDate();
-                        Date denNgay = datePickerDenNgay.getDate();
-                        if(tuNgay.after(denNgay)){
-                            JOptionPane.showMessageDialog(null, "Từ ngày phải bé hơn đến ngày");
-                            return null;
-                        }
-                        LocalDate startDate = tuNgay.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate();
-                        LocalDate endDate = denNgay.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate();
-                        for (LocalDate date = startDate; !date.isAfter(endDate); date = date.plusDays(1)) {
-                            allKeys.add(date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
-                        }
-                    } else if ("Theo tháng".equals(loaiThongKe)) {
-                        int tuThang = (Integer) cmbTuThang.getSelectedItem();
-                        int tuNam = (Integer) cmbTuNam.getSelectedItem();
-                        int denThang = (Integer) cmbDenThang.getSelectedItem();
-                        int denNam = (Integer) cmbDenNam.getSelectedItem();
-                        if(tuThang>denThang){
-                            JOptionPane.showMessageDialog(null, "Từ năm phải bé hơn đến năm");
-                            return null;
-                        }
-                        for (int nam = tuNam; nam <= denNam; nam++) {
-                            int startThang = (nam == tuNam) ? tuThang : 1;
-                            int endThang = (nam == denNam) ? denThang : 12;
-                            for (int thang = startThang; thang <= endThang; thang++) {
-                                allKeys.add(String.format("%02d/%d", thang, nam));
-                            }
-                        }
-                    } else if ("Theo quý".equals(loaiThongKe)) {
-                        int tuQuy = (Integer) cmbTuQuy.getSelectedItem();
-                        int tuNam = (Integer) cmbTuNam.getSelectedItem();
-                        int denQuy = (Integer) cmbDenQuy.getSelectedItem();
-                        int denNam = (Integer) cmbDenNam.getSelectedItem();
-                        if(tuQuy>denQuy){
-                            JOptionPane.showMessageDialog(null, "Từ quý phải bé hơn đến quý");
-                            return null;
-                        }
-                        for (int nam = tuNam; nam <= denNam; nam++) {
-                            int startQuy = (nam == tuNam) ? tuQuy : 1;
-                            int endQuy = (nam == denNam) ? denQuy : 4;
-                            for (int quy = startQuy; quy <= endQuy; quy++) {
-                                allKeys.add("Quý " + quy + " năm " + nam);
-                            }
-                        }
-                    } else if ("Theo năm".equals(loaiThongKe)) {
-                        int tuNam = (Integer) cmbTuNam.getSelectedItem();
-                        int denNam = (Integer) cmbDenNam.getSelectedItem();
-                        if(tuNam>denNam){
-                            JOptionPane.showMessageDialog(null, "Từ năm phải bé hơn đến năm");
-                            return null;
-                        }
-                        for (int nam = tuNam; nam <= denNam; nam++) {
-                            allKeys.add("Năm " + nam);
-                        }
+                    if (dbTuNgay.after(dbDenNgay)) {
+                        throw new Exception("Từ ngày phải bé hơn đến ngày");
                     }
 
-                    // Tính doanh thu và cập nhật table
-                    model.setRowCount(0);
-                    double tongDoanhThu = 0;
-
-                    for (String key : allKeys) {
-                        double tongHD = hoaDons.stream()
-                            .filter(hd -> getKey(hd, loaiThongKe).equals(key))
-                            .mapToDouble(HoaDon::getTongTien)
-                            .sum();
-                        double tongPT = phieuTras.stream()
-                            .filter(pt -> getKey(pt, loaiThongKe).equals(key))
-                            .mapToDouble(PhieuTraHang::getTongTienHoanTra)
-                            .sum();
-                        double doanhThu = tongHD - tongPT;
-                        model.addRow(new Object[]{key, dinhDangTien(tongHD), dinhDangTien(tongPT), dinhDangTien(doanhThu)});
-                        tongDoanhThu += doanhThu;
+                    LocalDate startDate = dbTuNgay.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate();
+                    LocalDate endDate = dbDenNgay.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate();
+                    for (LocalDate date = startDate; !date.isAfter(endDate); date = date.plusDays(1)) {
+                        allKeys.add(date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
                     }
 
-                    lblTongDoanhThu.setText("Tổng doanh thu: " + dinhDangTien(tongDoanhThu));
-                } catch (Exception e) {
-                    JOptionPane.showMessageDialog(null, "Lỗi khi xem báo cáo: " + e.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
+                } else if ("Theo tháng".equals(loaiThongKe)) {
+                    int tuThang = (Integer) cmbTuThang.getSelectedItem();
+                    int tuNam = (Integer) cmbTuNam.getSelectedItem();
+                    int denThang = (Integer) cmbDenThang.getSelectedItem();
+                    int denNam = (Integer) cmbDenNam.getSelectedItem();
+
+                    dbTuNgay = java.sql.Date.valueOf(LocalDate.of(tuNam, tuThang, 1));
+                    LocalDate lastDayOfMonth = LocalDate.of(denNam, denThang, 1).plusMonths(1).minusDays(1);
+                    dbDenNgay = java.sql.Date.valueOf(lastDayOfMonth);
+
+                    for (int nam = tuNam; nam <= denNam; nam++) {
+                        int startThang = (nam == tuNam) ? tuThang : 1;
+                        int endThang = (nam == denNam) ? denThang : 12;
+                        for (int thang = startThang; thang <= endThang; thang++) {
+                            allKeys.add(String.format("%02d/%d", thang, nam));
+                        }
+                    }
+                } else if ("Theo quý".equals(loaiThongKe)) {
+                    int tuQuy = (Integer) cmbTuQuy.getSelectedItem();
+                    int tuNam = (Integer) cmbTuNam.getSelectedItem();
+                    int denQuy = (Integer) cmbDenQuy.getSelectedItem();
+                    int denNam = (Integer) cmbDenNam.getSelectedItem();
+
+                    int startMonth = (tuQuy - 1) * 3 + 1;
+                    dbTuNgay = java.sql.Date.valueOf(LocalDate.of(tuNam, startMonth, 1));
+
+                    int endMonth = denQuy * 3;
+                    LocalDate lastDayOfQuarter = LocalDate.of(denNam, endMonth, 1).plusMonths(1).minusDays(1);
+                    dbDenNgay = java.sql.Date.valueOf(lastDayOfQuarter);
+
+                    for (int nam = tuNam; nam <= denNam; nam++) {
+                        int startQuy = (nam == tuNam) ? tuQuy : 1;
+                        int endQuy = (nam == denNam) ? denQuy : 4;
+                        for (int quy = startQuy; quy <= endQuy; quy++) {
+                            allKeys.add("Quý " + quy + " năm " + nam);
+                        }
+                    }
+                } else if ("Theo năm".equals(loaiThongKe)) {
+                    int tuNam = (Integer) cmbTuNam.getSelectedItem();
+                    int denNam = (Integer) cmbDenNam.getSelectedItem();
+
+                    dbTuNgay = java.sql.Date.valueOf(LocalDate.of(tuNam, 1, 1));
+                    dbDenNgay = java.sql.Date.valueOf(LocalDate.of(denNam, 12, 31));
+
+                    for (int nam = tuNam; nam <= denNam; nam++) {
+                        allKeys.add("Năm " + nam);
+                    }
                 }
-                return null;
+
+                // --- GỌI DAO ---
+                // Chỉ lấy dữ liệu, KHÔNG cập nhật giao diện ở đây
+                ThongKeDAO thongKeDAO = new ThongKeDAO();
+                return thongKeDAO.getDoanhThuMap(dbTuNgay, dbDenNgay, loaiThongKe);
             }
 
             @Override
             protected void done() {
-                // Hide loading
-                disposeLoadingDialog();
+                try {
+                    // Lấy kết quả từ doInBackground (nếu có lỗi nó sẽ ném ra ở đây)
+                    Map<String, double[]> dataMap = get();
+
+                    // --- CẬP NHẬT GIAO DIỆN Ở ĐÂY (An toàn tuyệt đối) ---
+                    model.setRowCount(0);
+                    double tongDoanhThuToanBo = 0;
+
+                    for (String key : allKeys) {
+                        double tongHD = 0;
+                        double tongPT = 0;
+
+                        if (dataMap.containsKey(key)) {
+                            double[] values = dataMap.get(key);
+                            tongHD = values[0];
+                            tongPT = values[1];
+                        }
+
+                        double doanhThu = tongHD - tongPT;
+
+                        model.addRow(new Object[]{key, dinhDangTien(tongHD), dinhDangTien(tongPT), dinhDangTien(doanhThu)});
+                        tongDoanhThuToanBo += doanhThu;
+                    }
+                    lblTongDoanhThu.setText("Tổng doanh thu: " + dinhDangTien(tongDoanhThuToanBo));
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    JOptionPane.showMessageDialog(null, "Có lỗi xảy ra: " + e.getMessage());
+                } finally {
+                    // --- QUAN TRỌNG: LUÔN TẮT LOADING DÙ CÓ LỖI HAY KHÔNG ---
+                    disposeLoadingDialog();
+                }
             }
         };
-
         worker.execute();
     }
 
