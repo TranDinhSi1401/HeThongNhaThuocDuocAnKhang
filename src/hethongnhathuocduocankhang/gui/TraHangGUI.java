@@ -578,8 +578,21 @@ public class TraHangGUI extends javax.swing.JPanel {
     private void txtNhapMaHoaDonKeyPressed(java.awt.event.KeyEvent evt) {// GEN-FIRST:event_txtNhapMaHoaDonKeyPressed
         // TODO add your handling code here:
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            String maHoaDon = txtNhapMaHoaDon.getText();
-            addHoaDon(maHoaDon,HoaDonDAO.getHoaDonTheoMaHD(maHoaDon));
+    String maHoaDon = txtNhapMaHoaDon.getText();
+            resetInfoPanels(); // GUI reset
+            
+            if (maHoaDon != null && !maHoaDon.trim().isEmpty()) {
+                try {
+                    // GỌI BUS: Kiểm tra điều kiện
+                    HoaDon hoaDon = traHangBUS.kiemTraDieuKienTraHang(maHoaDon);
+
+                    // Nếu không có exception thì thêm hóa đơn vào GUI
+                    addHoaDon(maHoaDon, hoaDon); 
+
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(null, e.getMessage());
+                }
+            }
         }
     }// GEN-LAST:event_txtNhapMaHoaDonKeyPressed
 
@@ -1271,6 +1284,8 @@ int chon = JOptionPane.showConfirmDialog(null, "Xác nhận tạo phiếu trả?
         lblSoLanTra.setText("0");
         lblSoNgayHD.setText("0");
         lblTongTienTra.setText("0 VND");
+        DefaultTableModel dtm = (DefaultTableModel) tblCTHD.getModel();
+        dtm.setRowCount(0);
     }
 
     /**
