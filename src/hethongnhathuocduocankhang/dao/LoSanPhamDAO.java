@@ -303,4 +303,36 @@ public class LoSanPhamDAO {
         }
         return counts;
     }
+    public static ArrayList<LoSanPham> getDanhSachLoDaXuatTheoMaCTHD(String maCTHD) {
+        ArrayList<LoSanPham> dsLo = new ArrayList<>();
+        // Query join ChiTietXuatLo và LoSanPham
+        // Sắp xếp NgayHetHan DESC để lô mới nhất (Date xa nhất) lên đầu
+        String sql = """
+                     SELECT lsp.maLoSanPham, ctxl.soLuong, lsp.ngayHetHan 
+                     FROM ChiTietXuatLo ctxl 
+                     JOIN LoSanPham lsp ON ctxl.maLoSanPham = lsp.maLoSanPham 
+                     WHERE ctxl.maChiTietHoaDon = ? 
+                     ORDER BY lsp.ngayHetHan DESC
+                     """;
+        try {
+            Connection con = ConnectDB.getConnection();
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, maCTHD);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                String maLo = rs.getString("maLoSanPham");
+                int soLuongDaXuat = rs.getInt("soLuong"); // Số lượng thực tế (đơn vị cơ bản) đã lấy từ lô này
+                
+                // Chúng ta chỉ cần MaLo và SoLuong để xử lý logic, các trường khác có thể null
+                LoSanPham lo = new LoSanPham();
+                lo.setMaLoSanPham(maLo);
+                lo.setSoLuong(soLuongDaXuat); // Lưu ý: Đây là số lượng ĐÃ XUẤT, không phải tồn kho hiện tại
+                
+                dsLo.add(lo);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return dsLo;
+    }
 }
