@@ -61,8 +61,8 @@ public class DangNhapGUI extends javax.swing.JFrame {
 
         lblQuenMatKhau.setCursor(new Cursor(Cursor.HAND_CURSOR));
         btnCheMatKhau.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        txtTaiKhoan.setBorder(new EmptyBorder(5, 10, 5, 10));
-        txtMatKhau.setBorder(new EmptyBorder(5, 10, 5, 10));
+        //txtTaiKhoan.setBorder(new EmptyBorder(5, 10, 5, 10));
+        //txtMatKhau.setBorder(new EmptyBorder(5, 10, 5, 10));
         txtMatKhau.setEchoChar('•');
         btnCheMatKhau.addMouseListener(new MouseAdapter() {
             @Override
@@ -137,7 +137,6 @@ public class DangNhapGUI extends javax.swing.JFrame {
         pDangNhap.add(lblTaiKhoan, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 110, -1, -1));
 
         txtTaiKhoan.setBackground(new java.awt.Color(245, 245, 245));
-        txtTaiKhoan.setBorder(null);
         pDangNhap.add(txtTaiKhoan, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 130, 330, 40));
 
         lblMatKhau.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -167,7 +166,6 @@ public class DangNhapGUI extends javax.swing.JFrame {
         pDangNhap.add(lblQuenMatKhau, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 240, 90, 30));
 
         txtMatKhau.setBackground(new java.awt.Color(245, 245, 245));
-        txtMatKhau.setBorder(null);
         txtMatKhau.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtMatKhauActionPerformed(evt);
@@ -178,7 +176,6 @@ public class DangNhapGUI extends javax.swing.JFrame {
         btnCheMatKhau.setBackground(new java.awt.Color(245, 245, 245));
         btnCheMatKhau.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/hidePasswordEye.png"))); // NOI18N
         btnCheMatKhau.setToolTipText("");
-        btnCheMatKhau.setBorder(null);
         pDangNhap.add(btnCheMatKhau, new org.netbeans.lib.awtextra.AbsoluteConstraints(350, 200, 40, 40));
 
         pDangNhap.putClientProperty(FlatClientProperties.STYLE, "arc:20");
@@ -214,13 +211,10 @@ public class DangNhapGUI extends javax.swing.JFrame {
                         "Đăng nhập thất bại",
                         javax.swing.JOptionPane.ERROR_MESSAGE);
             } else {
-                FlatRobotoFont.install();
-                FlatLaf.registerCustomDefaultsSource("hethongnhathuocduocankhang.theme");
-                UIManager.put("defaultFont", new Font(FlatRobotoFont.FAMILY, Font.PLAIN, 13));
-                FlatMacLightLaf.setup();
                 java.awt.EventQueue.invokeLater(() -> {
                     GiaoDienChinhGUI app = new GiaoDienChinhGUI(tk);
                     app.setVisible(true);
+                    GiaoDienChinhGUI.showNhacNhoDoiMatKhau(GiaoDienChinhGUI.isCanDoiMatKhau());
                 });
                 this.dispose();
             }
@@ -341,6 +335,7 @@ public class DangNhapGUI extends javax.swing.JFrame {
                                     "Mật khẩu mới đã được gửi đến email: " + email,
                                     "Thành công",
                                     JOptionPane.INFORMATION_MESSAGE);
+                            GiaoDienChinhGUI.setCanDoiMatKhau(ok);
                         } else {
                             JOptionPane.showMessageDialog(null,
                                     "Không thể đặt lại mật khẩu. Vui lòng thử lại!",

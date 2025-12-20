@@ -24,15 +24,26 @@ import hethongnhathuocduocankhang.entity.NhanVien;
 import hethongnhathuocduocankhang.entity.SanPham;
 import hethongnhathuocduocankhang.entity.TaiKhoan;
 import hethongnhathuocduocankhang.gui.GiaoDienChinhGUI;
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
@@ -145,14 +156,16 @@ public class BanHangBUS {
         }
 
         ArrayList<DonViTinh> dsDVT = DonViTinhDAO.getDonViTinhTheoMaSP(maSP);
+        dsDVT.sort((a, b) -> Double.compare(a.getHeSoQuyDoi(), b.getHeSoQuyDoi()));
         for (DonViTinh dvt : dsDVT) {
             if (dvt.getTenDonVi().equals(tenDVT)) {
                 int heSoQuyDoi = dvt.getHeSoQuyDoi();
                 double donGia = dvt.getGiaBanTheoDonVi();
                 double thanhTien = soLuong * donGia * (1 - giamGia / 100);
                 String maDVT = dvt.getMaDonViTinh();
+                int tonTheoDonVi = tongSoLuong / heSoQuyDoi;
                 if(soLuong * heSoQuyDoi > tongSoLuong) {
-                    throw new Exception("Không đủ số lượng");
+                    throw new Exception("Không đủ số lượng\nTổng số lượng còn lại: " + tonTheoDonVi + " " + tenDVT);
                 }
                 if(soLuong < 1) {
                     throw new Exception("Số lượng phải lớn hơn bằng 1");
@@ -182,7 +195,7 @@ public class BanHangBUS {
         return false;
     }
     
-    public boolean thanhToan(JTable tblCTHD, String maKH, boolean chuyenKhoan, double tongTien) throws Exception{
+    public boolean thanhToan(JTable tblCTHD, String maKH, boolean chuyenKhoan, double tongTien, double tienKhachDua, double tienThua) throws Exception{
         int confirm = JOptionPane.showConfirmDialog(null, "Bạn có chắc muốn thanh toán không?", "Xác nhận", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE
         );
         // Xác nhận thanh toán
@@ -195,12 +208,30 @@ public class BanHangBUS {
             if(tblCTHD.getRowCount() == 0) {
                 throw new Exception("Vui lòng thêm sản phẩm cần thanh toán");
             }
+            if(tienThua != tienKhachDua - tongTien) {
+                throw new Exception("Tiền thừa phải bằng tiền khách đưa trừ tổng tiền");
+            }
             for(int i = 0; i < tblCTHD.getRowCount(); i++) {
                 String maSP = tblCTHD.getValueAt(i, 8).toString();
                 if(kiemTraKeDon(maSP) && maKH.equalsIgnoreCase("KH-00000")) {
                     throw new Exception("Vui lòng lưu thông tin khách hàng trước khi thanh toán vì có thuốc kê đơn");
                 }
             }
+            if(tongTien > tienKhachDua) {
+                throw new Exception("Tiền khách đưa phải lớn hơn hoặc bằng tổng tiền");
+            }
+            for (int i = 0; i < tblCTHD.getRowCount(); i++) {
+                String maSP = tblCTHD.getValueAt(i, 8).toString();
+                int tongTon = LoSanPhamDAO.dsLoTheoMaSanPham(maSP)
+                    .stream()
+                    .mapToInt(LoSanPham::getSoLuong)
+                    .sum();;
+                int soLuongYeuCau = Integer.parseInt(tblCTHD.getValueAt(i, 4).toString());
+                if (tongTon < soLuongYeuCau) {
+                    throw new Exception("Không đủ hàng cho sản phẩm: " + maSP);
+                }
+            }
+
             
             
             // Lấy mã hóa đơn mới nhất
@@ -271,7 +302,7 @@ public class BanHangBUS {
                         soLuongXuat = 0;
                     } else {
                         LoSanPhamDAO.truSoLuong(lsp.getMaLoSanPham(), soLuongTon);
-                        ChiTietXuatLo ctxl = new ChiTietXuatLo(new LoSanPham(lsp.getMaLoSanPham()), new ChiTietHoaDon(maCTHDMoi), soLuongXuat);
+                        ChiTietXuatLo ctxl = new ChiTietXuatLo(new LoSanPham(lsp.getMaLoSanPham()), new ChiTietHoaDon(maCTHDMoi), soLuongTon);
                         ChiTietXuatLoDAO.insertChiTietXuatLo(ctxl);
                         soLuongXuat -= soLuongTon;
                     }
@@ -282,13 +313,13 @@ public class BanHangBUS {
                 }
             }
 
-            // Cập nhật điểm tích lũy cho khách hàng mua lớn hơn bằng 100 ngàn 
-            if(tongTien >= 100000 && !"KH-99999".equals(maKH)) {
-                int diemTichLuy = (int) Math.floor(tongTien / 100000);
+            // Cập nhật điểm tích lũy cho khách hàng mua lớn hơn bằng 1 ngàn 
+            if(tongTien >= 1000 && !"KH-99999".equals(maKH)) {
+                int diemTichLuy = (int) Math.floor(tongTien / 1000);
                 KhachHangDAO.updateDiemTichLuy(diemTichLuy, maKH);
             }
 
-            String noiDung = taoNoiDungHoaDon(hd, dsCTHD);
+            String noiDung = taoNoiDungHoaDon(hd, dsCTHD, tienKhachDua, tienThua);
             JDialog dialog = new JDialog();
             dialog.setTitle(maHDMoi);
             dialog.setSize(1000, 600);
@@ -327,7 +358,7 @@ public class BanHangBUS {
         }
     }
     
-    public static String taoNoiDungHoaDon(HoaDon hd, ArrayList<ChiTietHoaDon> dsCTHD) {
+    public static String taoNoiDungHoaDon(HoaDon hd, ArrayList<ChiTietHoaDon> dsCTHD, double tienKhachDua, double tienThua) {
         int WIDTH = 120;
         String LINE = "=".repeat(WIDTH);
         String SEPARATOR = "-".repeat(WIDTH);
@@ -364,7 +395,7 @@ public class BanHangBUS {
             String tenSP = SanPhamDAO.timSPTheoMa(maSP).getTen();
             String tenDVT = DonViTinhDAO.getDonViTinhTheoMaDVT(cthd.getDonViTinh().getMaDonViTinh()).getTenDonVi();
 
-            String giamStr = String.format("%.0f%%", cthd.getGiamGia() * 100);
+            String giamStr = String.format("%.0f%%", cthd.getGiamGia());
 
             double thanhTien = cthd.getThanhTien();
             tongTien += thanhTien;
@@ -382,8 +413,18 @@ public class BanHangBUS {
         sb.append(SEPARATOR).append("\n");
         String tongCongStr = "TỔNG CỘNG: " + df.format(tongTien) + " VND";
         sb.append(alignRight(tongCongStr, WIDTH)).append("\n");
-        sb.append(LINE).append("\n");
-
+        if(hd.isChuyenKhoan()) {
+            String tienKhachDuaStr = "KHÁCH CHUYỂN KHOẢN: " + df.format(tongTien) + " VND";
+            sb.append(alignRight(tienKhachDuaStr, WIDTH)).append("\n");
+            sb.append(LINE).append("\n");
+        } else {
+            String tienKhachDuaStr = "KHÁCH ĐƯA: " + df.format(tienKhachDua) + " VND";
+            sb.append(alignRight(tienKhachDuaStr, WIDTH)).append("\n");
+            String tienThuaStr = "TIỀN THỪA: " + df.format(tienThua) + " VND";
+            sb.append(alignRight(tienThuaStr, WIDTH)).append("\n");
+            sb.append(LINE).append("\n");
+        }
+        
         sb.append(center("CẢM ƠN QUÝ KHÁCH, HẸN GẶP LẠI!", WIDTH)).append("\n");
 
         sb.append(LINE).append("\n");
@@ -401,5 +442,5 @@ public class BanHangBUS {
         int padding = width - text.length();
         if (padding < 0) padding = 0;
         return " ".repeat(padding) + text;
-    } 
+    }    
 }

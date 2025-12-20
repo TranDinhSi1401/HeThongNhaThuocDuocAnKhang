@@ -3,6 +3,7 @@ package hethongnhathuocduocankhang.gui;
 import com.formdev.flatlaf.FlatClientProperties;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 import com.formdev.flatlaf.util.UIScale;
+import hethongnhathuocduocankhang.bus.DangNhapBUS;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.ComponentOrientation;
@@ -20,6 +21,8 @@ import hethongnhathuocduocankhang.menu.MenuAction;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Raven
@@ -69,61 +72,79 @@ public class MainForm extends JLayeredPane {
         menu.addMenuEvent((int index, int subIndex, MenuAction action) -> {
             // Application.mainForm.showForm(new DefaultForm("Form : " + index + " " + subIndex));
             if (index == 0) {
-                if(GiaoDienChinhGUI.getTk().isQuanLy()) {
-                    GiaoDienChinhGUI.showForm(new DashBoardQuanLi());
+                if (GiaoDienChinhGUI.getTk().isQuanLy()) {
+                    GiaoDienChinhGUI.showFormByKey("dashboardQuanLi", DashBoardQuanLi::new);
                 } else {
-                    GiaoDienChinhGUI.showForm(new DashBoardNhanVien());
-                }               
+                    GiaoDienChinhGUI.showFormByKey("dashboardNhanVien", DashBoardNhanVien::new);
+                }
             } else if (index == 1) {
-                GiaoDienChinhGUI.showForm(new BanHangGUI());
+                GiaoDienChinhGUI.showFormByKey("banHang", BanHangGUI::new);
             } else if (index == 2) {
-                GiaoDienChinhGUI.showForm(new TraHangGUI());
+                GiaoDienChinhGUI.showFormByKey("traHang", TraHangGUI::new);
             } else if (index == 3) {
-                GiaoDienChinhGUI.showForm(new TraCuuChungGUI());
+                GiaoDienChinhGUI.showFormByKey("traCuuChung", TraCuuChungGUI::new);
             } else if (index == 4) {
-                switch(subIndex) {
-                    case 1 ->
-                        showForm(new QuanLiKhachHangGUI());
-                    case 2 ->
-                        showForm(new QuanLiSanPhamGUI());
-                    case 3 ->
-                        showForm(new QuanLiNhanVienGUI());
-                    case 4 ->
-                        showForm(new QuanLiHoaDonGUI());
-                    case 5 ->
-                        showForm(new QuanLiKhuyenMaiGUI());
-                    case 6 ->
-                        showForm(new QuanLiNhaCungCapGUI());
-                    case 7 ->
-                        showForm(new QuanLiPhieuDatHangGUI());
-                    case 8 ->
-                        showForm(new QuanLiLichSuCaLamGUI());
-                    case 9 ->
-                        showForm(new QuanLiPhieuTraHangGUI());
-                    case 10 ->
-                        showForm(new QuanLiPhieuNhapHangGUI());
-                    default -> {
-                        action.cancel();
+                if(GiaoDienChinhGUI.getTk().isQuanLy()) {
+                    switch (subIndex) {
+                        case 1 ->
+                            GiaoDienChinhGUI.showFormByKey("quanLiKhachHang", QuanLiKhachHangGUI::new);
+                        case 2 ->
+                            GiaoDienChinhGUI.showFormByKey("quanLiSanPham", QuanLiSanPhamGUI::new);
+                        case 3 ->
+                            GiaoDienChinhGUI.showFormByKey("quanLiNhanVien", QuanLiNhanVienGUI::new);
+                        case 4 ->
+                            GiaoDienChinhGUI.showFormByKey("quanLiHoaDon", QuanLiHoaDonGUI::new);
+                        case 5 ->
+                            GiaoDienChinhGUI.showFormByKey("quanLiNhanVien", QuanLiNhanVienGUI::new);
+                        case 6 ->
+                            GiaoDienChinhGUI.showFormByKey("quanLiNhaCungCap", QuanLiNhaCungCapGUI::new);
+                        case 7 ->
+                            GiaoDienChinhGUI.showFormByKey("quanLiLichSuCaLam", QuanLiLichSuCaLamGUI::new);
+                        case 8 ->
+                            GiaoDienChinhGUI.showFormByKey("quanLiPhieuTraHang", QuanLiPhieuTraHangGUI::new);
+                        case 9 ->
+                            GiaoDienChinhGUI.showFormByKey("quanLiPhieuNhapHang", QuanLiPhieuNhapHangGUI::new);
+                        default -> {
+                            action.cancel();
+                        }
                     }
-                }
+                }else {
+                    JOptionPane.showMessageDialog(this, "Bạn không có quyền truy cập chức năng này");
+                    action.cancel();
+                }           
             } else if (index == 5) {
-                try {
-                    showForm(new LoSanPhamGUI());
-                } catch (SQLException ex) {
-                    Logger.getLogger(GiaoDienChinhGUI.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                if(GiaoDienChinhGUI.getTk().isQuanLy() || GiaoDienChinhGUI.getTk().isQuanLyLo()) {
+                    GiaoDienChinhGUI.showFormByKey("loSanPham", () -> {
+                        try {
+                            return new LoSanPhamGUI();
+                        } catch (SQLException ex) {
+                            ex.printStackTrace();
+                            JOptionPane.showMessageDialog(null, 
+                                "Lỗi khi tải Lô sản phẩm:\n" + ex.getMessage(), 
+                                "Database Error", 
+                                JOptionPane.ERROR_MESSAGE);
+                            return new JPanel(); // hoặc trả về panel rỗng để không null
+                        }
+                    });
+                }else {
+                    JOptionPane.showMessageDialog(this, "Bạn không có quyền truy cập chức năng này");
+                    action.cancel();
+                }                
             } else if (index == 6) {
-                showForm(new ThongKeHoaDonGUI());
+                GiaoDienChinhGUI.showFormByKey("thongKeHoaDon", ThongKeHoaDonGUI::new);
             } else if (index == 7) {
-                showForm(new BaoCaoGUI());
+                GiaoDienChinhGUI.showFormByKey("baoCao", BaoCaoGUI::new);
             } else if (index == 8) {
-                switch(subIndex) {
+                switch (subIndex) {
                     case 1 -> {
                         GiaoDienChinhGUI.showAboutGUI();
                     }
                     case 2 -> {
                         // Hướng dẫn sử dụng
                         showForm(new HuongDanSuDungGUI());
+                    }
+                    case 3 -> {
+                        GiaoDienChinhGUI.taoPanelDoiMatKhau();  
                     }
                     default -> {
                         action.cancel();
@@ -135,7 +156,6 @@ public class MainForm extends JLayeredPane {
                 action.cancel();
             }
         });
-        //action.cancel();
     }
 
     private void setMenuFull(boolean full) {

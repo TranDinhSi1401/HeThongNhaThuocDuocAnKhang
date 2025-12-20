@@ -4,6 +4,7 @@
  */
 package hethongnhathuocduocankhang.gui;
 
+import com.formdev.flatlaf.FlatClientProperties;
 import com.kitfox.svg.app.beans.SVGIcon;
 import hethongnhathuocduocankhang.bus.BanHangBUS;
 import hethongnhathuocduocankhang.connectDB.ConnectDB;
@@ -42,11 +43,13 @@ public class BanHangPane extends javax.swing.JPanel {
     private boolean isMerging = false;
     private Object oldSoLuong = null;
     private Object oldDonViTinh = null;
+    private final BanHangGUI parent;
     /**
      * Creates new form BanHangGUI
      */
     
-    public BanHangPane() {
+    public BanHangPane(BanHangGUI parent) {
+        this.parent = parent;
         initComponents();
         
         try {
@@ -54,13 +57,6 @@ public class BanHangPane extends javax.swing.JPanel {
         }catch(SQLException e) {
             System.out.println("Không thể kết nối vs CSDL");
         }
-        
-        JTableHeader header = tblCTHD.getTableHeader();
-        header.setPreferredSize(new Dimension(header.getWidth(), 30));
-        header.setBorder(null);
-        header.setBackground(new Color(245, 245, 245));
-        header.setForeground(Color.BLACK);
-        header.setFont(new Font("Segoe UI", Font.BOLD, 14));
         
         hideColumn(tblCTHD, 8);
         hideColumn(tblCTHD, 7);
@@ -159,15 +155,18 @@ public class BanHangPane extends javax.swing.JPanel {
                     model.setValueAt(updatedInfo[3], row, 7);
                     capNhatTongTien(model);
                 } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(this, ex.getMessage(), "Error Message", JOptionPane.ERROR_MESSAGE );
-                    if(ex.getMessage().trim().equalsIgnoreCase("Không đủ số lượng") || ex.getMessage().trim().equalsIgnoreCase("Số lượng phải lớn hơn bằng 1")) {
+                    String msg = ex.getMessage().trim();
+                    JOptionPane.showMessageDialog(this, msg, "Error Message", JOptionPane.ERROR_MESSAGE );
+                    if(msg.startsWith("Không đủ số lượng") || msg.startsWith("Số lượng phải lớn hơn")) {
+                        isMerging = true; // chặn event vòng lặp
                         if(e.getColumn() == 4) {
                             // roll back số lượng
                              model.setValueAt(oldSoLuong, row, 4);
                         } else {
                             // roll back dvt
                             model.setValueAt(oldDonViTinh, row, 2);
-                        }                     
+                        }    
+                        isMerging = false; // mở lại
                     }
                 }
                
@@ -180,7 +179,7 @@ public class BanHangPane extends javax.swing.JPanel {
         DecimalFormat formatter = new DecimalFormat("#,##0", symbols);
         
         txtTienKhachDua.getDocument().addDocumentListener(new DocumentListener() {
-
+            
             private boolean coDangFormat = false;
 
             // Lắng nghe khi thêm ký tự
@@ -213,6 +212,12 @@ public class BanHangPane extends javax.swing.JPanel {
                 try {
                     // Lấy văn bản hiện tại (có thể bao gồm dấu phân cách cũ)
                     String currentText = txtTienKhachDua.getText();
+                    // Bỏ qua place holder
+                    if (currentText == null 
+                            || currentText.isBlank() 
+                            || currentText.equals("Nhập tiền khách đưa [F5]")) {
+                        return;
+                    }
                     // Lọc để lấy chuỗi chỉ gồm số
                     rawText = currentText.replaceAll("[^\\d]", "");
                 } catch (Exception e) {
@@ -357,7 +362,6 @@ public class BanHangPane extends javax.swing.JPanel {
         pSouth.setLayout(new java.awt.BorderLayout());
         pSouth.setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
 
-        pLeftSouth.setBackground(new java.awt.Color(245, 245, 245));
         pLeftSouth.setPreferredSize(new java.awt.Dimension(400, 100));
         pLeftSouth.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 10, 15));
 
@@ -385,7 +389,6 @@ public class BanHangPane extends javax.swing.JPanel {
 
         pSouth.add(pLeftSouth, java.awt.BorderLayout.LINE_START);
 
-        pRightSouth.setBackground(new java.awt.Color(245, 245, 245));
         pRightSouth.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT, 10, 15));
 
         btnThanhToan.setBackground(new java.awt.Color(0, 203, 0));
@@ -408,11 +411,14 @@ public class BanHangPane extends javax.swing.JPanel {
         pRightCenter.setPreferredSize(new java.awt.Dimension(300, 100));
         pRightCenter.setLayout(new java.awt.BorderLayout(0, 10));
 
-        pThongTinKH.setBackground(new java.awt.Color(245, 245, 245));
-        pThongTinKH.setPreferredSize(new java.awt.Dimension(100, 210));
+        pThongTinKH.setPreferredSize(new java.awt.Dimension(100, 250));
         pThongTinKH.setLayout(new javax.swing.BoxLayout(pThongTinKH, javax.swing.BoxLayout.Y_AXIS));
+        pThongTinKH.setBorder(
+            BorderFactory.createEmptyBorder(5, 5, 5, 5)
+        );
 
-        p1.setBackground(new java.awt.Color(245, 245, 245));
+        pThongTinKH.putClientProperty(FlatClientProperties.STYLE, "arc:20");
+
         p1.setPreferredSize(new java.awt.Dimension(100, 30));
         p1.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 5, 0));
 
@@ -433,11 +439,7 @@ public class BanHangPane extends javax.swing.JPanel {
         pThongTinKH.add(p1);
 
         txtSdtKH.setText("Nhập sđt khách hàng [F2]");
-        txtSdtKH.setPreferredSize(new java.awt.Dimension(95, 30));
-        txtSdtKH.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(Color.BLACK, 1, true),
-            BorderFactory.createEmptyBorder(0, 10, 0, 0)
-        ));
+        txtSdtKH.setPreferredSize(new java.awt.Dimension(95, 40));
         txtSdtKH.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 txtSdtKHFocusGained(evt);
@@ -451,9 +453,9 @@ public class BanHangPane extends javax.swing.JPanel {
                 txtSdtKHActionPerformed(evt);
             }
         });
+        txtSdtKH.setMaximumSize(new Dimension(Short.MAX_VALUE, 40));
         pThongTinKH.add(txtSdtKH);
 
-        p2.setBackground(new java.awt.Color(245, 245, 245));
         p2.setPreferredSize(new java.awt.Dimension(100, 30));
         p2.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
@@ -465,7 +467,6 @@ public class BanHangPane extends javax.swing.JPanel {
 
         pThongTinKH.add(p2);
 
-        p3.setBackground(new java.awt.Color(245, 245, 245));
         p3.setPreferredSize(new java.awt.Dimension(100, 30));
         p3.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
@@ -481,7 +482,6 @@ public class BanHangPane extends javax.swing.JPanel {
 
         pThongTinKH.add(p3);
 
-        p4.setBackground(new java.awt.Color(245, 245, 245));
         p4.setPreferredSize(new java.awt.Dimension(100, 30));
         p4.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
@@ -497,7 +497,6 @@ public class BanHangPane extends javax.swing.JPanel {
 
         pThongTinKH.add(p4);
 
-        p5.setBackground(new java.awt.Color(245, 245, 245));
         p5.setPreferredSize(new java.awt.Dimension(100, 30));
         p5.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
@@ -516,10 +515,8 @@ public class BanHangPane extends javax.swing.JPanel {
 
         pRightCenter.add(pThongTinKH, java.awt.BorderLayout.PAGE_START);
 
-        pThanhToan.setBackground(new java.awt.Color(245, 245, 245));
         pThanhToan.setLayout(new javax.swing.BoxLayout(pThanhToan, javax.swing.BoxLayout.Y_AXIS));
 
-        p6.setBackground(new java.awt.Color(245, 245, 245));
         p6.setPreferredSize(new java.awt.Dimension(100, 30));
         p6.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
@@ -533,16 +530,18 @@ public class BanHangPane extends javax.swing.JPanel {
 
         pThanhToan.add(p6);
 
-        p7.setBackground(new java.awt.Color(245, 245, 245));
         p7.setPreferredSize(new java.awt.Dimension(100, 50));
 
-        radTienMat.setBackground(new java.awt.Color(245, 245, 245));
         radTienMat.setSelected(true);
         radTienMat.setText("Tiền mặt [F3]");
         p7.add(radTienMat);
 
-        radChuyenKhoan.setBackground(new java.awt.Color(245, 245, 245));
         radChuyenKhoan.setText("Chuyển khoản [F4]");
+        radChuyenKhoan.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                radChuyenKhoanActionPerformed(evt);
+            }
+        });
         p7.add(radChuyenKhoan);
 
         p7.setPreferredSize(new Dimension(Short.MAX_VALUE, 50));
@@ -551,7 +550,6 @@ public class BanHangPane extends javax.swing.JPanel {
 
         pThanhToan.add(p7);
 
-        p8.setBackground(new java.awt.Color(245, 245, 245));
         p8.setPreferredSize(new java.awt.Dimension(100, 30));
         p8.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
@@ -570,7 +568,6 @@ public class BanHangPane extends javax.swing.JPanel {
 
         pThanhToan.add(p8);
 
-        p9.setBackground(new java.awt.Color(245, 245, 245));
         p9.setPreferredSize(new java.awt.Dimension(100, 30));
         p9.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
@@ -585,10 +582,8 @@ public class BanHangPane extends javax.swing.JPanel {
         pThanhToan.add(p9);
 
         txtTienKhachDua.setText("Nhập tiền khách đưa [F5]");
-        txtTienKhachDua.setPreferredSize(new java.awt.Dimension(64, 30));
-        txtTienKhachDua.setPreferredSize(new Dimension(Short.MAX_VALUE, 30));
-        txtTienKhachDua.setMaximumSize(new Dimension(Integer.MAX_VALUE, 30));
-        txtTienKhachDua.setMinimumSize(new Dimension(0, 30));
+        txtTienKhachDua.setMinimumSize(new java.awt.Dimension(64, 40));
+        txtTienKhachDua.setPreferredSize(new java.awt.Dimension(64, 40));
         txtTienKhachDua.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 txtTienKhachDuaFocusGained(evt);
@@ -602,13 +597,9 @@ public class BanHangPane extends javax.swing.JPanel {
                 txtTienKhachDuaActionPerformed(evt);
             }
         });
-        txtTienKhachDua.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createLineBorder(Color.BLACK, 1, true),
-            BorderFactory.createEmptyBorder(0, 10, 0, 0)
-        ));
+        txtTienKhachDua.setMaximumSize(new Dimension(Short.MAX_VALUE, 40));
         pThanhToan.add(txtTienKhachDua);
 
-        p10.setBackground(new java.awt.Color(245, 245, 245));
         p10.setPreferredSize(new java.awt.Dimension(100, 80));
         p10.setLayout(new java.awt.GridLayout(2, 3, 5, 5));
 
@@ -667,7 +658,6 @@ public class BanHangPane extends javax.swing.JPanel {
 
         pThanhToan.add(p10);
 
-        p11.setBackground(new java.awt.Color(245, 245, 245));
         p11.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
         lblTienThua.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
@@ -679,6 +669,12 @@ public class BanHangPane extends javax.swing.JPanel {
         p11.add(lblTienThua1);
 
         pThanhToan.add(p11);
+
+        pThanhToan.setBorder(
+            BorderFactory.createEmptyBorder(5, 5, 5, 5)
+        );
+
+        pThanhToan.putClientProperty(FlatClientProperties.STYLE, "arc:20");
 
         pRightCenter.add(pThanhToan, java.awt.BorderLayout.CENTER);
 
@@ -749,7 +745,7 @@ public class BanHangPane extends javax.swing.JPanel {
         btnTimKiem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/search.png"))); // NOI18N
         btnTimKiem.setIcon(getIconSVG("search"));
         btnTimKiem.setPreferredSize(new java.awt.Dimension(38, 40));
-        btnTimKiem.setBorder(BorderFactory.createMatteBorder(1, 0, 1, 1, Color.BLACK));
+        //btnTimKiem.setBorder(BorderFactory.createMatteBorder(1, 0, 1, 1, Color.BLACK));
 
         btnTimKiem.setCursor(new Cursor(Cursor.HAND_CURSOR));
         btnTimKiem.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -761,30 +757,30 @@ public class BanHangPane extends javax.swing.JPanel {
 
         txtTimKiem.setText("Nhập mã sản phẩm [F1]");
         txtTimKiem.setPreferredSize(new java.awt.Dimension(119, 40));
-        txtTimKiem.setBorder(BorderFactory.createCompoundBorder(
-            BorderFactory.createMatteBorder(1, 1, 1, 0, Color.BLACK),
-            BorderFactory.createEmptyBorder(0, 10, 0, 0)
-        ));
-        txtTimKiem.addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                txtTimKiemFocusGained(evt);
-            }
-            public void focusLost(java.awt.event.FocusEvent evt) {
-                txtTimKiemFocusLost(evt);
-            }
-        });
-        txtTimKiem.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtTimKiemActionPerformed(evt);
-            }
-        });
-        pTimKiem.add(txtTimKiem, java.awt.BorderLayout.CENTER);
+        //txtTimKiem.setBorder(BorderFactory.createCompoundBorder(
+            //    BorderFactory.createMatteBorder(1, 1, 1, 0, Color.BLACK),
+            //    BorderFactory.createEmptyBorder(0, 10, 0, 0)
+            //));
+    txtTimKiem.addFocusListener(new java.awt.event.FocusAdapter() {
+        public void focusGained(java.awt.event.FocusEvent evt) {
+            txtTimKiemFocusGained(evt);
+        }
+        public void focusLost(java.awt.event.FocusEvent evt) {
+            txtTimKiemFocusLost(evt);
+        }
+    });
+    txtTimKiem.addActionListener(new java.awt.event.ActionListener() {
+        public void actionPerformed(java.awt.event.ActionEvent evt) {
+            txtTimKiemActionPerformed(evt);
+        }
+    });
+    pTimKiem.add(txtTimKiem, java.awt.BorderLayout.CENTER);
 
-        pLeftCenter.add(pTimKiem, java.awt.BorderLayout.PAGE_START);
+    pLeftCenter.add(pTimKiem, java.awt.BorderLayout.PAGE_START);
 
-        pLeftCenter.setBorder(BorderFactory.createEmptyBorder(5, 10, 10, 0));
+    pLeftCenter.setBorder(BorderFactory.createEmptyBorder(5, 10, 10, 0));
 
-        add(pLeftCenter, java.awt.BorderLayout.CENTER);
+    add(pLeftCenter, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
     public void themCTHDVaoTable(Object[] newRow) {
@@ -897,7 +893,9 @@ public class BanHangPane extends javax.swing.JPanel {
     }
     
     private void capNhatTienThua() {
-        double tienKhachDua = Double.parseDouble(txtTienKhachDua.getText());
+        String text = txtTienKhachDua.getText().replaceAll("[^\\d.]", "");
+        double tienKhachDua = Double.parseDouble(text);
+        //double tienKhachDua = Double.parseDouble(txtTienKhachDua.getText());
         double tongTien = getTongTien();
         if(tienKhachDua < tongTien) {
             JOptionPane.showMessageDialog(this, "Tiền khách đưa phải lớn hơn hoặc bằng tổng tiền", "Warning Message", JOptionPane.WARNING_MESSAGE);
@@ -961,11 +959,19 @@ public class BanHangPane extends javax.swing.JPanel {
             String maKH = lblMaKH1.getText().trim();
             boolean chuyenKhoan = radChuyenKhoan.isSelected();
             double tongTien = getTongTien();
-            if(bus.thanhToan(tblCTHD, maKH, chuyenKhoan, tongTien)) {
-                xoaTrang();
+            double tienKhachDua = Double.parseDouble(txtTienKhachDua.getText().replaceAll("\\s", ""));
+            double tienThua = Double.parseDouble(lblTienThua1.getText().replaceAll("[^\\d]", ""));
+            if(bus.thanhToan(tblCTHD, maKH, chuyenKhoan, tongTien, tienKhachDua, tienThua)) {
+                parent.dongTabHienTai(this);
             }
         } catch(Exception e) {
-            JOptionPane.showMessageDialog(this, e.getMessage(), "Error Message", JOptionPane.ERROR_MESSAGE);
+            if(e.getMessage().equalsIgnoreCase("For input string: \"Nhậptiềnkháchđưa[F5]\"")) {
+                JOptionPane.showMessageDialog(this, "tiền khách đưa phải là số dương", "Error Message", JOptionPane.ERROR_MESSAGE);
+            } else if (e.getMessage().equalsIgnoreCase("empty String")){
+                JOptionPane.showMessageDialog(this, "Ô tiền thừa bị trống", "Error Message", JOptionPane.ERROR_MESSAGE);    
+            } else {
+                JOptionPane.showMessageDialog(this, e.getMessage(), "Error Message", JOptionPane.ERROR_MESSAGE);
+            }
         }
     }//GEN-LAST:event_btnThanhToanActionPerformed
 
@@ -1044,25 +1050,36 @@ public class BanHangPane extends javax.swing.JPanel {
     }//GEN-LAST:event_btnGoiY6ActionPerformed
 
     private void btnXoaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnXoaActionPerformed
-        int selectedRow = tblCTHD.getSelectedRow();
         DefaultTableModel model = (DefaultTableModel) tblCTHD.getModel();
+        int[] selectedRows = tblCTHD.getSelectedRows();
 
-        if (selectedRow == -1) {
-            JOptionPane.showMessageDialog(this, "Vui lòng chọn dòng cần xóa!", "Warning Message", JOptionPane.WARNING_MESSAGE);
+        if (selectedRows.length == 0) {
+            JOptionPane.showMessageDialog(this, 
+                "Vui lòng chọn ít nhất một dòng cần xóa!", 
+                "Warning Message", 
+                JOptionPane.WARNING_MESSAGE);
             return;
         }
 
         int confirm = JOptionPane.showConfirmDialog(this, 
-                "Bạn có chắc muốn xóa dòng này không?", 
+                "Bạn có chắc muốn xóa " + selectedRows.length + " dòng đã chọn không?", 
                 "Xác nhận", 
                 JOptionPane.YES_NO_OPTION);
 
         if (confirm == JOptionPane.YES_OPTION) {
-            model.removeRow(selectedRow);
+            // Xóa từ dòng cuối lên đầu để tránh sai chỉ số
+            for (int i = selectedRows.length - 1; i >= 0; i--) {
+                model.removeRow(selectedRows[i]);
+            }
+
+            // Cập nhật lại số thứ tự cột đầu tiên (giả sử cột 0 là STT)
             for (int i = 0; i < model.getRowCount(); i++) {
                 model.setValueAt(i + 1, i, 0);
             }
-        }  
+            
+            // Cập nhật tổng tiền
+            capNhatTongTien(model);
+        }
     }//GEN-LAST:event_btnXoaActionPerformed
 
     private void txtTienKhachDuaFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtTienKhachDuaFocusGained
@@ -1107,6 +1124,13 @@ public class BanHangPane extends javax.swing.JPanel {
             }
         }
     }//GEN-LAST:event_btnThemKHActionPerformed
+
+    private void radChuyenKhoanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_radChuyenKhoanActionPerformed
+        double tongTien = getTongTien();
+        DecimalFormat df = new DecimalFormat("0");
+        txtTienKhachDua.setText(df.format(tongTien));
+        capNhatTienThua();
+    }//GEN-LAST:event_radChuyenKhoanActionPerformed
         
     public void xoaTrang() {
         DefaultTableModel model = (DefaultTableModel)tblCTHD.getModel();

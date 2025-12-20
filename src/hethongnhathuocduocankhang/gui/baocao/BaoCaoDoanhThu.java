@@ -257,6 +257,8 @@ public class BaoCaoDoanhThu extends javax.swing.JPanel {
 
         btnXemBaoCao = new JButton("Xem báo cáo");
         btnXemBaoCao.setFont(fontLabel);
+        btnXemBaoCao.setBackground(new Color(25,118,210));
+        btnXemBaoCao.setForeground(new Color(255,255,255));
         btnXemBaoCao.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -266,6 +268,8 @@ public class BaoCaoDoanhThu extends javax.swing.JPanel {
 
         btnXuatFile = new JButton("Xuất file báo cáo");
         btnXuatFile.setFont(fontLabel);
+        btnXuatFile.setBackground(new Color(0,203,0));
+        btnXuatFile.setForeground(new Color(255,255,255));
         btnXuatFile.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

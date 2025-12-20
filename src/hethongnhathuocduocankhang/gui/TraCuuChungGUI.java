@@ -318,6 +318,8 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         });
         jPanel62.add(txtNhapNhanVien);
 
+        btnTimNhanVien.setBackground(new java.awt.Color(25, 118, 210));
+        btnTimNhanVien.setForeground(new java.awt.Color(255, 255, 255));
         btnTimNhanVien.setText("Tìm kiếm");
         btnTimNhanVien.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -372,6 +374,8 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         cbbSapXepNhanVien.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tên nhân viên", "Trạng thái" }));
         jPanel69.add(cbbSapXepNhanVien);
 
+        btnLocNhanVien.setBackground(new java.awt.Color(0, 203, 0));
+        btnLocNhanVien.setForeground(new java.awt.Color(255, 255, 255));
         btnLocNhanVien.setText("Lọc bảng [F6]");
         btnLocNhanVien.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -450,6 +454,8 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         });
         jPanel32.add(txtNhapKhachHang);
 
+        btnTimKhachHang.setBackground(new java.awt.Color(25, 118, 210));
+        btnTimKhachHang.setForeground(new java.awt.Color(255, 255, 255));
         btnTimKhachHang.setText("Tìm kiếm");
         btnTimKhachHang.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -487,6 +493,8 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         cbbSapXepKhachHang.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tên khách hàng", "Điểm tích lũy" }));
         jPanel39.add(cbbSapXepKhachHang);
 
+        btnLocKhachHang.setBackground(new java.awt.Color(0, 203, 0));
+        btnLocKhachHang.setForeground(new java.awt.Color(255, 255, 255));
         btnLocKhachHang.setText("Lọc bảng [F6]");
         btnLocKhachHang.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -556,6 +564,8 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         });
         jPanel22.add(txtNhapNhaCungCap);
 
+        btnTimKiemNhaCungCap.setBackground(new java.awt.Color(25, 118, 210));
+        btnTimKiemNhaCungCap.setForeground(new java.awt.Color(255, 255, 255));
         btnTimKiemNhaCungCap.setText("Tìm kiếm");
         btnTimKiemNhaCungCap.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -598,6 +608,8 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         cbbSapXepNhaCungCap.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tên nhà cung cấp", "Mã nhà cung cấp" }));
         jPanel29.add(cbbSapXepNhaCungCap);
 
+        btnLocNhaCungCap.setBackground(new java.awt.Color(0, 203, 0));
+        btnLocNhaCungCap.setForeground(new java.awt.Color(255, 255, 255));
         btnLocNhaCungCap.setText("Lọc bảng [F6]");
         btnLocNhaCungCap.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -672,6 +684,8 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         });
         jPanel4.add(txtNhapSanPham);
 
+        btnTimKiemSanPham.setBackground(new java.awt.Color(25, 118, 210));
+        btnTimKiemSanPham.setForeground(new java.awt.Color(255, 255, 255));
         btnTimKiemSanPham.setText("Tìm kiếm");
         btnTimKiemSanPham.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -755,6 +769,8 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         cbbSapXepSanPham.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Mã sản phẩm", "Tên sản phẩm", " " }));
         jPanel3.add(cbbSapXepSanPham);
 
+        btnLocSanPham.setBackground(new java.awt.Color(0, 203, 0));
+        btnLocSanPham.setForeground(new java.awt.Color(255, 255, 255));
         btnLocSanPham.setText("Lọc bảng [F6]");
         btnLocSanPham.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -817,6 +833,8 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         });
         jPanel42.add(txtNhapKhuyenMai);
 
+        btnTimKhuyenMai.setBackground(new java.awt.Color(25, 118, 210));
+        btnTimKhuyenMai.setForeground(new java.awt.Color(255, 255, 255));
         btnTimKhuyenMai.setText("Tìm kiếm");
         btnTimKhuyenMai.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -890,6 +908,8 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         });
         jPanel49.add(cbbSapXepKhuyenMai);
 
+        btnLocKhuyenMai.setBackground(new java.awt.Color(0, 203, 0));
+        btnLocKhuyenMai.setForeground(new java.awt.Color(255, 255, 255));
         btnLocKhuyenMai.setText("Lọc [F6]");
         btnLocKhuyenMai.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -954,6 +974,8 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         });
         jPanel12.add(txtNhapHoaDon);
 
+        btnTimKiem.setBackground(new java.awt.Color(25, 118, 210));
+        btnTimKiem.setForeground(new java.awt.Color(255, 255, 255));
         btnTimKiem.setText("Tìm kiếm");
         btnTimKiem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1008,6 +1030,8 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         cbbSapXepHoaDon.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Ngày tạo", "Tổng tiền" }));
         jPanel19.add(cbbSapXepHoaDon);
 
+        btnLocHoaDon.setBackground(new java.awt.Color(0, 203, 0));
+        btnLocHoaDon.setForeground(new java.awt.Color(255, 255, 255));
         btnLocHoaDon.setText("Lọc [F6]");
         btnLocHoaDon.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1082,6 +1106,8 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         });
         jPanel72.add(txtNhapPhieuNhap);
 
+        btnTimPhieuNhap.setBackground(new java.awt.Color(25, 118, 210));
+        btnTimPhieuNhap.setForeground(new java.awt.Color(255, 255, 255));
         btnTimPhieuNhap.setText("Tìm kiếm");
         btnTimPhieuNhap.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1137,6 +1163,8 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         });
         jPanel79.add(cbbSapXepPhieuNhap);
 
+        btnLocPhieuNhap.setBackground(new java.awt.Color(0, 203, 0));
+        btnLocPhieuNhap.setForeground(new java.awt.Color(255, 255, 255));
         btnLocPhieuNhap.setText("Lọc [F6]");
         btnLocPhieuNhap.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1201,6 +1229,8 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         });
         jPanel52.add(txtNhapPhieuTraHang);
 
+        btnTimPhieuTraHang.setBackground(new java.awt.Color(25, 118, 210));
+        btnTimPhieuTraHang.setForeground(new java.awt.Color(255, 255, 255));
         btnTimPhieuTraHang.setText("Tìm kiếm");
         btnTimPhieuTraHang.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -1256,6 +1286,8 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         });
         jPanel59.add(cbbSapXepPhieuTraHang);
 
+        btnLocPhieuTraHang.setBackground(new java.awt.Color(0, 203, 0));
+        btnLocPhieuTraHang.setForeground(new java.awt.Color(255, 255, 255));
         btnLocPhieuTraHang.setText("Lọc [F6]");
         btnLocPhieuTraHang.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
