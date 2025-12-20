@@ -55,7 +55,7 @@ public class DashBoardNhanVien extends javax.swing.JPanel {
         initComponents();
 
         setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-        setBackground(new Color(255, 255, 255));
+        //setBackground(new Color(255, 255, 255));
 
         try {
             NhanVien nv = NhanVienDAO.getNhanVienTheoMaNV(GiaoDienChinhGUI.getTk().getTenDangNhap().trim());
@@ -642,14 +642,14 @@ public class DashBoardNhanVien extends javax.swing.JPanel {
         jPanel18 = new javax.swing.JPanel();
         jLabel10 = new javax.swing.JLabel();
 
-        setBackground(new java.awt.Color(255, 255, 255));
+        //setBackground(new java.awt.Color(255, 255, 255));
         setLayout(new java.awt.BorderLayout(10, 10));
 
-        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        //jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setPreferredSize(new java.awt.Dimension(808, 220));
         jPanel1.setLayout(new java.awt.BorderLayout(10, 10));
 
-        jPanel2.setBackground(new java.awt.Color(255, 255, 255));
+        //jPanel2.setBackground(new java.awt.Color(255, 255, 255));
         jPanel2.setPreferredSize(new java.awt.Dimension(360, 220));
         jPanel2.setLayout(new java.awt.BorderLayout(10, 10));
 
@@ -667,7 +667,7 @@ public class DashBoardNhanVien extends javax.swing.JPanel {
         jPanel2.add(pnlThongTinCaLam, java.awt.BorderLayout.CENTER);
         jPanel1.add(jPanel2, java.awt.BorderLayout.LINE_END);
 
-        jPanel3.setBackground(new java.awt.Color(245, 245, 245));
+        //jPanel3.setBackground(new java.awt.Color(245, 245, 245));
         jPanel3.setLayout(new java.awt.BorderLayout());
 
         //jPanel4.setBackground(new java.awt.Color(245, 245, 245));
