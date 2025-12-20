@@ -49,9 +49,9 @@ public class QuanLiSanPhamGUI extends JPanel {
         btnXoa = new JButton("Xóa - Del");
         btnSua = new JButton("Sửa - F2");
 
-        setupTopButton(btnThem, new Color(50, 150, 250)); // Xanh dương
-        setupTopButton(btnXoa, new Color(250, 100, 100)); // Đỏ
-        setupTopButton(btnSua, Color.LIGHT_GRAY);         // Xám
+        setupTopButton(btnThem, new Color(25, 118, 210));
+        setupTopButton(btnXoa, new Color(255, 51, 51));
+        setupTopButton(btnSua, new Color(0, 203, 0));
 
         pnlNorthLeft.add(btnThem);
         pnlNorthLeft.add(btnXoa);

@@ -100,6 +100,7 @@ public class ThemSanPhamGUI extends JDialog {
         JPanel pnlInputBC = new JPanel(new BorderLayout(5, 0));
         txtInputBarcode = new JTextField();
         btnThemBarcode = new JButton("+");
+        setupButton(btnThemBarcode, new Color(25, 118, 210));
         btnThemBarcode.setMargin(new Insets(2, 8, 2, 8));
         pnlInputBC.add(txtInputBarcode, BorderLayout.CENTER);
         pnlInputBC.add(btnThemBarcode, BorderLayout.EAST);
@@ -115,7 +116,8 @@ public class ThemSanPhamGUI extends JDialog {
         scrBarcode.setBorder(new TitledBorder("DS Mã vạch"));
         scrBarcode.setPreferredSize(new Dimension(150, 80));
         btnXoaBarcode = new JButton("Xóa mã chọn");
-        btnXoaBarcode.setFont(new Font("Arial", Font.PLAIN, 10));
+        setupButton(btnXoaBarcode, new Color(255, 51, 51));
+        btnXoaBarcode.setFont(new Font("Arial", Font.PLAIN, 12));
 
         pnlBarcodeContainer.add(pnlInputBC, BorderLayout.NORTH);
         pnlBarcodeContainer.add(scrBarcode, BorderLayout.CENTER);
@@ -199,7 +201,9 @@ public class ThemSanPhamGUI extends JDialog {
         txtGiaBanDonVi = new JTextField(7);
         chkDonViCoBan = new JCheckBox("Cơ bản");
         btnThemDVT = new JButton("Thêm");
+        setupButton(btnThemDVT, new Color(25, 118, 210));
         btnXoaDVT = new JButton("Xóa");
+        setupButton(btnXoaDVT, new Color(255, 51, 51));
 
         String[] donViMau = {"", "VIEN", "VI", "HOP", "CHAI", "LO", "TUYP", "GOI", "CAI", "THUNG"};
         cboTenDonVi = new JComboBox<>(donViMau);
@@ -234,8 +238,11 @@ public class ThemSanPhamGUI extends JDialog {
         JPanel pnlTopControlNCC = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 5));
         txtTimNCC = new JTextField(12);
         btnTimNCC = new JButton("Tìm");
+        setupButton(btnTimNCC, new Color(25, 118, 210));
         txtGiaNhap = new JTextField(8);
-        btnThemNCC = new JButton("Thêm xuống DS");
+        btnThemNCC = new JButton("Thêm vào DS");
+        setupButton(btnThemNCC, new Color(25, 118, 210));
+        btnThemNCC.setPreferredSize(new Dimension(150, 30));
 
         setupMoneyFormatting(txtGiaNhap);
 
@@ -257,6 +264,7 @@ public class ThemSanPhamGUI extends JDialog {
         pnlTablesAreaNCC.add(new JScrollPane(tableKQTimKiemNCC));
         JPanel pnlFooterNCC = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         btnXoaNCC = new JButton("Xóa khỏi DS");
+        setupButton(btnXoaNCC, new Color(255, 51, 51));
         pnlFooterNCC.add(btnXoaNCC);
         JPanel pnlTable2NCC = new JPanel(new BorderLayout());
         pnlTable2NCC.add(new JScrollPane(tableNCCChon), BorderLayout.CENTER);
@@ -270,7 +278,10 @@ public class ThemSanPhamGUI extends JDialog {
         JPanel pnlTopControlKM = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 5));
         txtTimKM = new JTextField(15);
         btnTimKM = new JButton("Tìm");
-        btnThemKM = new JButton("Thêm xuống DS");
+        setupButton(btnTimKM, new Color(25, 118, 210));
+        btnThemKM = new JButton("Thêm vào DS");
+        setupButton(btnThemKM, new Color(25, 118, 210));
+        btnThemKM.setPreferredSize(new Dimension(150, 30));
         pnlTopControlKM.add(new JLabel("Tìm KM:"));
         pnlTopControlKM.add(txtTimKM);
         pnlTopControlKM.add(btnTimKM);
@@ -287,6 +298,7 @@ public class ThemSanPhamGUI extends JDialog {
         pnlTablesAreaKM.add(new JScrollPane(tableKQTimKiemKM));
         JPanel pnlFooterKM = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         btnXoaKM = new JButton("Xóa khỏi DS");
+        setupButton(btnXoaKM, new Color(255, 51, 51));
         pnlFooterKM.add(btnXoaKM);
         JPanel pnlTable2KM = new JPanel(new BorderLayout());
         pnlTable2KM.add(new JScrollPane(tableKMChon), BorderLayout.CENTER);
@@ -300,10 +312,18 @@ public class ThemSanPhamGUI extends JDialog {
         // Footer Buttons
         JPanel pnlButton = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         btnHuy = new JButton("Hủy bỏ");
+        setupButton(btnHuy, new Color(255, 51, 51)); // <--- Đỏ
         btnXacNhan = new JButton("Lưu sản phẩm");
+        setupButton(btnXacNhan, new Color(0, 203, 0));
         btnXacNhan.setBackground(new Color(0, 153, 51));
         btnXacNhan.setForeground(Color.WHITE);
         btnXacNhan.setPreferredSize(new Dimension(120, 35));
+
+        setupButton(btnHuy, new Color(255, 51, 51));     // Đỏ
+        setupButton(btnXacNhan, new Color(0, 203, 0));   // Xanh lá
+        btnHuy.setPreferredSize(new Dimension(100, 35));
+        btnXacNhan.setPreferredSize(new Dimension(150, 35));
+
         pnlButton.add(btnHuy);
         pnlButton.add(btnXacNhan);
 
@@ -418,6 +438,16 @@ public class ThemSanPhamGUI extends JDialog {
                 }
             }
         });
+    }
+
+    private void setupButton(JButton button, Color bgColor) {
+        button.setBackground(bgColor);
+        button.setForeground(Color.WHITE);
+        button.setFont(new Font("Arial", Font.BOLD, 14));
+        button.setFocusPainted(false);
+        button.setBorderPainted(false);
+        button.setOpaque(true);
+        button.setPreferredSize(new Dimension(button.getPreferredSize().width, 30));
     }
 
     // GETTERS

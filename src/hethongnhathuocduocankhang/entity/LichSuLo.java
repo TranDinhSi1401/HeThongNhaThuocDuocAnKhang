@@ -23,11 +23,11 @@ public class LichSuLo {
     public LichSuLo() {
     }
 
-    public LichSuLo(String maLichSuLo) throws Exception {
+    public LichSuLo(String maLichSuLo){
         setMaLichSuLo(maLichSuLo);
     }
 
-    public LichSuLo(String maLichSuLo, LoSanPham lo, LocalDate thoiGian, String hanhDong, int soLuongSau, String ghiChu, NhanVien nv) throws Exception {
+    public LichSuLo(String maLichSuLo, LoSanPham lo, LocalDate thoiGian, String hanhDong, int soLuongSau, String ghiChu, NhanVien nv){
         setMaLichSuLo(maLichSuLo);
         this.lo = lo;
         this.thoiGian = thoiGian;
@@ -65,12 +65,12 @@ public class LichSuLo {
         return nv;
     }
 
-    public void setMaLichSuLo(String maLichSuLo) throws Exception {
+    public void setMaLichSuLo(String maLichSuLo){
         if (maLichSuLo == null || maLichSuLo.trim().isEmpty()) {
-            throw new Exception("Mã lịch sử lô không được rỗng");
+            throw new IllegalArgumentException("Mã lịch sử lô không được rỗng");
         }
         if (!maLichSuLo.matches("^LSL-\\d{4}$")) {
-            throw new Exception("Mã lịch sử lô không hợp lệ. Phải theo định dạng LSL-XXXX với X là số nguyên từ 0-9.");
+            throw new IllegalArgumentException("Mã lịch sử lô không hợp lệ. Phải theo định dạng LSL-XXXX với X là số nguyên từ 0-9.");
         }
         this.maLichSuLo = maLichSuLo;
     }
