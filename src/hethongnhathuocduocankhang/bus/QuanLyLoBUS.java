@@ -164,12 +164,12 @@ public class QuanLyLoBUS {
                     }
                     break;
                 case "tên sản phẩm":
-                    if(noiDungSafe.isEmpty()){
+                    if(noiDungSafe.trim().equals("")){
                         JOptionPane.showMessageDialog(null, "Bạn chưa nhập tên sản phẩm, vui lòng nhập tên sản phẩm và thử lại");
                     }break;
                 case "nhà cung cấp":
-                    if(!noiDungSafe.matches("[A-Za-z-0-9]")){
-                        JOptionPane.showMessageDialog(null, "Tên tìm kiếm không được chứa ký tự đặc biệt.");
+                    if(noiDungSafe.trim().equals("")){
+                        JOptionPane.showMessageDialog(null, "Bạn chưa nhập tên nhà cung cấp, vui lòng nhập và thử lại");
                         return new ArrayList<>();
                     }
                     break;
