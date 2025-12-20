@@ -61,7 +61,17 @@ public class HuongDanSuDungGUI extends javax.swing.JPanel {
             + "<li><b>Nghiệp vụ bán hàng & trả hàng</b> – Bán hàng, trả hàng, xử lý sự cố</li>"
             + "<li><b>Tra cứu & báo cáo</b> – Tìm thông tin, xuất dữ liệu</li>"
             + "</ul>"
-            + "<p style='color:#d32f2f; font-weight:bold;'>💡 Mẹo: Dùng phím tắt (F3, F4, F6, ...) để tăng tốc độ làm việc.</p>"
+            + "<p style='color:#d32f2f; font-weight:bold;'>💡 Mẹo: Dùng phím tắt<br> "
+                + "-	Trợ giúp (F1)<br>" +
+                "-	Sửa (F2)<br>" +
+                "-	Tìm (F3)<br>" +
+                "-	Xác nhận (F4)<br>" +
+                "-	Làm mới (F5)<br>" +
+                "-	Thêm, tạo (F6)<br>" +
+                "-	Chọn tất cả (F7)<br>" +
+                "-	Bỏ chọn tất cả (F8)<br>" +
+                "-	Xóa (F9 hoặc chọn + Delete)<br>" +
+"-	Xóa trắng (F10)</p>"
             + "</body></html>";
 
         String htmlDaoTaoDauTien = ""
@@ -221,7 +231,7 @@ public class HuongDanSuDungGUI extends javax.swing.JPanel {
             + "<h3>🔍 Bước 1 – Tìm hóa đơn gốc</h3>"
             + "<ol style='line-height:1.8;'>"
             + "<li>Menu → <b>Trả hàng</b></li>"
-            + "<li>Nhập <b>Mã hóa đơn</b> hoặc <b>Số hóa đơn</b> trong ô tìm kiếm</li>"
+            + "<li>Nhập <b>Mã hóa đơn trong ô tìm kiếm</li>"
             + "<li>Bấm <b>Tìm [F3]</b> hoặc phím <b>Enter</b></li>"
             + "<li>Nếu tìm thấy, danh sách chi tiết sản phẩm sẽ hiển thị</li>"
             + "<li>Nếu không tìm thấy hoặc quá 30 ngày, hệ thống sẽ thông báo lỗi</li>"
@@ -259,21 +269,18 @@ public class HuongDanSuDungGUI extends javax.swing.JPanel {
             + "</table>"
             + "<p><b>Cách nhập:</b></p>"
             + "<ol style='line-height:1.8;'>"
-            + "<li>Chọn <b>Lý do trả hàng</b> từ danh sách</li>"
+            + "<li>Chọn <b>Lý do trả hàng</b>, <b>Tình trạng nguyên vẹn sản phẩm</b>, <b>Số lượng</b> từ danh sách</li>"
             + "<li>Hệ số hoàn trả sẽ được tự động điền</li>"
-            + "<li>Nhân viên có thể <b>sửa hệ số</b> nếu thương lượng với khách (VD: 50% thay vì 100%)</li>"
-            + "<li><b>Tiền hoàn</b> sẽ tính toán tự động = Giá × Hệ số</li>"
             + "</ol>"
             + "<h3>📄 Bước 4 – Hoàn tất</h3>"
             + "<ol style='line-height:1.8;'>"
             + "<li>Kiểm tra lại <b>Tổng tiền hoàn</b> trước khi lưu</li>"
             + "<li>Bấm <b>Tạo phiếu trả [F6]</b></li>"
-            + "<li>Phiếu trả hàng sẽ được tạo và lưu vào hệ thống</li>"
-            + "<li>Bấm <b>In phiếu</b> để in hoặc lưu PDF</li>"
-            + "<li>Giao phiếu cho khách và kế toán để xử lý hoàn tiền</li>"
+            + "<li>Phiếu trả hàng sẽ được tạo và lưu vào hệ thống. Sản phẩm nguyên vẹn và không có lỗi do nhà sản xuất sẽ được thêm lại vào lô. Điểm tích lũy bị trừ theo số tiền hoàn trả</li>"
+            + "<li>Giao phiếu cho khách</li>"
             + "</ol>"
             + "<p style='background:#e8f5e9; padding:10px; border-left:4px solid #4caf50;'>"
-            + "✓ <b>Lưu ý:</b> Phiếu trả hàng là bằng chứng chính thức, phải in ra và lưu giấy."
+            + "✓ <b>Lưu ý:</b> Với sản phẩm miễn hoàn trả hóa đơn vẫn tạo cùng với phiếu trả, và sản phẩm đó sẽ không được nhận trả ở lần tiếp theo nữa với bất kỳ lý do gì"
             + "</p>"
             + "</body></html>";
 
