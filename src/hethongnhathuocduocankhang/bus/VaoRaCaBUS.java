@@ -35,7 +35,6 @@ public class VaoRaCaBUS {
         LocalTime gioHienTai = LocalTime.now();
         String maCa = "";
         
-        // Logic xác định mã ca
         if (gioHienTai.getHour() >= 6 && gioHienTai.getHour() < 14) {
             maCa = "SANG";
         } else if (gioHienTai.getHour() >= 14 && gioHienTai.getHour() < 22){
@@ -50,9 +49,6 @@ public class VaoRaCaBUS {
         }
     }
 
-    /**
-     * Xử lý logic Vào Ca
-     */
     public boolean xuLyVaoCa(String maNV, CaLam caLam) throws SQLException {
         NhanVien nv = NhanVienDAO.getNhanVienTheoMaNV(maNV);
         LocalDate ngayHienTai = LocalDate.now();
@@ -63,9 +59,6 @@ public class VaoRaCaBUS {
         return lsDAO.themLichSuCaLam(ls);
     }
 
-    /**
-     * Xử lý logic Ra Ca
-     */
     public boolean xuLyRaCa(String maNV, CaLam caLam, String ghiChu) throws SQLException {
         LocalDate ngayHienTai = LocalDate.now();
         LocalTime gioHienTai = LocalTime.now();

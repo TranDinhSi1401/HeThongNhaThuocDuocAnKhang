@@ -18,7 +18,6 @@ public class ThemSanPhamGUI extends JDialog {
     private SanPhamBUS bus;
     private boolean isEditMode;
 
-    // Components
     private JTextField txtMaSanPham, txtTenSanPham;
     private JTextArea txtMoTa, txtThanhPhan;
     private JComboBox<String> cmbLoaiSanPham;
@@ -50,11 +49,10 @@ public class ThemSanPhamGUI extends JDialog {
 
     private JButton btnHuy, btnXacNhan;
 
-    // Constructor nhận BUS và mode
     public ThemSanPhamGUI(SanPhamBUS bus, boolean isEditMode, String maSP) {
         this.bus = bus;
         this.isEditMode = isEditMode;
-        
+
         this.setTitle(isEditMode ? "Cập nhật sản phẩm" : "Thêm sản phẩm mới");
         this.setSize(950, 800);
         this.setLocationRelativeTo(null);
@@ -63,7 +61,7 @@ public class ThemSanPhamGUI extends JDialog {
 
         initComponents(); // Tạo giao diện
         initEvents();     // Gắn sự kiện
-        
+
         // Gọi BUS chuẩn bị dữ liệu
         if (isEditMode) {
             bus.chuanBiFormSua(this, maSP);
@@ -84,26 +82,33 @@ public class ThemSanPhamGUI extends JDialog {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.anchor = GridBagConstraints.NORTHWEST;
 
-        gbc.gridx = 0; gbc.gridy = 0; gbc.weightx = 0;
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.weightx = 0;
         pnlInfo.add(new JLabel("Mã sản phẩm:"), gbc);
 
         txtMaSanPham = new JTextField(15);
-        gbc.gridx = 1; gbc.weightx = 0.5;
+        gbc.gridx = 1;
+        gbc.weightx = 0.5;
         pnlInfo.add(txtMaSanPham, gbc);
 
-        gbc.gridx = 2; gbc.weightx = 0;
+        gbc.gridx = 2;
+        gbc.weightx = 0;
         pnlInfo.add(new JLabel("Mã Vạch:"), gbc);
 
         JPanel pnlBarcodeContainer = new JPanel(new BorderLayout(5, 5));
         JPanel pnlInputBC = new JPanel(new BorderLayout(5, 0));
         txtInputBarcode = new JTextField();
         btnThemBarcode = new JButton("+");
+        setupButton(btnThemBarcode, new Color(25, 118, 210));
         btnThemBarcode.setMargin(new Insets(2, 8, 2, 8));
         pnlInputBC.add(txtInputBarcode, BorderLayout.CENTER);
         pnlInputBC.add(btnThemBarcode, BorderLayout.EAST);
 
         modelBarcode = new DefaultTableModel(new String[]{"Mã Barcode"}, 0) {
-             public boolean isCellEditable(int row, int col) { return false; }
+            public boolean isCellEditable(int row, int col) {
+                return false;
+            }
         };
         tableBarcode = new JTable(modelBarcode);
         tableBarcode.setTableHeader(null);
@@ -111,41 +116,62 @@ public class ThemSanPhamGUI extends JDialog {
         scrBarcode.setBorder(new TitledBorder("DS Mã vạch"));
         scrBarcode.setPreferredSize(new Dimension(150, 80));
         btnXoaBarcode = new JButton("Xóa mã chọn");
-        btnXoaBarcode.setFont(new Font("Arial", Font.PLAIN, 10));
+        setupButton(btnXoaBarcode, new Color(255, 51, 51));
+        btnXoaBarcode.setFont(new Font("Arial", Font.PLAIN, 12));
 
         pnlBarcodeContainer.add(pnlInputBC, BorderLayout.NORTH);
         pnlBarcodeContainer.add(scrBarcode, BorderLayout.CENTER);
         pnlBarcodeContainer.add(btnXoaBarcode, BorderLayout.SOUTH);
 
-        gbc.gridx = 3; gbc.weightx = 0.5; gbc.gridheight = 3; gbc.fill = GridBagConstraints.BOTH;
+        gbc.gridx = 3;
+        gbc.weightx = 0.5;
+        gbc.gridheight = 3;
+        gbc.fill = GridBagConstraints.BOTH;
         pnlInfo.add(pnlBarcodeContainer, gbc);
-        gbc.gridheight = 1; gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.gridheight = 1;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
 
-        gbc.gridx = 0; gbc.gridy = 1; gbc.weightx = 0;
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.weightx = 0;
         pnlInfo.add(new JLabel("Tên sản phẩm:"), gbc);
         txtTenSanPham = new JTextField();
-        gbc.gridx = 1; gbc.weightx = 0.5;
+        gbc.gridx = 1;
+        gbc.weightx = 0.5;
         pnlInfo.add(txtTenSanPham, gbc);
 
-        gbc.gridx = 0; gbc.gridy = 2; gbc.weightx = 0;
+        gbc.gridx = 0;
+        gbc.gridy = 2;
+        gbc.weightx = 0;
         pnlInfo.add(new JLabel("Loại sản phẩm:"), gbc);
         cmbLoaiSanPham = new JComboBox<>(new String[]{"Thuốc kê đơn", "Thuốc không kê đơn", "Thực phẩm chức năng"});
-        gbc.gridx = 1; gbc.weightx = 0.5;
+        gbc.gridx = 1;
+        gbc.weightx = 0.5;
         pnlInfo.add(cmbLoaiSanPham, gbc);
 
-        gbc.gridx = 0; gbc.gridy = 3; gbc.weightx = 0;
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        gbc.weightx = 0;
         pnlInfo.add(new JLabel("Thành phần:"), gbc);
         txtThanhPhan = new JTextArea(3, 20);
-        txtThanhPhan.setLineWrap(true); txtThanhPhan.setWrapStyleWord(true);
-        gbc.gridx = 1; gbc.gridwidth = 3; gbc.weightx = 1.0;
+        txtThanhPhan.setLineWrap(true);
+        txtThanhPhan.setWrapStyleWord(true);
+        gbc.gridx = 1;
+        gbc.gridwidth = 3;
+        gbc.weightx = 1.0;
         pnlInfo.add(new JScrollPane(txtThanhPhan), gbc);
         gbc.gridwidth = 1;
 
-        gbc.gridx = 0; gbc.gridy = 4; gbc.weightx = 0;
+        gbc.gridx = 0;
+        gbc.gridy = 4;
+        gbc.weightx = 0;
         pnlInfo.add(new JLabel("Mô tả công dụng:"), gbc);
         txtMoTa = new JTextArea(3, 20);
-        txtMoTa.setLineWrap(true); txtMoTa.setWrapStyleWord(true);
-        gbc.gridx = 1; gbc.gridwidth = 3; gbc.weightx = 1.0;
+        txtMoTa.setLineWrap(true);
+        txtMoTa.setWrapStyleWord(true);
+        gbc.gridx = 1;
+        gbc.gridwidth = 3;
+        gbc.weightx = 1.0;
         pnlInfo.add(new JScrollPane(txtMoTa), gbc);
         gbc.gridwidth = 1;
 
@@ -156,9 +182,12 @@ public class ThemSanPhamGUI extends JDialog {
         pnlTonKho.add(new JLabel("   Tồn tối đa:  "));
         pnlTonKho.add(txtTonToiDa);
 
-        gbc.gridx = 0; gbc.gridy = 5; gbc.weightx = 0;
+        gbc.gridx = 0;
+        gbc.gridy = 5;
+        gbc.weightx = 0;
         pnlInfo.add(new JLabel("Tồn tối thiểu:"), gbc);
-        gbc.gridx = 1; gbc.gridwidth = 3;
+        gbc.gridx = 1;
+        gbc.gridwidth = 3;
         pnlInfo.add(pnlTonKho, gbc);
 
         // 2. TABBED PANE
@@ -172,22 +201,31 @@ public class ThemSanPhamGUI extends JDialog {
         txtGiaBanDonVi = new JTextField(7);
         chkDonViCoBan = new JCheckBox("Cơ bản");
         btnThemDVT = new JButton("Thêm");
+        setupButton(btnThemDVT, new Color(25, 118, 210));
         btnXoaDVT = new JButton("Xóa");
-        
+        setupButton(btnXoaDVT, new Color(255, 51, 51));
+
         String[] donViMau = {"", "VIEN", "VI", "HOP", "CHAI", "LO", "TUYP", "GOI", "CAI", "THUNG"};
         cboTenDonVi = new JComboBox<>(donViMau);
-        cboTenDonVi.setEditable(true); cboTenDonVi.setPreferredSize(new Dimension(80, 22));
+        cboTenDonVi.setEditable(true);
+        cboTenDonVi.setPreferredSize(new Dimension(80, 22));
 
-        pnlInputDVT.add(new JLabel("Tên ĐV:")); pnlInputDVT.add(cboTenDonVi);
-        pnlInputDVT.add(new JLabel("Quy đổi:")); pnlInputDVT.add(txtHeSoQuyDoi);
-        pnlInputDVT.add(new JLabel("Giá bán:")); pnlInputDVT.add(txtGiaBanDonVi);
+        pnlInputDVT.add(new JLabel("Tên ĐV:"));
+        pnlInputDVT.add(cboTenDonVi);
+        pnlInputDVT.add(new JLabel("Quy đổi:"));
+        pnlInputDVT.add(txtHeSoQuyDoi);
+        pnlInputDVT.add(new JLabel("Giá bán:"));
+        pnlInputDVT.add(txtGiaBanDonVi);
         pnlInputDVT.add(chkDonViCoBan);
-        pnlInputDVT.add(btnThemDVT); pnlInputDVT.add(btnXoaDVT);
+        pnlInputDVT.add(btnThemDVT);
+        pnlInputDVT.add(btnXoaDVT);
 
         setupMoneyFormatting(txtGiaBanDonVi);
 
         modelDVT = new DefaultTableModel(new String[]{"Mã ĐV", "Tên Đơn Vị", "Hệ Số Quy Đổi", "Giá Bán", "Cơ Bản"}, 0) {
-             public boolean isCellEditable(int row, int col) { return false; }
+            public boolean isCellEditable(int row, int col) {
+                return false;
+            }
         };
         tableDonViTinh = new JTable(modelDVT);
         tableDonViTinh.setRowHeight(22);
@@ -200,14 +238,21 @@ public class ThemSanPhamGUI extends JDialog {
         JPanel pnlTopControlNCC = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 5));
         txtTimNCC = new JTextField(12);
         btnTimNCC = new JButton("Tìm");
+        setupButton(btnTimNCC, new Color(25, 118, 210));
         txtGiaNhap = new JTextField(8);
-        btnThemNCC = new JButton("Thêm xuống DS");
-        
+        btnThemNCC = new JButton("Thêm vào DS");
+        setupButton(btnThemNCC, new Color(25, 118, 210));
+        btnThemNCC.setPreferredSize(new Dimension(150, 30));
+
         setupMoneyFormatting(txtGiaNhap);
-        
-        pnlTopControlNCC.add(new JLabel("Tìm NCC:")); pnlTopControlNCC.add(txtTimNCC); pnlTopControlNCC.add(btnTimNCC);
+
+        pnlTopControlNCC.add(new JLabel("Tìm NCC:"));
+        pnlTopControlNCC.add(txtTimNCC);
+        pnlTopControlNCC.add(btnTimNCC);
         pnlTopControlNCC.add(new JSeparator(JSeparator.VERTICAL));
-        pnlTopControlNCC.add(new JLabel("Giá nhập:")); pnlTopControlNCC.add(txtGiaNhap); pnlTopControlNCC.add(btnThemNCC);
+        pnlTopControlNCC.add(new JLabel("Giá nhập:"));
+        pnlTopControlNCC.add(txtGiaNhap);
+        pnlTopControlNCC.add(btnThemNCC);
         pnlNCC.add(pnlTopControlNCC, BorderLayout.NORTH);
 
         JPanel pnlTablesAreaNCC = new JPanel(new GridLayout(2, 1, 0, 10));
@@ -215,10 +260,11 @@ public class ThemSanPhamGUI extends JDialog {
         tableKQTimKiemNCC = new JTable(modelKQTimKiemNCC);
         modelNCCChon = new DefaultTableModel(new String[]{"Mã NCC", "Tên NCC", "Giá Nhập"}, 0);
         tableNCCChon = new JTable(modelNCCChon);
-        
+
         pnlTablesAreaNCC.add(new JScrollPane(tableKQTimKiemNCC));
         JPanel pnlFooterNCC = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         btnXoaNCC = new JButton("Xóa khỏi DS");
+        setupButton(btnXoaNCC, new Color(255, 51, 51));
         pnlFooterNCC.add(btnXoaNCC);
         JPanel pnlTable2NCC = new JPanel(new BorderLayout());
         pnlTable2NCC.add(new JScrollPane(tableNCCChon), BorderLayout.CENTER);
@@ -232,9 +278,15 @@ public class ThemSanPhamGUI extends JDialog {
         JPanel pnlTopControlKM = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 5));
         txtTimKM = new JTextField(15);
         btnTimKM = new JButton("Tìm");
-        btnThemKM = new JButton("Thêm xuống DS");
-        pnlTopControlKM.add(new JLabel("Tìm KM:")); pnlTopControlKM.add(txtTimKM); pnlTopControlKM.add(btnTimKM);
-        pnlTopControlKM.add(Box.createHorizontalStrut(20)); pnlTopControlKM.add(btnThemKM);
+        setupButton(btnTimKM, new Color(25, 118, 210));
+        btnThemKM = new JButton("Thêm vào DS");
+        setupButton(btnThemKM, new Color(25, 118, 210));
+        btnThemKM.setPreferredSize(new Dimension(150, 30));
+        pnlTopControlKM.add(new JLabel("Tìm KM:"));
+        pnlTopControlKM.add(txtTimKM);
+        pnlTopControlKM.add(btnTimKM);
+        pnlTopControlKM.add(Box.createHorizontalStrut(20));
+        pnlTopControlKM.add(btnThemKM);
         pnlKM.add(pnlTopControlKM, BorderLayout.NORTH);
 
         JPanel pnlTablesAreaKM = new JPanel(new GridLayout(2, 1, 0, 10));
@@ -242,10 +294,11 @@ public class ThemSanPhamGUI extends JDialog {
         tableKQTimKiemKM = new JTable(modelKQTimKiemKM);
         modelKMChon = new DefaultTableModel(new String[]{"Mã KM", "Mô tả", "Giảm (%)", "SL Min", "SL Max", "Ngày sửa"}, 0);
         tableKMChon = new JTable(modelKMChon);
-        
+
         pnlTablesAreaKM.add(new JScrollPane(tableKQTimKiemKM));
         JPanel pnlFooterKM = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         btnXoaKM = new JButton("Xóa khỏi DS");
+        setupButton(btnXoaKM, new Color(255, 51, 51));
         pnlFooterKM.add(btnXoaKM);
         JPanel pnlTable2KM = new JPanel(new BorderLayout());
         pnlTable2KM.add(new JScrollPane(tableKMChon), BorderLayout.CENTER);
@@ -253,44 +306,54 @@ public class ThemSanPhamGUI extends JDialog {
         pnlTablesAreaKM.add(pnlTable2KM);
         pnlKM.add(pnlTablesAreaKM, BorderLayout.CENTER);
         tabbedPane.addTab("3. Khuyến mãi", pnlKM);
-        
+
         tabbedPane.setPreferredSize(new Dimension(100, 380));
 
         // Footer Buttons
         JPanel pnlButton = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         btnHuy = new JButton("Hủy bỏ");
+        setupButton(btnHuy, new Color(255, 51, 51)); // <--- Đỏ
         btnXacNhan = new JButton("Lưu sản phẩm");
+        setupButton(btnXacNhan, new Color(0, 203, 0));
         btnXacNhan.setBackground(new Color(0, 153, 51));
         btnXacNhan.setForeground(Color.WHITE);
         btnXacNhan.setPreferredSize(new Dimension(120, 35));
+
+        setupButton(btnHuy, new Color(255, 51, 51));     // Đỏ
+        setupButton(btnXacNhan, new Color(0, 203, 0));   // Xanh lá
+        btnHuy.setPreferredSize(new Dimension(100, 35));
+        btnXacNhan.setPreferredSize(new Dimension(150, 35));
+
         pnlButton.add(btnHuy);
         pnlButton.add(btnXacNhan);
 
         mainContentPanel.add(pnlInfo, BorderLayout.NORTH);
         mainContentPanel.add(tabbedPane, BorderLayout.CENTER);
-        
+
         this.add(new JScrollPane(mainContentPanel), BorderLayout.CENTER);
         this.add(pnlButton, BorderLayout.SOUTH);
     }
-    
+
     private void initEvents() {
         // Nút Lưu
         btnXacNhan.addActionListener(e -> {
             boolean success = bus.luuSanPham(this, isEditMode);
-            if(success) {
+            if (success) {
                 this.dispose();
             }
         });
-        
+
         // Nút Hủy
         btnHuy.addActionListener(e -> this.dispose());
-        
+
         // --- Barcode ---
         btnThemBarcode.addActionListener(e -> {
             String code = txtInputBarcode.getText().trim();
-            if(code.isEmpty()) return;
-            for(int i=0; i<modelBarcode.getRowCount(); i++) {
-                if(modelBarcode.getValueAt(i, 0).equals(code)) {
+            if (code.isEmpty()) {
+                return;
+            }
+            for (int i = 0; i < modelBarcode.getRowCount(); i++) {
+                if (modelBarcode.getValueAt(i, 0).equals(code)) {
                     JOptionPane.showMessageDialog(this, "Mã vạch đã tồn tại!");
                     return;
                 }
@@ -299,15 +362,17 @@ public class ThemSanPhamGUI extends JDialog {
             txtInputBarcode.setText("");
             txtInputBarcode.requestFocus();
         });
-        
+
         btnXoaBarcode.addActionListener(e -> {
             int row = tableBarcode.getSelectedRow();
-            if(row >= 0) modelBarcode.removeRow(row);
+            if (row >= 0) {
+                modelBarcode.removeRow(row);
+            }
         });
-        
+
         // --- DVT ---
         chkDonViCoBan.addActionListener(e -> {
-            if(chkDonViCoBan.isSelected()) {
+            if (chkDonViCoBan.isSelected()) {
                 txtHeSoQuyDoi.setText("1");
                 txtHeSoQuyDoi.setEnabled(false);
             } else {
@@ -317,12 +382,12 @@ public class ThemSanPhamGUI extends JDialog {
         });
         btnThemDVT.addActionListener(e -> bus.xuLyThemDVT(this));
         btnXoaDVT.addActionListener(e -> bus.xuLyXoaDVT(this));
-        
+
         // --- NCC ---
         btnTimNCC.addActionListener(e -> bus.xuLyTimNCC(this));
         btnThemNCC.addActionListener(e -> bus.xuLyThemNCC(this));
         btnXoaNCC.addActionListener(e -> bus.xuLyXoaNCC(this));
-        
+
         // --- KM ---
         btnTimKM.addActionListener(e -> bus.xuLyTimKM(this));
         btnThemKM.addActionListener(e -> bus.xuLyThemKM(this));
@@ -333,58 +398,156 @@ public class ThemSanPhamGUI extends JDialog {
         txtField.setHorizontalAlignment(JTextField.RIGHT);
         txtField.getDocument().addDocumentListener(new DocumentListener() {
             private boolean formatting = false;
-            @Override public void insertUpdate(DocumentEvent e) { format(); }
-            @Override public void removeUpdate(DocumentEvent e) { format(); }
-            @Override public void changedUpdate(DocumentEvent e) { }
-            
+
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                format();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                format();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+            }
+
             private void format() {
-                if(formatting) return;
+                if (formatting) {
+                    return;
+                }
                 try {
                     String raw = txtField.getText().replaceAll("[^\\d]", "");
-                    if(raw.isEmpty()) return;
+                    if (raw.isEmpty()) {
+                        return;
+                    }
                     formatting = true;
                     long val = Long.parseLong(raw);
                     DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.getDefault());
                     symbols.setGroupingSeparator(' ');
                     DecimalFormat fmt = new DecimalFormat("#,##0", symbols);
                     String formatted = fmt.format(val);
-                    
+
                     SwingUtilities.invokeLater(() -> {
-                         txtField.setText(formatted);
-                         formatting = false;
+                        txtField.setText(formatted);
+                        formatting = false;
                     });
-                } catch(Exception ex) { formatting = false; }
+                } catch (Exception ex) {
+                    formatting = false;
+                }
             }
         });
     }
 
+    private void setupButton(JButton button, Color bgColor) {
+        button.setBackground(bgColor);
+        button.setForeground(Color.WHITE);
+        button.setFont(new Font("Arial", Font.BOLD, 14));
+        button.setFocusPainted(false);
+        button.setBorderPainted(false);
+        button.setOpaque(true);
+        button.setPreferredSize(new Dimension(button.getPreferredSize().width, 30));
+    }
+
     // GETTERS
-    public JTextField getTxtMaSanPham() { return txtMaSanPham; }
-    public JTextField getTxtTenSanPham() { return txtTenSanPham; }
-    public JTextArea getTxtMoTa() { return txtMoTa; }
-    public JTextArea getTxtThanhPhan() { return txtThanhPhan; }
-    public JComboBox<String> getCmbLoaiSanPham() { return cmbLoaiSanPham; }
-    public JTextField getTxtTonToiThieu() { return txtTonToiThieu; }
-    public JTextField getTxtTonToiDa() { return txtTonToiDa; }
-    public DefaultTableModel getModelBarcode() { return modelBarcode; }
-    
-    public JComboBox<String> getCboTenDonVi() { return cboTenDonVi; }
-    public JTextField getTxtHeSoQuyDoi() { return txtHeSoQuyDoi; }
-    public JTextField getTxtGiaBanDonVi() { return txtGiaBanDonVi; }
-    public JCheckBox getChkDonViCoBan() { return chkDonViCoBan; }
-    public DefaultTableModel getModelDVT() { return modelDVT; }
-    public JTable getTblDonViTinh() { return tableDonViTinh; }
-    
-    public JTextField getTxtTimNCC() { return txtTimNCC; }
-    public DefaultTableModel getModelTimKiemNCC() { return modelKQTimKiemNCC; }
-    public JTable getTableKQTimKiemNCC() { return tableKQTimKiemNCC; }
-    public JTextField getTxtGiaNhap() { return txtGiaNhap; }
-    public DefaultTableModel getModelNCCChon() { return modelNCCChon; }
-    public JTable getTblNCCChon() { return tableNCCChon; }
-    
-    public JTextField getTxtTimKM() { return txtTimKM; }
-    public DefaultTableModel getModelKQTimKiemKM() { return modelKQTimKiemKM; }
-    public JTable getTblTimKiemKM() { return tableKQTimKiemKM; }
-    public DefaultTableModel getModelKMChon() { return modelKMChon; }
-    public JTable getTblKMChon() { return tableKMChon; }
+    public JTextField getTxtMaSanPham() {
+        return txtMaSanPham;
+    }
+
+    public JTextField getTxtTenSanPham() {
+        return txtTenSanPham;
+    }
+
+    public JTextArea getTxtMoTa() {
+        return txtMoTa;
+    }
+
+    public JTextArea getTxtThanhPhan() {
+        return txtThanhPhan;
+    }
+
+    public JComboBox<String> getCmbLoaiSanPham() {
+        return cmbLoaiSanPham;
+    }
+
+    public JTextField getTxtTonToiThieu() {
+        return txtTonToiThieu;
+    }
+
+    public JTextField getTxtTonToiDa() {
+        return txtTonToiDa;
+    }
+
+    public DefaultTableModel getModelBarcode() {
+        return modelBarcode;
+    }
+
+    public JComboBox<String> getCboTenDonVi() {
+        return cboTenDonVi;
+    }
+
+    public JTextField getTxtHeSoQuyDoi() {
+        return txtHeSoQuyDoi;
+    }
+
+    public JTextField getTxtGiaBanDonVi() {
+        return txtGiaBanDonVi;
+    }
+
+    public JCheckBox getChkDonViCoBan() {
+        return chkDonViCoBan;
+    }
+
+    public DefaultTableModel getModelDVT() {
+        return modelDVT;
+    }
+
+    public JTable getTblDonViTinh() {
+        return tableDonViTinh;
+    }
+
+    public JTextField getTxtTimNCC() {
+        return txtTimNCC;
+    }
+
+    public DefaultTableModel getModelTimKiemNCC() {
+        return modelKQTimKiemNCC;
+    }
+
+    public JTable getTableKQTimKiemNCC() {
+        return tableKQTimKiemNCC;
+    }
+
+    public JTextField getTxtGiaNhap() {
+        return txtGiaNhap;
+    }
+
+    public DefaultTableModel getModelNCCChon() {
+        return modelNCCChon;
+    }
+
+    public JTable getTblNCCChon() {
+        return tableNCCChon;
+    }
+
+    public JTextField getTxtTimKM() {
+        return txtTimKM;
+    }
+
+    public DefaultTableModel getModelKQTimKiemKM() {
+        return modelKQTimKiemKM;
+    }
+
+    public JTable getTblTimKiemKM() {
+        return tableKQTimKiemKM;
+    }
+
+    public DefaultTableModel getModelKMChon() {
+        return modelKMChon;
+    }
+
+    public JTable getTblKMChon() {
+        return tableKMChon;
+    }
 }

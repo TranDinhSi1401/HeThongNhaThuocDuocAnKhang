@@ -11,6 +11,7 @@ import java.time.LocalDate;
  * @author admin
  */
 public class LichSuLo {
+
     private String maLichSuLo;
     private LoSanPham lo;
     private LocalDate thoiGian;
@@ -22,12 +23,12 @@ public class LichSuLo {
     public LichSuLo() {
     }
 
-    public LichSuLo(String maLichSuLo) {
-        this.maLichSuLo = maLichSuLo;
+    public LichSuLo(String maLichSuLo){
+        setMaLichSuLo(maLichSuLo);
     }
 
-    public LichSuLo(String maLichSuLo, LoSanPham lo, LocalDate thoiGian, String hanhDong, int soLuongSau, String ghiChu, NhanVien nv) {
-        this.maLichSuLo = maLichSuLo;
+    public LichSuLo(String maLichSuLo, LoSanPham lo, LocalDate thoiGian, String hanhDong, int soLuongSau, String ghiChu, NhanVien nv){
+        setMaLichSuLo(maLichSuLo);
         this.lo = lo;
         this.thoiGian = thoiGian;
         this.hanhDong = hanhDong;
@@ -64,7 +65,13 @@ public class LichSuLo {
         return nv;
     }
 
-    public void setMaLichSuLo(String maLichSuLo) {
+    public void setMaLichSuLo(String maLichSuLo){
+        if (maLichSuLo == null || maLichSuLo.trim().isEmpty()) {
+            throw new IllegalArgumentException("Mã lịch sử lô không được rỗng");
+        }
+        if (!maLichSuLo.matches("^LSL-\\d{4}$")) {
+            throw new IllegalArgumentException("Mã lịch sử lô không hợp lệ. Phải theo định dạng LSL-XXXX với X là số nguyên từ 0-9.");
+        }
         this.maLichSuLo = maLichSuLo;
     }
 
@@ -96,6 +103,4 @@ public class LichSuLo {
     public String toString() {
         return "LichSuLo{" + "maLichSuLo=" + maLichSuLo + ", lo=" + lo + ", thoiGian=" + thoiGian + ", hanhDong=" + hanhDong + ", soLuongSau=" + soLuongSau + ", ghiChu=" + ghiChu + ", nv=" + nv + '}';
     }
-    
-    
 }

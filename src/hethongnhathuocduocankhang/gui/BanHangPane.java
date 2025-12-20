@@ -215,7 +215,7 @@ public class BanHangPane extends javax.swing.JPanel {
                     // Bỏ qua place holder
                     if (currentText == null 
                             || currentText.isBlank() 
-                            || currentText.equals("Nhập tiền khách đưa [F5]")) {
+                            || currentText.equals("Nhập tiền khách đưa [F7]")) {
                         return;
                     }
                     // Lọc để lấy chuỗi chỉ gồm số
@@ -276,15 +276,15 @@ public class BanHangPane extends javax.swing.JPanel {
             }
         });
         
-        mapKeyToFocus("F1", txtTimKiem);
-        mapKeyToFocus("F2", txtSdtKH);
-        mapKeyToClickButton("F3", radTienMat);
-        mapKeyToClickButton("F4", radChuyenKhoan);
-        mapKeyToFocus("F5", txtTienKhachDua);
+        mapKeyToFocus("F3", txtTimKiem);
+        mapKeyToFocus("F4", txtSdtKH);
+        mapKeyToClickButton("F11", radTienMat);
+        mapKeyToClickButton("F12", radChuyenKhoan);
+        mapKeyToFocus("F7", txtTienKhachDua);
         mapKeyToClickButton("F6", btnThanhToan);
-        mapKeyToClickButton("F7", btnXoa);
-        mapKeyToClickButton("F8", btnXoaTrang);
-        mapKeyToClickButton("F9", btnThemKH);
+        mapKeyToClickButton("F9", btnXoa);
+        mapKeyToClickButton("F10", btnXoaTrang);
+        mapKeyToClickButton("F8", btnThemKH);
         
         
         
@@ -368,7 +368,7 @@ public class BanHangPane extends javax.swing.JPanel {
         btnXoa.setBackground(new java.awt.Color(255, 51, 51));
         btnXoa.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnXoa.setForeground(new java.awt.Color(255, 255, 255));
-        btnXoa.setText("Xóa [F7]");
+        btnXoa.setText("Xóa [F9]");
         btnXoa.setPreferredSize(new java.awt.Dimension(100, 35));
         btnXoa.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -378,8 +378,8 @@ public class BanHangPane extends javax.swing.JPanel {
         pLeftSouth.add(btnXoa);
 
         btnXoaTrang.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btnXoaTrang.setText("Xóa trắng [F8]");
-        btnXoaTrang.setPreferredSize(new java.awt.Dimension(130, 35));
+        btnXoaTrang.setText("Xóa trắng [F10]");
+        btnXoaTrang.setPreferredSize(new java.awt.Dimension(140, 35));
         btnXoaTrang.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnXoaTrangActionPerformed(evt);
@@ -426,7 +426,7 @@ public class BanHangPane extends javax.swing.JPanel {
         lblSdtKH.setText("SĐT khách hàng:");
         p1.add(lblSdtKH);
 
-        btnThemKH.setText("Thêm mới [F9]");
+        btnThemKH.setText("Thêm mới [F8]");
         btnThemKH.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnThemKHActionPerformed(evt);
@@ -438,7 +438,7 @@ public class BanHangPane extends javax.swing.JPanel {
 
         pThongTinKH.add(p1);
 
-        txtSdtKH.setText("Nhập sđt khách hàng [F2]");
+        txtSdtKH.setText("Nhập sđt khách hàng [F4]");
         txtSdtKH.setPreferredSize(new java.awt.Dimension(95, 40));
         txtSdtKH.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
@@ -533,10 +533,10 @@ public class BanHangPane extends javax.swing.JPanel {
         p7.setPreferredSize(new java.awt.Dimension(100, 50));
 
         radTienMat.setSelected(true);
-        radTienMat.setText("Tiền mặt [F3]");
+        radTienMat.setText("Tiền mặt [F11]");
         p7.add(radTienMat);
 
-        radChuyenKhoan.setText("Chuyển khoản [F4]");
+        radChuyenKhoan.setText("Chuyển khoản [F12]");
         radChuyenKhoan.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 radChuyenKhoanActionPerformed(evt);
@@ -581,7 +581,7 @@ public class BanHangPane extends javax.swing.JPanel {
 
         pThanhToan.add(p9);
 
-        txtTienKhachDua.setText("Nhập tiền khách đưa [F5]");
+        txtTienKhachDua.setText("Nhập tiền khách đưa [F7]");
         txtTienKhachDua.setMinimumSize(new java.awt.Dimension(64, 40));
         txtTienKhachDua.setPreferredSize(new java.awt.Dimension(64, 40));
         txtTienKhachDua.addFocusListener(new java.awt.event.FocusAdapter() {
@@ -741,7 +741,6 @@ public class BanHangPane extends javax.swing.JPanel {
         pTimKiem.setLayout(new java.awt.BorderLayout(0, 10));
         pTimKiem.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
 
-        btnTimKiem.setBackground(new java.awt.Color(255, 255, 255));
         btnTimKiem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/search.png"))); // NOI18N
         btnTimKiem.setIcon(getIconSVG("search"));
         btnTimKiem.setPreferredSize(new java.awt.Dimension(38, 40));
@@ -755,7 +754,7 @@ public class BanHangPane extends javax.swing.JPanel {
         });
         pTimKiem.add(btnTimKiem, java.awt.BorderLayout.LINE_END);
 
-        txtTimKiem.setText("Nhập mã sản phẩm [F1]");
+        txtTimKiem.setText("Nhập mã sản phẩm [F3]");
         txtTimKiem.setPreferredSize(new java.awt.Dimension(119, 40));
         //txtTimKiem.setBorder(BorderFactory.createCompoundBorder(
             //    BorderFactory.createMatteBorder(1, 1, 1, 0, Color.BLACK),
@@ -915,6 +914,10 @@ public class BanHangPane extends javax.swing.JPanel {
         // Thêm sản phẩm vào table cthd
         try {
             String maSP = txtTimKiem.getText().trim();
+            if(maSP.isEmpty() || maSP.equalsIgnoreCase("Nhập mã sản phẩm [F1]")) {
+                JOptionPane.showMessageDialog(this, "Vui lòng nhập mã sản phẩm hoặc mã vạch", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
             if(bus.kiemTraKeDon(maSP)) {
                 JOptionPane.showMessageDialog(this, "Thuốc bạn vừa tìm kiếm là thuốc kê đơn \n Vui lòng kiểm tra đơn kê rõ ràng và lưu thông tin khách hàng", "Cảnh báo kê đơn", JOptionPane.WARNING_MESSAGE);
             }
@@ -965,7 +968,7 @@ public class BanHangPane extends javax.swing.JPanel {
                 parent.dongTabHienTai(this);
             }
         } catch(Exception e) {
-            if(e.getMessage().equalsIgnoreCase("For input string: \"Nhậptiềnkháchđưa[F5]\"")) {
+            if(e.getMessage().equalsIgnoreCase("For input string: \"Nhậptiềnkháchđưa[F7]\"")) {
                 JOptionPane.showMessageDialog(this, "tiền khách đưa phải là số dương", "Error Message", JOptionPane.ERROR_MESSAGE);
             } else if (e.getMessage().equalsIgnoreCase("empty String")){
                 JOptionPane.showMessageDialog(this, "Ô tiền thừa bị trống", "Error Message", JOptionPane.ERROR_MESSAGE);    
@@ -979,6 +982,10 @@ public class BanHangPane extends javax.swing.JPanel {
         // Thêm sản phẩm vào table cthd
         try {
             String maSP = txtTimKiem.getText().trim();
+            if(maSP.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Vui lòng nhập mã sản phẩm hoặc mã vạch", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
             if(bus.kiemTraKeDon(maSP)) {
                 JOptionPane.showMessageDialog(this, "Thuốc bạn vừa tìm kiếm là thuốc kê đơn \n Vui lòng kiểm tra đơn kê rõ ràng và lưu thông tin khách hàng", "Cảnh báo kê đơn", JOptionPane.WARNING_MESSAGE);
             }           
@@ -996,26 +1003,26 @@ public class BanHangPane extends javax.swing.JPanel {
     }//GEN-LAST:event_txtTimKiemActionPerformed
 
     private void txtTimKiemFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtTimKiemFocusGained
-        if(txtTimKiem.getText().equals("Nhập mã sản phẩm [F1]")) {
+        if(txtTimKiem.getText().equals("Nhập mã sản phẩm [F3]")) {
             txtTimKiem.setText("");
         }
     }//GEN-LAST:event_txtTimKiemFocusGained
 
     private void txtTimKiemFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtTimKiemFocusLost
         if(txtTimKiem.getText().equals("")) {
-            txtTimKiem.setText("Nhập mã sản phẩm [F1]");
+            txtTimKiem.setText("Nhập mã sản phẩm [F3]");
         }
     }//GEN-LAST:event_txtTimKiemFocusLost
 
     private void txtSdtKHFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtSdtKHFocusGained
-        if(txtSdtKH.getText().equals("Nhập sđt khách hàng [F2]")) {
+        if(txtSdtKH.getText().equals("Nhập sđt khách hàng [F4]")) {
             txtSdtKH.setText("");
         }
     }//GEN-LAST:event_txtSdtKHFocusGained
 
     private void txtSdtKHFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtSdtKHFocusLost
         if(txtSdtKH.getText().equals("")) {
-            txtSdtKH.setText("Nhập sđt khách hàng [F2]");
+            txtSdtKH.setText("Nhập sđt khách hàng [F4]");
         }
     }//GEN-LAST:event_txtSdtKHFocusLost
 
@@ -1083,14 +1090,14 @@ public class BanHangPane extends javax.swing.JPanel {
     }//GEN-LAST:event_btnXoaActionPerformed
 
     private void txtTienKhachDuaFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtTienKhachDuaFocusGained
-        if(txtTienKhachDua.getText().trim().equalsIgnoreCase("Nhập tiền khách đưa [F5]")) {
+        if(txtTienKhachDua.getText().trim().equalsIgnoreCase("Nhập tiền khách đưa [F7]")) {
             txtTienKhachDua.setText("");
         }
     }//GEN-LAST:event_txtTienKhachDuaFocusGained
 
     private void txtTienKhachDuaFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txtTienKhachDuaFocusLost
         if(txtTienKhachDua.getText().trim().equalsIgnoreCase("")) {
-            txtTienKhachDua.setText("Nhập tiền khách đưa [F5]");
+            txtTienKhachDua.setText("Nhập tiền khách đưa [F7]");
         }
     }//GEN-LAST:event_txtTienKhachDuaFocusLost
 
@@ -1137,14 +1144,14 @@ public class BanHangPane extends javax.swing.JPanel {
         model.setRowCount(0);
 
         lblTongTien1.setText("0 ₫");
-        txtTienKhachDua.setText("Nhập tiền khách đưa [F5]");
+        txtTienKhachDua.setText("Nhập tiền khách đưa [F7]");
         lblTienThua1.setText("");
         radTienMat.setSelected(true);
-        txtSdtKH.setText("Nhập sđt khách hàng [F2]");
+        txtSdtKH.setText("Nhập sđt khách hàng [F4]");
         lblMaKH1.setText("KH-00000");
         lblHoTen1.setText("Khách vãng lai");
         lblDiemTichLuy1.setText("0");
-        txtTimKiem.setText("Nhập mã sản phẩm [F1]");
+        txtTimKiem.setText("Nhập mã sản phẩm [F3]");
         JButton[] btns = {btnGoiY1, btnGoiY2, btnGoiY3, btnGoiY4, btnGoiY5, btnGoiY6};
         long[] menhGia = {10000, 20000, 50000, 100000, 200000, 500000};
         for(int i = 0; i < btns.length; i++) {

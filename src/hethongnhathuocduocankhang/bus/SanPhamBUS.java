@@ -13,25 +13,22 @@ import java.util.List;
 
 public class SanPhamBUS {
 
-    // Danh sách tạm để xử lý logic khi thêm/sửa (stateful)
+    // Danh sách tạm
     public List<DonViTinh> listTempDVT = new ArrayList<>();
     public List<SanPhamCungCap> listTempSPCC = new ArrayList<>();
     public List<KhuyenMai> listTempKM = new ArrayList<>();
 
     public SanPhamBUS() {
-        // Constructor không còn nhận View
+
     }
 
-    // =========================================================================
-    // 1. LOGIC PHỤC VỤ QuanLiSanPhamGUI (Màn hình chính)
-    // =========================================================================
-
+    // LOGIC PHỤC VỤ QuanLiSanPhamGUI (Màn hình chính)
     public void loadDataToTable(QuanLiSanPhamGUI view, ArrayList<SanPham> dsSP) {
         DefaultTableModel model = view.getModel();
         model.setRowCount(0);
 
         if (dsSP == null) {
-            dsSP = SanPhamDAO.getAllTableSanPham(); // Mặc định load hết nếu null
+            dsSP = SanPhamDAO.getAllTableSanPham();
         }
 
         if (dsSP.isEmpty()) {
@@ -126,10 +123,7 @@ public class SanPhamBUS {
         }
     }
 
-    // =========================================================================
-    // 2. LOGIC PHỤC VỤ ThemSanPhamGUI (Màn hình con - Dialog)
-    // =========================================================================
-
+    // LOGIC PHỤC VỤ ThemSanPhamGUI (Màn hình con - Dialog)
     public void chuanBiFormThem(ThemSanPhamGUI form) {
         listTempDVT.clear();
         listTempSPCC.clear();
@@ -143,7 +137,9 @@ public class SanPhamBUS {
 
     public void chuanBiFormSua(ThemSanPhamGUI form, String maSP) {
         SanPham sp = SanPhamDAO.timSPTheoMa(maSP);
-        if (sp == null) return;
+        if (sp == null) {
+            return;
+        }
 
         // Load thông tin cơ bản
         form.getTxtMaSanPham().setText(sp.getMaSP());
@@ -217,9 +213,13 @@ public class SanPhamBUS {
             sp.setThanhPhan(form.getTxtThanhPhan().getText());
 
             int indexLoai = form.getCmbLoaiSanPham().getSelectedIndex();
-            if (indexLoai == 0) sp.setLoaiSanPham(LoaiSanPhamEnum.THUOC_KE_DON);
-            else if (indexLoai == 1) sp.setLoaiSanPham(LoaiSanPhamEnum.THUOC_KHONG_KE_DON);
-            else sp.setLoaiSanPham(LoaiSanPhamEnum.THUC_PHAM_CHUC_NANG);
+            if (indexLoai == 0) {
+                sp.setLoaiSanPham(LoaiSanPhamEnum.THUOC_KE_DON);
+            } else if (indexLoai == 1) {
+                sp.setLoaiSanPham(LoaiSanPhamEnum.THUOC_KHONG_KE_DON);
+            } else {
+                sp.setLoaiSanPham(LoaiSanPhamEnum.THUC_PHAM_CHUC_NANG);
+            }
 
             try {
                 sp.setTonToiThieu(Integer.parseInt(form.getTxtTonToiThieu().getText().trim()));
@@ -258,7 +258,6 @@ public class SanPhamBUS {
     }
 
     private void luuCacThongTinLienQuan(SanPham sp, ThemSanPhamGUI form) {
-        // Xử lý ĐVT (Cập nhật hoặc Thêm mới, Xóa cái cũ nếu ko còn trong list)
         List<DonViTinh> listOldDVT = DonViTinhDAO.getDonViTinhTheoMaSP(sp.getMaSP());
         for (DonViTinh oldDVT : listOldDVT) {
             boolean conTonTai = false;
@@ -298,7 +297,8 @@ public class SanPhamBUS {
             try {
                 spcc.setSanPham(sp);
                 SanPhamCungCapDAO.themSanPhamCungCap(spcc);
-            } catch (Exception e) {}
+            } catch (Exception e) {
+            }
         }
 
         // Lưu KM
@@ -309,22 +309,26 @@ public class SanPhamBUS {
             kmsp.setNgayChinhSua(LocalDate.now());
             try {
                 KhuyenMaiSanPhamDAO.themKhuyenMaiSanPham(kmsp);
-            } catch (Exception e) {}
+            } catch (Exception e) {
+            }
         }
     }
 
-    // --- CÁC HÀM LOGIC NHỎ TRÊN FORM ---
-
+    // CÁC HÀM LOGIC NHỎ TRÊN FORM
     public void xuLyThemDVT(ThemSanPhamGUI form) {
         try {
             Object itemObj = form.getCboTenDonVi().getEditor().getItem();
             String rawTenDV = (itemObj != null) ? itemObj.toString() : "";
             String tenDV = rawTenDV.trim().toUpperCase();
 
-            if (tenDV.isEmpty()) throw new Exception("Vui lòng nhập tên ĐVT!");
+            if (tenDV.isEmpty()) {
+                throw new Exception("Vui lòng nhập tên ĐVT!");
+            }
 
             String strHeSo = form.getTxtHeSoQuyDoi().getText().trim();
-            if (strHeSo.isEmpty()) throw new Exception("Chưa nhập hệ số!");
+            if (strHeSo.isEmpty()) {
+                throw new Exception("Chưa nhập hệ số!");
+            }
             int heSo = Integer.parseInt(strHeSo);
 
             String giaBanRaw = form.getTxtGiaBanDonVi().getText().replaceAll("\\D", "");
@@ -341,9 +345,11 @@ public class SanPhamBUS {
             }
 
             String maSP = form.getTxtMaSanPham().getText();
-            // Tạo mã giả định nếu chưa có mã SP thật (đề phòng)
-            if(maSP.isEmpty() || !maSP.contains("-")) maSP = "SP-0000";
-            
+            // Tạo mã giả định
+            if (maSP.isEmpty() || !maSP.contains("-")) {
+                maSP = "SP-0000";
+            }
+
             String maDVT = "DVT-" + maSP.split("-")[1] + "-" + tenDV;
 
             DonViTinh dvt = new DonViTinh(maDVT, new SanPham(maSP), heSo, gia, tenDV, isCoBan);
@@ -353,7 +359,6 @@ public class SanPhamBUS {
                 maDVT, tenDV, heSo, String.format("%,.0f", gia), isCoBan ? "Có" : "Không"
             });
 
-            // Reset UI
             form.getCboTenDonVi().setSelectedItem("");
             form.getTxtGiaBanDonVi().setText("");
             form.getChkDonViCoBan().setSelected(false);
@@ -391,7 +396,9 @@ public class SanPhamBUS {
 
     public void xuLyThemNCC(ThemSanPhamGUI form) {
         int[] rows = form.getTableKQTimKiemNCC().getSelectedRows();
-        if (rows.length == 0) return;
+        if (rows.length == 0) {
+            return;
+        }
         try {
             String giaNhapRaw = form.getTxtGiaNhap().getText().replaceAll("\\D", "");
             double gia = giaNhapRaw.isEmpty() ? 0.0 : Double.parseDouble(giaNhapRaw);
@@ -399,7 +406,7 @@ public class SanPhamBUS {
             for (int r : rows) {
                 String maNCC = form.getModelTimKiemNCC().getValueAt(r, 0).toString();
                 String tenNCC = form.getModelTimKiemNCC().getValueAt(r, 1).toString();
-                
+
                 boolean tonTai = listTempSPCC.stream().anyMatch(spcc -> spcc.getNhaCungCap().getMaNCC().equals(maNCC));
                 if (!tonTai) {
                     NhaCungCap ncc = NhaCungCapDAO.timNCCTheoMa(maNCC);
@@ -412,13 +419,17 @@ public class SanPhamBUS {
             JOptionPane.showMessageDialog(form, "Giá nhập không hợp lệ.");
         }
     }
-    
+
     public void xuLyXoaNCC(ThemSanPhamGUI form) {
         int[] rows = form.getTblNCCChon().getSelectedRows();
-        if (rows.length == 0) return;
+        if (rows.length == 0) {
+            return;
+        }
         for (int i = rows.length - 1; i >= 0; i--) {
             int row = rows[i];
-            if (row < listTempSPCC.size()) listTempSPCC.remove(row);
+            if (row < listTempSPCC.size()) {
+                listTempSPCC.remove(row);
+            }
             form.getModelNCCChon().removeRow(row);
         }
     }
@@ -455,10 +466,14 @@ public class SanPhamBUS {
 
     public void xuLyXoaKM(ThemSanPhamGUI form) {
         int[] rows = form.getTblKMChon().getSelectedRows();
-        if (rows.length == 0) return;
+        if (rows.length == 0) {
+            return;
+        }
         for (int i = rows.length - 1; i >= 0; i--) {
             int row = rows[i];
-            if (row < listTempKM.size()) listTempKM.remove(row);
+            if (row < listTempKM.size()) {
+                listTempKM.remove(row);
+            }
             form.getModelKMChon().removeRow(row);
         }
     }

@@ -59,9 +59,9 @@ public class QuanLiKhuyenMaiGUI extends JPanel {
         mapKeyToClickButton("DELETE", btnXoa);
         mapKeyToClickButton("F2", btnSua);
 
-        setupTopButton(btnThem, new Color(50, 150, 250));
-        setupTopButton(btnXoa, new Color(250, 100, 100));
-        setupTopButton(btnSua, Color.LIGHT_GRAY);
+        setupTopButton(btnThem, new Color(25, 118, 210)); // Xanh dương đậm
+        setupTopButton(btnXoa, new Color(255, 51, 51));   // Đỏ tươi
+        setupTopButton(btnSua, new Color(0, 203, 0));     // Xanh lá
 
         pnlNorthLeft.add(btnThem);
         pnlNorthLeft.add(btnXoa);

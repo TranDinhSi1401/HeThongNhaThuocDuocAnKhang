@@ -30,6 +30,8 @@ public class ThemNhanVienGUI extends javax.swing.JPanel {
 
     public ThemNhanVienGUI() {
         initComponents();
+        setupButton(btnHuy, new java.awt.Color(255, 51, 51));      // Nút Hủy (Đỏ)
+        setupButton(btnXacNhan, new java.awt.Color(0, 203, 0));    // Nút Xác nhận (Xanh lá)
 
         // CÁC SỰ KIỆN NÚT BẤM
         btnXacNhan.addActionListener(new ActionListener() {
@@ -704,14 +706,19 @@ public class ThemNhanVienGUI extends javax.swing.JPanel {
         return true;
     }
 
+    private void setupButton(javax.swing.JButton button, java.awt.Color bgColor) {
+        button.setBackground(bgColor);
+        button.setForeground(java.awt.Color.WHITE);
+        button.setFont(new java.awt.Font("Arial", java.awt.Font.BOLD, 14));
+        button.setFocusPainted(false);
+        button.setBorderPainted(false); // nút phẳng hoàn toàn
+        button.setOpaque(true);
+    }
+
     private javax.swing.JToggleButton btnHienMatKhau;
     private javax.swing.JCheckBox chkBiKhoa;
     private javax.swing.JCheckBox chkQuanLy;
-
-    // --- THAY ĐỔI: Khai báo check box mới ---
     private javax.swing.JCheckBox chkQuanLyLo;
-    // ----------------------------------------
-
     private javax.swing.JButton btnHuy;
     private javax.swing.JButton btnXacNhan;
     private javax.swing.JCheckBox chkNghiViec;

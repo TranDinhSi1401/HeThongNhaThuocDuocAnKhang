@@ -979,12 +979,21 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
         int check = JOptionPane.showConfirmDialog(this, "Xác nhận hủy lô " + maLo, "Xác nhận",
                 JOptionPane.YES_NO_OPTION);
         if (check == JOptionPane.YES_OPTION) {
+            String lyDo=null;
             JTextArea noiDungXoaLo = new JTextArea();
             JScrollPane cuon = new JScrollPane(noiDungXoaLo);
-            int nhap = JOptionPane.showConfirmDialog(null, cuon, "Nhập lý do hủy lô(Thông tin bắt buộc)",
-                    JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
-            if (nhap != JOptionPane.OK_OPTION) {
-                return;
+            while(true){
+                int nhap = JOptionPane.showConfirmDialog(null, cuon, "Nhập lý do hủy lô(Thông tin bắt buộc)",
+                        JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE);
+                if (nhap != JOptionPane.OK_OPTION) {
+                    return;
+                }               
+                lyDo=noiDungXoaLo.getText().trim();
+                if(!lyDo.isEmpty()){
+                    break;
+                }
+                JOptionPane.showMessageDialog(this, "Không thể bỏ trống phần nội dung này");
+                noiDungXoaLo.requestFocus();
             }
             String noiDungsXL = noiDungXoaLo.getText();
             LoSanPham loDuocTim = LoSanPhamDAO.timLoSanPham(maLo);
@@ -1214,7 +1223,6 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
             int slGiao = Integer.parseInt(tbl.getValueAt(i, 8).toString());
             LoSanPham loCu = LoSanPhamDAO.timLoSanPham(maLo);
             if (loCu != null) {
-
                 ChiTietPhieuNhap ctpn = ChiTietPhieuNhapDAO.getChiTietPhieuNhap(loCu.getMaLoSanPham());
                 int soLuongSauBoSung = loCu.getSoLuong() + slGiao;
                 if (soLuongSauBoSung > ctpn.getSoLuongYeuCau()) {
@@ -1250,6 +1258,10 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
             String ghiChu = tbl.getValueAt(i, 11) == null ? "" : tbl.getValueAt(i, 11).toString();
             LoSanPham loMoi = new LoSanPham(maLo, new SanPham(maSP), slGiao, sx, hh, false);
             LoSanPham loCu = LoSanPhamDAO.timLoSanPham(maLo);
+            if(loMoi.getSoLuong()<=0){
+                JOptionPane.showMessageDialog(this, "Lô "+loMoi.getMaLoSanPham()+" có số lượng "+loMoi.getSoLuong()+" không hợp lệ");
+                continue;
+            }
             NhaCungCap ncc = NhaCungCapDAO.getNhaCungCapTheoTen(tenNcc);
             if (loCu != null) {
                 LoSanPhamDAO.capNhatSoLuongLo(loCu, slGiao);
@@ -1260,7 +1272,7 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
                     JOptionPane.showMessageDialog(this, "Lô có sô lượng vượt quá số lượng tối đa là "
                             + sp.getTonToiDa() + " của sản phẩm " + sp.getMaSP(), "cảnh báo",
                             JOptionPane.ERROR_MESSAGE);
-                    return;
+                    continue;
                 }
                 LoSanPhamDAO.themLoSanPham(loMoi);
                 LichSuLoDAO.addLichSuLo(loMoi, tk.getNhanVien(), "NHAP_LO", slGiao, ghiChu);
@@ -1268,6 +1280,7 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
             ChiTietPhieuNhapDAO.themChiTietPhieuNhap(loMoi, pn, ncc, giaNhap, tongTien, slDat, ghiChu);
             dsIndex.add(i);
         }
+        if(dsIndex.size()==0) return;
         JOptionPane.showMessageDialog(this, "Thêm lô sản phẩm thành công!");
         ((DefaultTableModel) tblLoSanPham.getModel()).setRowCount(0);
         loadLaiDanhSachLo();
@@ -1280,10 +1293,17 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "Vui lòng nhập mã lô !");
             return;
         }
+        if(!maLo.matches("LO[a-zA-Z0-9]*")){
+            JOptionPane.showMessageDialog(this, "Mã lô phải bắt đầu bằng LO");
+            txtTimKiem.setText("");
+            txtTimKiem.requestFocus();
+            return;
+        }
         if (LoSanPhamDAO.timLoSanPham(maLo) == null) {
             JOptionPane.showMessageDialog(this, "Không tìm thấy lô sản phẩm có mã: " + maLo);
             return;
         }
+
         LoSanPham lo = LoSanPhamDAO.timLoSanPham(maLo);
         if (lo.isDaHuy()) {
             JOptionPane.showMessageDialog(this, "Lô " + maLo + " đã bị hủy.");
