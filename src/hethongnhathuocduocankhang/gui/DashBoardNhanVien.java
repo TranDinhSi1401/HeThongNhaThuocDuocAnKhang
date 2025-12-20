@@ -569,7 +569,7 @@ public class DashBoardNhanVien extends javax.swing.JPanel {
     }
 
     private void initInfoRow(JPanel pnl, JLabel lblTitle, JLabel lblVal, String title, String val) {
-        pnl.setBackground(new java.awt.Color(245, 245, 245));
+        //pnl.setBackground(new java.awt.Color(245, 245, 245));
         pnl.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
         lblTitle.setFont(new java.awt.Font("Segoe UI", 1, 16));
         lblTitle.setText(title);
@@ -717,20 +717,7 @@ public class DashBoardNhanVien extends javax.swing.JPanel {
         add(jPanel1, java.awt.BorderLayout.PAGE_START);
     }// </editor-fold>                        
 
-    // Variables declaration - do not modify                     
-    private void initInfoRow(JPanel pnl, JLabel lblTitle, JLabel lblVal, String title, String val) {
-        //pnl.setBackground(new java.awt.Color(245, 245, 245));
-        pnl.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
-        lblTitle.setFont(new java.awt.Font("Segoe UI", 1, 16));
-        lblTitle.setText(title);
-        lblVal.setFont(new java.awt.Font("Segoe UI", 0, 16));
-        lblVal.setText(val);
-        lblVal.setForeground(new Color(51, 51, 51));
-        pnl.add(lblTitle);
-        pnl.add(lblVal);
-        pnl.setBorder(BorderFactory.createEmptyBorder(5, 0, 0, 0));
-    }
-
+    // Variables declaration - do not modify                    
     private javax.swing.JButton btnVaoCa;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
