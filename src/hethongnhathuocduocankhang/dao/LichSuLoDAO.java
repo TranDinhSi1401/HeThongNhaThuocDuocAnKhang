@@ -17,7 +17,7 @@ import java.time.LocalDate;
  * @author admin
  */
 public class LichSuLoDAO {
-    public static ArrayList<LichSuLo> getAllLichSuLo(){
+    public static ArrayList<LichSuLo> getAllLichSuLo() throws Exception{
         ArrayList<LichSuLo> dsLichSu = new ArrayList<>();
         String sql = "Select * from LichSuLo order by maLichSuLo DESC";
         try {
