@@ -1208,6 +1208,12 @@ int chon = JOptionPane.showConfirmDialog(null, "Xác nhận tạo phiếu trả?
             // Reset lại số lượng về mặc định hoặc xử lý tùy ý
             return; 
         }
+        else if(soLuong<=0){
+            dtm.setValueAt(1,i, 2);
+            JOptionPane.showMessageDialog(null, "Số lượng trả không được bé hơn 1 tại (Dòng " + (i + 1) + ")");
+            // Reset lại số lượng về mặc định hoặc xử lý tùy ý
+            return; 
+        }
 
         // 2. GỌI BUS: Tính thành tiền gốc (Cột 5)
         double donGia = boDinhDangTien(dtm.getValueAt(i, 3).toString());
