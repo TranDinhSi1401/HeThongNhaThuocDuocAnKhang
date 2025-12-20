@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.time.LocalDate;
 
-public class ThongKeDAO {
+public class BaoCaoDoanhThuDAO {
 
     public Map<String, double[]> getDoanhThuMap(java.util.Date tuNgay, java.util.Date denNgay, String loaiThongKe) {
         Map<String, double[]> dataMap = new HashMap<>();

@@ -6,7 +6,7 @@ package hethongnhathuocduocankhang.gui.baocao;
 
 import hethongnhathuocduocankhang.dao.HoaDonDAO;
 import hethongnhathuocduocankhang.dao.PhieuTraHangDAO;
-import hethongnhathuocduocankhang.dao.ThongKeDAO;
+import hethongnhathuocduocankhang.dao.BaoCaoDoanhThuDAO;
 import hethongnhathuocduocankhang.entity.HoaDon;
 import hethongnhathuocduocankhang.entity.PhieuTraHang;
 import java.awt.*;
@@ -432,7 +432,7 @@ public class BaoCaoDoanhThu extends javax.swing.JPanel {
 
                 // --- GỌI DAO ---
                 // Chỉ lấy dữ liệu, KHÔNG cập nhật giao diện ở đây
-                ThongKeDAO thongKeDAO = new ThongKeDAO();
+                BaoCaoDoanhThuDAO thongKeDAO = new BaoCaoDoanhThuDAO();
                 return thongKeDAO.getDoanhThuMap(dbTuNgay, dbDenNgay, loaiThongKe);
             }
 
