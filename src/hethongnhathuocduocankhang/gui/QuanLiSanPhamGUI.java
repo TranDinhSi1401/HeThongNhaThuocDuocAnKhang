@@ -19,7 +19,7 @@ public class QuanLiSanPhamGUI extends JPanel {
     private DefaultTableModel model;
     private JLabel lblTongSoDong;
     private JLabel lblSoDongChon;
-    
+
     private SanPhamBUS sanPhamBUS;
 
     public QuanLiSanPhamGUI() {
@@ -28,12 +28,12 @@ public class QuanLiSanPhamGUI extends JPanel {
 
         // Khởi tạo các thành phần giao diện
         initComponents();
-        
+
         // Khởi tạo BUS và load dữ liệu
         sanPhamBUS = new SanPhamBUS();
         sanPhamBUS.loadDataToTable(this, null);
-        
-        // Gắn sự kiện (Controller logic in View)
+
+        // Gắn sự kiện
         initEvents();
     }
 
@@ -60,7 +60,7 @@ public class QuanLiSanPhamGUI extends JPanel {
 
         // Bên Phải: Tìm kiếm & Lọc
         JPanel pnlNorthRight = new JPanel(new FlowLayout(FlowLayout.RIGHT, 10, 5));
-        
+
         cmbTieuChiTimKiem = new JComboBox<>(new String[]{"Mã sản phẩm", "Tên sản phẩm", "Mã nhà cung cấp"});
         cmbTieuChiTimKiem.setFont(new Font("Arial", Font.PLAIN, 14));
         cmbTieuChiTimKiem.setPreferredSize(new Dimension(150, 30));
@@ -106,7 +106,7 @@ public class QuanLiSanPhamGUI extends JPanel {
         table = new JTable(model);
         table.setRowHeight(25);
         table.setFont(new Font("Arial", Font.PLAIN, 12));
-        
+
         table.getTableHeader().setFont(new Font("Arial", Font.BOLD, 12));
         table.getTableHeader().setBackground(new Color(220, 220, 220));
         table.setShowGrid(true);
@@ -147,22 +147,22 @@ public class QuanLiSanPhamGUI extends JPanel {
         pnlSouth.add(new JSeparator(JSeparator.VERTICAL));
         pnlSouth.add(lblSoDongChon);
         this.add(pnlSouth, BorderLayout.SOUTH);
-        
+
         // Map Keys
         mapKeyToClickButton("F6", btnThem);
         mapKeyToClickButton("DELETE", btnXoa);
         mapKeyToClickButton("F2", btnSua);
     }
-    
+
     private void initEvents() {
         // Sự kiện THÊM
         btnThem.addActionListener(e -> {
             ThemSanPhamGUI dialog = new ThemSanPhamGUI(sanPhamBUS, false, "");
             dialog.setVisible(true);
-            // Sau khi dialog đóng -> load lại
+            // Sau khi dialog đóng -> load lại bảng
             sanPhamBUS.loadDataToTable(this, null);
         });
-        
+
         // Sự kiện SỬA
         btnSua.addActionListener(e -> {
             int selectedRow = table.getSelectedRow();
@@ -175,38 +175,37 @@ public class QuanLiSanPhamGUI extends JPanel {
             dialog.setVisible(true);
             sanPhamBUS.loadDataToTable(this, null);
         });
-        
+
         // Sự kiện XÓA
         btnXoa.addActionListener(e -> sanPhamBUS.xuLyXoaSanPham(this));
-        
+
         // Sự kiện TÌM KIẾM
         txtTimKiem.addActionListener(e -> sanPhamBUS.xuLyTimKiem(this));
         cmbTieuChiTimKiem.addActionListener(e -> {
-             txtTimKiem.selectAll();
-             txtTimKiem.requestFocus();
+            txtTimKiem.selectAll();
+            txtTimKiem.requestFocus();
         });
-        
+
         // Sự kiện LỌC
         cmbBoLoc.addActionListener(e -> sanPhamBUS.xuLyLoc(this));
-        
+
         // Sự kiện Table
         table.getSelectionModel().addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting()) {
                 lblSoDongChon.setText("Đang chọn: " + table.getSelectedRowCount());
             }
         });
-        
+
         // Double Click xem chi tiết
         table.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if(e.getClickCount() == 2) {
-                     int selectedRow = table.getSelectedRow();
-                     String maSP = model.getValueAt(selectedRow, 1).toString();
-                     // Dùng chung form sửa nhưng có thể disable nút lưu nếu muốn
-                     ThemSanPhamGUI dialog = new ThemSanPhamGUI(sanPhamBUS, true, maSP);
-                     dialog.setTitle("Chi tiết sản phẩm");
-                     dialog.setVisible(true);
+                if (e.getClickCount() == 2) {
+                    int selectedRow = table.getSelectedRow();
+                    String maSP = model.getValueAt(selectedRow, 1).toString();
+                    ThemSanPhamGUI dialog = new ThemSanPhamGUI(sanPhamBUS, true, maSP);
+                    dialog.setTitle("Chi tiết sản phẩm");
+                    dialog.setVisible(true);
                 }
             }
         });
@@ -233,11 +232,31 @@ public class QuanLiSanPhamGUI extends JPanel {
     }
 
     // Getters for BUS
-    public JTable getTable() { return table; }
-    public DefaultTableModel getModel() { return model; }
-    public JTextField getTxtTimKiem() { return txtTimKiem; }
-    public JComboBox<String> getCmbTieuChiTimKiem() { return cmbTieuChiTimKiem; }
-    public JComboBox<String> getCmbBoLoc() { return cmbBoLoc; }
-    public JLabel getLblTongSoDong() { return lblTongSoDong; }
-    public JLabel getLblSoDongChon() { return lblSoDongChon; }
+    public JTable getTable() {
+        return table;
+    }
+
+    public DefaultTableModel getModel() {
+        return model;
+    }
+
+    public JTextField getTxtTimKiem() {
+        return txtTimKiem;
+    }
+
+    public JComboBox<String> getCmbTieuChiTimKiem() {
+        return cmbTieuChiTimKiem;
+    }
+
+    public JComboBox<String> getCmbBoLoc() {
+        return cmbBoLoc;
+    }
+
+    public JLabel getLblTongSoDong() {
+        return lblTongSoDong;
+    }
+
+    public JLabel getLblSoDongChon() {
+        return lblSoDongChon;
+    }
 }
