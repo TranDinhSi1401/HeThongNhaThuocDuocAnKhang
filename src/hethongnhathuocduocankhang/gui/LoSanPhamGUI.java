@@ -84,18 +84,6 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
         focusTxt(txtTimKiem, "Nhập mã lô...");
         focusTxt(txtMaLoSP, "Nhập thông tin tìm kiếm...");
 
-        tblTab.addChangeListener(e -> {
-            int x = tblTab.getSelectedIndex();
-            if (x == 0) {
-                reLoadQuanLyLo();
-            } else if (x == 1) {
-                try {
-                    reLoadTheoDoiVaCanhBao();
-                } catch (SQLException ex) {
-                    Logger.getLogger(LoSanPhamGUI.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        });
         // tải dữ liệu của các lô hàng đang có vào bảng
         // loadTuPlashScreening();
         loadDanhSachLoSanPham();
@@ -180,7 +168,21 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
                 }
             }
         });
-
+        tblTab.addChangeListener(e->{
+            int index = tblTab.getSelectedIndex();
+            if(index==0){
+                try {
+                    reLoadTheoDoiVaCanhBao();
+                } catch (SQLException ex) {
+                    Logger.getLogger(LoSanPhamGUI.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }else if(index==1){
+                DefaultTableModel tbl = (DefaultTableModel) tblLoSanPham.getModel();
+                tbl.setRowCount(0);
+                loadDanhSachLoSanPham();
+            }
+        });
+        
         mapKeyToFocus("F3", txtTimKiem, QuanLyLo);
         mapKeyToFocus("F3", txtMaLoSP, CanhBao);
         mapKeyToClickButton("F4", btnXacNhan, QuanLyLo);
@@ -964,7 +966,7 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
         add(jPanel2, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnHuyLoActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnHuyLoActionPerformed
+    private void btnHuyLoActionPerformed(java.awt.event.ActionEvent evt) {
         DefaultTableModel tbl = (DefaultTableModel) tblLoSanPham.getModel();
         int x = tblLoSanPham.getSelectedRow();
         if (tblLoSanPham.getRowCount() == 0) {
@@ -1293,7 +1295,7 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "Vui lòng nhập mã lô !");
             return;
         }
-        if(!maLo.matches("LO[a-zA-Z0-9]*")){
+        if(!maLo.matches("LO-[A-Z]{2}-[0-9]{4}-[0-9]{8}-[0-9]{1}")){
             JOptionPane.showMessageDialog(this, "Mã lô phải bắt đầu bằng LO");
             txtTimKiem.setText("");
             txtTimKiem.requestFocus();
