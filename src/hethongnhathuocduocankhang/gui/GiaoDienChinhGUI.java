@@ -14,16 +14,21 @@ import java.awt.GridBagLayout;
 import java.awt.Image;
 import java.awt.Insets;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
+import javax.swing.AbstractAction;
+import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 
 /**
  *
@@ -35,7 +40,18 @@ public class GiaoDienChinhGUI extends JFrame{
     private final MainForm mainForm;
     private static final Map<String, JPanel> cachedPanels = new HashMap<>();
     private static boolean canDoiMatKhau = false;
+    private static String currentKey = null;
+    private static Supplier<JPanel> currentSupplier = null;
 
+    public static String getCurrentKey() {
+        return currentKey;
+    }
+
+    public static void setCurrentForm(String key, Supplier<JPanel> supplier) {
+       currentKey = key;
+        currentSupplier = supplier;
+    }
+    
     public static boolean isCanDoiMatKhau() {
         return canDoiMatKhau;
     }
@@ -64,10 +80,42 @@ public class GiaoDienChinhGUI extends JFrame{
         getRootPane().putClientProperty(FlatClientProperties.FULL_WINDOW_CONTENT, true);
         //Notifications.getInstance().setJFrame(this);
         if(GiaoDienChinhGUI.getTk().isQuanLy()) {
-            GiaoDienChinhGUI.showForm(new DashBoardQuanLi());
+            GiaoDienChinhGUI.showFormByKey("dashboardquanli", DashBoardQuanLi::new);
         } else {
-            GiaoDienChinhGUI.showForm(new DashBoardNhanVien());
+            GiaoDienChinhGUI.showFormByKey("dashboardnhanvien", DashBoardQuanLi::new);
         } 
+
+        // Phím tắt F1 mở hướng dẫn sử dụng và chọn menu tương ứng
+        getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
+        .put(KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0), "openHelp");
+        getRootPane().getActionMap().put("openHelp", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                mainForm.setSelectedMenu(8, 2);
+                GiaoDienChinhGUI.showFormByKey("huongDanSuDung", HuongDanSuDungGUI::new);
+            }
+        });
+        // Phím tắt F5 để reload trang hiện tại
+        getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
+                .put(KeyStroke.getKeyStroke(KeyEvent.VK_F5, 0), "reloadPage");
+
+        getRootPane().getActionMap().put("reloadPage", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (currentKey != null && currentSupplier != null) {
+                    // Giữ menu đang chọn
+                    System.out.println("Reload form: " + currentKey);
+                    reloadForm(currentKey, currentSupplier);
+                } else {
+                    Toolkit.getDefaultToolkit().beep();
+                }
+            }
+        });
+    }
+    
+    public static void reloadForm(String key, Supplier<JPanel> supplier) {
+        cachedPanels.remove(key); // xóa cache cũ
+        showFormByKey(key, supplier); // tạo form mới
     }
     
     public static void showAboutGUI() {
@@ -85,6 +133,7 @@ public class GiaoDienChinhGUI extends JFrame{
     }
     
     public static void showFormByKey(String key, Supplier<JPanel> creator) {
+        setCurrentForm(key, creator);
         JPanel panel = getOrCreatePanel(key, creator);
         showForm(panel);
     }
