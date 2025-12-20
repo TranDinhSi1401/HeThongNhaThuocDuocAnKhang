@@ -152,20 +152,23 @@ public class QuanLyLoBUS {
         if (!noiDungSafe.isEmpty()) {
             switch(loaiTimKiem){
                 case "mã lô sản phẩm":
-                    if(!noiDungSafe.matches("^LO-[A-Za-z0-9]+$")){
-                        JOptionPane.showMessageDialog(null, "Mã lô phải bắt đầu bằng LO- và tiếp theo là chữ cái/số.");
+                    if(!noiDungSafe.matches("LO-[A-Z]{2}-[0-9]{4}-[0-9]{8}-[0-9]{1}")){
+                        JOptionPane.showMessageDialog(null, "Mã lô phải tuân theo định dạng LO-SP-XXXX-XXXXXX-X, vui lòng nhập lại");
                         return new ArrayList<>();
                     }
                     break;
                 case "mã sản phẩm":
-                    if(!noiDungSafe.matches("^SP-\\d{4}$")){
+                    if(!noiDungSafe.matches("SP-\\d{4}")){
                         JOptionPane.showMessageDialog(null, "Mã sản phẩm phải bắt đầu bằng SP- và 4 số nguyên.");
                         return new ArrayList<>();
                     }
                     break;
                 case "tên sản phẩm":
+                    if(noiDungSafe.isEmpty()){
+                        JOptionPane.showMessageDialog(null, "Bạn chưa nhập tên sản phẩm, vui lòng nhập tên sản phẩm và thử lại");
+                    }break;
                 case "nhà cung cấp":
-                    if(!noiDungSafe.matches("[a-zA-Z0-9\\s]+")){
+                    if(!noiDungSafe.matches("[A-Za-z-0-9]")){
                         JOptionPane.showMessageDialog(null, "Tên tìm kiếm không được chứa ký tự đặc biệt.");
                         return new ArrayList<>();
                     }

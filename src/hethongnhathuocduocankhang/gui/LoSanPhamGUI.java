@@ -1302,7 +1302,7 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
             return;
         }
         if(!maLo.matches("LO-[A-Z]{2}-[0-9]{4}-[0-9]{8}-[0-9]{1}")){
-            JOptionPane.showMessageDialog(this, "Mã lô phải bắt đầu bằng LO");
+            JOptionPane.showMessageDialog(this, "Mã lô phải tuân theo định dạng LO-SP-XXXX-XXXXXX-X, vui lòng thử lại");
             txtTimKiem.setText("");
             txtTimKiem.requestFocus();
             return;
@@ -1733,11 +1733,13 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
             if (nv == null) {
                 continue;
             }
+            String ghiChu = i.getGhiChu();
+            if(ghiChu.trim().equals("")) ghiChu="Không có";
             tbl.addRow(new Object[] { i.getLo().getMaLoSanPham(),
                     i.getThoiGian(),
                     i.getHanhDong(),
                     i.getSoLuongSau(),
-                    i.getGhiChu(),
+                    ghiChu,
                     nv.getHoTenDem() + " " + nv.getTen() });
         }
 
