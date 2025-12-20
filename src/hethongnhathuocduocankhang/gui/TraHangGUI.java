@@ -178,27 +178,44 @@ public class TraHangGUI extends javax.swing.JPanel {
             @Override
             public void insertString(int offs, String str, javax.swing.text.AttributeSet a) throws javax.swing.text.BadLocationException {
                 if (str == null) return;
+                String upperStr = str.toUpperCase(); // Luôn in hoa
 
-                // 1. Nếu đang ở vị trí đầu tiên (offs == 0), chuỗi dán vào phải bắt đầu bằng "HD"
-                if (offs == 0 && !str.startsWith("HD")) {
-                    return; // Từ chối nếu không bắt đầu bằng HD
-                }
+                // 1. Giả lập: Nếu cho phép nhập thì chuỗi mới sẽ trông như thế nào?
+                StringBuilder sb = new StringBuilder(getText(0, getLength()));
+                sb.insert(offs, upperStr);
+                String futureString = sb.toString();
 
-                // 2. Kiểm tra tổng độ dài sau khi thêm không vượt quá 14
-                if ((getLength() + str.length()) <= 14) {
-                    super.insertString(offs, str, a);
-                } else {
-                    // 3. Nếu dán một đoạn dài, chỉ cắt lấy 14 ký tự đầu tiên nếu nó hợp lệ
-                    int spaceLeft = 14 - getLength();
-                    if (spaceLeft > 0) {
-                        String subStr = str.substring(0, spaceLeft);
-                        if (offs == 0 && !subStr.startsWith("HD")) return;
-                        super.insertString(offs, subStr, a);
+                // 2. Xử lý độ dài: Nếu vượt quá 14 ký tự
+                if (futureString.length() > 14) {
+                    // Nếu người dùng đang PASTE (chuỗi nhập vào dài > 1) -> Tự động cắt bớt cho vừa
+                    if (upperStr.length() > 1) {
+                        int spaceLeft = 14 - getLength();
+                        if (spaceLeft > 0) {
+                            upperStr = upperStr.substring(0, spaceLeft);
+                            // Tính lại chuỗi giả lập sau khi cắt
+                            sb = new StringBuilder(getText(0, getLength()));
+                            sb.insert(offs, upperStr);
+                            futureString = sb.toString();
+                        } else return; // Hết chỗ chứa -> Chặn
+                    } else {
+                        return; // Nếu đang GÕ phím mà vượt quá -> Chặn luôn
                     }
                 }
+
+                // 3. Kiểm tra logic bắt buộc đầu phải là "HD"
+                // Regex "^H?D?.*" nghĩa là:
+                // - Ký tự 1 bắt buộc là H (hoặc rỗng)
+                // - Ký tự 2 bắt buộc là D (hoặc rỗng)
+                // VD: Gõ "A" -> Chặn. Gõ "H" -> OK. Gõ tiếp "A" (thành HA) -> Chặn. Gõ "D" (thành HD) -> OK.
+                // Paste "HD-123" -> OK. Paste "AB-123" -> Chặn.
+                if (!futureString.matches("^H?D?.*")) {
+                    return;
+                }
+
+                super.insertString(offs, upperStr, a);
             }
         });
-        txtNhapMaHoaDon.setText("Nhập mã hóa đơn [F3]");
+        txtNhapMaHoaDon.setText("[F3]");
         txtNhapMaHoaDon.setPreferredSize(new java.awt.Dimension(400, 22));
         txtNhapMaHoaDon.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
@@ -1235,7 +1252,7 @@ int chon = JOptionPane.showConfirmDialog(null, "Xác nhận tạo phiếu trả?
     private void xoaRongTatCa() {
         DefaultTableModel dtmCTHD = (DefaultTableModel) tblCTHD.getModel();
         dtmCTHD.setRowCount(0);
-        txtNhapMaHoaDon.setText("Nhập mã hóa đơn");
+        txtNhapMaHoaDon.setText("[F3]");
         jLabel6.setText("Số lượng đã chọn: 0");
 
         DefaultTableModel dtmTraHang = (DefaultTableModel) tblTraHang.getModel();
@@ -1245,7 +1262,7 @@ int chon = JOptionPane.showConfirmDialog(null, "Xác nhận tạo phiếu trả?
         jTextField5.setText("");
         txtMaHoaDonTrongPhieuTraHang.setText("");
         txtTongThanhTien.setText("");
-
+        resetInfoPanels();
     }
 
     private void mapKeyToFocus(String key, JComponent component) {
