@@ -746,14 +746,14 @@ public class DashBoardNhanVien extends javax.swing.JPanel {
         jPanel3.setBackground(new java.awt.Color(245, 245, 245));
         jPanel3.setLayout(new java.awt.BorderLayout());
 
-        jPanel4.setBackground(new java.awt.Color(245, 245, 245));
+        //jPanel4.setBackground(new java.awt.Color(245, 245, 245));
         jPanel4.setPreferredSize(new java.awt.Dimension(220, 220));
         jPanel4.setLayout(new java.awt.GridBagLayout());
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/profile1.png")));
         jPanel4.add(jLabel1, new java.awt.GridBagConstraints());
         jPanel3.add(jPanel4, java.awt.BorderLayout.LINE_START);
 
-        jPanel7.setBackground(new java.awt.Color(245, 245, 245));
+        //jPanel7.setBackground(new java.awt.Color(245, 245, 245));
         jPanel7.setPreferredSize(new java.awt.Dimension(200, 220));
         jPanel7.setLayout(new javax.swing.BoxLayout(jPanel7, javax.swing.BoxLayout.Y_AXIS));
 
@@ -776,14 +776,14 @@ public class DashBoardNhanVien extends javax.swing.JPanel {
         initInfoRow(jPanel14, jLabel8, lblSdt = new JLabel(), "SĐT:", "090xxxxxxx");
         jPanel15.add(jPanel14);
 
-        jPanel16.setBackground(new java.awt.Color(245, 245, 245));
+        //jPanel16.setBackground(new java.awt.Color(245, 245, 245));
         jPanel16.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
         jLabel9.setText("   ");
         jPanel16.add(jLabel9);
         jPanel15.add(jPanel16);
         jPanel3.add(jPanel15, java.awt.BorderLayout.LINE_END);
 
-        jPanel18.setBackground(new java.awt.Color(245, 245, 245));
+        //jPanel18.setBackground(new java.awt.Color(245, 245, 245));
         jPanel18.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 10, 5));
         jLabel10.setFont(new java.awt.Font("Segoe UI", 1, 18));
         jLabel10.setText("Thông tin nhân viên");
@@ -794,7 +794,7 @@ public class DashBoardNhanVien extends javax.swing.JPanel {
     }// </editor-fold>                        
 
     private void initInfoRow(JPanel pnl, JLabel lblTitle, JLabel lblVal, String title, String val) {
-        pnl.setBackground(new java.awt.Color(245, 245, 245));
+        //pnl.setBackground(new java.awt.Color(245, 245, 245));
         pnl.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
         lblTitle.setFont(new java.awt.Font("Segoe UI", 1, 16));
         lblTitle.setText(title);

@@ -136,7 +136,6 @@ public class GiaoDienChinhGUI extends JFrame{
     public static void taoPanelDoiMatKhau() {
         JPanel panel = new JPanel();
         panel.setLayout(new GridBagLayout());
-        panel.setBackground(Color.WHITE);
 
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
@@ -183,11 +182,14 @@ public class GiaoDienChinhGUI extends JFrame{
             String oldPass = txtMatKhauCu.getText().trim();
             String newPass = txtMatKhauMoi.getText().trim();
             String confirmPass = txtXacNhan.getText().trim();
-
             if (oldPass.isEmpty() || newPass.isEmpty() || confirmPass.isEmpty()) {
-                JOptionPane.showMessageDialog(app, "Vui lòng nhập đầy đủ thông tin!");
+                JOptionPane.showMessageDialog(app, "Vui lòng nhập đầy đủ thông tin!", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+            } else if (!newPass.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*\\W).{8,}$")) {
+                JOptionPane.showMessageDialog(app, "Mật khẩu phải có tối thiểu 8 ký tự, gồm chữ hoa, chữ thường, chữ số và ký tự đặc biệt!", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
             } else if (!newPass.equals(confirmPass)) {
-                JOptionPane.showMessageDialog(app, "Mật khẩu xác nhận không khớp!");
+                JOptionPane.showMessageDialog(app, "Mật khẩu xác nhận không khớp!", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+            } else if (oldPass.equalsIgnoreCase(newPass)) {
+                JOptionPane.showMessageDialog(app, "Mật khẩu mới phải khác mật khẩu cũ!", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
             } else {
                 // Gọi business logic xử lý đổi mật khẩu
                 if(PasswordUtil.doiMatKhau(GiaoDienChinhGUI.getTk(), oldPass, newPass)) {
