@@ -6,6 +6,7 @@ package hethongnhathuocduocankhang.gui.baocao;
 
 import hethongnhathuocduocankhang.dao.HoaDonDAO;
 import hethongnhathuocduocankhang.dao.PhieuTraHangDAO;
+import hethongnhathuocduocankhang.dao.BaoCaoDoanhThuDAO;
 import hethongnhathuocduocankhang.entity.HoaDon;
 import hethongnhathuocduocankhang.entity.PhieuTraHang;
 import java.awt.*;
@@ -14,6 +15,7 @@ import java.awt.event.ActionListener;
 import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -32,6 +34,7 @@ import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
+import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -347,112 +350,128 @@ public class BaoCaoDoanhThu extends javax.swing.JPanel {
     }
 
     private void xemBaoCao() {
-        // Show loading
         showLoadingDialog();
 
-        SwingWorker<Void, Void> worker = new SwingWorker<>() {
+        // 1. Sửa SwingWorker để trả về Map (Key, Value) thay vì Void
+        SwingWorker<Map<String, double[]>, Void> worker = new SwingWorker<>() {
+
+            // Khai báo biến này ở đây để dùng chung cho cả doInBackground và done
+            List<String> allKeys = new ArrayList<>();
+
             @Override
-            protected Void doInBackground() throws Exception {
-                try {
-                    String loaiThongKe = (String) cmbLoaiThongKe.getSelectedItem();
+            protected Map<String, double[]> doInBackground() throws Exception {
+                String loaiThongKe = (String) cmbLoaiThongKe.getSelectedItem();
 
-                    // Query DB
-                    HoaDonDAO hoaDonDAO = new HoaDonDAO();
-                    PhieuTraHangDAO phieuTraDAO = new PhieuTraHangDAO();
+                // Khai báo biến ngày để gửi xuống DB
+                java.util.Date dbTuNgay = null;
+                java.util.Date dbDenNgay = null;
 
-                    ArrayList<HoaDon> hoaDons = hoaDonDAO.getAllHoaDon();
-                    ArrayList<PhieuTraHang> phieuTras = phieuTraDAO.getAllPhieuTraHang();
+                // --- XỬ LÝ NGÀY THÁNG (Logic giữ nguyên như cũ) ---
+                if ("Theo ngày".equals(loaiThongKe)) {
+                    dbTuNgay = datePickerTuNgay.getDate();
+                    dbDenNgay = datePickerDenNgay.getDate();
 
-                    // Tạo list tất cả khoảng thời gian trong range
-                    List<String> allKeys = new ArrayList<>();
-                    if ("Theo ngày".equals(loaiThongKe)) {
-                        Date tuNgay = datePickerTuNgay.getDate();
-                        Date denNgay = datePickerDenNgay.getDate();
-                        if(tuNgay.after(denNgay)){
-                            JOptionPane.showMessageDialog(null, "Từ ngày phải bé hơn đến ngày");
-                            return null;
-                        }
-                        LocalDate startDate = tuNgay.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate();
-                        LocalDate endDate = denNgay.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate();
-                        for (LocalDate date = startDate; !date.isAfter(endDate); date = date.plusDays(1)) {
-                            allKeys.add(date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
-                        }
-                    } else if ("Theo tháng".equals(loaiThongKe)) {
-                        int tuThang = (Integer) cmbTuThang.getSelectedItem();
-                        int tuNam = (Integer) cmbTuNam.getSelectedItem();
-                        int denThang = (Integer) cmbDenThang.getSelectedItem();
-                        int denNam = (Integer) cmbDenNam.getSelectedItem();
-                        if(tuThang>denThang){
-                            JOptionPane.showMessageDialog(null, "Từ năm phải bé hơn đến năm");
-                            return null;
-                        }
-                        for (int nam = tuNam; nam <= denNam; nam++) {
-                            int startThang = (nam == tuNam) ? tuThang : 1;
-                            int endThang = (nam == denNam) ? denThang : 12;
-                            for (int thang = startThang; thang <= endThang; thang++) {
-                                allKeys.add(String.format("%02d/%d", thang, nam));
-                            }
-                        }
-                    } else if ("Theo quý".equals(loaiThongKe)) {
-                        int tuQuy = (Integer) cmbTuQuy.getSelectedItem();
-                        int tuNam = (Integer) cmbTuNam.getSelectedItem();
-                        int denQuy = (Integer) cmbDenQuy.getSelectedItem();
-                        int denNam = (Integer) cmbDenNam.getSelectedItem();
-                        if(tuQuy>denQuy){
-                            JOptionPane.showMessageDialog(null, "Từ quý phải bé hơn đến quý");
-                            return null;
-                        }
-                        for (int nam = tuNam; nam <= denNam; nam++) {
-                            int startQuy = (nam == tuNam) ? tuQuy : 1;
-                            int endQuy = (nam == denNam) ? denQuy : 4;
-                            for (int quy = startQuy; quy <= endQuy; quy++) {
-                                allKeys.add("Quý " + quy + " năm " + nam);
-                            }
-                        }
-                    } else if ("Theo năm".equals(loaiThongKe)) {
-                        int tuNam = (Integer) cmbTuNam.getSelectedItem();
-                        int denNam = (Integer) cmbDenNam.getSelectedItem();
-                        if(tuNam>denNam){
-                            JOptionPane.showMessageDialog(null, "Từ năm phải bé hơn đến năm");
-                            return null;
-                        }
-                        for (int nam = tuNam; nam <= denNam; nam++) {
-                            allKeys.add("Năm " + nam);
-                        }
+                    if (dbTuNgay.after(dbDenNgay)) {
+                        throw new Exception("Từ ngày phải bé hơn đến ngày");
                     }
 
-                    // Tính doanh thu và cập nhật table
-                    model.setRowCount(0);
-                    double tongDoanhThu = 0;
-
-                    for (String key : allKeys) {
-                        double tongHD = hoaDons.stream()
-                            .filter(hd -> getKey(hd, loaiThongKe).equals(key))
-                            .mapToDouble(HoaDon::getTongTien)
-                            .sum();
-                        double tongPT = phieuTras.stream()
-                            .filter(pt -> getKey(pt, loaiThongKe).equals(key))
-                            .mapToDouble(PhieuTraHang::getTongTienHoanTra)
-                            .sum();
-                        double doanhThu = tongHD - tongPT;
-                        model.addRow(new Object[]{key, dinhDangTien(tongHD), dinhDangTien(tongPT), dinhDangTien(doanhThu)});
-                        tongDoanhThu += doanhThu;
+                    LocalDate startDate = dbTuNgay.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate();
+                    LocalDate endDate = dbDenNgay.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate();
+                    for (LocalDate date = startDate; !date.isAfter(endDate); date = date.plusDays(1)) {
+                        allKeys.add(date.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
                     }
 
-                    lblTongDoanhThu.setText("Tổng doanh thu: " + dinhDangTien(tongDoanhThu));
-                } catch (Exception e) {
-                    JOptionPane.showMessageDialog(null, "Lỗi khi xem báo cáo: " + e.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
+                } else if ("Theo tháng".equals(loaiThongKe)) {
+                    int tuThang = (Integer) cmbTuThang.getSelectedItem();
+                    int tuNam = (Integer) cmbTuNam.getSelectedItem();
+                    int denThang = (Integer) cmbDenThang.getSelectedItem();
+                    int denNam = (Integer) cmbDenNam.getSelectedItem();
+
+                    dbTuNgay = java.sql.Date.valueOf(LocalDate.of(tuNam, tuThang, 1));
+                    LocalDate lastDayOfMonth = LocalDate.of(denNam, denThang, 1).plusMonths(1).minusDays(1);
+                    dbDenNgay = java.sql.Date.valueOf(lastDayOfMonth);
+
+                    for (int nam = tuNam; nam <= denNam; nam++) {
+                        int startThang = (nam == tuNam) ? tuThang : 1;
+                        int endThang = (nam == denNam) ? denThang : 12;
+                        for (int thang = startThang; thang <= endThang; thang++) {
+                            allKeys.add(String.format("%02d/%d", thang, nam));
+                        }
+                    }
+                } else if ("Theo quý".equals(loaiThongKe)) {
+                    int tuQuy = (Integer) cmbTuQuy.getSelectedItem();
+                    int tuNam = (Integer) cmbTuNam.getSelectedItem();
+                    int denQuy = (Integer) cmbDenQuy.getSelectedItem();
+                    int denNam = (Integer) cmbDenNam.getSelectedItem();
+
+                    int startMonth = (tuQuy - 1) * 3 + 1;
+                    dbTuNgay = java.sql.Date.valueOf(LocalDate.of(tuNam, startMonth, 1));
+
+                    int endMonth = denQuy * 3;
+                    LocalDate lastDayOfQuarter = LocalDate.of(denNam, endMonth, 1).plusMonths(1).minusDays(1);
+                    dbDenNgay = java.sql.Date.valueOf(lastDayOfQuarter);
+
+                    for (int nam = tuNam; nam <= denNam; nam++) {
+                        int startQuy = (nam == tuNam) ? tuQuy : 1;
+                        int endQuy = (nam == denNam) ? denQuy : 4;
+                        for (int quy = startQuy; quy <= endQuy; quy++) {
+                            allKeys.add("Quý " + quy + " năm " + nam);
+                        }
+                    }
+                } else if ("Theo năm".equals(loaiThongKe)) {
+                    int tuNam = (Integer) cmbTuNam.getSelectedItem();
+                    int denNam = (Integer) cmbDenNam.getSelectedItem();
+
+                    dbTuNgay = java.sql.Date.valueOf(LocalDate.of(tuNam, 1, 1));
+                    dbDenNgay = java.sql.Date.valueOf(LocalDate.of(denNam, 12, 31));
+
+                    for (int nam = tuNam; nam <= denNam; nam++) {
+                        allKeys.add("Năm " + nam);
+                    }
                 }
-                return null;
+
+                // --- GỌI DAO ---
+                // Chỉ lấy dữ liệu, KHÔNG cập nhật giao diện ở đây
+                BaoCaoDoanhThuDAO thongKeDAO = new BaoCaoDoanhThuDAO();
+                return thongKeDAO.getDoanhThuMap(dbTuNgay, dbDenNgay, loaiThongKe);
             }
 
             @Override
             protected void done() {
-                // Hide loading
-                disposeLoadingDialog();
+                try {
+                    // Lấy kết quả từ doInBackground (nếu có lỗi nó sẽ ném ra ở đây)
+                    Map<String, double[]> dataMap = get();
+
+                    // --- CẬP NHẬT GIAO DIỆN Ở ĐÂY (An toàn tuyệt đối) ---
+                    model.setRowCount(0);
+                    double tongDoanhThuToanBo = 0;
+
+                    for (String key : allKeys) {
+                        double tongHD = 0;
+                        double tongPT = 0;
+
+                        if (dataMap.containsKey(key)) {
+                            double[] values = dataMap.get(key);
+                            tongHD = values[0];
+                            tongPT = values[1];
+                        }
+
+                        double doanhThu = tongHD - tongPT;
+
+                        model.addRow(new Object[]{key, dinhDangTien(tongHD), dinhDangTien(tongPT), dinhDangTien(doanhThu)});
+                        tongDoanhThuToanBo += doanhThu;
+                    }
+                    lblTongDoanhThu.setText("Tổng doanh thu: " + dinhDangTien(tongDoanhThuToanBo));
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    JOptionPane.showMessageDialog(null, "Có lỗi xảy ra: " + e.getMessage());
+                } finally {
+                    // --- QUAN TRỌNG: LUÔN TẮT LOADING DÙ CÓ LỖI HAY KHÔNG ---
+                    disposeLoadingDialog();
+                }
             }
         };
-
         worker.execute();
     }
 
@@ -531,97 +550,139 @@ public class BaoCaoDoanhThu extends javax.swing.JPanel {
     }
     
     private void xuatFileBaoCao(File fileToSave) {
-    try (Workbook workbook = new XSSFWorkbook()) {
-        Sheet sheet = workbook.createSheet("Báo cáo");
+        // 1. Kiểm tra bảng có dữ liệu không
+        if (model.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(this, "Chưa có dữ liệu để xuất. Vui lòng ấn 'Xem báo cáo' trước!", "Thông báo", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
 
-        String loaiThongKe = (String) cmbLoaiThongKe.getSelectedItem();
+        // 2. Tự động thêm đuôi .xlsx nếu người dùng quên
+        String path = fileToSave.getAbsolutePath();
+        if (!path.toLowerCase().endsWith(".xlsx")) {
+            fileToSave = new File(path + ".xlsx");
+        }
 
-        // Header
-        Row headerRow = sheet.createRow(0);
-        Cell headerCell = headerRow.createCell(0);
-        headerCell.setCellValue("BÁO CÁO DOANH THU " + loaiThongKe.toUpperCase());
-        CellStyle headerStyle = workbook.createCellStyle();
-        org.apache.poi.ss.usermodel.Font headerFont = workbook.createFont();
-        headerFont.setBold(true);
-        headerFont.setFontHeightInPoints((short) 16);
-        headerStyle.setFont(headerFont);
-        headerStyle.setAlignment(HorizontalAlignment.CENTER);
-        headerCell.setCellStyle(headerStyle);
-        sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, model.getColumnCount()-1));
+        try (Workbook workbook = new XSSFWorkbook()) {
+            Sheet sheet = workbook.createSheet("Báo cáo");
 
+            String loaiThongKe = (String) cmbLoaiThongKe.getSelectedItem();
 
-        // Thông tin filter (linh động theo ngày/tháng/quý/năm)
-        Row infoRow = sheet.createRow(2);
-        Cell infoCell = infoRow.createCell(0);
-            if ("Theo tháng".equals(loaiThongKe)) {
-                int tuThang = (Integer) cmbTuThang.getSelectedItem();
-                int tuNam = (Integer) cmbTuNam.getSelectedItem();
-                int denThang = (Integer) cmbDenThang.getSelectedItem();
-                int denNam = (Integer) cmbDenNam.getSelectedItem();
-                infoCell.setCellValue("Từ tháng " + tuThang + "/" + tuNam + " đến tháng " + denThang + "/" + denNam);
-            } else if ("Theo quý".equals(loaiThongKe)) {
-                // tương tự cho quý
-            } else if ("Theo năm".equals(loaiThongKe)) {
-                // tương tự cho năm
-            } else if ("Theo ngày".equals(loaiThongKe)) {
-                // tương tự cho ngày
-            }
-            sheet.addMergedRegion(new CellRangeAddress(2, 2, 0, model.getColumnCount()-1));
+            // --- STYLE ---
+            CellStyle headerStyle = workbook.createCellStyle();
+            org.apache.poi.ss.usermodel.Font headerFont = workbook.createFont();
+            headerFont.setBold(true);
+            headerFont.setFontHeightInPoints((short) 16);
+            headerStyle.setFont(headerFont);
+            headerStyle.setAlignment(HorizontalAlignment.CENTER);
 
-            // Thời gian lập báo cáo
-            Row timeRow = sheet.createRow(3);
-            Cell timeCell = timeRow.createCell(0);
-            String ngayLap = java.time.LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
-            timeCell.setCellValue("Thời gian lập báo cáo: " + ngayLap);
-            sheet.addMergedRegion(new CellRangeAddress(3, 3, 0, model.getColumnCount()-1));
-
-            // Tạo style border
             CellStyle borderStyle = workbook.createCellStyle();
             borderStyle.setBorderTop(BorderStyle.THIN);
             borderStyle.setBorderBottom(BorderStyle.THIN);
             borderStyle.setBorderLeft(BorderStyle.THIN);
             borderStyle.setBorderRight(BorderStyle.THIN);
 
-            // Header bảng
+            // --- ROW 0: TIÊU ĐỀ ---
+            Row headerRow = sheet.createRow(0);
+            Cell headerCell = headerRow.createCell(0);
+            headerCell.setCellValue("BÁO CÁO DOANH THU " + loaiThongKe.toUpperCase());
+            headerCell.setCellStyle(headerStyle);
+
+            // Merge cell tiêu đề (tránh lỗi nếu cột < 1)
+            if (model.getColumnCount() > 0) {
+                sheet.addMergedRegion(new CellRangeAddress(0, 0, 0, model.getColumnCount() - 1));
+            }
+
+            // --- ROW 2: THỜI GIAN THỐNG KÊ ---
+            Row infoRow = sheet.createRow(2);
+            Cell infoCell = infoRow.createCell(0);
+            String thoiGianText = "";
+
+            if ("Theo ngày".equals(loaiThongKe)) {
+                DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                LocalDate d1 = datePickerTuNgay.getDate().toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate();
+                LocalDate d2 = datePickerDenNgay.getDate().toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate();
+                thoiGianText = "Từ ngày " + d1.format(dtf) + " đến ngày " + d2.format(dtf);
+            } else if ("Theo tháng".equals(loaiThongKe)) {
+                thoiGianText = "Từ tháng " + cmbTuThang.getSelectedItem() + "/" + cmbTuNam.getSelectedItem() + 
+                               " đến tháng " + cmbDenThang.getSelectedItem() + "/" + cmbDenNam.getSelectedItem();
+            } else if ("Theo quý".equals(loaiThongKe)) {
+                thoiGianText = "Từ quý " + cmbTuQuy.getSelectedItem() + " năm " + cmbTuNam.getSelectedItem() + 
+                               " đến quý " + cmbDenQuy.getSelectedItem() + " năm " + cmbDenNam.getSelectedItem();
+            } else if ("Theo năm".equals(loaiThongKe)) {
+                thoiGianText = "Từ năm " + cmbTuNam.getSelectedItem() + " đến năm " + cmbDenNam.getSelectedItem();
+            }
+
+            infoCell.setCellValue(thoiGianText);
+            if (model.getColumnCount() > 0) {
+                sheet.addMergedRegion(new CellRangeAddress(2, 2, 0, model.getColumnCount() - 1));
+            }
+
+            // --- ROW 3: NGÀY LẬP ---
+            Row timeRow = sheet.createRow(3);
+            Cell timeCell = timeRow.createCell(0);
+            String ngayLap = java.time.LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
+            timeCell.setCellValue("Thời gian lập báo cáo: " + ngayLap);
+            if (model.getColumnCount() > 0) {
+                sheet.addMergedRegion(new CellRangeAddress(3, 3, 0, model.getColumnCount() - 1));
+            }
+
+            // --- ROW 5: HEADER BẢNG ---
             Row tableHeaderRow = sheet.createRow(5);
             for (int i = 0; i < model.getColumnCount(); i++) {
                 Cell cell = tableHeaderRow.createCell(i);
                 cell.setCellValue(model.getColumnName(i));
-                cell.setCellStyle(borderStyle); // áp dụng border
+                cell.setCellStyle(borderStyle);
             }
 
-            // Dữ liệu bảng
+            // --- DATA ROWS ---
             for (int r = 0; r < model.getRowCount(); r++) {
                 Row row = sheet.createRow(r + 6);
                 for (int c = 0; c < model.getColumnCount(); c++) {
                     Object value = model.getValueAt(r, c);
                     Cell cell = row.createCell(c);
                     cell.setCellValue(value != null ? value.toString() : "");
-                    cell.setCellStyle(borderStyle); // áp dụng border
+                    cell.setCellStyle(borderStyle);
                 }
             }
-            
-            
 
-            // Footer: tổng doanh thu
+            // --- FOOTER: TỔNG DOANH THU ---
             int footerRowIndex = model.getRowCount() + 7;
             Row footerRow = sheet.createRow(footerRowIndex);
             Cell footerCell = footerRow.createCell(0);
             footerCell.setCellValue(lblTongDoanhThu.getText());
-            sheet.addMergedRegion(new CellRangeAddress(footerRowIndex, footerRowIndex, 0, model.getColumnCount()-1));
+            CellStyle footerStyle = workbook.createCellStyle();
+            org.apache.poi.ss.usermodel.Font footerFont = workbook.createFont();
+            footerFont.setBold(true);
+            footerFont.setColor(IndexedColors.RED.getIndex());
+            footerStyle.setFont(footerFont);
+            footerCell.setCellStyle(footerStyle);
 
-            // Auto resize
+            if (model.getColumnCount() > 0) {
+                sheet.addMergedRegion(new CellRangeAddress(footerRowIndex, footerRowIndex, 0, model.getColumnCount() - 1));
+            }
+
+            // Auto resize column
             for (int i = 0; i < model.getColumnCount(); i++) {
                 sheet.autoSizeColumn(i);
             }
 
+            // Ghi file
             try (FileOutputStream fos = new FileOutputStream(fileToSave)) {
                 workbook.write(fos);
+                JOptionPane.showMessageDialog(this, "Xuất báo cáo thành công!\nLưu tại: " + fileToSave.getAbsolutePath());
+
+                // Tùy chọn: Mở file ngay sau khi xuất
+                // Desktop.getDesktop().open(fileToSave); 
             }
 
-            JOptionPane.showMessageDialog(this, "Xuất báo cáo thành công: " + fileToSave.getAbsolutePath());
+        } catch (java.io.FileNotFoundException ex) {
+            JOptionPane.showMessageDialog(this, "Lỗi: File đang được mở bởi chương trình khác.\nVui lòng đóng file Excel lại và thử lại!", "Lỗi file", JOptionPane.ERROR_MESSAGE);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Lỗi ghi file: " + ex.getMessage(), "Lỗi IO", JOptionPane.ERROR_MESSAGE);
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(this, "Lỗi khi xuất file: " + ex.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Lỗi không xác định: " + ex.getMessage(), "Lỗi", JOptionPane.ERROR_MESSAGE);
         }
     }
     

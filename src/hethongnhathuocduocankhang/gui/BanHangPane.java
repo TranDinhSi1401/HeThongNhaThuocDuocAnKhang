@@ -741,7 +741,6 @@ public class BanHangPane extends javax.swing.JPanel {
         pTimKiem.setLayout(new java.awt.BorderLayout(0, 10));
         pTimKiem.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
 
-        btnTimKiem.setBackground(new java.awt.Color(255, 255, 255));
         btnTimKiem.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/images/search.png"))); // NOI18N
         btnTimKiem.setIcon(getIconSVG("search"));
         btnTimKiem.setPreferredSize(new java.awt.Dimension(38, 40));
@@ -915,6 +914,10 @@ public class BanHangPane extends javax.swing.JPanel {
         // Thêm sản phẩm vào table cthd
         try {
             String maSP = txtTimKiem.getText().trim();
+            if(maSP.isEmpty() || maSP.equalsIgnoreCase("Nhập mã sản phẩm [F1]")) {
+                JOptionPane.showMessageDialog(this, "Vui lòng nhập mã sản phẩm hoặc mã vạch", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
             if(bus.kiemTraKeDon(maSP)) {
                 JOptionPane.showMessageDialog(this, "Thuốc bạn vừa tìm kiếm là thuốc kê đơn \n Vui lòng kiểm tra đơn kê rõ ràng và lưu thông tin khách hàng", "Cảnh báo kê đơn", JOptionPane.WARNING_MESSAGE);
             }
@@ -979,6 +982,10 @@ public class BanHangPane extends javax.swing.JPanel {
         // Thêm sản phẩm vào table cthd
         try {
             String maSP = txtTimKiem.getText().trim();
+            if(maSP.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Vui lòng nhập mã sản phẩm hoặc mã vạch", "Cảnh báo", JOptionPane.WARNING_MESSAGE);
+                return;
+            }
             if(bus.kiemTraKeDon(maSP)) {
                 JOptionPane.showMessageDialog(this, "Thuốc bạn vừa tìm kiếm là thuốc kê đơn \n Vui lòng kiểm tra đơn kê rõ ràng và lưu thông tin khách hàng", "Cảnh báo kê đơn", JOptionPane.WARNING_MESSAGE);
             }           
