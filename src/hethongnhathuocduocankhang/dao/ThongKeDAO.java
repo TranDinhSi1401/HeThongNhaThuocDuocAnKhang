@@ -12,7 +12,6 @@ import java.time.LocalDate;
 
 public class ThongKeDAO {
 
-    // Trả về Map: Key là Thời gian (String), Value là mảng double[]{TongHoaDon, TongTraHang}
     public Map<String, double[]> getDoanhThuMap(java.util.Date tuNgay, java.util.Date denNgay, String loaiThongKe) {
         Map<String, double[]> dataMap = new HashMap<>();
         Connection con = ConnectDB.getInstance().getConnection();
@@ -22,12 +21,15 @@ public class ThongKeDAO {
         String timeCol = "";
         String groupBy = "";
 
-        // Chỉnh sửa cú pháp SQL Server tương ứng với Key mà bạn tạo ở GUI
+        // --- SỬA LỖI TẠI ĐÂY ---
         if ("Theo ngày".equals(loaiThongKe)) {
             timeCol = "CONVERT(VARCHAR(10), Ngay, 103)"; // dd/MM/yyyy
-            groupBy = "Ngay"; 
+            // CŨ (SAI): groupBy = "Ngay"; -> Group theo giây
+            // MỚI (ĐÚNG): Group theo chuỗi hiển thị
+            groupBy = "CONVERT(VARCHAR(10), Ngay, 103)"; 
+            
         } else if ("Theo tháng".equals(loaiThongKe)) {
-            timeCol = "RIGHT('00' + CAST(MONTH(Ngay) AS VARCHAR), 2) + '/' + CAST(YEAR(Ngay) AS VARCHAR)"; // MM/yyyy
+            timeCol = "RIGHT('00' + CAST(MONTH(Ngay) AS VARCHAR), 2) + '/' + CAST(YEAR(Ngay) AS VARCHAR)";
             groupBy = "YEAR(Ngay), MONTH(Ngay)";
         } else if ("Theo quý".equals(loaiThongKe)) {
             timeCol = "N'Quý ' + CAST(DATEPART(QUARTER, Ngay) AS VARCHAR) + N' năm ' + CAST(YEAR(Ngay) AS VARCHAR)";
@@ -37,6 +39,7 @@ public class ThongKeDAO {
             groupBy = "YEAR(Ngay)";
         }
 
+        // Câu SQL giữ nguyên logic UNION ALL
         String sql = "SELECT " + timeCol + " AS ThoiGian, " +
                      "SUM(CASE WHEN Loai = 1 THEN ThanhTien ELSE 0 END) AS TongHoaDon, " +
                      "SUM(CASE WHEN Loai = 2 THEN ThanhTien ELSE 0 END) AS TongTraHang " +
@@ -47,12 +50,12 @@ public class ThongKeDAO {
                      "   SELECT ngayLapPhieuTraHang AS Ngay, tongTienHoanTra AS ThanhTien, 2 AS Loai FROM PhieuTraHang " +
                      "   WHERE ngayLapPhieuTraHang BETWEEN ? AND ? " +
                      ") AS BangTam " +
-                     "GROUP BY " + groupBy + ", " + timeCol;
+                     "GROUP BY " + groupBy; 
+                     // Lưu ý: Đã bỏ + ", " + timeCol ở group by vì groupBy bây giờ đã trùng hoặc bao hàm timeCol
 
         try {
             Timestamp start = new Timestamp(tuNgay.getTime());
             
-            // Set đến cuối ngày cho tham số đến ngày
             java.util.Calendar cal = java.util.Calendar.getInstance();
             cal.setTime(denNgay);
             cal.set(java.util.Calendar.HOUR_OF_DAY, 23);
@@ -71,16 +74,14 @@ public class ThongKeDAO {
                 String key = rs.getString("ThoiGian");
                 double tongHD = rs.getDouble("TongHoaDon");
                 double tongTra = rs.getDouble("TongTraHang");
-                
-                // Đưa vào Map
                 dataMap.put(key, new double[]{tongHD, tongTra});
             }
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {
-             // Nhớ đóng kết nối
              try { if(stmt!=null) stmt.close(); if(rs!=null) rs.close(); } catch(SQLException ex){}
         }
         return dataMap;
     }
+
 }
