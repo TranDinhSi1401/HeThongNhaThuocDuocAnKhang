@@ -1894,7 +1894,7 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
     private void btnXemConHan_ActionPerformed(java.awt.event.ActionEvent evt) {
         cmbTimKiemTheo.setSelectedIndex(0);
         cmbTrangThai.setSelectedItem("Còn hạn");
-        btnTimTheoThongTin.doClick();
+        btnTimTheoThongTin.doClick();   
     }
 
     private void btnXemSapHetHan_ActionPerformed(java.awt.event.ActionEvent evt) {
