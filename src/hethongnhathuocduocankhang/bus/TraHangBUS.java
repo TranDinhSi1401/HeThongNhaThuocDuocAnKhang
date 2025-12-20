@@ -11,6 +11,7 @@ import hethongnhathuocduocankhang.dao.LoSanPhamDAO;
 import hethongnhathuocduocankhang.dao.PhieuTraHangDAO;
 import hethongnhathuocduocankhang.entity.ChiTietPhieuTraHang;
 import hethongnhathuocduocankhang.entity.HoaDon;
+import hethongnhathuocduocankhang.entity.LoSanPham;
 import hethongnhathuocduocankhang.entity.PhieuTraHang;
 import hethongnhathuocduocankhang.entity.TinhTrangSanPhamEnum;
 import hethongnhathuocduocankhang.entity.TruongHopDoiTraEnum;
@@ -109,36 +110,67 @@ public static double tinhTienHoanTraItem(double thanhTienGoc, TruongHopDoiTraEnu
 
         // 2. Lưu chi tiết phiếu trả & Cập nhật kho
         for (ChiTietPhieuTraHang ctpth : listChiTiet) {
-            // Lưu chi tiết
+            // Lưu chi tiết vào DB
             ChiTietPhieuTraDAO.insertChiTietPhieuTra(ctpth);
             
-            // Logic cập nhật kho (Đưa logic từ GUI sang đây)
+            // --- LOGIC CỘNG KHO ---
             TinhTrangSanPhamEnum tinhTrang = ctpth.getTinhTrangSanPham();
             TruongHopDoiTraEnum truongHop = ctpth.getTruongHopDoiTra();
             
-            // Điều kiện cộng lại kho: Hàng nguyên vẹn VÀ (Do khách đổi ý HOẶC Dị ứng)
+            // Điều kiện cộng lại kho: Hàng nguyên vẹn VÀ (Do khách đổi ý HOẶC Dị ứng/Thuốc không hợp)
+            // Lỗi nhà sản xuất thường sẽ trả về NCC chứ không bán lại -> Cân nhắc nghiệp vụ này tùy cửa hàng
             boolean hangTraVeKho = tinhTrang == TinhTrangSanPhamEnum.HANG_NGUYEN_VEN 
                     && (truongHop == TruongHopDoiTraEnum.NHU_CAU_KHACH_HANG || truongHop == TruongHopDoiTraEnum.DI_UNG_MAN_CAM);
 
             if (hangTraVeKho) {
-                 String maLo = LoSanPhamDAO.getLoSanPhamTheoMaCTHD(ctpth.getChiTietHoaDon().getMaChiTietHoaDon()).getMaLoSanPham();
-                 int soLuong = ctpth.getSoLuong();
+                 String maCTHD = ctpth.getChiTietHoaDon().getMaChiTietHoaDon();
                  int heSoQuyDoi = ctpth.getChiTietHoaDon().getDonViTinh().getHeSoQuyDoi();
                  
-                 LoSanPhamDAO.congSoLuong(maLo, soLuong, heSoQuyDoi);
+                 // Tính tổng số lượng đơn vị cơ bản cần trả lại kho
+                 // VD: Trả 2 hộp, 1 hộp = 10 viên => Cần trả 20 viên
+                 int soLuongCanTra = ctpth.getSoLuong() * heSoQuyDoi; 
+                 
+                 // Lấy danh sách lô đã xuất cho CTHD này (Đã sort Mới -> Cũ)
+                 List<LoSanPham> dsLoDaXuat = LoSanPhamDAO.getDanhSachLoDaXuatTheoMaCTHD(maCTHD);
+                 
+                 for (LoSanPham lo : dsLoDaXuat) {
+                     if (soLuongCanTra <= 0) break; // Đã trả đủ
+                     
+                     String maLo = lo.getMaLoSanPham();
+                     int soLuongDaLayTuLoNay = lo.getSoLuong(); // Số lượng đã xuất từ lô này trong quá khứ
+                     
+                     // Tính số lượng sẽ đắp vào lô này
+                     // Không được đắp quá số lượng đã lấy ra từ lô đó
+                     int soLuongDapVao = Math.min(soLuongCanTra, soLuongDaLayTuLoNay);
+                     
+                     // Gọi DAO update cộng lại số lượng
+                     // Lưu ý: pass heSoQuyDoi = 1 vì soLuongDapVao đã là đơn vị cơ bản rồi
+                     LoSanPhamDAO.congSoLuong(maLo, soLuongDapVao, 1);
+                     
+                     // Trừ đi số lượng vừa xử lý
+                     soLuongCanTra -= soLuongDapVao;
+                 }
+                 
+                 // Xử lý ngoại lệ (Optional): Nếu vòng lặp hết mà soLuongCanTra vẫn > 0
+                 // (Trường hợp dữ liệu bị lệch), có thể cộng dồn vào lô mới nhất hoặc log lỗi.
+                 if (soLuongCanTra > 0 && !dsLoDaXuat.isEmpty()) {
+                     String maLoMoiNhat = dsLoDaXuat.get(0).getMaLoSanPham();
+                     LoSanPhamDAO.congSoLuong(maLoMoiNhat, soLuongCanTra, 1);
+                 }
             }
         }
 
-        // 3. Trừ điểm tích lũy khách hàng (Nếu có khách hàng thành viên)
-        // Logic: Điểm trừ = Tổng tiền hoàn / 1000
+        // 3. Trừ điểm tích lũy khách hàng
         if (pth.getHoaDon().getKhachHang() != null && 
             !pth.getHoaDon().getKhachHang().getMaKH().equalsIgnoreCase("KH-00000")) {
             
             String maKhachHang = pth.getHoaDon().getKhachHang().getMaKH();
-            int diemTru = (int) (pth.getTongTienHoanTra() / 1000);
-            
-            if (diemTru > 0) {
-                KhachHangDAO.truDiemTichLuy(diemTru, maKhachHang);
+            // Đảm bảo không chia cho 0 hoặc tính toán sai
+            if (pth.getTongTienHoanTra() >= 1000) {
+                int diemTru = (int) (pth.getTongTienHoanTra() / 1000);
+                if (diemTru > 0) {
+                    KhachHangDAO.truDiemTichLuy(diemTru, maKhachHang);
+                }
             }
         }
     }
