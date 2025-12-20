@@ -80,11 +80,11 @@ public class GiaoDienChinhGUI extends JFrame{
         getRootPane().putClientProperty(FlatClientProperties.FULL_WINDOW_CONTENT, true);
         //Notifications.getInstance().setJFrame(this);
         if(GiaoDienChinhGUI.getTk().isQuanLy()) {
-            GiaoDienChinhGUI.showFormByKey("dashboardquanli", DashBoardQuanLi::new);
+            GiaoDienChinhGUI.showFormByKey("dashboarQuanLi", DashBoardQuanLi::new);
         } else {
-            GiaoDienChinhGUI.showFormByKey("dashboardnhanvien", DashBoardQuanLi::new);
+            GiaoDienChinhGUI.showFormByKey("dashboardNhanVien", DashBoardNhanVien::new);
         } 
-
+        mainForm.setSelectedMenu(0, 0);
         // Phím tắt F1 mở hướng dẫn sử dụng và chọn menu tương ứng
         getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
         .put(KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0), "openHelp");
