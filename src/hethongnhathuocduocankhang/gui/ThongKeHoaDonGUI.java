@@ -191,8 +191,6 @@ public class ThongKeHoaDonGUI extends javax.swing.JPanel {
         });
         pLoc.add(btnThongKe);
 
-        btnLamMoi.setBackground(new java.awt.Color(25, 118, 210));
-        btnLamMoi.setForeground(new java.awt.Color(255, 255, 255));
         btnLamMoi.setText("Làm mới [F5]");
         pLoc.add(Box.createHorizontalStrut(10));
         btnLamMoi.addActionListener(new java.awt.event.ActionListener() {
@@ -222,12 +220,12 @@ public class ThongKeHoaDonGUI extends javax.swing.JPanel {
         ));
         jPanel2.setLayout(new java.awt.BorderLayout());
 
-        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(102, 102, 102));
         jLabel3.setText("Tổng số hóa đơn");
         jPanel2.add(jLabel3, java.awt.BorderLayout.PAGE_START);
 
-        lblTongHoaDon.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
+        lblTongHoaDon.setFont(new java.awt.Font("Segoe UI", 1, 22)); // NOI18N
         lblTongHoaDon.setForeground(new java.awt.Color(51, 51, 51));
         lblTongHoaDon.setText("0");
         jPanel2.add(lblTongHoaDon, java.awt.BorderLayout.CENTER);
@@ -242,12 +240,12 @@ public class ThongKeHoaDonGUI extends javax.swing.JPanel {
         ));
         jPanel6.setLayout(new java.awt.BorderLayout());
 
-        lblTongDoanhThu.setFont(new java.awt.Font("Segoe UI", 1, 20)); // NOI18N
+        lblTongDoanhThu.setFont(new java.awt.Font("Segoe UI", 1, 22)); // NOI18N
         lblTongDoanhThu.setForeground(new java.awt.Color(51, 51, 51));
         lblTongDoanhThu.setText("0 ₫");
         jPanel6.add(lblTongDoanhThu, java.awt.BorderLayout.CENTER);
 
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(102, 102, 102));
         jLabel2.setText("Tổng doanh thu");
         jPanel6.add(jLabel2, java.awt.BorderLayout.PAGE_START);

@@ -946,10 +946,8 @@ public class DashBoardQuanLi extends javax.swing.JPanel {
 
         jPanel1.add(jPanel2, java.awt.BorderLayout.LINE_END);
 
-        jPanel3.setBackground(new java.awt.Color(245, 245, 245));
         jPanel3.setLayout(new java.awt.BorderLayout());
 
-        jPanel4.setBackground(new java.awt.Color(245, 245, 245));
         jPanel4.setPreferredSize(new java.awt.Dimension(220, 220));
         jPanel4.setLayout(new java.awt.GridBagLayout());
 
@@ -962,7 +960,6 @@ public class DashBoardQuanLi extends javax.swing.JPanel {
         jPanel7.setPreferredSize(new java.awt.Dimension(200, 220));
         jPanel7.setLayout(new javax.swing.BoxLayout(jPanel7, javax.swing.BoxLayout.Y_AXIS));
 
-        jPanel8.setBackground(new java.awt.Color(245, 245, 245));
         jPanel8.setForeground(new java.awt.Color(245, 245, 245));
         jPanel8.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
@@ -979,7 +976,6 @@ public class DashBoardQuanLi extends javax.swing.JPanel {
 
         jPanel7.add(jPanel8);
 
-        jPanel9.setBackground(new java.awt.Color(245, 245, 245));
         jPanel9.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
@@ -993,7 +989,6 @@ public class DashBoardQuanLi extends javax.swing.JPanel {
 
         jPanel7.add(jPanel9);
 
-        jPanel11.setBackground(new java.awt.Color(245, 245, 245));
         jPanel11.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
         jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
@@ -1007,7 +1002,6 @@ public class DashBoardQuanLi extends javax.swing.JPanel {
 
         jPanel7.add(jPanel11);
 
-        jPanel12.setBackground(new java.awt.Color(245, 245, 245));
         jPanel12.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
         jLabel6.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
@@ -1027,7 +1021,6 @@ public class DashBoardQuanLi extends javax.swing.JPanel {
         jPanel15.setPreferredSize(new java.awt.Dimension(240, 0));
         jPanel15.setLayout(new javax.swing.BoxLayout(jPanel15, javax.swing.BoxLayout.Y_AXIS));
 
-        jPanel10.setBackground(new java.awt.Color(245, 245, 245));
         jPanel10.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
@@ -1043,7 +1036,6 @@ public class DashBoardQuanLi extends javax.swing.JPanel {
 
         jPanel15.add(jPanel10);
 
-        jPanel13.setBackground(new java.awt.Color(245, 245, 245));
         jPanel13.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
         jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
@@ -1057,7 +1049,6 @@ public class DashBoardQuanLi extends javax.swing.JPanel {
 
         jPanel15.add(jPanel13);
 
-        jPanel14.setBackground(new java.awt.Color(245, 245, 245));
         jPanel14.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
         jLabel8.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
@@ -1071,7 +1062,6 @@ public class DashBoardQuanLi extends javax.swing.JPanel {
 
         jPanel15.add(jPanel14);
 
-        jPanel16.setBackground(new java.awt.Color(245, 245, 245));
         jPanel16.setPreferredSize(new java.awt.Dimension(19, 32));
         jPanel16.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT));
 
@@ -1082,7 +1072,6 @@ public class DashBoardQuanLi extends javax.swing.JPanel {
 
         jPanel3.add(jPanel15, java.awt.BorderLayout.LINE_END);
 
-        jPanel18.setBackground(new java.awt.Color(245, 245, 245));
         jPanel18.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 10, 5));
 
         jLabel10.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N

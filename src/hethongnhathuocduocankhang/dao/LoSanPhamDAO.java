@@ -25,7 +25,7 @@ public class LoSanPhamDAO {
         ArrayList<LoSanPham> dsLSP = new ArrayList<>();
         try {
             Connection con = ConnectDB.getConnection();
-            String sql = "SELECT * FROM LoSanPham WHERE maSP = ? AND ngayHetHan > GETDATE() ORDER BY NgayHetHan ASC";
+            String sql = "SELECT * FROM LoSanPham WHERE maSP = ? AND ngayHetHan > GETDATE() AND soLuong > 0 ORDER BY NgayHetHan ASC";
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, maSP);
             ResultSet rs = ps.executeQuery();

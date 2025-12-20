@@ -37,6 +37,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -220,19 +222,35 @@ public class BanHangBUS {
             if(tongTien > tienKhachDua) {
                 throw new Exception("Tiền khách đưa phải lớn hơn hoặc bằng tổng tiền");
             }
+            Map<String, Integer> tongYeuCauTheoSP = new HashMap<>();
+
             for (int i = 0; i < tblCTHD.getRowCount(); i++) {
                 String maSP = tblCTHD.getValueAt(i, 8).toString();
+                String maDVT = tblCTHD.getValueAt(i, 7).toString();
+
+                DonViTinh dvt = DonViTinhDAO.getDonViTinhTheoMaDVT(maDVT);
+                int heSoQuyDoi = dvt.getHeSoQuyDoi();
+                int soLuongYeuCau = Integer.parseInt(tblCTHD.getValueAt(i, 4).toString()) * heSoQuyDoi;
+
+                // cộng dồn số lượng nếu trùng mã sản phẩm
+                tongYeuCauTheoSP.merge(maSP, soLuongYeuCau, Integer::sum);
+            }
+
+            for (Map.Entry<String, Integer> entry : tongYeuCauTheoSP.entrySet()) {
+                String maSP = entry.getKey();
+                int tongYeuCau = entry.getValue();
+
                 int tongTon = LoSanPhamDAO.dsLoTheoMaSanPham(maSP)
                     .stream()
                     .mapToInt(LoSanPham::getSoLuong)
-                    .sum();;
-                int soLuongYeuCau = Integer.parseInt(tblCTHD.getValueAt(i, 4).toString());
-                if (tongTon < soLuongYeuCau) {
-                    throw new Exception("Không đủ hàng cho sản phẩm: " + maSP);
+                    .sum();
+
+                if (tongYeuCau > tongTon) {
+                    throw new Exception("Không đủ hàng cho sản phẩm " + maSP 
+                        + " (Yêu cầu: " + tongYeuCau + ", Tồn: " + tongTon + ")");
                 }
             }
 
-            
             
             // Lấy mã hóa đơn mới nhất
             HoaDon hdMoiNhat = HoaDonDAO.getHoaDonMoiNhatTrongNgay();
