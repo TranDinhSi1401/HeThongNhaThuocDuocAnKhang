@@ -1502,7 +1502,7 @@ INSERT INTO LichSuCaLam (maNV, maCa, ngayLamViec, thoiGianVaoCa, thoiGianRaCa, g
 GO
 
 -- ===================================================================
--- 13. Bảng HoaDon (Đã cập nhật theo cấu trúc mới: Bỏ cột TrangThai)
+-- 13. Bảng HoaDon (Đã cập nhật: Dữ liệu đến ngày 21/12/2025)
 -- ===================================================================
 SET NOCOUNT ON;
 GO
@@ -1517,7 +1517,6 @@ DECLARE @maNV_T6 NVARCHAR(7);
 DECLARE @maKH_T6 NVARCHAR(8);
 DECLARE @ngayLap_T6 DATETIME2;
 DECLARE @chuyenKhoan_T6 BIT;
--- Đã xóa @trangThai_T6
 DECLARE @tongTien_T6 DECIMAL(18, 2);
 DECLARE @day_T6 INT, @hour_T6 INT, @minute_T6 INT;
 DECLARE @kh_id_T6 INT, @nv_id_T6 INT;
@@ -1541,10 +1540,8 @@ BEGIN
     END
 
     SET @chuyenKhoan_T6 = CASE WHEN @i_T6 % 5 = 0 THEN 1 ELSE 0 END;
-    -- Đã xóa dòng SET @trangThai_T6
     SET @tongTien_T6 = ROUND((50000 + ((@i_T6 * 317) % 1000000)), -3);
     
-    -- Insert không có cột trangThai
     INSERT INTO HoaDon (maHoaDon, maNV, ngayLapHoaDon, maKH, chuyenKhoan, tongTien)
     VALUES (@maHoaDon_T6, @maNV_T6, @ngayLap_T6, @maKH_T6, @chuyenKhoan_T6, @tongTien_T6);
 
@@ -1754,8 +1751,6 @@ BEGIN
 
     SET @chuyenKhoan_T11 = CASE WHEN @i_T11 % 5 = 0 THEN 1 ELSE 0 END;
     
-    -- Đã xóa logic IF @day_T11 <= 13 liên quan đến status
-
     SET @tongTien_T11 = ROUND((50000 + ((@i_T11 * 317) % 1000000)), -3);
     
     INSERT INTO HoaDon (maHoaDon, maNV, ngayLapHoaDon, maKH, chuyenKhoan, tongTien)
@@ -1766,7 +1761,7 @@ END;
 GO
 
 -- ===================================================================
--- 7. DỮ LIỆU THÁNG 12, 2025 (100 HÓA ĐƠN)
+-- 7. DỮ LIỆU THÁNG 12, 2025 (CHỈ ĐẾN NGÀY 21/12)
 -- ===================================================================
 GO
 DECLARE @i_T12 INT = 1;
@@ -1779,9 +1774,12 @@ DECLARE @tongTien_T12 DECIMAL(18, 2);
 DECLARE @day_T12 INT, @hour_T12 INT, @minute_T12 INT;
 DECLARE @kh_id_T12 INT, @nv_id_T12 INT;
 
+-- Vẫn chạy 100 vòng lặp để đủ số lượng hóa đơn, nhưng ngày bị giới hạn
 WHILE (@i_T12 <= 100)
 BEGIN
-    SET @day_T12 = ((@i_T12 - 1) % 31) + 1;
+    -- SỬA ĐỔI QUAN TRỌNG: % 21 để ngày chỉ chạy từ 1 đến 21
+    SET @day_T12 = ((@i_T12 - 1) % 21) + 1;
+    
     SET @hour_T12 = 7 + ((@i_T12 - 1) % 15);
     SET @minute_T12 = @i_T12 % 60;
     SET @ngayLap_T12 = DATETIMEFROMPARTS(2025, 12, @day_T12, @hour_T12, @minute_T12, 0, 0);
@@ -1808,7 +1806,7 @@ END;
 GO
 
 -- ===================================================================
--- 14. TẠO CHI TIẾT HÓA ĐƠN (CHO 700 HÓA ĐƠN MỚI)
+-- 14. TẠO CHI TIẾT HÓA ĐƠN
 -- ===================================================================
 
 BEGIN TRANSACTION;
@@ -1820,7 +1818,7 @@ BEGIN
     DECLARE CTHD_Cursor CURSOR FAST_FORWARD FOR
     SELECT maHoaDon, ngayLapHoaDon
     FROM HoaDon
-    ORDER BY ngayLapHoaDon, maHoaDon; -- Sắp xếp cố định
+    ORDER BY ngayLapHoaDon, maHoaDon; 
 
     IF OBJECT_ID('tempdb..#TempDVT') IS NOT NULL
         DROP TABLE #TempDVT;

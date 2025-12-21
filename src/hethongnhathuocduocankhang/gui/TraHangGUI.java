@@ -22,9 +22,12 @@ import hethongnhathuocduocankhang.entity.NhanVien;
 import hethongnhathuocduocankhang.entity.PhieuTraHang;
 import hethongnhathuocduocankhang.entity.TinhTrangSanPhamEnum;
 import hethongnhathuocduocankhang.entity.TruongHopDoiTraEnum;
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.Frame;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -38,16 +41,21 @@ import java.util.List;
 import javax.swing.AbstractAction;
 import javax.swing.AbstractButton;
 import javax.swing.ActionMap;
+import javax.swing.BorderFactory;
 import javax.swing.DefaultCellEditor;
 import javax.swing.InputMap;
+import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableColumn;
@@ -216,7 +224,7 @@ public class TraHangGUI extends javax.swing.JPanel {
             }
         });
         txtNhapMaHoaDon.setText("[F3]");
-        txtNhapMaHoaDon.setPreferredSize(new java.awt.Dimension(400, 22));
+        txtNhapMaHoaDon.setPreferredSize(new java.awt.Dimension(400, 30));
         txtNhapMaHoaDon.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 txtNhapMaHoaDonFocusGained(evt);
@@ -360,7 +368,7 @@ public class TraHangGUI extends javax.swing.JPanel {
 
         txtTenKhachHang.setEditable(false);
         txtTenKhachHang.setEnabled(false);
-        txtTenKhachHang.setPreferredSize(new java.awt.Dimension(150, 22));
+        txtTenKhachHang.setPreferredSize(new java.awt.Dimension(150, 25));
         txtTenKhachHang.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtTenKhachHangActionPerformed(evt);
@@ -375,7 +383,7 @@ public class TraHangGUI extends javax.swing.JPanel {
 
         txtDiemTichLuy.setEditable(false);
         txtDiemTichLuy.setEnabled(false);
-        txtDiemTichLuy.setPreferredSize(new java.awt.Dimension(100, 22));
+        txtDiemTichLuy.setPreferredSize(new java.awt.Dimension(100, 25));
         txtDiemTichLuy.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtDiemTichLuyActionPerformed(evt);
@@ -388,7 +396,7 @@ public class TraHangGUI extends javax.swing.JPanel {
 
         txtDiemTru.setEditable(false);
         txtDiemTru.setEnabled(false);
-        txtDiemTru.setPreferredSize(new java.awt.Dimension(100, 22));
+        txtDiemTru.setPreferredSize(new java.awt.Dimension(100, 25));
         txtDiemTru.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtDiemTruActionPerformed(evt);
@@ -401,7 +409,7 @@ public class TraHangGUI extends javax.swing.JPanel {
         jPanel31.add(jLabel5);
 
         txtTongThanhTien.setEditable(false);
-        txtTongThanhTien.setPreferredSize(new java.awt.Dimension(160, 22));
+        txtTongThanhTien.setPreferredSize(new java.awt.Dimension(160, 25));
         jPanel31.add(txtTongThanhTien);
 
         jPanel1.add(jPanel31);
@@ -452,7 +460,8 @@ public class TraHangGUI extends javax.swing.JPanel {
         jPanel7.add(jLabel1);
 
         txtMaPhieuTraHang.setEditable(false);
-        txtMaPhieuTraHang.setPreferredSize(new java.awt.Dimension(250, 22));
+        txtMaPhieuTraHang.setMinimumSize(new java.awt.Dimension(64, 25));
+        txtMaPhieuTraHang.setPreferredSize(new java.awt.Dimension(250, 25));
         jPanel7.add(txtMaPhieuTraHang);
 
         jPanel6.add(jPanel7);
@@ -462,7 +471,7 @@ public class TraHangGUI extends javax.swing.JPanel {
         jPanel15.add(jLabel2);
 
         jTextField3.setEditable(false);
-        jTextField3.setPreferredSize(new java.awt.Dimension(250, 22));
+        jTextField3.setPreferredSize(new java.awt.Dimension(250, 25));
         jTextField3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField3ActionPerformed(evt);
@@ -477,7 +486,7 @@ public class TraHangGUI extends javax.swing.JPanel {
         jPanel18.add(jLabel3);
 
         jTextField5.setEditable(false);
-        jTextField5.setPreferredSize(new java.awt.Dimension(250, 22));
+        jTextField5.setPreferredSize(new java.awt.Dimension(250, 25));
         jPanel18.add(jTextField5);
 
         jPanel6.add(jPanel18);
@@ -487,7 +496,7 @@ public class TraHangGUI extends javax.swing.JPanel {
         jPanel19.add(jLabel4);
 
         txtMaHoaDonTrongPhieuTraHang.setEditable(false);
-        txtMaHoaDonTrongPhieuTraHang.setPreferredSize(new java.awt.Dimension(250, 22));
+        txtMaHoaDonTrongPhieuTraHang.setPreferredSize(new java.awt.Dimension(250, 25));
         txtMaHoaDonTrongPhieuTraHang.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtMaHoaDonTrongPhieuTraHangActionPerformed(evt);
@@ -1132,59 +1141,106 @@ int chon = JOptionPane.showConfirmDialog(null, "Xác nhận tạo phiếu trả?
     }
 
     private void taoPhieuTraHang(PhieuTraHang pth, List<ChiTietPhieuTraHang> list) {
+        int WIDTH = 171;
+        String LINE = "=".repeat(WIDTH);
+        String SEPARATOR = "-".repeat(WIDTH);
         StringBuilder sb = new StringBuilder();
-        // init header
-        sb.append("====================================================================\n");
-        sb.append("                         Phiếu Trả Hàng\n");
-        sb.append("====================================================================\n");
-        // init thong tin co ban
-        sb.append(String.format("Mã phiếu trả hàng  : %s \n", pth.getMaPhieuTraHang()));
-        sb.append(String.format("Tên nhân viên      : %s \n", pth.getNhanVien().getTen()));
-        sb.append(String.format("Mã hóa đơn         : %s \n", pth.getHoaDon().getMaHoaDon()));
-        sb.append(String.format("Ngày lập phiếu     : %s \n", pth.getNgayLapPhieuTraHang()));
-        sb.append("--------------------------------------------------------------------\n");
-        // init chi tiet tra hang
-        sb.append(String.format("%-4s %-50s %-4s %-15s %-10s %-15s %-15s %-15s %-35s %-20s %-15s \n",
-                "STT", "Tên sản phẩm", "SL", "Đơn giá", "ĐVT",
-                "Giảm giá", "Thành tiền", "Tình trạng SP", "Lý do trả",
-                "Phần trăm hoàn trả", "Thành tiền trả"));
-        sb.append("--------------------------------------------------------------------\n");
+        DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+        DecimalFormat df = new DecimalFormat("#,###");
 
-        for (int i = 0; i < list.size(); i++) {
-            String thanhTien = dinhDangTien(list.get(i).getSoLuong() * list.get(i).getChiTietHoaDon().getDonGia()
-                    - list.get(i).getChiTietHoaDon().getGiamGia());
-            String donGia = dinhDangTien(list.get(i).getChiTietHoaDon().getDonGia());
-            String giamGia = dinhDangTien(list.get(i).getChiTietHoaDon().getGiamGia());
-            String tinhTrangSP = (list.get(i).getTinhTrangSanPham() == TinhTrangSanPhamEnum.HANG_NGUYEN_VEN)
-                    ? "Nguyên vẹn"
-                    : "Đã sử dụng";
-            String phanTramHoanTra = list.get(i).getGiaTriHoanTra();
-            String thanhTienTra = dinhDangTien(list.get(i).getThanhTienHoanTra());
-            String donViTinh = list.get(i).getChiTietHoaDon().getDonViTinh().getTenDonVi();
+        // ===== Header =====
+        sb.append(LINE).append("\n");
+        sb.append(center("PHIẾU TRẢ HÀNG", WIDTH)).append("\n");
+        sb.append(LINE).append("\n");
+        sb.append(String.format("Mã phiếu trả hàng : %s\n", pth.getMaPhieuTraHang()));
+        sb.append(String.format("Mã hóa đơn        : %s\n", pth.getHoaDon().getMaHoaDon()));
+        sb.append(String.format("Nhân viên lập     : %s\n", pth.getNhanVien().getTen()));
+        sb.append(String.format("Ngày lập phiếu    : %s\n", pth.getNgayLapPhieuTraHang().format(fmt)));
+        sb.append("\n").append(SEPARATOR).append("\n");
 
-            sb.append(String.format("%-4d %-50s %-4d %-15s %-10s %-15s %-15s %-15s %-35s %-20s %-15s \n",
-                    i + 1, list.get(i).getChiTietHoaDon().getDonViTinh().getSanPham().getTen(),
-                    list.get(i).getSoLuong(), donGia, donViTinh,
-                    giamGia, thanhTien, tinhTrangSP, list.get(i).getTruongHopDoiTra().getTruongHopDoiTra(),
-                    phanTramHoanTra, thanhTienTra));
-            sb.append("--------------------------------------------------------------------\n");
+        // ===== Tiêu đề bảng =====
+        sb.append(String.format(
+            "%-4s %-45s %-5s %-10s %-10s %-12s %-15s %-15s %-25s %-15s %-15s\n",
+            "STT", "Sản phẩm", "SL", "ĐVT", "Đơn giá", "Giảm giá", "Thành tiền", 
+            "Tình trạng", "Lý do trả", "% Hoàn trả", "Tiền trả"
+        ));
+        sb.append(SEPARATOR).append("\n");
+
+        // ===== Dòng chi tiết =====
+        int stt = 1;
+        double tongTienTra = 0;
+        for (ChiTietPhieuTraHang ct : list) {
+            String tenSP = ct.getChiTietHoaDon().getDonViTinh().getSanPham().getTen();
+            if (tenSP.length() > 45) tenSP = tenSP.substring(0, 45);
+
+            String donViTinh = ct.getChiTietHoaDon().getDonViTinh().getTenDonVi();
+            String tinhTrangSP = (ct.getTinhTrangSanPham() == TinhTrangSanPhamEnum.HANG_NGUYEN_VEN)
+                    ? "Nguyên vẹn" : "Đã sử dụng";
+
+            String lyDo = ct.getTruongHopDoiTra().getTruongHopDoiTra();
+            if (lyDo.length() > 25) lyDo = lyDo.substring(0, 25);
+
+            String phanTramHoanTra = ct.getGiaTriHoanTra();
+            double thanhTienTra = ct.getThanhTienHoanTra();
+            tongTienTra += thanhTienTra;
+
+            sb.append(String.format(
+                "%-4d %-45s %-5d %-10s %-10s %-12s %-15s %-15s %-25s %-15s %-15s\n",
+                stt++, tenSP, ct.getSoLuong(), donViTinh,
+                df.format(ct.getChiTietHoaDon().getDonGia()),
+                df.format(ct.getChiTietHoaDon().getGiamGia()),
+                df.format(ct.getSoLuong() * ct.getChiTietHoaDon().getDonGia() - ct.getChiTietHoaDon().getGiamGia()),
+                tinhTrangSP, lyDo, phanTramHoanTra, df.format(thanhTienTra)
+            ));
         }
 
-        // init footer
-        sb.append(String.format("Tổng tiền hoàn trả : %s \n", dinhDangTien(pth.getTongTienHoanTra())));
-        sb.append("====================================================================\n");
-        sb.append("         CẢM ƠN QUÝ KHÁCH, HẸN GẶP LẠI!\n");
-        sb.append("====================================================================\n");
+        sb.append(SEPARATOR).append("\n");
 
+        // ===== Footer =====
+        String tongCongStr = "TỔNG TIỀN HOÀN TRẢ: " + df.format(tongTienTra) + " VND";
+        sb.append(alignRight(tongCongStr, WIDTH)).append("\n");
+        sb.append(LINE).append("\n");
+        sb.append(center("CẢM ƠN QUÝ KHÁCH, HẸN GẶP LẠI!", WIDTH)).append("\n");
+        sb.append(LINE).append("\n");
+
+        // ===== Hiển thị trong JDialog =====
+        JDialog dialog = new JDialog((Frame) null, "Phiếu trả hàng " + pth.getMaPhieuTraHang(), true);
+        dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        dialog.setSize(1220, 600);
+        dialog.setLocationRelativeTo(null);
+        dialog.setResizable(true);
+
+        // Nội dung hiển thị
         JTextArea textArea = new JTextArea(sb.toString());
         textArea.setEditable(false);
-        textArea.setFont(new Font("Monospaced", Font.PLAIN, 13));
-        JScrollPane scroll = new JScrollPane(textArea);
-        scroll.setPreferredSize(new Dimension(600, 500));
-        JOptionPane.showMessageDialog(null, scroll, "Phiếu trả hàng" + pth.getMaPhieuTraHang(),
-                JOptionPane.INFORMATION_MESSAGE);
+        textArea.setFont(new Font("Monospaced", Font.PLAIN, 11)); // Font nhỏ gọn
+        textArea.setCaretPosition(0); // Cuộn lên đầu khi mở
+
+        // Cuộn cả dọc và ngang
+        JScrollPane scrollPane = new JScrollPane(textArea);
+        scrollPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+        scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+
+
+        dialog.setLayout(new BorderLayout(10, 10));
+        dialog.add(scrollPane, BorderLayout.CENTER);
+        dialog.setVisible(true);
     }
 
+
+    private static String center(String text, int width) {
+        int padSize = (width - text.length()) / 2;
+        return " ".repeat(Math.max(0, padSize)) + text;
+    }
+
+    private static String alignRight(String text, int width) {
+        int padding = width - text.length();
+        if (padding < 0) padding = 0;
+        return " ".repeat(padding) + text;
+    }
+
+    
     private void luuPhieuVaoCSDL(PhieuTraHang pth, List<ChiTietPhieuTraHang> list) {
         PhieuTraHangDAO.themPhieuTra(pth);
         for (ChiTietPhieuTraHang ctpth : list) {
