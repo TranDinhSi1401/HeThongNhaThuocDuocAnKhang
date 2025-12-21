@@ -431,7 +431,12 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
             new String [] {
                 "Mã lô", "Tên sản phẩm", "Thời gian", "Loại thao tác", "Số lượng sau", "Ghi chú", "Người thực hiện"
             }
-        ));
+        ) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false; // Chặn chỉnh sửa tất cả các ô
+            }
+        });
         jScrollPane4.setViewportView(tblLichSuHoatDong);
 
         jLabel12.setText("Lịch sử hoạt động");
@@ -893,7 +898,12 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
             new String [] {
                 "Mã sản phẩm", "Tên sản phẩm", "Mã lô", "Đơn vị tính", "Số lượng"
             }
-        ));
+        ) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false; // Chặn chỉnh sửa tất cả các ô
+            }
+        });
         jScrollPane1.setViewportView(tblLoSanPham);
 
         btnHuyLo.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
@@ -1396,8 +1406,6 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
         if (currentSearchWorker != null && !currentSearchWorker.isDone()) {
             currentSearchWorker.cancel(true);
         }
-        DefaultTableModel tbl = (DefaultTableModel) tblKetQua.getModel();
-        tbl.setRowCount(0);
 
         String noiDung = txtMaLoSP.getText().isBlank() ? null : txtMaLoSP.getText().trim();
         String trangThai = cmbTrangThai.getSelectedItem().toString().trim();
@@ -1410,6 +1418,10 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
                     JOptionPane.INFORMATION_MESSAGE);
             return;
         }
+
+        // Chỉ xóa bảng khi có kết quả mới
+        DefaultTableModel tbl = (DefaultTableModel) tblKetQua.getModel();
+        tbl.setRowCount(0);
 
         currentSearchWorker = new SwingWorker<Void, Object[]>() {
             @Override
