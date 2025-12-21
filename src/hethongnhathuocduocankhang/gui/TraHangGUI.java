@@ -194,7 +194,7 @@ public class TraHangGUI extends javax.swing.JPanel {
                 String futureString = sb.toString();
 
                 // 2. Xử lý độ dài: Nếu vượt quá 14 ký tự
-                if (futureString.length() > 14) {
+                if (futureString.length() > 20) {
                     // Nếu người dùng đang PASTE (chuỗi nhập vào dài > 1) -> Tự động cắt bớt cho vừa
                     if (upperStr.length() > 1) {
                         int spaceLeft = 14 - getLength();
@@ -604,7 +604,7 @@ public class TraHangGUI extends javax.swing.JPanel {
     private void txtNhapMaHoaDonKeyPressed(java.awt.event.KeyEvent evt) {// GEN-FIRST:event_txtNhapMaHoaDonKeyPressed
         // TODO add your handling code here:
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-    String maHoaDon = txtNhapMaHoaDon.getText();
+            String maHoaDon = txtNhapMaHoaDon.getText().trim();
             resetInfoPanels(); // GUI reset
             
             if (maHoaDon != null && !maHoaDon.trim().isEmpty()) {
@@ -614,7 +614,7 @@ public class TraHangGUI extends javax.swing.JPanel {
 
                     // Nếu không có exception thì thêm hóa đơn vào GUI
                     addHoaDon(maHoaDon, hoaDon); 
-
+                    txtNhapMaHoaDon.setText("");
                 } catch (Exception e) {
                     JOptionPane.showMessageDialog(null, e.getMessage());
                 }
@@ -719,7 +719,7 @@ int chon = JOptionPane.showConfirmDialog(null, "Xác nhận tạo phiếu trả?
     }// GEN-LAST:event_btnTaoPhieuActionPerformed
 
     private void btnTimKiemActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnTimKiemActionPerformed
-    String maHoaDon = txtNhapMaHoaDon.getText();
+    String maHoaDon = txtNhapMaHoaDon.getText().trim();
             resetInfoPanels(); // GUI reset
 
             if (maHoaDon != null && !maHoaDon.trim().isEmpty()) {
