@@ -61,7 +61,7 @@ public class QuanLyLoBUS {
 
         if (kq < 0) {
             return "Hết hạn";
-        } else if (kq >= 0 && kq <= 30) {
+        } else if (kq >= 0 && kq <180) {
             return "Sắp hết hạn";
         } else {
             return "Còn hạn";

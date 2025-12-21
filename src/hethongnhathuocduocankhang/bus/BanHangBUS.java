@@ -24,13 +24,7 @@ import hethongnhathuocduocankhang.entity.NhanVien;
 import hethongnhathuocduocankhang.entity.SanPham;
 import hethongnhathuocduocankhang.entity.TaiKhoan;
 import hethongnhathuocduocankhang.gui.GiaoDienChinhGUI;
-import java.awt.Color;
-import java.awt.Cursor;
-import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
@@ -39,13 +33,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import javax.swing.BorderFactory;
-import javax.swing.JButton;
 import javax.swing.JDialog;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
@@ -59,6 +48,69 @@ import javax.swing.table.DefaultTableModel;
 public class BanHangBUS {
     private static final String LINE = "=".repeat(120);
     private static final String SEPARATOR = "-".repeat(120);
+    
+    /**
+     * Lấy integer từ giá trị bảng, loại bỏ dấu phân cách
+     * Ví dụ: "4.000" → 4, "50,000" → 50000
+     */
+    private static int parseIntFromTable(Object value) {
+        if (value == null) return 0;
+        String str = value.toString()
+            .replaceAll("[^0-9-]", "")  // Loại bỏ mọi ký tự không phải số hoặc dấu âm
+            .trim();
+        if (str.isEmpty()) return 0;
+        return Integer.parseInt(str);
+    }
+    
+    /**
+     * Lấy double từ giá trị bảng, loại bỏ dấu phân cách và ký tự tệ tệ
+     * Ví dụ: "50.000 ₫" → 50000.0, "10.5%" → 10.5
+     * Logic: loại bỏ mọi ký tự không phải số, sau đó parse
+     */
+    private static double parseDoubleFromTable(Object value) {
+        if (value == null) return 0.0;
+        String str = value.toString()
+            .replaceAll("[^0-9.]", "")  // Chỉ giữ số và dấu chấm
+            .trim();
+        if (str.isEmpty()) return 0.0;
+        
+        // Xử lý dấu chấm: loại bỏ tất cả dấu chấm ngoại trừ dấu chấm cuối (nếu có)
+        // Pattern: nếu có dấu chấm ở vị trí thứ n từ cuối với đúng 3 chữ số, đó là dấu phân cách
+        int countDot = (int) str.chars().filter(c -> c == '.').count();
+        
+        if (countDot == 0) {
+            // Không có dấu chấm → là số nguyên
+            return Double.parseDouble(str);
+        } else if (countDot == 1) {
+            // Một dấu chấm: có thể là dấu thập phân hoặc dấu phân cách
+            int dotIndex = str.indexOf('.');
+            int digitsAfterDot = str.length() - dotIndex - 1;
+            
+            if (digitsAfterDot == 3) {
+                // 3 chữ số sau dấu chấm → là dấu phân cách, loại bỏ nó
+                str = str.replace(".", "");
+            }
+            // Còn lại là dấu thập phân, giữ nguyên
+        } else {
+            // Nhiều dấu chấm: đó là dấu phân cách hàng nghìn, loại bỏ tất cả trừ dấu chấm cuối
+            // Ví dụ: "1.234.567,89" → giữ dấu chấm cuối nếu 2 chữ số sau, nếu không loại bỏ tất cả
+            int lastDotIndex = str.lastIndexOf('.');
+            int digitsAfterLastDot = str.length() - lastDotIndex - 1;
+            
+            if (digitsAfterLastDot == 3) {
+                // Dấu chấm cuối là dấu phân cách → loại bỏ tất cả dấu chấm
+                str = str.replaceAll("\\.", "");
+            } else if (digitsAfterLastDot == 2 || digitsAfterLastDot == 1) {
+                // Dấu chấm cuối là dấu thập phân → loại bỏ các dấu chấm khác
+                str = str.substring(0, lastDotIndex).replaceAll("\\.", "") + str.substring(lastDotIndex);
+            } else {
+                // Loại bỏ tất cả dấu chấm
+                str = str.replaceAll("\\.", "");
+            }
+        }
+        
+        return Double.parseDouble(str);
+    }
     
     public String chuanHoaMaSP(String input) {
         if (input == null) return "";
@@ -112,7 +164,8 @@ public class BanHangBUS {
         // Nếu trùng sản phẩm
         for(int i = 0; i < tblCTHD.getRowCount(); i++) {
             if(dvtMacDinh.getMaDonViTinh().equalsIgnoreCase(tblCTHD.getValueAt(i, 7).toString())) {
-                int soLuong = Integer.parseInt(tblCTHD.getValueAt(i, 4).toString());
+                int soLuong = parseIntFromTable(tblCTHD.getValueAt(i, 4));
+                System.out.println("Giá trị tại dòng " + i + ", cột 4: [" + tblCTHD.getValueAt(i, 4) + "]");
                 soLuong+=1;
                 tblCTHD.setValueAt(soLuong, i, 4);
                 return null;
@@ -230,7 +283,7 @@ public class BanHangBUS {
 
                 DonViTinh dvt = DonViTinhDAO.getDonViTinhTheoMaDVT(maDVT);
                 int heSoQuyDoi = dvt.getHeSoQuyDoi();
-                int soLuongYeuCau = Integer.parseInt(tblCTHD.getValueAt(i, 4).toString()) * heSoQuyDoi;
+                int soLuongYeuCau = parseIntFromTable(tblCTHD.getValueAt(i, 4)) * heSoQuyDoi;
 
                 // cộng dồn số lượng nếu trùng mã sản phẩm
                 tongYeuCauTheoSP.merge(maSP, soLuongYeuCau, Integer::sum);
@@ -280,10 +333,10 @@ public class BanHangBUS {
             for(int i = 0; i < model.getRowCount(); i++) {
                String maDVT = String.valueOf(model.getValueAt(i, 7));
                int heSoQuyDoi = DonViTinhDAO.getDonViTinhTheoMaDVT(maDVT).getHeSoQuyDoi();
-               int soLuong = Integer.parseInt(model.getValueAt(i, 4).toString());
-               double donGia = Double.parseDouble(model.getValueAt(i, 3).toString());
-               double giamGia = Double.parseDouble(model.getValueAt(i, 5).toString());
-               double thanhTien = Double.parseDouble(model.getValueAt(i, 6).toString());
+               int soLuong = parseIntFromTable(model.getValueAt(i, 4));
+               double donGia = parseDoubleFromTable(model.getValueAt(i, 3));
+               double giamGia = parseDoubleFromTable(model.getValueAt(i, 5));
+               double thanhTien = parseDoubleFromTable(model.getValueAt(i, 6));
 
                String maSP = (String) model.getValueAt(i, 8);
 
