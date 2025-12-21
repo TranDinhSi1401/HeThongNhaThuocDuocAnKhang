@@ -130,13 +130,13 @@ public class BanHangPane extends javax.swing.JPanel {
                 }
 
                 String tenDVT = dvtObj.toString();
-                int soLuong = Integer.parseInt(slObj.toString());
+                int soLuong = Integer.parseInt(slObj.toString().replaceAll("[^0-9]", ""));
                 String masp = maSPObj.toString();
 
                 for(int i = 0; i < tblCTHD.getRowCount(); i++) {
                     if(i == row) continue;    
                     if(model.getValueAt(i, 2).equals(dvtObj) && model.getValueAt(i, 8).equals(maSPObj)) {
-                        int soLuongGop = Integer.parseInt(model.getValueAt(i, 4).toString()) + soLuong;
+                        int soLuongGop = Integer.parseInt(model.getValueAt(i, 4).toString().replaceAll("[^0-9]", "")) + soLuong;
                         isMerging = true;
                         
                         model.setValueAt(soLuongGop, i, 4);
@@ -874,7 +874,16 @@ public class BanHangPane extends javax.swing.JPanel {
         int n = model.getRowCount();
         double tongTien = 0;
         for(int i = 0; i < n; i++) {
-            tongTien += Double.parseDouble(model.getValueAt(i, 6).toString());
+            Object value = model.getValueAt(i, 6);
+            String str = value.toString().replaceAll("[^0-9.]", "").trim();
+            if (!str.isEmpty()) {
+                // Loại bỏ dấu phân cách hàng nghìn (3 chữ số sau dấu chấm cuối)
+                int lastDot = str.lastIndexOf('.');
+                if (lastDot != -1 && str.length() - lastDot - 1 == 3) {
+                    str = str.replace(".", "");
+                }
+                tongTien += Double.parseDouble(str);
+            }
         }
         NumberFormat vndFormat = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
         String tongTienStr = vndFormat.format(tongTien);
