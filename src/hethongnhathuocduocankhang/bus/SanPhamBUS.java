@@ -297,6 +297,24 @@ public class SanPhamBUS {
             return false;
         }
 
+        int max = form.getModelDVT().getRowCount();
+        boolean kq = false;
+
+        for (int i = 0; i < max; i++) {
+            Object value = form.getModelDVT().getValueAt(i, 4);
+
+            if (value != null && value.toString().equalsIgnoreCase("Có")) {
+                kq = true;
+                break; 
+            }
+        }
+
+        if (!kq) {
+            // Thông báo cho người dùng hoặc chặn lưu dữ liệu
+            JOptionPane.showMessageDialog(null, "Sản phẩm phải có ít nhất một đơn vị tính cơ bản!");
+            return false;
+        }
+
         // 6. Kiểm tra Tồn kho (Min > Max và định dạng số) (Yêu cầu mới)
         int tonToiThieu = 0;
         int tonToiDa = 0;
