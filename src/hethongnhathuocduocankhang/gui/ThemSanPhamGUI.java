@@ -347,21 +347,8 @@ public class ThemSanPhamGUI extends JDialog {
         btnHuy.addActionListener(e -> this.dispose());
 
         // --- Barcode ---
-        btnThemBarcode.addActionListener(e -> {
-            String code = txtInputBarcode.getText().trim();
-            if (code.isEmpty()) {
-                return;
-            }
-            for (int i = 0; i < modelBarcode.getRowCount(); i++) {
-                if (modelBarcode.getValueAt(i, 0).equals(code)) {
-                    JOptionPane.showMessageDialog(this, "Mã vạch đã tồn tại!");
-                    return;
-                }
-            }
-            modelBarcode.addRow(new Object[]{code});
-            txtInputBarcode.setText("");
-            txtInputBarcode.requestFocus();
-        });
+        txtInputBarcode.addActionListener(e -> xuLyThemMaVach());
+        btnThemBarcode.addActionListener(e -> xuLyThemMaVach());
 
         btnXoaBarcode.addActionListener(e -> {
             int row = tableBarcode.getSelectedRow();
@@ -392,6 +379,22 @@ public class ThemSanPhamGUI extends JDialog {
         btnTimKM.addActionListener(e -> bus.xuLyTimKM(this));
         btnThemKM.addActionListener(e -> bus.xuLyThemKM(this));
         btnXoaKM.addActionListener(e -> bus.xuLyXoaKM(this));
+    }
+
+    private void xuLyThemMaVach() {
+        String code = txtInputBarcode.getText().trim();
+        if (code.isEmpty()) {
+            return;
+        }
+        for (int i = 0; i < modelBarcode.getRowCount(); i++) {
+            if (modelBarcode.getValueAt(i, 0).equals(code)) {
+                JOptionPane.showMessageDialog(this, "Mã vạch đã tồn tại!");
+                return;
+            }
+        }
+        modelBarcode.addRow(new Object[]{code});
+        txtInputBarcode.setText("");
+        txtInputBarcode.requestFocus();
     }
 
     private void setupMoneyFormatting(JTextField txtField) {
@@ -448,6 +451,66 @@ public class ThemSanPhamGUI extends JDialog {
         button.setBorderPainted(false);
         button.setOpaque(true);
         button.setPreferredSize(new Dimension(button.getPreferredSize().width, 30));
+    }
+
+    public void batCheDoXemChiTiet() {
+        this.setTitle("Chi tiết sản phẩm");
+
+        // 1. Vô hiệu hóa Panel Thông tin chung
+        txtMaSanPham.setEditable(false);
+        txtTenSanPham.setEditable(false);
+        cmbLoaiSanPham.setEnabled(false);
+        txtThanhPhan.setEditable(false);
+        txtMoTa.setEditable(false);
+        txtTonToiThieu.setEditable(false);
+        txtTonToiDa.setEditable(false);
+
+        // 2. Vô hiệu hóa phần Barcode
+        txtInputBarcode.setEditable(false);
+        btnThemBarcode.setEnabled(false);
+        btnXoaBarcode.setEnabled(false);
+        tableBarcode.setEnabled(false);
+
+        // 3. Vô hiệu hóa Tab 1: Đơn vị tính
+        cboTenDonVi.setEnabled(false);
+        txtHeSoQuyDoi.setEditable(false);
+        txtGiaBanDonVi.setEditable(false);
+        chkDonViCoBan.setEnabled(false);
+        btnThemDVT.setEnabled(false);
+        btnXoaDVT.setEnabled(false);
+        tableDonViTinh.setEnabled(false);
+
+        // 4. Vô hiệu hóa Tab 2: Nhà cung cấp
+        txtTimNCC.setEditable(false);
+        btnTimNCC.setEnabled(false);
+        txtGiaNhap.setEditable(false);
+        btnThemNCC.setEnabled(false);
+        btnXoaNCC.setEnabled(false);
+        tableKQTimKiemNCC.setEnabled(false);
+        tableNCCChon.setEnabled(false);
+
+        // 5. Vô hiệu hóa Tab 3: Khuyến mãi
+        txtTimKM.setEditable(false);
+        btnTimKM.setEnabled(false);
+        btnThemKM.setEnabled(false);
+        btnXoaKM.setEnabled(false);
+        tableKQTimKiemKM.setEnabled(false);
+        tableKMChon.setEnabled(false);
+
+        // 6. Xử lý nút chức năng cuối form
+        btnHuy.setVisible(false); 
+
+        btnXacNhan.setText("Đóng"); 
+        btnXacNhan.setBackground(Color.GRAY); 
+        btnXacNhan.setForeground(Color.WHITE);
+
+        // Xóa hết các sự kiện cũ 
+        for (java.awt.event.ActionListener al : btnXacNhan.getActionListeners()) {
+            btnXacNhan.removeActionListener(al);
+        }
+
+        // Thêm sự kiện mới: Đóng form
+        btnXacNhan.addActionListener(e -> this.dispose());
     }
 
     // GETTERS

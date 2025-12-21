@@ -205,6 +205,7 @@ public class QuanLiSanPhamGUI extends JPanel {
                     String maSP = model.getValueAt(selectedRow, 1).toString();
                     ThemSanPhamGUI dialog = new ThemSanPhamGUI(sanPhamBUS, true, maSP);
                     dialog.setTitle("Chi tiết sản phẩm");
+                    dialog.batCheDoXemChiTiet();
                     dialog.setVisible(true);
                 }
             }

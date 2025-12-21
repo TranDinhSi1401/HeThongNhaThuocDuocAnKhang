@@ -195,22 +195,149 @@ public class SanPhamBUS {
         }
     }
 
+//    public boolean luuSanPham(ThemSanPhamGUI form, boolean isEditMode) {
+//        if (form.getTxtTenSanPham().getText().trim().isEmpty()) {
+//            JOptionPane.showMessageDialog(form, "Tên sản phẩm không được để trống.");
+//            return false;
+//        }
+//        if (listTempDVT.isEmpty()) {
+//            JOptionPane.showMessageDialog(form, "Sản phẩm phải có ít nhất 1 đơn vị tính.");
+//            return false;
+//        }
+//
+//        try {
+//            SanPham sp = new SanPham();
+//            sp.setMaSP(form.getTxtMaSanPham().getText());
+//            sp.setTen(form.getTxtTenSanPham().getText());
+//            sp.setMoTa(form.getTxtMoTa().getText());
+//            sp.setThanhPhan(form.getTxtThanhPhan().getText());
+//
+//            int indexLoai = form.getCmbLoaiSanPham().getSelectedIndex();
+//            if (indexLoai == 0) {
+//                sp.setLoaiSanPham(LoaiSanPhamEnum.THUOC_KE_DON);
+//            } else if (indexLoai == 1) {
+//                sp.setLoaiSanPham(LoaiSanPhamEnum.THUOC_KHONG_KE_DON);
+//            } else {
+//                sp.setLoaiSanPham(LoaiSanPhamEnum.THUC_PHAM_CHUC_NANG);
+//            }
+//
+//            try {
+//                sp.setTonToiThieu(Integer.parseInt(form.getTxtTonToiThieu().getText().trim()));
+//                sp.setTonToiDa(Integer.parseInt(form.getTxtTonToiDa().getText().trim()));
+//            } catch (Exception e) {
+//                sp.setTonToiThieu(0);
+//                sp.setTonToiDa(9999);
+//            }
+//
+//            boolean success = false;
+//
+//            if (!isEditMode) { // Thêm mới
+//                if (SanPhamDAO.themSanPham(sp)) {
+//                    luuCacThongTinLienQuan(sp, form);
+//                    success = true;
+//                    JOptionPane.showMessageDialog(form, "Thêm sản phẩm thành công!");
+//                }
+//            } else { // Sửa
+//                if (SanPhamDAO.suaSanPham(sp.getMaSP(), sp)) {
+//                    String maSP = sp.getMaSP();
+//                    MaVachSanPhamDAO.xoaMaVachTheoMaSP(maSP);
+//                    SanPhamCungCapDAO.xoaHetNCCuaSP(maSP);
+//                    KhuyenMaiSanPhamDAO.xoaHetKMCuaSP(maSP);
+//                    luuCacThongTinLienQuan(sp, form);
+//                    success = true;
+//                    JOptionPane.showMessageDialog(form, "Cập nhật sản phẩm thành công!");
+//                }
+//            }
+//            return success;
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            JOptionPane.showMessageDialog(form, "Lỗi khi lưu: " + e.getMessage());
+//            return false;
+//        }
+//    }
     public boolean luuSanPham(ThemSanPhamGUI form, boolean isEditMode) {
+        // --- PHẦN 1: KIỂM TRA DỮ LIỆU ĐẦU VÀO (VALIDATION) ---
+
+        // 1. Kiểm tra tên sản phẩm
         if (form.getTxtTenSanPham().getText().trim().isEmpty()) {
             JOptionPane.showMessageDialog(form, "Tên sản phẩm không được để trống.");
+            form.getTxtTenSanPham().requestFocus();
             return false;
         }
-        if (listTempDVT.isEmpty()) {
+
+        if (form.getTxtMoTa().getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(form, "Mô tả sản phẩm không được để trống.");
+            form.getTxtTenSanPham().requestFocus();
+            return false;
+        }
+
+        // 2. Kiểm tra thành phần (Yêu cầu mới)
+        if (form.getTxtThanhPhan().getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(form, "Thành phần sản phẩm không được để trống.");
+            form.getTxtThanhPhan().requestFocus();
+            return false;
+        }
+
+        // 3. Kiểm tra đơn vị tính
+        if (form.getModelDVT().getRowCount() == 0) {
             JOptionPane.showMessageDialog(form, "Sản phẩm phải có ít nhất 1 đơn vị tính.");
             return false;
         }
 
+        // 4. Kiểm tra Nhà cung cấp
+        if (form.getModelNCCChon().getRowCount() == 0) {
+            JOptionPane.showMessageDialog(form, "Vui lòng chọn ít nhất 1 nhà cung cấp cho sản phẩm.");
+            return false;
+        }
+
+        // 5. Kiểm tra Mã vạch
+        if (form.getModelBarcode().getRowCount() == 0) {
+            JOptionPane.showMessageDialog(form, "Sản phẩm chưa có mã vạch nào.");
+            return false;
+        }
+
+        // 6. Kiểm tra Tồn kho (Min > Max và định dạng số) (Yêu cầu mới)
+        int tonToiThieu = 0;
+        int tonToiDa = 0;
+        try {
+            String strMin = form.getTxtTonToiThieu().getText().trim();
+            String strMax = form.getTxtTonToiDa().getText().trim();
+
+            if (strMin.isEmpty() || strMax.isEmpty()) {
+                JOptionPane.showMessageDialog(form, "Vui lòng nhập định mức tồn kho tối thiểu và tối đa.");
+                return false;
+            }
+
+            tonToiThieu = Integer.parseInt(strMin);
+            tonToiDa = Integer.parseInt(strMax);
+
+            if (tonToiThieu < 0 || tonToiDa < 0) {
+                JOptionPane.showMessageDialog(form, "Số lượng tồn kho không được âm.");
+                return false;
+            }
+
+            if (tonToiThieu > tonToiDa) {
+                JOptionPane.showMessageDialog(form, "Lỗi: Tồn tối thiểu không được lớn hơn Tồn tối đa.");
+                form.getTxtTonToiThieu().requestFocus();
+                return false;
+            }
+
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(form, "Định mức tồn kho phải là số nguyên hợp lệ.");
+            return false;
+        }
+
+        // --- PHẦN 2: XỬ LÝ LƯU XUỐNG CSDL ---
         try {
             SanPham sp = new SanPham();
             sp.setMaSP(form.getTxtMaSanPham().getText());
             sp.setTen(form.getTxtTenSanPham().getText());
             sp.setMoTa(form.getTxtMoTa().getText());
             sp.setThanhPhan(form.getTxtThanhPhan().getText());
+
+            sp.setTonToiThieu(tonToiThieu);
+            sp.setTonToiDa(tonToiDa);
 
             int indexLoai = form.getCmbLoaiSanPham().getSelectedIndex();
             if (indexLoai == 0) {
@@ -219,14 +346,6 @@ public class SanPhamBUS {
                 sp.setLoaiSanPham(LoaiSanPhamEnum.THUOC_KHONG_KE_DON);
             } else {
                 sp.setLoaiSanPham(LoaiSanPhamEnum.THUC_PHAM_CHUC_NANG);
-            }
-
-            try {
-                sp.setTonToiThieu(Integer.parseInt(form.getTxtTonToiThieu().getText().trim()));
-                sp.setTonToiDa(Integer.parseInt(form.getTxtTonToiDa().getText().trim()));
-            } catch (Exception e) {
-                sp.setTonToiThieu(0);
-                sp.setTonToiDa(9999);
             }
 
             boolean success = false;
@@ -240,9 +359,11 @@ public class SanPhamBUS {
             } else { // Sửa
                 if (SanPhamDAO.suaSanPham(sp.getMaSP(), sp)) {
                     String maSP = sp.getMaSP();
+                    // Xóa dữ liệu cũ để ghi đè dữ liệu mới từ các list tạm
                     MaVachSanPhamDAO.xoaMaVachTheoMaSP(maSP);
                     SanPhamCungCapDAO.xoaHetNCCuaSP(maSP);
                     KhuyenMaiSanPhamDAO.xoaHetKMCuaSP(maSP);
+
                     luuCacThongTinLienQuan(sp, form);
                     success = true;
                     JOptionPane.showMessageDialog(form, "Cập nhật sản phẩm thành công!");
@@ -252,7 +373,7 @@ public class SanPhamBUS {
 
         } catch (Exception e) {
             e.printStackTrace();
-            JOptionPane.showMessageDialog(form, "Lỗi khi lưu: " + e.getMessage());
+            JOptionPane.showMessageDialog(form, "Lỗi hệ thống khi lưu: " + e.getMessage());
             return false;
         }
     }
