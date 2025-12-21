@@ -842,18 +842,23 @@ public class BanHangPane extends javax.swing.JPanel {
     }
       
     private void capNhatGoiYSauKhiTongTienThayDoi(double tongTien) {
-        long t = (long)tongTien;
+        long t = (long) tongTien;
 
-        long[] menhGia = {10000, 20000, 50000, 100000, 200000, 500000};
+        long[] menhGia = {0, 10000, 20000, 50000, 100000, 200000};
         JButton[] buttons = {btnGoiY1, btnGoiY2, btnGoiY3, btnGoiY4, btnGoiY5, btnGoiY6};
 
-        for (int i = 0; i < menhGia.length; i++) {
+        // Làm tròn lên theo 1.000, nhưng nếu đã tròn rồi thì giữ nguyên
+        long goiY1 = (t % 1000 == 0) ? t : lamTronLen(t, 1000);
+        buttons[0].setText(String.format("%,d", goiY1));
+
+        for (int i = 1; i < menhGia.length; i++) {
             long goiY = lamTronLen(t, menhGia[i]);
 
-            if (i > 0 && goiY <= Long.parseLong(buttons[i-1].getText().replace(",", ""))) {
+            long prev = Long.parseLong(buttons[i - 1].getText().replace(",", ""));
+            if (goiY <= prev) {
                 goiY += menhGia[i];
             }
-            
+
             buttons[i].setText(String.format("%,d", goiY));
         }
     }

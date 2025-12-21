@@ -297,7 +297,7 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
 
         cbbThuocTinhNhanVien.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tên nhân viên", "Mã nhân viên", "Số điện thoại", "CCCD" }));
         cbbThuocTinhNhanVien.setMinimumSize(new java.awt.Dimension(163, 22));
-        cbbThuocTinhNhanVien.setPreferredSize(new java.awt.Dimension(170, 22));
+        cbbThuocTinhNhanVien.setPreferredSize(new java.awt.Dimension(170, 30));
         cbbThuocTinhNhanVien.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbbThuocTinhNhanVienActionPerformed(evt);
@@ -305,7 +305,7 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         });
         jPanel62.add(cbbThuocTinhNhanVien);
 
-        txtNhapNhanVien.setPreferredSize(new java.awt.Dimension(500, 22));
+        txtNhapNhanVien.setPreferredSize(new java.awt.Dimension(500, 30));
         txtNhapNhanVien.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtNhapNhanVienActionPerformed(evt);
@@ -433,7 +433,7 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
 
         cbbThuocTinhKhachHang.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Số điện thoại", "Tên khách hàng", "Mã khách hàng" }));
         cbbThuocTinhKhachHang.setMinimumSize(new java.awt.Dimension(163, 22));
-        cbbThuocTinhKhachHang.setPreferredSize(new java.awt.Dimension(170, 22));
+        cbbThuocTinhKhachHang.setPreferredSize(new java.awt.Dimension(170, 30));
         cbbThuocTinhKhachHang.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbbThuocTinhKhachHangActionPerformed(evt);
@@ -441,7 +441,7 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         });
         jPanel32.add(cbbThuocTinhKhachHang);
 
-        txtNhapKhachHang.setPreferredSize(new java.awt.Dimension(500, 22));
+        txtNhapKhachHang.setPreferredSize(new java.awt.Dimension(500, 30));
         txtNhapKhachHang.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtNhapKhachHangActionPerformed(evt);
@@ -543,7 +543,7 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
 
         cbbThuocTinhNhaCungCap.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Mã nhà cung cấp", "Tên nhà cung cấp" }));
         cbbThuocTinhNhaCungCap.setMinimumSize(new java.awt.Dimension(163, 22));
-        cbbThuocTinhNhaCungCap.setPreferredSize(new java.awt.Dimension(170, 22));
+        cbbThuocTinhNhaCungCap.setPreferredSize(new java.awt.Dimension(170, 30));
         cbbThuocTinhNhaCungCap.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbbThuocTinhNhaCungCapActionPerformed(evt);
@@ -551,7 +551,7 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         });
         jPanel22.add(cbbThuocTinhNhaCungCap);
 
-        txtNhapNhaCungCap.setPreferredSize(new java.awt.Dimension(500, 22));
+        txtNhapNhaCungCap.setPreferredSize(new java.awt.Dimension(500, 30));
         txtNhapNhaCungCap.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 txtNhapNhaCungCapFocusGained(evt);
@@ -658,7 +658,7 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
 
         cbbThuocTinhSanPham.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Mã sản phẩm", "Tên sản phẩm" }));
         cbbThuocTinhSanPham.setMinimumSize(new java.awt.Dimension(163, 22));
-        cbbThuocTinhSanPham.setPreferredSize(new java.awt.Dimension(170, 22));
+        cbbThuocTinhSanPham.setPreferredSize(new java.awt.Dimension(170, 30));
         cbbThuocTinhSanPham.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbbThuocTinhSanPhamActionPerformed(evt);
@@ -666,7 +666,7 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         });
         jPanel4.add(cbbThuocTinhSanPham);
 
-        txtNhapSanPham.setPreferredSize(new java.awt.Dimension(500, 22));
+        txtNhapSanPham.setPreferredSize(new java.awt.Dimension(500, 30));
         txtNhapSanPham.addFocusListener(new java.awt.event.FocusAdapter() {
             public void focusGained(java.awt.event.FocusEvent evt) {
                 txtNhapSanPhamFocusGained(evt);
@@ -743,7 +743,7 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
                 .addComponent(cbxTKDSanPham)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(cbxTPCNSanPham, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(211, Short.MAX_VALUE))
+                .addContainerGap(204, Short.MAX_VALUE))
         );
 
         jPanel7.add(jPanel1);
@@ -822,10 +822,10 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
 
         cbbThuocTinhKhuyenMai.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Mã khuyến mãi" }));
         cbbThuocTinhKhuyenMai.setMinimumSize(new java.awt.Dimension(163, 22));
-        cbbThuocTinhKhuyenMai.setPreferredSize(new java.awt.Dimension(170, 22));
+        cbbThuocTinhKhuyenMai.setPreferredSize(new java.awt.Dimension(170, 30));
         jPanel42.add(cbbThuocTinhKhuyenMai);
 
-        txtNhapKhuyenMai.setPreferredSize(new java.awt.Dimension(500, 22));
+        txtNhapKhuyenMai.setPreferredSize(new java.awt.Dimension(500, 30));
         txtNhapKhuyenMai.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 txtNhapKhuyenMaiKeyPressed(evt);
@@ -958,7 +958,7 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
 
         cbbHoaDon.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Mã hóa đơn", "Số điện thoại khách hàng" }));
         cbbHoaDon.setMinimumSize(new java.awt.Dimension(163, 22));
-        cbbHoaDon.setPreferredSize(new java.awt.Dimension(170, 22));
+        cbbHoaDon.setPreferredSize(new java.awt.Dimension(170, 30));
         cbbHoaDon.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbbHoaDonActionPerformed(evt);
@@ -966,7 +966,7 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         });
         jPanel12.add(cbbHoaDon);
 
-        txtNhapHoaDon.setPreferredSize(new java.awt.Dimension(500, 22));
+        txtNhapHoaDon.setPreferredSize(new java.awt.Dimension(500, 30));
         txtNhapHoaDon.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtNhapHoaDonActionPerformed(evt);
@@ -1085,7 +1085,7 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
 
         cbbThuocTinhPhieuNhap.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Mã phiếu nhập" }));
         cbbThuocTinhPhieuNhap.setMinimumSize(new java.awt.Dimension(163, 22));
-        cbbThuocTinhPhieuNhap.setPreferredSize(new java.awt.Dimension(170, 22));
+        cbbThuocTinhPhieuNhap.setPreferredSize(new java.awt.Dimension(170, 30));
         cbbThuocTinhPhieuNhap.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbbThuocTinhPhieuNhapActionPerformed(evt);
@@ -1093,7 +1093,7 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         });
         jPanel72.add(cbbThuocTinhPhieuNhap);
 
-        txtNhapPhieuNhap.setPreferredSize(new java.awt.Dimension(500, 22));
+        txtNhapPhieuNhap.setPreferredSize(new java.awt.Dimension(500, 30));
         txtNhapPhieuNhap.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtNhapPhieuNhapActionPerformed(evt);
@@ -1213,7 +1213,7 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
 
         cbbThuocTinhPhieuTraHang.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Mã phiếu trả" }));
         cbbThuocTinhPhieuTraHang.setMinimumSize(new java.awt.Dimension(163, 22));
-        cbbThuocTinhPhieuTraHang.setPreferredSize(new java.awt.Dimension(170, 22));
+        cbbThuocTinhPhieuTraHang.setPreferredSize(new java.awt.Dimension(170, 30));
         cbbThuocTinhPhieuTraHang.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbbThuocTinhPhieuTraHangActionPerformed(evt);
@@ -1221,7 +1221,7 @@ public class TraCuuChungGUI extends javax.swing.JPanel {
         });
         jPanel52.add(cbbThuocTinhPhieuTraHang);
 
-        txtNhapPhieuTraHang.setPreferredSize(new java.awt.Dimension(500, 22));
+        txtNhapPhieuTraHang.setPreferredSize(new java.awt.Dimension(500, 30));
         txtNhapPhieuTraHang.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtNhapPhieuTraHangActionPerformed(evt);
