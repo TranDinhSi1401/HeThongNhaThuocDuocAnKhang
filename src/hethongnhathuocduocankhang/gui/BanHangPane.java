@@ -999,7 +999,11 @@ public class BanHangPane extends javax.swing.JPanel {
                 themCTHDVaoTable(newRow);
             }          
         }catch(Exception e) {
-            JOptionPane.showMessageDialog(this, e.getMessage(), "Warning Message", JOptionPane.WARNING_MESSAGE);
+            if(e.getMessage().startsWith("For input string:")) {
+                System.out.println(e.getMessage());
+            } else {
+                JOptionPane.showMessageDialog(this, e.getMessage(), "Warning Message", JOptionPane.WARNING_MESSAGE);
+            }   
         }
         // Xóa nội dung trong ô text để chuẩn bị cho lần quét tiếp theo
         txtTimKiem.setText("");       
