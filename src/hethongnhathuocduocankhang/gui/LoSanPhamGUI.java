@@ -72,6 +72,7 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
 
     private String ngayLap;
     TaiKhoan tk = GiaoDienChinhGUI.getTk();
+    private SwingWorker<Void, Object[]> currentSearchWorker = null;
 
     /**
      * Creates new form LoSanPhamGUI
@@ -84,18 +85,6 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
         focusTxt(txtTimKiem, "Nhập mã lô...");
         focusTxt(txtMaLoSP, "Nhập thông tin tìm kiếm...");
 
-        tblTab.addChangeListener(e -> {
-            int x = tblTab.getSelectedIndex();
-            if (x == 0) {
-                reLoadQuanLyLo();
-            } else if (x == 1) {
-                try {
-                    reLoadTheoDoiVaCanhBao();
-                } catch (SQLException ex) {
-                    Logger.getLogger(LoSanPhamGUI.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        });
         // tải dữ liệu của các lô hàng đang có vào bảng
         // loadTuPlashScreening();
         loadDanhSachLoSanPham();
@@ -180,7 +169,21 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
                 }
             }
         });
-
+        tblTab.addChangeListener(e->{
+            int index = tblTab.getSelectedIndex();
+            if(index==0){
+                try {
+                    reLoadTheoDoiVaCanhBao();
+                } catch (SQLException ex) {
+                    Logger.getLogger(LoSanPhamGUI.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }else if(index==1){
+                DefaultTableModel tbl = (DefaultTableModel) tblLoSanPham.getModel();
+                tbl.setRowCount(0);
+                loadDanhSachLoSanPham();
+            }
+        });
+        
         mapKeyToFocus("F3", txtTimKiem, QuanLyLo);
         mapKeyToFocus("F3", txtMaLoSP, CanhBao);
         mapKeyToClickButton("F4", btnXacNhan, QuanLyLo);
@@ -964,7 +967,7 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
         add(jPanel2, java.awt.BorderLayout.CENTER);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnHuyLoActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_btnHuyLoActionPerformed
+    private void btnHuyLoActionPerformed(java.awt.event.ActionEvent evt) {
         DefaultTableModel tbl = (DefaultTableModel) tblLoSanPham.getModel();
         int x = tblLoSanPham.getSelectedRow();
         if (tblLoSanPham.getRowCount() == 0) {
@@ -1014,6 +1017,11 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
     }// GEN-LAST:event_txtNhaCungCapActionPerformed
 
     private void txtLamMoiActionPerformed(java.awt.event.ActionEvent evt) {// GEN-FIRST:event_txtLamMoiActionPerformed
+        // Hủy tác vụ tìm kiếm đang chạy nếu có
+        if (currentSearchWorker != null && !currentSearchWorker.isDone()) {
+            currentSearchWorker.cancel(true);
+        }
+        
         DefaultTableModel tbl = (DefaultTableModel) tblKetQua.getModel();
         tbl.setRowCount(0);
         cmbTrangThai.setSelectedIndex(0);
@@ -1293,8 +1301,8 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(this, "Vui lòng nhập mã lô !");
             return;
         }
-        if(!maLo.matches("LO[a-zA-Z0-9]*")){
-            JOptionPane.showMessageDialog(this, "Mã lô phải bắt đầu bằng LO");
+        if(!maLo.matches("LO-[A-Z]{2}-[0-9]{4}-[0-9]{8}-[0-9]{1}")){
+            JOptionPane.showMessageDialog(this, "Mã lô phải tuân theo định dạng LO-SP-XXXX-XXXXXX-X, vui lòng thử lại");
             txtTimKiem.setText("");
             txtTimKiem.requestFocus();
             return;
@@ -1404,10 +1412,19 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
     private void txtTenSanPhamActionPerformed(java.awt.event.ActionEvent evt) {}
     private void txtMaLoSPActionPerformed(java.awt.event.ActionEvent evt) {}
     private void btnTimTheoThongTinActionPerformed(java.awt.event.ActionEvent evt) {
+        // Hủy tác vụ tìm kiếm đang chạy nếu có
+        if (currentSearchWorker != null && !currentSearchWorker.isDone()) {
+            currentSearchWorker.cancel(true);
+        }
+        
+        // Xóa bảng ngay lập tức
+        DefaultTableModel tbl = (DefaultTableModel) tblKetQua.getModel();
+        tbl.setRowCount(0);
+        
         String noiDung = txtMaLoSP.getText().isBlank() ? null : txtMaLoSP.getText().trim();
         String trangThai = cmbTrangThai.getSelectedItem().toString().trim();
         String tieuChi = cmbTimKiemTheo.getSelectedItem().toString().trim();
-        DefaultTableModel tbl = (DefaultTableModel) tblKetQua.getModel();
+        
         QuanLyLoBUS busLo = new QuanLyLoBUS();
         ArrayList<LoSanPham> dsKetQua = busLo.timKiemLoVoiNhieuDieuKien(tieuChi, noiDung, trangThai);
         if (dsKetQua == null || dsKetQua.isEmpty()) {
@@ -1415,12 +1432,17 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
                     JOptionPane.INFORMATION_MESSAGE);
             return;
         }
-        tbl.setRowCount(0);
-        SwingWorker<Void, Object[]> worker = new SwingWorker<>() {
+        
+        currentSearchWorker = new SwingWorker<Void, Object[]>() {
             @Override
             protected Void doInBackground() throws Exception {
                 QuanLyLoBUS busLo = new QuanLyLoBUS();
                 for (LoSanPham lo : dsKetQua) {
+                    // Kiểm tra xem tác vụ có bị hủy không
+                    if (isCancelled()) {
+                        break;
+                    }
+                    
                     NhaCungCap ncc = NhaCungCapDAO.timNCCTheoMa(
                             SanPhamCungCapDAO.getSanPhamCungCap(lo.getSanPham().getMaSP()).getNhaCungCap().getMaNCC());
                     String trangThaiHienTai = busLo.tinhTrangThaiLo(lo);
@@ -1441,19 +1463,24 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
 
             @Override
             protected void process(List<Object[]> chunks) {
-                DefaultTableModel tblMoi = (DefaultTableModel) tblKetQua.getModel();
-                for (Object[] i : chunks) {
-                    tblMoi.addRow(i);
+                // Kiểm tra xem tác vụ có bị hủy không
+                if (!isCancelled()) {
+                    DefaultTableModel tblMoi = (DefaultTableModel) tblKetQua.getModel();
+                    for (Object[] i : chunks) {
+                        tblMoi.addRow(i);
+                    }
                 }
             }
 
             @Override
             protected void done() {
-                tblKetQua.revalidate();
-                tblKetQua.repaint();
+                if (!isCancelled()) {
+                    tblKetQua.revalidate();
+                    tblKetQua.repaint();
+                }
             }
         };
-        worker.execute();
+        currentSearchWorker.execute();
     }
 
     private void cmbTrangThaiActionPerformed(java.awt.event.ActionEvent evt) {}
@@ -1706,11 +1733,13 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
             if (nv == null) {
                 continue;
             }
+            String ghiChu = i.getGhiChu();
+            if(ghiChu.trim().equals("")) ghiChu="Không có";
             tbl.addRow(new Object[] { i.getLo().getMaLoSanPham(),
                     i.getThoiGian(),
                     i.getHanhDong(),
                     i.getSoLuongSau(),
-                    i.getGhiChu(),
+                    ghiChu,
                     nv.getHoTenDem() + " " + nv.getTen() });
         }
 
@@ -1892,7 +1921,7 @@ public class LoSanPhamGUI extends javax.swing.JPanel {
     private void btnXemConHan_ActionPerformed(java.awt.event.ActionEvent evt) {
         cmbTimKiemTheo.setSelectedIndex(0);
         cmbTrangThai.setSelectedItem("Còn hạn");
-        btnTimTheoThongTin.doClick();
+        btnTimTheoThongTin.doClick();   
     }
 
     private void btnXemSapHetHan_ActionPerformed(java.awt.event.ActionEvent evt) {
