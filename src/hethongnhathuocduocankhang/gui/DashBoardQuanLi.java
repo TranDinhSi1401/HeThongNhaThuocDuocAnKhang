@@ -556,7 +556,7 @@ public class DashBoardQuanLi extends javax.swing.JPanel {
         tblSPSapHetHang.getColumnModel().getColumn(4).setCellRenderer(rendererTonKhoDo);
         tblSPSapHetHang.getColumnModel().getColumn(5).setCellRenderer(getRightRenderer());
 
-        tblSPSapHetHang.getColumnModel().getColumn(0).setPreferredWidth(10);   // STT
+        tblSPSapHetHang.getColumnModel().getColumn(0).setPreferredWidth(20);   // STT
         tblSPSapHetHang.getColumnModel().getColumn(1).setPreferredWidth(50);  // Mã SP
         tblSPSapHetHang.getColumnModel().getColumn(2).setPreferredWidth(200);  // Tên SP
         tblSPSapHetHang.getColumnModel().getColumn(3).setPreferredWidth(30);   // ĐVT
@@ -662,7 +662,7 @@ public class DashBoardQuanLi extends javax.swing.JPanel {
         tblLoSapHetHan.getColumnModel().getColumn(6).setCellRenderer(getCenterRenderer()); // NHH
 
         // Độ rộng cột
-        tblLoSapHetHan.getColumnModel().getColumn(0).setPreferredWidth(10);     //STT
+        tblLoSapHetHan.getColumnModel().getColumn(0).setPreferredWidth(20);     //STT
         tblLoSapHetHan.getColumnModel().getColumn(1).setPreferredWidth(150);    //Mã lô
         tblLoSapHetHan.getColumnModel().getColumn(2).setPreferredWidth(50);    //Mã SP
         tblLoSapHetHan.getColumnModel().getColumn(3).setPreferredWidth(90);     //Tên SP
@@ -1307,7 +1307,7 @@ public class DashBoardQuanLi extends javax.swing.JPanel {
         JLabel lblSoSanh = new JLabel();
         lblSoSanh.setFont(new Font("Segoe UI", Font.PLAIN, 13));
 
-        String muiTen = phanTramTang >= 0 ? "↑" : "↓";
+        String muiTen = phanTramTang > 0 ? "↑" : "↓";
         String trangThai = String.format("%.1f%% so với hôm qua", Math.abs(phanTramTang));
         lblSoSanh.setText(muiTen + " " + trangThai);
 

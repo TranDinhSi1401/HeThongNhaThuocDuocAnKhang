@@ -326,7 +326,7 @@ public class DashBoardNhanVien extends javax.swing.JPanel {
 
         gbc.gridx = 0;
         gbc.weightx = 0.25;
-        pnlStats.add(createStatCard("Doanh thu hôm nay", strDoanhThu, subTextDT, phanTramDT >= 0), gbc);
+        pnlStats.add(createStatCard("Doanh thu của bạn hôm nay", strDoanhThu, subTextDT, phanTramDT >= 0), gbc);
 
         // Card 2: Hóa đơn
         double phanTramHD = (hdHomQua > 0) ? ((double) (hdHomNay - hdHomQua) / hdHomQua) * 100 : 0;
